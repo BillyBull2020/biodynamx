@@ -5,7 +5,7 @@
 // "Talk to Our AI" — One button. Instant wow.
 // ═══════════════════════════════════════════════════════════════════
 
-import { useRef, useState, useCallback, useEffect } from "react";
+import { useRef, useState, useCallback, useEffect, Fragment } from "react";
 import Image from "next/image";
 import LeadCaptureModal from "./LeadCaptureModal";
 import {
@@ -707,6 +707,15 @@ export default function VaultUI({ apiKey }: VaultProps) {
                                 animation: "breathe 3s ease-in-out infinite",
                                 pointerEvents: "none",
                             }} />
+                            <div aria-hidden="true" style={{
+                                position: "absolute",
+                                top: 0,
+                                left: 0,
+                                right: 0,
+                                bottom: 0,
+                                background: "radial-gradient(circle at center, rgba(167,139,250,0.15) 0%, transparent 70%)",
+                                pointerEvents: "none"
+                            }} />
                             <button
                                 onClick={handleStart}
                                 style={{
@@ -1206,6 +1215,68 @@ export default function VaultUI({ apiKey }: VaultProps) {
                 </div>
             </section>
 
+            {/* ── BioDynamX vs. The Competition ── */}
+            <section className="section-container" style={{
+                background: "linear-gradient(180deg, rgba(0,255,65,0.02) 0%, transparent 100%)",
+                paddingTop: 100,
+                paddingBottom: 100
+            }}>
+                <div style={{ maxWidth: 1000, margin: "0 auto", textAlign: "center" }}>
+                    <div className="section-label">THE BIODYNAMX ADVANTAGE</div>
+                    <h2 className="section-title">
+                        Why We&apos;re the <span style={{ color: "#00ff41" }}>New Gold Standard.</span>
+                    </h2>
+                    <p className="section-desc" style={{ maxWidth: 640, margin: "0 auto 60px" }}>
+                        Most AI companies give you a chatbot. We give you an autonomous workforce backed by the Neurobiology of Choice. Here is why we are light-years ahead.
+                    </p>
+
+                    <div style={{
+                        display: "grid",
+                        gridTemplateColumns: "1fr 1fr",
+                        gap: 2,
+                        background: "rgba(255,255,255,0.05)",
+                        borderRadius: 24,
+                        overflow: "hidden",
+                        border: "1px solid rgba(255,255,255,0.1)",
+                        boxShadow: "0 20px 50px rgba(0,0,0,0.3)"
+                    }}>
+                        {/* Header Row */}
+                        <div style={{ background: "rgba(10,10,10,0.8)", padding: "24px", textAlign: "center", fontWeight: 800, color: "rgba(255,255,255,0.4)", fontSize: 11, letterSpacing: "0.1em" }}>THE COMPETITION</div>
+                        <div style={{ background: "rgba(0,255,65,0.05)", padding: "24px", textAlign: "center", fontWeight: 800, color: "#00ff41", fontSize: 11, letterSpacing: "0.1em" }}>BIODYNAMX 4.1</div>
+
+                        {[
+                            { label: "Intelligence", comp: "Single-Path Chatbots", us: "Dual-Agent Neuro-Orchestration" },
+                            { label: "Response", comp: "15-30 Second Latency", us: "< 1 Second (Native Audio)" },
+                            { label: "Branding", comp: "'Powered by Vendor' Logos", us: "Total Brand Secrecy" },
+                            { label: "Science", comp: "Generic Logic Scripts", us: "Neurobiology of Choice & SPIN" },
+                            { label: "Trust", comp: "Hourly / Usage Billing", us: "5X ROI Triple-Lock Guarantee" }
+                        ].map((row, i) => (
+                            <Fragment key={i}>
+                                <div style={{
+                                    background: "rgba(5,5,5,0.6)",
+                                    padding: "32px 24px",
+                                    borderTop: "1px solid rgba(255,255,255,0.05)",
+                                    textAlign: "center"
+                                }}>
+                                    <div style={{ fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.3)", marginBottom: 8, textTransform: "uppercase" }}>{row.label}</div>
+                                    <div style={{ fontSize: 15, fontWeight: 500, color: "rgba(255,255,255,0.6)" }}>{row.comp}</div>
+                                </div>
+                                <div style={{
+                                    background: "rgba(0,255,65,0.02)",
+                                    padding: "32px 24px",
+                                    borderTop: "1px solid rgba(0,255,65,0.1)",
+                                    textAlign: "center"
+                                }}>
+                                    <div style={{ fontSize: 10, fontWeight: 700, color: "#00ff41", marginBottom: 8, textTransform: "uppercase", opacity: 0.6 }}>{row.label}
+                                    </div>
+                                    <div style={{ fontSize: 16, fontWeight: 800, color: "#fff" }}>{row.us}</div>
+                                </div>
+                            </Fragment>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
             <section ref={aiTeamRef} aria-label="Meet Your AI Team Jenny and Mark" className="section-container" style={{
                 opacity: aiTeamVisible ? 1 : 0,
                 transform: aiTeamVisible ? "translateY(0)" : "translateY(40px)",
@@ -1235,7 +1306,8 @@ export default function VaultUI({ apiKey }: VaultProps) {
                                 desc: "Never lose another lead at hello. Meghan answers every inbound call in under 1 second, 24/7 — and routes them to the right specialist before they hang up and call your competitor.",
                                 result: "Every call answered. Zero leads lost at the door.",
                                 color: "#a78bfa",
-                                icon: "M"
+                                icon: "M",
+                                image: "/agents/meghan.png"
                             },
                             {
                                 id: "jenny_discovery",
@@ -1246,7 +1318,8 @@ export default function VaultUI({ apiKey }: VaultProps) {
                                 desc: "Jenny speaks to the limbic system, not the ego. She finds your exact revenue leak in 60 seconds and makes you feel understood doing it.",
                                 result: "Your revenue gap — quantified and felt.",
                                 color: "#00ff41",
-                                icon: "J"
+                                icon: "J",
+                                image: "/agents/jenny.png"
                             },
                             {
                                 id: "mark_closer",
@@ -1257,7 +1330,8 @@ export default function VaultUI({ apiKey }: VaultProps) {
                                 desc: "Mark speaks in numbers. He takes Jenny's audit and builds your ROI bridge — precise, data-driven, closes with a single binary choice.",
                                 result: "Custom ROI plan. Ready to deploy in 24 hours.",
                                 color: "#3b82f6",
-                                icon: "M"
+                                icon: "M",
+                                image: "/agents/mark.png"
                             },
                             {
                                 id: "hunter_prospector",
@@ -1268,7 +1342,8 @@ export default function VaultUI({ apiKey }: VaultProps) {
                                 desc: "The seeker. Surfaces implicit pain using SPIN selling and commercial insight to book discovery calls with your top competitors' clients.",
                                 result: "Qualified Discovery Calls on your calendar.",
                                 color: "#ef4444",
-                                icon: "H"
+                                icon: "H",
+                                image: "/agents/hunter.png"
                             },
                             {
                                 id: "nova_content",
@@ -1279,18 +1354,20 @@ export default function VaultUI({ apiKey }: VaultProps) {
                                 desc: "The brand architect. Nova targets the limbic system through Dual-Coding theory to generate brand desire and market authority.",
                                 result: "High-Authority Brand Presence 24/7.",
                                 color: "#fbbf24",
-                                icon: "N"
+                                icon: "N",
+                                image: "/agents/nova.png"
                             },
                             {
                                 id: "orion_ops",
-                                name: "Orion",
+                                name: "O'Ryan",
                                 role: "Operations & Workflow",
                                 chip1: "Procedural Logic",
                                 chip2: "Operational Bleed Killer",
-                                desc: "The optimizer. Framed in procedural logic, Orion eliminates 15+ hours of weekly operations bleed by automating your internal workflows.",
+                                desc: "The optimizer. Framed in procedural logic, O'Ryan eliminates 15+ hours of weekly operations bleed by automating your internal workflows.",
                                 result: "15+ Hours Recovered Weekly via Automation.",
                                 color: "#f59e0b",
-                                icon: "O"
+                                icon: "O",
+                                image: "/agents/oryan.png"
                             },
                             {
                                 id: "support_specialist",
@@ -1301,7 +1378,8 @@ export default function VaultUI({ apiKey }: VaultProps) {
                                 desc: "The diplomat. De-escalates threat states using NLP meta-models to move customers from frustration to loyalty and reward states.",
                                 result: "98% Customer Satisfaction. Zero churn.",
                                 color: "#34d399",
-                                icon: "A"
+                                icon: "A",
+                                image: "/agents/alex.png"
                             },
                             {
                                 id: "ledger_finance",
@@ -1312,7 +1390,8 @@ export default function VaultUI({ apiKey }: VaultProps) {
                                 desc: "The analyst. Appeals to the neocortex with decimal-precise ROI data (e.g. 3.2 months break-even) to justify every investment.",
                                 result: "Neocortical Justification for every spend.",
                                 color: "#06b6d4",
-                                icon: "L"
+                                icon: "L",
+                                image: "/agents/ledger.png"
                             }
                         ].map((agent) => (
                             <div key={agent.id} className={`agent-card agent-card-${agent.id.split('_')[0]}`}>
@@ -1320,8 +1399,20 @@ export default function VaultUI({ apiKey }: VaultProps) {
                                     <div className="author-avatar" style={{
                                         background: `linear-gradient(135deg, ${agent.color}, rgba(0,0,0,0.4))`,
                                         width: 80, height: 80, fontSize: 32, borderRadius: '50%',
-                                        display: "flex", alignItems: "center", justifyContent: "center", color: "#fff"
-                                    }}>{agent.icon}</div>
+                                        display: "flex", alignItems: "center", justifyContent: "center", color: "#fff",
+                                        overflow: "hidden", border: `2px solid ${agent.color}`,
+                                        boxShadow: `0 0 15px ${agent.color}33`,
+                                        position: "relative"
+                                    }}>
+                                        {agent.image ? (
+                                            <Image
+                                                src={agent.image}
+                                                alt={agent.name}
+                                                fill
+                                                style={{ objectFit: "cover" }}
+                                            />
+                                        ) : agent.icon}
+                                    </div>
                                     <div className="agent-live-dot" style={{ background: agent.color }} />
                                 </div>
                                 <div className="agent-name" style={{ color: agent.color }}>{agent.name}</div>

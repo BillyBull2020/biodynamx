@@ -15,9 +15,9 @@ export type TeamPhase =
     | "jenny_active"   // Jenny is diagnosing
     | "handoff"        // Jenny triggered handoff, killing her stream
     | "mark_active"    // Mark is closing
-    | "aria_active"    // Aria (Meghan) is receiving/routing
-    | "jules_active"   // Jules (O'Ryan) is doing operations
-    | "support_active" // Alex is handling care/troubleshooting
+    | "meghan_active"  // Meghan is receiving/routing
+    | "oryan_active"   // O'Ryan is doing operations
+    | "alex_active"    // Alex is handling care/troubleshooting
     | "hunter_active"  // Hunter is prospecting
     | "nova_active"    // Nova is doing content/social
     | "ledger_active"  // Ledger is doing financial analysis
@@ -113,8 +113,8 @@ const VISUAL_STATES: Record<TeamPhase, VaultVisualState> = {
         activeAgentVoice: null,
         waveformMode: "idle",
     },
-    aria_active: {
-        phase: "aria_active",
+    meghan_active: {
+        phase: "meghan_active",
         borderColor: "#a78bfa",
         bgOpacity: 0.04,
         pulseActive: true,
@@ -122,8 +122,8 @@ const VISUAL_STATES: Record<TeamPhase, VaultVisualState> = {
         activeAgentVoice: "Kore",
         waveformMode: "soft",
     },
-    jules_active: {
-        phase: "jules_active",
+    oryan_active: {
+        phase: "oryan_active",
         borderColor: "#f59e0b",
         bgOpacity: 0.04,
         pulseActive: true,
@@ -131,8 +131,8 @@ const VISUAL_STATES: Record<TeamPhase, VaultVisualState> = {
         activeAgentVoice: "Algenib",
         waveformMode: "sharp",
     },
-    support_active: {
-        phase: "support_active",
+    alex_active: {
+        phase: "alex_active",
         borderColor: "#34d399",
         bgOpacity: 0.04,
         pulseActive: true,

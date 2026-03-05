@@ -81,6 +81,16 @@ export async function POST(req: NextRequest) {
         }
 
         // ── STEP 3: Build the neuroscience-locked prompt for live generation ──
+        // Clean auditData to prevent visual hallucinations (Mark's audit, etc.)
+        const cleanedAuditData = auditData ? {
+            siteSpeed: auditData.siteSpeed,
+            mobileScore: auditData.mobileScore,
+            revenueEstimate: auditData.revenueEstimate,
+            grade: auditData.grade,
+            // DO NOT pass deepDiagnostic scripts (markScript/journeyScript) to the image generator
+            // because it makes Gemini think Mark or Journey is doing the audit visually.
+        } : null;
+
         const { imagePrompt, neuroReason, brainLayer } = buildNeuroPrompt({
             prospectName,
             businessName,
@@ -88,7 +98,7 @@ export async function POST(req: NextRequest) {
             topic: topic || conversationPhase || "discovery",
             conversationPhase: resolvedPhase,
             painPoint,
-            auditData,
+            auditData: cleanedAuditData as any,
             style,
             industryStats,
             industryVisuals,

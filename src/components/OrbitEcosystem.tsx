@@ -7,17 +7,18 @@
 // ═══════════════════════════════════════════════════════════════════
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import "./OrbitEcosystem.css";
 
 const SERVICES = [
-    { icon: "🤖", label: "AI Employees", color: "#00ff41" },
-    { icon: "🌐", label: "Web & Apps", color: "#3b82f6" },
-    { icon: "🎬", label: "Video & Creative", color: "#f59e0b" },
-    { icon: "🔍", label: "SEO · AEO · GEO", color: "#a855f7" },
-    { icon: "📞", label: "AI Receptionist", color: "#06b6d4" },
-    { icon: "📊", label: "CRM & Funnels", color: "#ef4444" },
-    { icon: "🛡️", label: "Data Security", color: "#10b981" },
-    { icon: "💰", label: "Revenue Engine", color: "#f97316" },
+    { image: "/agents/meghan.png", label: "MEGHAN: AI Receptionist", color: "#a78bfa" },
+    { image: "/agents/jenny.png", label: "JENNY: Brain Discovery", color: "#00ff41" },
+    { image: "/agents/mark.png", label: "MARK: Revenue Closer", color: "#3b82f6" },
+    { image: "/agents/oryan.png", label: "O'RYAN: Ops & Workflow", color: "#f59e0b" },
+    { image: "/agents/alex.png", label: "ALEX: Support Lead", color: "#10b981" },
+    { image: "/agents/hunter.png", label: "HUNTER: Prospecting", color: "#ef4444" },
+    { image: "/agents/nova.png", label: "NOVA: Content & Social", color: "#f97316" },
+    { image: "/agents/ledger.png", label: "LEDGER: ROI Manager", color: "#06b6d4" },
 ];
 
 // Reduced from 48 → 20 particles for scroll performance
@@ -193,7 +194,14 @@ export default function OrbitEcosystem() {
                             "--node-color": svc.color,
                         } as React.CSSProperties}
                     >
-                        <span className="node3d-icon">{svc.icon}</span>
+                        <div className="node3d-icon" style={{ overflow: 'hidden', position: 'relative' }}>
+                            <Image
+                                src={svc.image}
+                                alt={svc.label}
+                                fill
+                                style={{ objectFit: 'cover' }}
+                            />
+                        </div>
                         <span className="node3d-label">{svc.label}</span>
                     </div>
                 ))}
