@@ -633,7 +633,7 @@ export const AGENT_KNOWLEDGE = {
             },
             {
                 name: "BioDynamX Enterprise",
-                price: "Custom (starting at $1,497/month)",
+                price: "$2,497/month",
                 bestFor: "Established businesses that need custom software development, creative production, and full SEO/AEO/GEO management",
                 features: [
                     "Everything in Growth Engine",

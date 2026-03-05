@@ -2,7 +2,7 @@
  * NANA BANANA 2 — LIVE PERSONALIZED REVENUE CALCULATOR VISUAL
  *
  * This is the NLP gut-punch: Jenny collects their numbers,
- * IronClaw sends them here, Nana Banana generates an image
+ * IronClaw sends them here, Nana Banana 2 generates an image
  * with THEIR EXACT DOLLARS showing on screen in real-time.
  *
  * Neuroscience principle: Specificity = Reality.

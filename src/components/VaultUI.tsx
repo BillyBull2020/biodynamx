@@ -137,15 +137,17 @@ export default function VaultUI({ apiKey }: VaultProps) {
 
     const TRANSLATIONS = {
         en: {
-            heroHeadline: "Every Missed Call Is a Lost Customer. We Get Them Back.",
+            heroHeadline: "Slow and steady used to win the race. Today, slow and steady loses the market.",
             heroTypewriterPrefix: "Built for ",
-            heroLossAversion: "Right now, your business is leaking revenue through missed calls, slow follow-up, and leads that slip away. BioDynamX deploys neuroscience-trained AI agents that recover that money — 24/7, while you sleep.",
-            heroDiagnosticGap: "Find out exactly how much you're losing. Jenny runs a live audit — free, right now, in under 60 seconds.",
-            heroBadge: "🧠 World's First Neurobiology-Powered AI Platform",
-            onboardingSpots: `Only ${spotsLeft} spots left today`,
-            offerExpires: `Offer expires in ${countdown}`,
-            buttonTalkExperts: "Find My Revenue Leaks → Free",
-            buttonSub: "60 seconds. No credit card. No login. Real answers.",
+            heroLossAversion: "Whether you launched last week or have been scaling for 20 years, your competition never sleeps. Every minute your business isn't responding, you are actively losing revenue to someone who is.",
+            heroDiagnosticGap: "BioDynamX eliminates that risk. We plug an autonomous fleet of 8 neuroscience-trained AI agents directly into your business to capture leads, handle support, and close sales 24/7. No extra staff. No ceiling.",
+            heroHook: "Stop guessing where your bottlenecks are. Our lead agent, Jenny, will reveal the single biggest profit leak in your business in exactly 60 seconds—free, live, right now. No pitch. Just pure intelligence.",
+            heroBadge: "🧠 Powered by Neuroscience & Neuromarketing",
+            heroWeb4Badge: "🌐 WEB 4.0 NATIVE",
+            onboardingSpots: `🔴 Only 3 free audits left today`,
+            offerExpires: `⏳ Offer expires in 10h 36m 10s`,
+            buttonTalkExperts: "Find My Biggest Growth Opportunity →",
+            buttonSecondary: "Show Me Where I'm Bleeding Revenue →",
             buttonHandoff: "Switching to Mark...",
             buttonHandoffSub: "Building your ROI Bridge",
             buttonJennyActive: "Jenny is Analyzing",
@@ -183,26 +185,30 @@ export default function VaultUI({ apiKey }: VaultProps) {
             spanishTitle: "Talk to us in Spanish",
             spanishDesc: "Test our fluency. We speak over 32 languages, but we specialize in natural, human Spanish syntax.",
             spanishButton: "Hablar en Español",
-            toolStackTitle: "The BioDynamX Engineering Suite",
+            toolStackTitle: "The BioDynamX Elite 8 AI Agents",
             toolStack: [
-                "🎨 STITCH: Automated UI Designer",
-                "🤖 JULES: AI Software Architect",
-                "📋 LEAD HUNTER: Real-time Lead Finder",
-                "📊 ROI CALC: Revenue Leak Diagnostic",
-                "💬 NEURAL CHAT: AI Sales Automation",
-                "📱 SOCIAL CLONER: Social Content Engine"
+                "☎️ MEGHAN: 24/7 AI Receptionist",
+                "🧠 JENNY: Brain-Guided Discovery",
+                "🏗️ MARK: Revenue Architect & Closer",
+                "🛠️ O'RYAN: Operations & Workflow",
+                "🛡️ ALEX: Customer Support Lead",
+                "🎯 HUNTER: Lead Prospecting Agent",
+                "🎨 NOVA: Content & Social Media",
+                "📈 LEDGER: Financial ROI Manager"
             ],
         },
         es: {
-            heroHeadline: "Cada Llamada Perdida Es un Cliente Perdido. Nosotros los Recuperamos.",
-            heroTypewriterPrefix: "Cualificado para ",
-            heroLossAversion: "Ahora mismo, tu negocio está perdiendo dinero: llamadas sin contestar, seguimientos lentos, prospectos que se van. BioDynamX despliega agentes de IA entrenados en neurociencia que recuperan ese dinero — 24/7, mientras duermes.",
-            heroDiagnosticGap: "Descubre exactamente cuánto estás perdiendo. Jenny hace una auditoría en vivo — gratis, ahora mismo, en menos de 60 segundos.",
+            heroHeadline: "Lento y seguro solía ganar la carrera. Hoy, lento y seguro pierde el mercado.",
+            heroTypewriterPrefix: "Diseñado para ",
+            heroLossAversion: "Ya sea que haya lanzado la semana pasada o haya estado escalando durante 20 años, su competencia nunca duerme. Cada minuto que su negocio no responde, está perdiendo ingresos activamente frente a alguien que sí lo hace.",
+            heroDiagnosticGap: "BioDynamX elimina ese riesgo. Conectamos una flota autónoma de 8 agentes de IA entrenados en neurociencia directamente a su negocio para captar clientes potenciales, brindar soporte y cerrar ventas las 24 horas, los 7 días de la semana. Sin personal extra. Sin límites.",
+            heroHook: "Deje de adivinar dónde están sus cuellos de botella. Nuestra agente líder, Jenny, revelará la mayor fuga de ganancias en su negocio en exactamente 60 segundos: gratis, en vivo, ahora mismo. Sin discursos de venta. Solo inteligencia pura.",
             heroBadge: "🧠 Impulsado por Neurociencia y Neuromarketing",
-            onboardingSpots: `Solo quedan ${spotsLeft} plazas hoy`,
-            offerExpires: `La oferta expira en ${countdown}`,
-            buttonTalkExperts: "Hablar con Jenny — Gratis",
-            buttonSub: "60 segundos. Sin tarjeta. Ella encontrará tu oportunidad.",
+            heroWeb4Badge: "🌐 WEB 4.0 NATIVO",
+            onboardingSpots: `🔴 Solo quedan 3 auditorías gratuitas hoy`,
+            offerExpires: `⏳ La oferta expira en 10h 36m 10s`,
+            buttonTalkExperts: "Encontrar Mi Mayor Oportunidad de Crecimiento →",
+            buttonSecondary: "Muéstrame Dónde Estoy Perdiendo Ingresos →",
             buttonHandoff: "Cambiando a Mark...",
             buttonHandoffSub: "Construyendo su puente de ROI",
             buttonJennyActive: "Jenny está analizando",
@@ -240,14 +246,16 @@ export default function VaultUI({ apiKey }: VaultProps) {
             spanishTitle: "Háblanos en Español",
             spanishDesc: "Prueba nuestra fluidez. Hablamos más de 32 idiomas, pero nos especializamos en español natural y humano.",
             spanishButton: "Hablar ahora",
-            toolStackTitle: "BioDynamX Engineering Suite",
+            toolStackTitle: "Los Agentes Elite 8 de BioDynamX",
             toolStack: [
-                "🎨 STITCH: Diseñador UI Automático",
-                "🤖 JULES: Arquitecto de IA",
-                "📋 LEAD HUNTER: Buscador de Prospectos",
-                "📊 ROI CALC: Diagnóstico de Fugas",
-                "💬 NEURAL CHAT: Automatización de Ventas",
-                "📱 SOCIAL CLONER: Motor de Redes Sociales"
+                "☎️ MEGHAN: Recepcionista IA 24/7",
+                "🧠 JENNY: Descubrimiento Guiado por Cerebro",
+                "🏗️ MARK: Arquitecto de Ingresos",
+                "🛠️ O'RYAN: Operaciones y Flujos",
+                "🛡️ ALEX: Líder de Soporte al Cliente",
+                "🎯 HUNTER: Agente de Prospección",
+                "🎨 NOVA: Contenido y Redes Sociales",
+                "📈 LEDGER: Gerente de ROI Financiero"
             ],
         }
     };
@@ -418,19 +426,13 @@ export default function VaultUI({ apiKey }: VaultProps) {
     const isHandoff = phase === "handoff";
     const agentName = visual.activeAgentName;
 
-    // Button label — Jobs would make it personal
-    // Button label — Expert, not just salesy
     let buttonLabel = t.buttonTalkExperts;
-    let buttonSub = t.buttonSub;
     if (isHandoff) {
         buttonLabel = t.buttonHandoff;
-        buttonSub = t.buttonHandoffSub;
     } else if (phase === "jenny_active") {
         buttonLabel = t.buttonJennyActive;
-        buttonSub = t.buttonInterrupt;
     } else if (phase === "mark_active") {
         buttonLabel = t.buttonMarkActive;
-        buttonSub = t.buttonInterrupt;
     }
 
     // ─── Render ─────────────────────────────────────────────
@@ -561,21 +563,35 @@ export default function VaultUI({ apiKey }: VaultProps) {
                         textAlign: "center", marginBottom: 32,
                         animation: "fadeUp 0.8s ease-out",
                     }}>
-                        {/* Neuroscience Badge — immediately visible */}
-                        <div style={{
-                            display: 'inline-flex', alignItems: 'center', gap: 6,
-                            padding: '6px 16px',
-                            background: 'rgba(139,92,246,0.12)',
-                            border: '1px solid rgba(139,92,246,0.25)',
-                            borderRadius: 100,
-                            fontSize: 12, fontWeight: 700,
-                            color: '#a78bfa',
-                            letterSpacing: '0.04em',
-                            marginBottom: 16,
-                            animation: 'pulse 3s ease-in-out infinite',
-                        }}>
-                            {t.heroBadge}
+                        {/* Neuroscience & Web 4.0 Badges — immediately visible */}
+                        <div style={{ display: 'flex', justifyContent: 'center', gap: 12, marginBottom: 16 }}>
+                            <div style={{
+                                display: 'inline-flex', alignItems: 'center', gap: 6,
+                                padding: '6px 16px',
+                                background: 'rgba(139,92,246,0.12)',
+                                border: '1px solid rgba(139,92,246,0.25)',
+                                borderRadius: 100,
+                                fontSize: 10, fontWeight: 700,
+                                color: '#a78bfa',
+                                letterSpacing: '0.04em',
+                                animation: 'pulse 3s ease-in-out infinite',
+                            }}>
+                                {t.heroBadge}
+                            </div>
+                            <div style={{
+                                display: 'inline-flex', alignItems: 'center', gap: 6,
+                                padding: '6px 16px',
+                                background: 'rgba(59,130,246,0.12)',
+                                border: '1px solid rgba(59,130,246,0.25)',
+                                borderRadius: 100,
+                                fontSize: 10, fontWeight: 700,
+                                color: '#3b82f6',
+                                letterSpacing: '0.04em',
+                            }}>
+                                {t.heroWeb4Badge}
+                            </div>
                         </div>
+
                         <h1 data-speakable="true" className="hero-headline animated-gradient-text">
                             {t.heroHeadline}
                         </h1>
@@ -593,9 +609,29 @@ export default function VaultUI({ apiKey }: VaultProps) {
                         </div>
                         {/* F2: Loss Aversion — quantify what they're LOSING */}
                         <p data-speakable="true" className="hero-subheadline">
-                            {t.heroLossAversion}<br />
+                            {t.heroLossAversion}<br /><br />
                             <span style={{ color: "rgba(255,255,255,0.85)" }}>{t.heroDiagnosticGap}</span>
                         </p>
+
+                        {/* The Hook — Jenny's specific value prop */}
+                        <div className="animate-fade-in" style={{
+                            padding: "20px 24px",
+                            background: "rgba(255,255,255,0.03)",
+                            border: "1px solid rgba(255,255,255,0.06)",
+                            borderRadius: 16,
+                            maxWidth: 600,
+                            margin: "24px auto 32px",
+                        }}>
+                            <p style={{
+                                fontSize: 15,
+                                color: "rgba(255,255,255,0.7)",
+                                lineHeight: 1.6,
+                                margin: 0,
+                                fontStyle: "italic",
+                            }}>
+                                {t.heroHook}
+                            </p>
+                        </div>
                         {/* F2: Scarcity — countdown + spots remaining */}
                         <div className="fomo-container">
                             <div className="scarcity-pill">
@@ -651,63 +687,125 @@ export default function VaultUI({ apiKey }: VaultProps) {
                     </div>
                 )}
 
-                {/* ── THE BUTTON ── */}
-                <div style={{ position: "relative", marginBottom: 8 }}>
-                    {!isActive && (
-                        <div style={{
-                            position: "absolute",
-                            inset: -8,
-                            borderRadius: 20,
-                            background: "radial-gradient(ellipse, rgba(59,130,246,0.15) 0%, transparent 70%)",
-                            animation: "breathe 3s ease-in-out infinite",
-                            pointerEvents: "none",
-                        }} />
-                    )}
-                    <button
-                        onClick={handleStart}
-                        disabled={isHandoff}
-                        style={{
-                            position: "relative",
-                            background: isActive
-                                ? "rgba(0,255,65,0.05)"
-                                : "linear-gradient(135deg, #00ff41 0%, #00cc33 100%)",
-                            border: isActive ? "1px solid rgba(0,255,65,0.3)" : "none",
-                            color: isActive ? "#00ff41" : "#000",
-                            padding: isActive ? "16px 40px" : "20px 56px",
-                            fontSize: isActive ? 14 : 18,
-                            fontWeight: 800,
-                            fontFamily: "inherit",
-                            borderRadius: 14,
-                            cursor: isHandoff ? "wait" : "pointer",
-                            transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
-                            boxShadow: isActive
-                                ? "0 0 40px rgba(0,255,65,0.1)"
-                                : "0 4px 40px rgba(0,255,65,0.35), 0 0 120px rgba(0,255,65,0.12)",
-                            transform: isActive ? "scale(0.95)" : "scale(1)",
-                            letterSpacing: "-0.01em",
-                            opacity: isHandoff ? 0.5 : 1,
-                        }}
-                    >
-                        {buttonLabel}
-                    </button>
-                </div>
+                {/* ── THE BUTTONS (Double Bind Strategy) ── */}
+                {!isActive ? (
+                    <div style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        gap: 16,
+                        width: "100%",
+                        maxWidth: 480,
+                        margin: "0 auto",
+                    }}>
+                        <div style={{ position: "relative", width: "100%" }}>
+                            <div style={{
+                                position: "absolute",
+                                inset: -8,
+                                borderRadius: 20,
+                                background: "radial-gradient(ellipse, rgba(0,255,65,0.15) 0%, transparent 70%)",
+                                animation: "breathe 3s ease-in-out infinite",
+                                pointerEvents: "none",
+                            }} />
+                            <button
+                                onClick={handleStart}
+                                style={{
+                                    width: "100%",
+                                    position: "relative",
+                                    background: "linear-gradient(135deg, #00ff41 0%, #00cc33 100%)",
+                                    border: "none",
+                                    color: "#000",
+                                    padding: "20px 32px",
+                                    fontSize: 18,
+                                    fontWeight: 800,
+                                    borderRadius: 14,
+                                    cursor: "pointer",
+                                    transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+                                    boxShadow: "0 4px 40px rgba(0,255,65,0.35), 0 0 120px rgba(0,255,65,0.12)",
+                                    letterSpacing: "-0.01em",
+                                }}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.transform = "scale(1.02) translateY(-2px)";
+                                    e.currentTarget.style.boxShadow = "0 8px 50px rgba(0,255,65,0.45)";
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.transform = "scale(1)";
+                                    e.currentTarget.style.boxShadow = "0 4px 40px rgba(0,255,65,0.35)";
+                                }}
+                            >
+                                {t.buttonTalkExperts}
+                            </button>
+                        </div>
 
-                {/* Sub-label with friction reducer (Framework 4) */}
+                        <button
+                            onClick={handleStart}
+                            style={{
+                                width: "100%",
+                                background: "rgba(255,255,255,0.05)",
+                                border: "1px solid rgba(255,255,255,0.1)",
+                                color: "#fff",
+                                padding: "16px 32px",
+                                fontSize: 15,
+                                fontWeight: 700,
+                                borderRadius: 14,
+                                cursor: "pointer",
+                                transition: "all 0.3s ease",
+                                letterSpacing: "0.01em",
+                            }}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.background = "rgba(255,255,255,0.08)";
+                                e.currentTarget.style.borderColor = "rgba(255,255,255,0.2)";
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.background = "rgba(255,255,255,0.05)";
+                                e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)";
+                            }}
+                        >
+                            {t.buttonSecondary}
+                        </button>
+                    </div>
+                ) : (
+                    <div style={{ position: "relative", marginBottom: 8 }}>
+                        <button
+                            onClick={handleStart}
+                            disabled={isHandoff}
+                            style={{
+                                position: "relative",
+                                background: "rgba(0,255,65,0.05)",
+                                border: "1px solid rgba(0,255,65,0.3)",
+                                color: "#00ff41",
+                                padding: "16px 40px",
+                                fontSize: 14,
+                                fontWeight: 800,
+                                borderRadius: 14,
+                                cursor: isHandoff ? "wait" : "pointer",
+                                transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+                                boxShadow: "0 0 40px rgba(0,255,65,0.1)",
+                                transform: "scale(0.95)",
+                                opacity: isHandoff ? 0.5 : 1,
+                            }}
+                        >
+                            {buttonLabel}
+                        </button>
+                    </div>
+                )}
+
+                {/* Sub-label with friction reducer */}
                 <p style={{
                     fontSize: 13, marginTop: 8,
                     color: errorText ? "#ff4444" : "rgba(255,255,255,0.85)",
                     fontWeight: 600,
                     letterSpacing: "0.02em",
                 }}>
-                    {errorText || buttonSub}
+                    {errorText}
                 </p>
-                {/* F4: Friction reducer badges */}
+                {/* Friction reducer badges */}
                 {!isActive && (
                     <div style={{
                         display: "flex", alignItems: "center", justifyContent: "center",
                         gap: 16, marginTop: 10, flexWrap: "wrap",
                     }}>
-                        {["No credit card", "No login required", "Results in 60s"].map((badge) => (
+                        {["60 seconds", "No credit card", "No login required", "Real intelligence"].map((badge) => (
                             <span key={badge} style={{
                                 fontSize: 11, fontWeight: 700,
                                 color: "rgba(255,255,255,0.88)",
@@ -750,9 +848,9 @@ export default function VaultUI({ apiKey }: VaultProps) {
                         {/* Condensed trust — three numbers (responsive grid) */}
                         <div className="hero-stats-row">
                             {[
-                                { val: "4,000+", label: "Partners" },
-                                { val: "$18k", label: "Avg Recovery" },
-                                { val: "6x", label: "ROI Guarantee" },
+                                { val: "4,000+", label: "Active Members" },
+                                { val: "Private", label: "Business Community" },
+                                { val: "5x", label: "ROI Guarantee" },
                             ].map((stat, i) => (
                                 <div key={i} className="hero-stat-item">
                                     <span className="hero-stat-val">{stat.val}</span>
@@ -983,7 +1081,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
                             { val: 8, suffix: " sec", label: "Response Time", sub: "vs. 14 hr industry avg" },
                             { val: 73, suffix: "%", label: "Error Reduction", sub: "In lead qualification" },
                             { val: 6300, suffix: "x", label: "Faster Processing", sub: "Lead response speed" },
-                            { val: 2, suffix: "x", label: "ROI Guaranteed", sub: "Or your money back" },
+                            { val: 5, suffix: "x", label: "ROI Guaranteed", sub: "Or your money back" },
                             { val: 7500, suffix: "+", label: "Avg Annual Savings", sub: "Median small business" },
                             { val: 35, suffix: " days", label: "Scheduling Time Freed", sub: "Per year, per organization" },
                             { val: 85, suffix: "%", label: "Cost Reduction", sub: "$0.25/call vs $6 human" },
@@ -1116,7 +1214,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
                 <div style={{ maxWidth: 1200, margin: "0 auto", textAlign: "center" }}>
                     <div className="section-label" style={{ color: "#a78bfa" }}>Vertex AI &middot; Gemini 2.5 Flash Native Audio &middot; Live Voice</div>
                     <h2 className="section-title">
-                        Five specialists. Five brain regions.{" "}
+                        Eight specialists. Five brain regions.{" "}
                         <span style={{ color: "#00ff41" }}>One mission: revenue.</span>
                     </h2>
                     <p className="section-desc" style={{ maxWidth: 640, margin: "0 auto 48px" }}>
@@ -1127,113 +1225,135 @@ export default function VaultUI({ apiKey }: VaultProps) {
 
                     <div className="agent-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 24 }}>
 
-                        {/* Aria */}
-                        <div className="agent-card agent-card-aria">
-                            <div className="agent-photo-wrap">
-                                <img src="/agents/aria.png" alt="Meghan — BioDynamX AI Receptionist" className="agent-photo" width={80} height={80} />
-                                <div className="agent-live-dot" style={{ background: "#a78bfa" }} />
+                        {[
+                            {
+                                id: "aria_receptionist",
+                                name: "Meghan",
+                                role: "Reception & First Contact",
+                                chip1: "Sadaltager",
+                                chip2: "Cognitive Ease · Warm Routing",
+                                desc: "Never lose another lead at hello. Meghan answers every inbound call in under 1 second, 24/7 — and routes them to the right specialist before they hang up and call your competitor.",
+                                result: "Every call answered. Zero leads lost at the door.",
+                                color: "#a78bfa",
+                                icon: "M"
+                            },
+                            {
+                                id: "jenny_discovery",
+                                name: "Jenny",
+                                role: "Discovery & Revenue Audit",
+                                chip1: "Laomedeia",
+                                chip2: "Limbic Resonance · Empathy",
+                                desc: "Jenny speaks to the limbic system, not the ego. She finds your exact revenue leak in 60 seconds and makes you feel understood doing it.",
+                                result: "Your revenue gap — quantified and felt.",
+                                color: "#00ff41",
+                                icon: "J"
+                            },
+                            {
+                                id: "mark_closer",
+                                name: "Mark",
+                                role: "ROI Closer & Architect",
+                                chip1: "Fenrir",
+                                chip2: "Neocortex · Data Logic",
+                                desc: "Mark speaks in numbers. He takes Jenny's audit and builds your ROI bridge — precise, data-driven, closes with a single binary choice.",
+                                result: "Custom ROI plan. Ready to deploy in 24 hours.",
+                                color: "#3b82f6",
+                                icon: "M"
+                            },
+                            {
+                                id: "hunter_prospector",
+                                name: "Hunter",
+                                role: "Lead Prospecting",
+                                chip1: "SPIN Selling",
+                                chip2: "Implicit Pain Discovery",
+                                desc: "The seeker. Surfaces implicit pain using SPIN selling and commercial insight to book discovery calls with your top competitors' clients.",
+                                result: "Qualified Discovery Calls on your calendar.",
+                                color: "#ef4444",
+                                icon: "H"
+                            },
+                            {
+                                id: "nova_content",
+                                name: "Nova",
+                                role: "Content & Research",
+                                chip1: "Dual-Coding",
+                                chip2: "Brand Desire Architect",
+                                desc: "The brand architect. Nova targets the limbic system through Dual-Coding theory to generate brand desire and market authority.",
+                                result: "High-Authority Brand Presence 24/7.",
+                                color: "#fbbf24",
+                                icon: "N"
+                            },
+                            {
+                                id: "orion_ops",
+                                name: "Orion",
+                                role: "Operations & Workflow",
+                                chip1: "Procedural Logic",
+                                chip2: "Operational Bleed Killer",
+                                desc: "The optimizer. Framed in procedural logic, Orion eliminates 15+ hours of weekly operations bleed by automating your internal workflows.",
+                                result: "15+ Hours Recovered Weekly via Automation.",
+                                color: "#f59e0b",
+                                icon: "O"
+                            },
+                            {
+                                id: "support_specialist",
+                                name: "Alex",
+                                role: "Empathy & Care",
+                                chip1: "NLP Meta-Model",
+                                chip2: "Cortisol Reduction",
+                                desc: "The diplomat. De-escalates threat states using NLP meta-models to move customers from frustration to loyalty and reward states.",
+                                result: "98% Customer Satisfaction. Zero churn.",
+                                color: "#34d399",
+                                icon: "A"
+                            },
+                            {
+                                id: "ledger_finance",
+                                name: "Ledger",
+                                role: "Financial Assistant",
+                                chip1: "Decimal Precise",
+                                chip2: "ROI Justification",
+                                desc: "The analyst. Appeals to the neocortex with decimal-precise ROI data (e.g. 3.2 months break-even) to justify every investment.",
+                                result: "Neocortical Justification for every spend.",
+                                color: "#06b6d4",
+                                icon: "L"
+                            }
+                        ].map((agent) => (
+                            <div key={agent.id} className={`agent-card agent-card-${agent.id.split('_')[0]}`}>
+                                <div className="agent-photo-wrap">
+                                    <div className="author-avatar" style={{
+                                        background: `linear-gradient(135deg, ${agent.color}, rgba(0,0,0,0.4))`,
+                                        width: 80, height: 80, fontSize: 32, borderRadius: '50%',
+                                        display: "flex", alignItems: "center", justifyContent: "center", color: "#fff"
+                                    }}>{agent.icon}</div>
+                                    <div className="agent-live-dot" style={{ background: agent.color }} />
+                                </div>
+                                <div className="agent-name" style={{ color: agent.color }}>{agent.name}</div>
+                                <div className="agent-role" style={{ color: agent.color }}>{agent.role}</div>
+                                <div className="agent-showcase-chips">
+                                    <span className="agent-chip">&#127908; {agent.chip1}</span>
+                                    <span className="agent-chip">&#129504; {agent.chip2}</span>
+                                </div>
+                                <p className="agent-desc">{agent.desc}</p>
+                                <div className="agent-flow" style={{ color: agent.color }}>
+                                    <span style={{ opacity: 0.5 }}>RESULT: </span>
+                                    <span>{agent.result}</span>
+                                </div>
+                                <button onClick={() => {
+                                    window.scrollTo({ top: 0, behavior: "smooth" });
+                                    if (teamRef.current) { teamRef.current.initializeWithAgent(agent.id); return; }
+                                    if (!apiKey) { setErrorText("API key missing"); return; }
+                                    setErrorText(null);
+                                    const t = createTeam();
+                                    teamRef.current = t;
+                                    t.initializeWithAgent(agent.id);
+                                }} className={`agent-cta agent-cta-${agent.id.split('_')[0]}`}>TALK TO {agent.name.toUpperCase()} &rarr;</button>
                             </div>
-                            <div className="agent-name" style={{ color: "#a78bfa" }}>Meghan</div>
-                            <div className="agent-role" style={{ color: "#a78bfa" }}>Inbound Receptionist</div>
-                            <div className="agent-showcase-chips">
-                                <span className="agent-chip">&#127908; Sadaltager</span>
-                                <span className="agent-chip">&#129504; Cognitive Ease &middot; Warm Routing</span>
-                            </div>
-                            <p className="agent-desc">Never lose another lead at hello. Meghan answers every inbound call in under 1 second, 24/7 — and routes them to the right specialist before they hang up and call your competitor.</p>
-                            <div className="agent-flow" style={{ color: "#a78bfa" }}>
-                                <span style={{ opacity: 0.5 }}>RESULT: </span>
-                                <span>Every call answered. Zero leads lost at the door.</span>
-                            </div>
-                            <button onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" }); if (teamRef.current) { teamRef.current.bargeIn(); return; } if (!apiKey) { setErrorText("API key missing"); return; } setErrorText(null); const t = createTeam(); teamRef.current = t; t.initializeWithAgent("aria_receptionist"); }} className="agent-cta agent-cta-aria">TALK TO MEGHAN &rarr;</button>
-                        </div>
-
-                        {/* Jenny */}
-                        <div className="agent-card agent-card-jenny">
-                            <div className="agent-photo-wrap">
-                                <img src="/agents/jenny.png" alt="Jenny — BioDynamX AI Consultant" className="agent-photo" width={80} height={80} />
-                                <div className="agent-live-dot" style={{ background: "#00ff41" }} />
-                            </div>
-                            <div className="agent-name" style={{ color: "#00ff41" }}>Jenny</div>
-                            <div className="agent-role" style={{ color: "#00ff41" }}>Discovery &amp; Revenue Audit</div>
-                            <div className="agent-showcase-chips">
-                                <span className="agent-chip">&#127908; Laomedeia</span>
-                                <span className="agent-chip">&#129504; Limbic Resonance &middot; Empathy</span>
-                            </div>
-                            <p className="agent-desc">Jenny speaks to the limbic system, not the ego. She finds your exact revenue leak in 60 seconds and makes you feel understood doing it.</p>
-                            <div className="agent-flow" style={{ color: "#00ff41" }}>
-                                <span style={{ opacity: 0.5 }}>RESULT: </span>
-                                <span>Your revenue gap &mdash; quantified and felt.</span>
-                            </div>
-                            <button onClick={handleStart} className="agent-cta agent-cta-jenny">TALK TO JENNY &rarr;</button>
-                        </div>
-
-                        {/* Mark */}
-                        <div className="agent-card agent-card-mark">
-                            <div className="agent-photo-wrap">
-                                <img src="/agents/mark.png" alt="Mark — BioDynamX AI Revenue Architect" className="agent-photo" width={80} height={80} />
-                                <div className="agent-live-dot" style={{ background: "#3b82f6" }} />
-                            </div>
-                            <div className="agent-name" style={{ color: "#3b82f6" }}>Mark</div>
-                            <div className="agent-role" style={{ color: "#3b82f6" }}>ROI Closer &amp; Architect</div>
-                            <div className="agent-showcase-chips">
-                                <span className="agent-chip">&#127908; Fenrir</span>
-                                <span className="agent-chip">&#129504; Neocortex &middot; Data Logic</span>
-                            </div>
-                            <p className="agent-desc">Mark speaks in numbers. He takes Jenny&apos;s audit and builds your ROI bridge &mdash; precise, data-driven, closes with a single binary choice.</p>
-                            <div className="agent-flow" style={{ color: "#3b82f6" }}>
-                                <span style={{ opacity: 0.5 }}>RESULT: </span>
-                                <span>Custom ROI plan. Ready to deploy in 24 hours.</span>
-                            </div>
-                            <button onClick={handleStartMark} className="agent-cta agent-cta-mark">TALK TO MARK &rarr;</button>
-                        </div>
-
-                        {/* Jules */}
-                        <div className="agent-card agent-card-jules">
-                            <div className="agent-photo-wrap">
-                                <img src="/agents/jules.png" alt="Ryan — BioDynamX AI Technical Strategist" className="agent-photo" width={80} height={80} />
-                                <div className="agent-live-dot" style={{ background: "#f59e0b" }} />
-                            </div>
-                            <div className="agent-name" style={{ color: "#f59e0b" }}>Ryan</div>
-                            <div className="agent-role" style={{ color: "#f59e0b" }}>Technical Strategy</div>
-                            <div className="agent-showcase-chips">
-                                <span className="agent-chip">&#127908; Algenib</span>
-                                <span className="agent-chip">&#129504; Authority Frame &middot; Trust</span>
-                            </div>
-                            <p className="agent-desc">Jules doesn&apos;t speculate &mdash; he architects. Every word triggers the brain stem&apos;s trust center. When Jules speaks, your old brain says &ldquo;safe.&rdquo;</p>
-                            <div className="agent-flow" style={{ color: "#f59e0b" }}>
-                                <span style={{ opacity: 0.5 }}>RESULT: </span>
-                                <span>A technical blueprint your team executes tomorrow.</span>
-                            </div>
-                            <button onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" }); if (teamRef.current) { teamRef.current.bargeIn(); return; } if (!apiKey) { setErrorText("API key missing"); return; } setErrorText(null); const t = createTeam(); teamRef.current = t; t.initializeWithAgent("jules_architect"); }} className="agent-cta agent-cta-jules">TALK TO RYAN &rarr;</button>
-                        </div>
-
-                        {/* Support */}
-                        <div className="agent-card agent-card-support">
-                            <div className="agent-photo-wrap">
-                                <img src="/agents/support.png" alt="Sarah — BioDynamX AI Care Specialist" className="agent-photo" width={80} height={80} />
-                                <div className="agent-live-dot" style={{ background: "#34d399" }} />
-                            </div>
-                            <div className="agent-name" style={{ color: "#34d399" }}>Sarah</div>
-                            <div className="agent-role" style={{ color: "#34d399" }}>Empathy &amp; Care</div>
-                            <div className="agent-showcase-chips">
-                                <span className="agent-chip">&#127908; Achernar</span>
-                                <span className="agent-chip">&#129504; Oxytocin &middot; Cortisol Reduction</span>
-                            </div>
-                            <p className="agent-desc">The antidote to friction. Support&apos;s presence alone lowers cortisol. Every sentence is calibrated to rebuild trust and restore total confidence.</p>
-                            <div className="agent-flow" style={{ color: "#34d399" }}>
-                                <span style={{ opacity: 0.5 }}>RESULT: </span>
-                                <span>Clients who feel heard &mdash; and stay for life.</span>
-                            </div>
-                            <button onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" }); if (teamRef.current) { teamRef.current.bargeIn(); return; } if (!apiKey) { setErrorText("API key missing"); return; } setErrorText(null); const t = createTeam(); teamRef.current = t; t.initializeWithAgent("support_specialist"); }} className="agent-cta agent-cta-support">TALK TO SARAH &rarr;</button>
-                        </div>
-
+                        ))}
                     </div>
 
-                    <div className="agent-showcase-footer" style={{ marginTop: 40 }}>
-                        <span>&#10003; No login required</span>
-                        <span>&#10003; No credit card</span>
-                        <span>&#10003; Live voice in under 5 seconds</span>
-                    </div>
+                </div>
+
+                <div className="agent-showcase-footer" style={{ marginTop: 40, textAlign: "center" }}>
+                    <span>&#10003; No login required</span>
+                    <span>&#10003; No credit card</span>
+                    <span>&#10003; Live voice in under 5 seconds</span>
                 </div>
             </section>
 
@@ -1379,6 +1499,151 @@ export default function VaultUI({ apiKey }: VaultProps) {
                         </div>
                     </div>
                 </div>
+            </section >
+            {/* ── The BioDynamX Elite 8 AI Workforce — High-Status Presentation ── */}
+            <section
+                id="workforce"
+                className="section-container"
+                style={{
+                    background: 'radial-gradient(circle at center, rgba(59,130,246,0.05) 0%, transparent 70%)',
+                }}
+            >
+                <div style={{ maxWidth: 1100, margin: '0 auto', textAlign: 'center' }}>
+                    <div className="section-label" style={{ color: '#3b82f6' }}>The Elite 8</div>
+                    <h2 className="section-title">
+                        Your Autonomous <span className="animated-gradient-text">Neuro-Workforce.</span>
+                    </h2>
+                    <p className="section-desc">
+                        Our agents aren&apos;t just bots. They are high-status, neuroscience-trained specialists
+                        that operate 24/7 to capture, qualify, and close for your business.
+                    </p>
+
+                    <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+                        gap: 16,
+                        marginTop: 48,
+                    }}>
+                        {[
+                            { name: "Meghan", role: "AI Receptionist", img: "/agents/aria.png", color: "#a78bfa" },
+                            { name: "Jenny", role: "Discovery & Audit", img: "/agents/jenny.png", color: "#00ff41" },
+                            { name: "Mark", role: "Revenue Architect", img: "/agents/mark.png", color: "#3b82f6" },
+                            { name: "O'Ryan", role: "Operations Lead", img: "/agents/oryan.png", color: "#f59e0b" },
+                            { name: "Alex", role: "Support Specialist", img: "/agents/support.png", color: "#10b981" },
+                            { name: "Hunter", role: "Lead Prospector", img: "/agents/hunter.png", color: "#ef4444" },
+                            { name: "Nova", role: "Content & Social", img: "/agents/nova.png", color: "#ec4899" },
+                            { name: "Ledger", role: "Financial ROI", img: "/agents/ledger.png", color: "#06b6d4" },
+                        ].map((agent) => (
+                            <div key={agent.name} className="standard-card" style={{
+                                padding: 0, overflow: 'hidden', borderColor: 'rgba(255,255,255,0.05)',
+                                background: 'rgba(255,255,255,0.02)',
+                                transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+                                cursor: 'pointer',
+                            }}>
+                                <div style={{
+                                    height: 240, overflow: 'hidden', position: 'relative',
+                                    background: 'rgba(0,0,0,0.5)',
+                                }}>
+                                    <img
+                                        src={agent.img}
+                                        alt={agent.name}
+                                        style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.9 }}
+                                    />
+                                    <div style={{
+                                        position: 'absolute', bottom: 0, left: 0, right: 0,
+                                        padding: '20px 16px 12px',
+                                        background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%)',
+                                    }}>
+                                        <div style={{ fontSize: 18, fontWeight: 800, color: '#fff' }}>{agent.name}</div>
+                                        <div style={{
+                                            fontSize: 10, fontWeight: 700, color: agent.color,
+                                            textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 2
+                                        }}>
+                                            {agent.role}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* ── The BioDynamX Advantage — 20 Reasons Why We Win ── */}
+            <section
+                id="advantage"
+                className="section-container"
+                style={{
+                    background: 'rgba(255,255,255,0.01)',
+                    borderTop: '1px solid rgba(255,255,255,0.05)',
+                }}
+            >
+                <div style={{ maxWidth: 1000, margin: '0 auto' }}>
+                    <div style={{ textAlign: 'center', marginBottom: 60 }}>
+                        <div className="section-label" style={{ color: '#00ff41' }}>The Competitive Edge</div>
+                        <h2 className="section-title">
+                            Why BioDynamX? <span style={{ color: '#00ff41' }}>20 Dimensions of Superiority.</span>
+                        </h2>
+                        <p className="section-desc">
+                            Other platforms give you a chatbot. We give you a fully autonomous,
+                            neuroscience-engineered engineering suite.
+                        </p>
+                    </div>
+
+                    <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+                        gap: 24,
+                    }}>
+                        {[
+                            { title: "Dual-Agent Architecture", desc: "Jenny Voice + Jenny Visual (Nana Banana 2) synchronized in real-time." },
+                            { title: "Autonomous Site Navigation", desc: "Agents literally walk through your website with visitors manually." },
+                            { title: "Elite 8 Workforce", desc: "8 specialized agents (Meghan, Jenny, Mark, etc.) vs. just one generic bot." },
+                            { title: "Neuroscience-Engineered", desc: "Built on Triune Brain theory, Dual-Coding, and high-status NLP." },
+                            { title: "Web 4.0 Native", desc: "An immersive, real-time, agentic ecosystem, not just a window widget." },
+                            { title: "IronClaw Core", desc: "Proprietary autonomous orchestration for zero-latency handoffs." },
+                            { title: "Real-Time ROI Modeling", desc: "Mark calculates revenue leaks live while talking to prospects." },
+                            { title: "Nana Banana 2 Generative", desc: "Images adapt instantly to the conversation brain state." },
+                            { title: "Subconscious Framing", desc: "Matching user language patterns to bypass conscious resistance." },
+                            { title: "24/7 Peak Performance", desc: "Zero-latency responses faster than humanly possible." },
+                            { title: "Multi-Channel Sync", desc: "Phone, SMS, and Email automation in perfect harmony." },
+                            { title: "Result-Locked Closing", desc: "Focused only on revenue recovery and customer acquisition." },
+                            { title: "Dynamic Emotional Pivot", desc: "Agents adapt empathy vs. authority based on prospect tone." },
+                            { title: "High-Status Personas", desc: "Each agent maintains an elite professional identity." },
+                            { title: "Decision Friction Removal", desc: "Cognitive offloading designed to make saying 'Yes' effortless." },
+                            { title: "Loss Aversion Triggering", desc: "We quantify the financial bleed of doing nothing." },
+                            { title: "Temporal Contiguity", desc: "Oral narration and visuals are perfectly time-aligned." },
+                            { title: "Spatial Anchoring", desc: "Strategic layout of pain vs. solution across the visual field." },
+                            { title: "Commercial Insight", desc: "Hunter delivers 'The Challenger Sale' market re-frames." },
+                            { title: "Absolute Brand Secrecy", desc: "Your backend intelligence is invisible and untouchable." },
+                        ].map((adv, idx) => (
+                            <div key={idx} style={{
+                                padding: 24,
+                                background: 'rgba(255,255,255,0.02)',
+                                border: '1px solid rgba(255,255,255,0.05)',
+                                borderRadius: 16,
+                                display: 'flex', gap: 16,
+                                transition: 'transform 0.3s ease',
+                            }}
+                                className="hover-lift"
+                            >
+                                <div style={{
+                                    width: 32, height: 32, borderRadius: '50%',
+                                    background: 'rgba(0,255,65,0.1)',
+                                    color: '#00ff41',
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                    fontSize: 12, fontWeight: 800, flexShrink: 0
+                                }}>
+                                    {idx + 1}
+                                </div>
+                                <div>
+                                    <div style={{ fontSize: 16, fontWeight: 700, color: '#fff', marginBottom: 4 }}>{adv.title}</div>
+                                    <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', margin: 0, lineHeight: 1.5 }}>{adv.desc}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
             </section>
 
             {/* ── The Science Behind The Results — Neuroscience Differentiator ── */}
@@ -1397,19 +1662,15 @@ export default function VaultUI({ apiKey }: VaultProps) {
                 }}
             >
                 <div style={{ maxWidth: 900, margin: '0 auto', textAlign: 'center' }}>
-                    <div className="section-label" style={{ color: '#a78bfa' }}>What Makes Us Different</div>
+                    <div className="section-label" style={{ color: '#a78bfa' }}>The Foundations</div>
                     <h2 data-speakable="true" className="section-title">
-                        The Science Behind{' '}
-                        <span className="animated-gradient-text">The Results.</span>
+                        Engineered for <span className="animated-gradient-text">Subconscious Influence.</span>
                     </h2>
                     <p className="section-desc" data-speakable="true">
-                        Other platforms give you tools. We engineer buying behavior using <strong>Neuroscience</strong>,{' '}
-                        <strong>Neurobiology</strong>, <strong>Neuromarketing</strong>, and <strong>Neuro-Sales</strong> —{' '}
-                        because 85% of purchasing decisions happen in the subconscious mind.{' '}
-                        We don&apos;t sell to people. We sell to the mind.
+                        We don&apos;t just sell to people. We sell to the mind. By mapping our agents to the
+                        three layers of the human brain, we bypass resistance and drive action.
                     </p>
 
-                    {/* ── Triune Brain Visual ── */}
                     <div style={{
                         display: 'grid',
                         gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
@@ -1419,705 +1680,264 @@ export default function VaultUI({ apiKey }: VaultProps) {
                     }}>
                         {/* Reptilian Brain */}
                         <div className="standard-card" style={{ borderColor: 'rgba(239,68,68,0.2)' }}>
-                            <div style={{
-                                fontSize: 32, marginBottom: 12,
-                                filter: 'drop-shadow(0 0 8px rgba(239,68,68,0.4))',
-                            }}>🧬</div>
+                            <div style={{ fontSize: 32, marginBottom: 12 }}>🧬</div>
                             <div style={{
                                 fontSize: 10, fontWeight: 800, color: '#ef4444',
                                 letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 8,
                             }}>The Reptilian Brain</div>
                             <div style={{ fontSize: 16, fontWeight: 700, color: '#fff', marginBottom: 8 }}>
-                                Survival &amp; Instinct
+                                Survival & Instinct
                             </div>
                             <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', lineHeight: 1.7, margin: 0 }}>
-                                We activate the primal brain first — the part that drives immediate action.
-                                Our AI agents frame your revenue leak as a <em>threat</em>,
-                                triggering the urgency to act <strong>now</strong>.
+                                We activate threat-detection first. Our AI agents identify revenue leaks as an
+                                immediate danger to your business survival, triggering the biological need to act.
                             </p>
                         </div>
 
                         {/* Limbic Brain */}
                         <div className="standard-card" style={{ borderColor: 'rgba(139,92,246,0.2)' }}>
-                            <div style={{
-                                fontSize: 32, marginBottom: 12,
-                                filter: 'drop-shadow(0 0 8px rgba(139,92,246,0.4))',
-                            }}>💜</div>
+                            <div style={{ fontSize: 32, marginBottom: 12 }}>💜</div>
                             <div style={{
                                 fontSize: 10, fontWeight: 800, color: '#a78bfa',
                                 letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 8,
                             }}>The Limbic Brain</div>
                             <div style={{ fontSize: 16, fontWeight: 700, color: '#fff', marginBottom: 8 }}>
-                                Emotion &amp; Memory
+                                Emotion & Memory
                             </div>
                             <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', lineHeight: 1.7, margin: 0 }}>
-                                We connect through stories, empathy, and vision.
-                                Our agents paint a picture of your business thriving —
-                                creating an <em>emotional bond</em> that makes saying yes feel natural.
+                                We bridge the gap with empathy. Our agents establish rapport and paint the dopaminergic
+                                vision of a frictionaless, automated future for your team.
                             </p>
                         </div>
 
                         {/* Neocortex */}
                         <div className="standard-card" style={{ borderColor: 'rgba(59,130,246,0.2)' }}>
-                            <div style={{
-                                fontSize: 32, marginBottom: 12,
-                                filter: 'drop-shadow(0 0 8px rgba(59,130,246,0.4))',
-                            }}>🧠</div>
+                            <div style={{ fontSize: 32, marginBottom: 12 }}>🧠</div>
                             <div style={{
                                 fontSize: 10, fontWeight: 800, color: '#3b82f6',
                                 letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 8,
                             }}>The Neocortex</div>
                             <div style={{ fontSize: 16, fontWeight: 700, color: '#fff', marginBottom: 8 }}>
-                                Logic &amp; Justification
+                                Logic & Justification
                             </div>
                             <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', lineHeight: 1.7, margin: 0 }}>
-                                Finally, we give your rational brain the data it needs:
-                                hard ROI numbers, guaranteed outcomes, and a risk-free path forward.
-                                The decision your subconscious already made now feels <strong>logical</strong>.
+                                Finally, we provide the ROI math. We give the logical brain the hard data it needs
+                                to justify the decision the subconscious has already made.
                             </p>
                         </div>
                     </div>
-
-                    {/* ── Key Neuroscience Techniques ── */}
-                    <div style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-                        gap: 16,
-                        marginTop: 32,
-                    }}>
-                        {[
-                            { icon: '⚡', label: 'Loss Aversion', desc: 'Show what you\'re losing — 2x more powerful than showing gains', color: '#ff6b6b' },
-                            { icon: '🎯', label: 'Anchoring Effect', desc: 'Your problem costs $18K/mo. Our solution costs $497/mo.', color: '#ffa726' },
-                            { icon: '🔬', label: 'Hippocampal Activation', desc: 'Familiar phrases with a twist — surprises the brain into attention', color: '#a78bfa' },
-                            { icon: '💰', label: 'Neurological Pricing', desc: '$497 (not $500) — engages the analytical brain for deeper commitment', color: '#00ff41' },
-                        ].map((tech) => (
-                            <div key={tech.label} style={{
-                                padding: '20px 16px',
-                                background: 'rgba(255,255,255,0.02)',
-                                border: '1px solid rgba(255,255,255,0.06)',
-                                borderRadius: 16,
-                                textAlign: 'center',
-                            }}>
-                                <div style={{ fontSize: 24, marginBottom: 8 }}>{tech.icon}</div>
-                                <div style={{ fontSize: 12, fontWeight: 800, color: tech.color, marginBottom: 6 }}>{tech.label}</div>
-                                <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', lineHeight: 1.6 }}>{tech.desc}</div>
-                            </div>
-                        ))}
-                    </div>
-
-                    {/* ── Tagline ── */}
-                    <div data-speakable="true" style={{
-                        marginTop: 40,
-                        padding: '24px 32px',
-                        background: 'linear-gradient(135deg, rgba(139,92,246,0.08), rgba(59,130,246,0.08))',
-                        border: '1px solid rgba(139,92,246,0.15)',
-                        borderRadius: 20,
-                    }}>
-                        <p style={{ fontSize: 18, fontWeight: 700, color: '#fff', margin: 0, lineHeight: 1.6 }}>
-                            &ldquo;We don&apos;t just automate your business.{' '}
-                            <span className="animated-gradient-text">We engineer the neurobiology of choice</span>{' '}
-                            — so your customers say yes before they know why.&rdquo;
-                        </p>
-                        <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.4)', marginTop: 12, marginBottom: 0 }}>
-                            — Billy De La Taurus, Founder &amp; Chief Architect
-                        </p>
-                    </div>
                 </div>
             </section>
 
-            {/* ── Competitor Comparison (Framework 2: Price Anchoring) ── */}
-            <section className="section-container">
-                <div style={{ maxWidth: 700, margin: "0 auto", textAlign: "center" }}>
+            {/* ── Competitor Comparison ── */}
+            <section
+                id="comparison"
+                ref={resultsStripRef}
+                className="section-container"
+                style={{
+                    opacity: resultsStripVisible ? 1 : 0,
+                    transform: resultsStripVisible ? 'translateY(0)' : 'translateY(40px)',
+                    transition: 'opacity 0.8s ease-out, transform 0.8s ease-out',
+                }}
+            >
+                <div style={{ maxWidth: 800, margin: "0 auto", textAlign: "center" }}>
                     <div className="section-label">Why Not Just Hire?</div>
                     <h2 className="section-title">
-                        BioDynamX vs. hiring a team.{" "}
-                        <span style={{ color: "#00ff41" }}>Do the math.</span>
+                        BioDynamX vs. hiring a team. <span style={{ color: "#00ff41" }}>Do the math.</span>
                     </h2>
 
                     <div style={{
-                        marginTop: 32,
+                        marginTop: 40,
                         background: "rgba(255,255,255,0.02)",
                         border: "1px solid rgba(255,255,255,0.08)",
-                        borderRadius: 20,
+                        borderRadius: 24,
                         overflow: "hidden",
                     }}>
-                        {/* Header */}
                         <div style={{
-                            display: "grid", gridTemplateColumns: "2fr 1fr 1fr",
-                            padding: "14px 20px",
+                            display: "grid", gridTemplateColumns: "2fr 1.2fr 1.2fr",
+                            padding: "16px 24px",
                             background: "rgba(255,255,255,0.04)",
                             borderBottom: "1px solid rgba(255,255,255,0.08)",
-                            fontSize: 11, fontWeight: 700,
-                            color: "rgba(255,255,255,0.5)",
-                            letterSpacing: "0.08em", textTransform: "uppercase",
+                            fontSize: 11, fontWeight: 800,
+                            color: "rgba(255,255,255,0.4)", letterSpacing: "0.1em",
                         }}>
-                            <span></span>
-                            <span style={{ textAlign: "center" }}>Human Team</span>
-                            <span style={{ textAlign: "center", color: "#00ff41" }}>BioDynamX AI</span>
+                            <span>FEATURE</span>
+                            <span style={{ textAlign: "center" }}>HUMAN TEAM</span>
+                            <span style={{ textAlign: "center", color: "#00ff41" }}>BIODYNAMX AI</span>
                         </div>
 
                         {[
-                            { feature: "Monthly cost", human: "$12,400+", ai: "$497", highlight: true },
-                            { feature: "Response time", human: "3+ hours", ai: "<1 second" },
-                            { feature: "Available hours", human: "9am–5pm", ai: "24/7/365" },
-                            { feature: "Follow-up consistency", human: "Sporadic", ai: "100% automated" },
-                            { feature: "Scale limit", human: "2–3 at a time", ai: "Unlimited" },
-                            { feature: "Sick days / turnover", human: "Constant", ai: "Never" },
-                            { feature: "Onboarding time", human: "2–6 weeks", ai: "24 hours" },
-                            { feature: "Bilingual", human: "Extra $$$", ai: "32 languages free" },
+                            { f: "Monthly Cost", h: "$12,400+", a: "$497", high: true },
+                            { f: "Response Time", h: "3+ Hours", a: "< 1 Second" },
+                            { f: "Available Hours", h: "9 AM - 5 PM", a: "24/7/365" },
+                            { f: "Consistency", h: "Variable", a: "100% Perfect" },
+                            { f: "Sick Days / Turnover", h: "Constant", a: "Zero" },
                         ].map((row) => (
-                            <div key={row.feature} style={{
-                                display: "grid", gridTemplateColumns: "2fr 1fr 1fr",
-                                padding: "12px 20px",
+                            <div key={row.f} style={{
+                                display: "grid", gridTemplateColumns: "2fr 1.2fr 1.2fr",
+                                padding: "14px 24px",
                                 borderBottom: "1px solid rgba(255,255,255,0.04)",
                                 fontSize: 13,
                             }}>
-                                <span style={{ color: "rgba(255,255,255,0.75)", fontWeight: 600 }}>{row.feature}</span>
-                                <span style={{
-                                    textAlign: "center",
-                                    color: row.highlight ? "#ff6b6b" : "rgba(255,255,255,0.45)",
-                                    fontWeight: row.highlight ? 800 : 400,
-                                    textDecoration: row.highlight ? "line-through" : "none",
-                                }}>{row.human}</span>
-                                <span style={{
-                                    textAlign: "center",
-                                    color: "#00ff41",
-                                    fontWeight: row.highlight ? 800 : 600,
-                                }}>{row.ai}</span>
+                                <span style={{ fontWeight: 600, color: "#fff" }}>{row.f}</span>
+                                <span style={{ textAlign: "center", color: row.high ? "#ff6b6b" : "rgba(255,255,255,0.4)" }}>{row.h}</span>
+                                <span style={{ textAlign: "center", color: "#00ff41", fontWeight: 700 }}>{row.a}</span>
                             </div>
                         ))}
                     </div>
-
-                    <div style={{
-                        marginTop: 20, fontSize: 14, fontWeight: 700,
-                        color: "rgba(255,255,255,0.7)",
-                    }}>
-                        That&rsquo;s <span style={{ color: "#00ff41", fontSize: 18, fontWeight: 800 }}>96% less</span> than hiring — with{" "}
-                        <span style={{ color: "#00ff41", fontSize: 18, fontWeight: 800 }}>10x</span> the output.
+                    <div style={{ marginTop: 24, fontSize: 14, color: "rgba(255,255,255,0.6)" }}>
+                        That&apos;s <span style={{ color: "#00ff41", fontWeight: 800 }}>96% less cost</span> for <span style={{ color: "#00ff41", fontWeight: 800 }}>10x more productivity.</span>
                     </div>
                 </div>
             </section>
 
-            {/* ── What Happens Next (Framework 4: Reduce Perceived Effort) ── */}
-            <section className="section-container" style={{
-                background: "linear-gradient(180deg, transparent 0%, rgba(59,130,246,0.02) 50%, transparent 100%)",
-            }}>
-                <div style={{ maxWidth: 700, margin: "0 auto", textAlign: "center" }}>
-                    <div className="section-label" style={{ color: "#3b82f6" }}>3 Steps. That&rsquo;s It.</div>
-                    <h2 className="section-title">
-                        Here&rsquo;s exactly what happens when you click the button.
-                    </h2>
-                    <p className="section-desc">
-                        No forms. No salespeople. No 45-minute demos. Just results.
-                    </p>
-
-                    <div style={{
-                        display: "flex", flexDirection: "column", gap: 0,
-                        textAlign: "left", marginTop: 24,
-                    }}>
-                        {[
-                            {
-                                step: "1",
-                                title: "Talk to Jenny (60 seconds)",
-                                desc: "She'll ask for your website and instantly run a 20-probe diagnostic on your business. You'll see your revenue leaks in real time.",
-                                color: "#00ff41",
-                            },
-                            {
-                                step: "2",
-                                title: "Get your custom ROI report",
-                                desc: "Jenny hands off to Mark, who shows you exactly how much you're losing and how much you'll recover — with real numbers, not guesses.",
-                                color: "#3b82f6",
-                            },
-                            {
-                                step: "3",
-                                title: "Go live in 24 hours",
-                                desc: "Say yes and your AI team is deployed the next day. Answering calls, texting leads, booking appointments — while you sleep.",
-                                color: "#ffa726",
-                            },
-                        ].map((item, i) => (
-                            <div key={item.step} style={{
-                                display: "flex", gap: 20, alignItems: "flex-start",
-                                padding: "24px 0",
-                                borderBottom: i < 2 ? "1px solid rgba(255,255,255,0.06)" : "none",
-                            }}>
-                                <div style={{
-                                    width: 44, height: 44, borderRadius: 12,
-                                    background: `${item.color}15`,
-                                    border: `1px solid ${item.color}30`,
-                                    display: "flex", alignItems: "center", justifyContent: "center",
-                                    fontSize: 18, fontWeight: 900, color: item.color,
-                                    flexShrink: 0,
-                                }}>{item.step}</div>
-                                <div>
-                                    <div style={{ fontSize: 16, fontWeight: 700, color: "#fff", marginBottom: 4 }}>{item.title}</div>
-                                    <div style={{ fontSize: 13, color: "rgba(255,255,255,0.55)", lineHeight: 1.6 }}>{item.desc}</div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-
-                    <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="primary-btn-green" style={{ marginTop: 32 }}>
-                        Start Step 1 — Free →
-                    </button>
-                    <div style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", marginTop: 10 }}>
-                        No credit card · No login · Takes 60 seconds
-                    </div>
-                </div>
-            </section>
-
-            {/* ── Risk-Free Guarantee ─────────────────────── */}
-            < section style={{
-                position: "relative", zIndex: 10,
-                padding: "64px 32px",
-            }}>
-                <div style={{
-                    maxWidth: 700, margin: "0 auto",
-                    textAlign: "center",
-                    padding: "48px 32px",
-                    background: "linear-gradient(135deg, rgba(0,255,65,0.04) 0%, rgba(59,130,246,0.04) 100%)",
-                    border: "1px solid rgba(0,255,65,0.15)",
-                    borderRadius: 20,
-                }}>
-                    <div style={{
-                        fontSize: 48, marginBottom: 8,
-                    }}>🛡️</div>
-                    <div style={{
-                        fontSize: 10, fontWeight: 700, color: "#00ff41",
-                        letterSpacing: "0.15em", textTransform: "uppercase",
-                        marginBottom: 12,
-                    }}>The BioDynamX Guarantee</div>
-                    <h2 data-speakable="true" style={{
-                        fontSize: "clamp(22px, 3vw, 32px)",
-                        fontWeight: 800, color: "#fff",
-                        letterSpacing: "-0.03em",
-                        margin: "0 0 16px",
-                        lineHeight: 1.2,
-                    }}>
-                        5x ROI — or your money back. <span style={{ color: "#00ff41" }}>Period.</span>
-                    </h2>
-                    <p style={{
-                        fontSize: 15, color: "rgba(255,255,255,0.65)",
-                        lineHeight: 1.7, margin: "0 0 28px",
-                        maxWidth: 520, marginLeft: "auto", marginRight: "auto",
-                    }}>
-                        If our AI doesn&apos;t deliver at least <strong style={{ color: "#fff" }}>5x your investment</strong> in
-                        recovered revenue within 90 days, we&apos;ll refund every penny. No questions.
-                        No hoops. We eat the risk so you don&apos;t have to.
-                    </p>
-
-                    <div style={{
-                        display: "grid",
-                        gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-                        gap: 16,
-                        marginBottom: 28,
-                        textAlign: "left",
-                    }}>
-                        {[
-                            { icon: "⚡", title: "Day 1", desc: "AI deployed and answering your calls" },
-                            { icon: "📊", title: "Week 1", desc: "Full diagnostic + custom recovery plan" },
-                            { icon: "💰", title: "Day 14", desc: "Measurable revenue recovery begins" },
-                            { icon: "🏆", title: "Day 90", desc: "5x ROI achieved — or full refund" },
-                        ].map((step) => (
-                            <div key={step.title} style={{
-                                padding: "16px 14px",
-                                background: "rgba(255,255,255,0.03)",
-                                borderRadius: 12,
-                                border: "1px solid rgba(255,255,255,0.06)",
-                            }}>
-                                <div style={{ fontSize: 20, marginBottom: 6 }}>{step.icon}</div>
-                                <div style={{ fontSize: 13, fontWeight: 700, color: "#fff", marginBottom: 4 }}>{step.title}</div>
-                                <div style={{ fontSize: 12, color: "rgba(255,255,255,0.55)", lineHeight: 1.5 }}>{step.desc}</div>
-                            </div>
-                        ))}
-                    </div>
-
-                    <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} style={{
-                        padding: "16px 40px",
-                        background: "linear-gradient(135deg, #00ff41, #00cc33)",
-                        border: "none", borderRadius: 14,
-                        color: "#000", fontSize: 15, fontWeight: 800,
-                        fontFamily: "inherit", cursor: "pointer",
-                        transition: "all 0.3s",
-                        boxShadow: "0 4px 40px rgba(0,255,65,0.3)",
-                    }}>
-                        Start Risk-Free Today
-                    </button>
-                    <div style={{
-                        fontSize: 12, color: "rgba(255,255,255,0.5)",
-                        marginTop: 10,
-                    }}>No contracts · Cancel anytime · Results in 14 days</div>
-                </div>
-            </section >
-
-            <section ref={auditCtaRef} className="section-container" style={{
-                background: "linear-gradient(180deg, rgba(255,167,38,0.02) 0%, transparent 100%)",
-                opacity: auditCtaVisible ? 1 : 0,
-                transform: auditCtaVisible ? "translateY(0)" : "translateY(40px)",
-                transition: "opacity 0.8s ease-out, transform 0.8s ease-out",
-            }}>
-                <div className="audit-container" style={{ background: "rgba(255,255,255,0.04)", borderRadius: 24, padding: 40 }}>
-                    <div className="section-label" style={{ color: "#ffa726" }}>Free Tool</div>
-                    <h2 className="audit-title">
-                        Not ready to talk? Run a free audit first.
-                    </h2>
-                    <p className="audit-desc">
-                        Whether you run a call center, a local business, or you&apos;re launching something new —
-                        our AI scans with 16 diagnostic probes and Gemini generates your custom report.
-                    </p>
-                    <a href="/audit" className="secondary-btn-orange">
-                        Run Free Business Audit →
-                    </a>
-                    <div className="audit-meta">
-                        No login · Results in 60 seconds · Powered by Gemini 2.0
-                    </div>
-                </div>
-            </section>
-
-            {/* ── Enterprise Security & Compliance ──────────── */}
+            {/* ── Enterprise Security & Compliance ── */}
             {!isActive && (
-                <section className="section-container" style={{
-                    background: "linear-gradient(180deg, rgba(16,185,129,0.02) 0%, transparent 100%)",
-                }}>
-                    <div style={{ maxWidth: 900, margin: "0 auto", textAlign: "center" }}>
-                        <div className="section-label" style={{ color: "#10b981" }}>Enterprise-Grade Security</div>
+                <section
+                    id="security"
+                    ref={authoritySectionRef}
+                    className="section-container"
+                    style={{
+                        background: "linear-gradient(180deg, transparent 0%, rgba(16,185,129,0.02) 100%)",
+                        opacity: authoritySectionVisible ? 1 : 0,
+                        transform: authoritySectionVisible ? 'translateY(0)' : 'translateY(40px)',
+                        transition: 'opacity 0.8s ease-out, transform 0.8s ease-out',
+                    }}
+                >
+                    <div style={{ maxWidth: 1000, margin: "0 auto", textAlign: "center" }}>
+                        <div className="section-label" style={{ color: "#10b981" }}>Enterprise Architecture</div>
                         <h2 className="section-title">
-                            Your data is <span style={{ color: "#10b981" }}>locked down.</span>
+                            Military-grade security. <span style={{ color: "#10b981" }}>Universal compliance.</span>
                         </h2>
-                        <p className="section-desc" style={{ maxWidth: 600, margin: "0 auto 40px" }}>
-                            In 2026, AI governance isn&apos;t optional — it&apos;s the law. BioDynamX is built
-                            for enterprise compliance from day one.
-                        </p>
 
                         <div style={{
                             display: "grid",
-                            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+                            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
                             gap: 16,
+                            marginTop: 40,
                             textAlign: "left",
                         }}>
                             {[
-                                { icon: "📝", title: "Full Transcripts", desc: "Every word recorded — agent and customer. Timestamped, searchable, legally admissible." },
-                                { icon: "🛡️", title: "PII Redaction", desc: "SSNs, credit cards, and personal data auto-redacted in real-time before storage." },
-                                { icon: "🔒", title: "Encryption", desc: "AES-256 encryption at rest. TLS 1.3 in transit. Zero-trust architecture." },
-                                { icon: "🤖", title: "AI Guardrails", desc: "Agents can't go off-topic, make unauthorized promises, or share confidential data." },
-                                { icon: "🚫", title: "Anti-Jailbreak", desc: "Military-grade prompt injection detection. Agents refuse all manipulation attempts." },
-                                { icon: "📊", title: "Audit Trail", desc: "Every action logged — tool calls, handoffs, safety flags. Full accountability." },
-                                { icon: "⚖️", title: "Compliance Ready", desc: "TCPA, HIPAA, PCI-DSS, GDPR, CCPA frameworks. Consent recording built in." },
-                                { icon: "🔐", title: "Role-Based Access", desc: "Admin, manager, viewer permissions. API key rotation. Session-level isolation." },
+                                { icon: "🛡️", title: "PII Redaction", desc: "Sensitive customer data (SSNs, cards) is auto-redacted in real-time." },
+                                { icon: "🔒", title: "AES-256 Encryption", desc: "All data is encrypted at rest and in transit using TLS 1.3 standards." },
+                                { icon: "📊", title: "Full Audit Trail", desc: "Every word, tool call, and handoff is timestamped and searchable." },
+                                { icon: "⚖️", title: "Compliance Ready", desc: "Built for HIPAA, PCI-DSS, GDPR, and TCPA frameworks." },
                             ].map((item) => (
                                 <div key={item.title} className="glass-card" style={{
-                                    padding: "20px 18px",
-                                    borderRadius: 16,
+                                    padding: 24, borderRadius: 20, border: "1px solid rgba(16,185,129,0.1)",
                                     background: "rgba(16,185,129,0.03)",
-                                    border: "1px solid rgba(16,185,129,0.1)",
-                                    transition: "all 0.3s ease",
-                                }}
-                                    onMouseEnter={e => {
-                                        e.currentTarget.style.borderColor = "rgba(16,185,129,0.25)";
-                                        e.currentTarget.style.transform = "translateY(-2px)";
-                                        e.currentTarget.style.boxShadow = "0 8px 30px rgba(16,185,129,0.08)";
-                                    }}
-                                    onMouseLeave={e => {
-                                        e.currentTarget.style.borderColor = "rgba(16,185,129,0.1)";
-                                        e.currentTarget.style.transform = "translateY(0)";
-                                        e.currentTarget.style.boxShadow = "none";
-                                    }}
-                                >
-                                    <div style={{ fontSize: 24, marginBottom: 8 }}>{item.icon}</div>
-                                    <div style={{ fontSize: 14, fontWeight: 700, color: "rgba(255,255,255,0.9)", marginBottom: 6 }}>
-                                        {item.title}
-                                    </div>
-                                    <div style={{ fontSize: 12, color: "rgba(255,255,255,0.45)", lineHeight: 1.5 }}>
-                                        {item.desc}
-                                    </div>
+                                }}>
+                                    <div style={{ fontSize: 32, marginBottom: 12 }}>{item.icon}</div>
+                                    <div style={{ fontSize: 16, fontWeight: 700, color: "#fff", marginBottom: 8 }}>{item.title}</div>
+                                    <div style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", lineHeight: 1.6 }}>{item.desc}</div>
                                 </div>
                             ))}
-                        </div>
-
-                        <div style={{
-                            marginTop: 32,
-                            padding: "16px 24px",
-                            background: "rgba(16,185,129,0.05)",
-                            border: "1px solid rgba(16,185,129,0.15)",
-                            borderRadius: 12,
-                            display: "inline-flex",
-                            alignItems: "center",
-                            gap: 12,
-                        }}>
-                            <span style={{ fontSize: 20 }}>🏛️</span>
-                            <span style={{ fontSize: 13, color: "rgba(255,255,255,0.7)", fontWeight: 500 }}>
-                                <strong style={{ color: "#10b981" }}>AI Governance First.</strong> Every conversation is recorded,
-                                every agent action is logged, and every data point is encrypted. Your customers are protected.
-                            </span>
                         </div>
                     </div>
                 </section>
             )}
 
-            {/* ── Pricing Section ────────────────── */}
-            <section id="pricing" aria-label="BioDynamX AI Growth Engine Pricing" className="section-container" style={{
-                background: "linear-gradient(180deg, rgba(0,255,65,0.02) 0%, transparent 100%)",
-            }}>
-                <div style={{ maxWidth: 700, margin: "0 auto", textAlign: "center" }}>
-                    <div className="section-label" style={{ color: "#00ff41" }}>Simple Pricing</div>
-                    <h2 className="section-title">
-                        One platform. <span style={{ color: "#00ff41" }}>Everything you need to grow.</span>
-                    </h2>
-                    <p style={{ fontSize: 15, color: "rgba(255,255,255,0.55)", margin: "0 0 36px" }}>
-                        Whether you&apos;re recovering lost revenue or building from scratch — one plan covers it all.
+            {/* ── Risk-Free Guarantee ── */}
+            <section
+                ref={auditCtaRef}
+                className="section-container"
+                style={{
+                    padding: "80px 32px",
+                    opacity: auditCtaVisible ? 1 : 0,
+                    transform: auditCtaVisible ? 'translateY(0)' : 'translateY(40px)',
+                    transition: 'opacity 0.8s ease-out, transform 0.8s ease-out',
+                }}
+            >
+                <div style={{
+                    maxWidth: 800, margin: "0 auto", textAlign: "center",
+                    padding: "60px 40px",
+                    background: "linear-gradient(135deg, rgba(0,255,65,0.04) 0%, rgba(59,130,246,0.04) 100%)",
+                    border: "1px solid rgba(0,255,65,0.15)",
+                    borderRadius: 32,
+                }}>
+                    <div style={{ fontSize: 48, marginBottom: 16 }}>🛡️</div>
+                    <h2 className="section-title">5x ROI — or your money back.</h2>
+                    <p className="section-desc" style={{ maxWidth: 540, margin: "0 auto 32px" }}>
+                        If our AI doesn&apos;t deliver at least 5x your investment in recovered revenue within 90 days, we&apos;ll refund every penny. No questions asked.
                     </p>
-
-                    <div className="pricing-card">
-                        <div className="popular-badge">MOST POPULAR</div>
-
-                        <div style={{ fontSize: 13, fontWeight: 600, color: "rgba(255,255,255,0.45)", marginBottom: 8 }}>
-                            BioDynamX AI Growth Engine
-                        </div>
-
-                        <div className="price-container">
-                            <span className="price-anchor">$997/mo</span>
-                            <span className="price-main">$497</span>
-                            <span className="price-suffix">/month</span>
-                        </div>
-                        <div style={{ fontSize: 13, color: "#00ff41", fontWeight: 600, marginBottom: 24 }}>
-                            That&apos;s just $16.56/day — less than a lunch 🍽️
-                        </div>
-
-                        <div className="roi-grid">
-                            <div>
-                                <div className="roi-item-label">You Invest</div>
-                                <div className="roi-item-value">$497</div>
-                            </div>
-                            <div>
-                                <div className="roi-item-label">Guaranteed</div>
-                                <div className="roi-item-value" style={{ color: "#00ff41" }}>5x+</div>
-                            </div>
-                            <div>
-                                <div className="roi-item-label">ROI</div>
-                                <div className="roi-item-value" style={{ color: "#ffa726" }}>Guaranteed</div>
-                            </div>
-                        </div>
-
-                        <div style={{ textAlign: "left", marginBottom: 28 }}>
-                            {[
-                                "24/7 AI voice agent — answers every call in <1 second",
-                                "Neuro-Sales AI — closes deals using brain science",
-                                "Real-time business audit (20-probe diagnostic)",
-                                "AI competitor intelligence (live Google Search data)",
-                                "Automated lead nurturing via SMS, email & voice",
-                                "Custom ROI dashboard with real revenue tracking",
-                                "AI social media manager + content calendar",
-                                "AI reputation engine (auto-responds to reviews)",
-                                "Dedicated onboarding in 24 hours",
-                            ].map((f) => (
-                                <div key={f} className="pricing-feature">
-                                    <span style={{ color: "#00ff41", fontSize: 14, fontWeight: 700 }}>✓</span>
-                                    {f}
-                                </div>
-                            ))}
-                        </div>
-
-                        <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="primary-btn-green">
-                            Start Your Free Diagnostic →
-                        </button>
-                        <div style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", marginTop: 10 }}>
-                            No contracts · Cancel anytime · 5x ROI guaranteed or money back
-                        </div>
+                    <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="primary-btn-green" style={{ width: "auto", padding: "18px 48px" }}>
+                        Start Risk-Free Trial
+                    </button>
+                    <div style={{ marginTop: 16, fontSize: 12, color: "rgba(255,255,255,0.4)" }}>
+                        No contracts · Cancel anytime · Results in under 14 days
                     </div>
                 </div>
             </section>
 
-            <section ref={finalCtaRef} className="section-container" style={{
-                textAlign: "center",
-                opacity: finalCtaVisible ? 1 : 0,
-                transform: finalCtaVisible ? "translateY(0)" : "translateY(40px)",
-                transition: "opacity 0.8s ease-out, transform 0.8s ease-out",
-            }}>
-                <h2 className="section-title">
-                    Your competitors are already using AI. <span style={{ color: "#ff6b6b" }}>Are you?</span>
-                </h2>
-                <p className="section-desc">
-                    Every day you wait, leads go unanswered, opportunities get missed, and competitors get ahead.<br />
-                    60 seconds with Jenny and you&apos;ll have a plan.
-                </p>
-                <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="primary-btn-green" style={{ width: "auto", padding: "18px 48px" }}>
-                    Talk to Jenny — Free
-                </button>
-                <div style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", marginTop: 12 }}>
-                    ✓ No credit card &nbsp;·&nbsp; ✓ No login &nbsp;·&nbsp; ✓ 5x ROI guaranteed
-                </div>
-            </section>
-
-
-
-            {/* ── Footer ─────────────────── */}
-            <footer style={{
-                position: "relative",
-                zIndex: 10,
-                padding: "32px 32px 24px",
-                borderTop: "1px solid rgba(255,255,255,0.08)",
-            }}>
-                <div className="footer-container">
-                    {/* Brand Column */}
-                    <div style={{ maxWidth: 240 }}>
-                        <div style={{
-                            display: "flex", alignItems: "center", gap: 8, marginBottom: 10,
-                        }}>
-                            <div style={{
-                                width: 24, height: 24,
-                                background: "linear-gradient(135deg, #00ff41, #00cc33)",
-                                borderRadius: 6,
-                                display: "flex", alignItems: "center", justifyContent: "center",
-                                fontWeight: 900, fontSize: 11, color: "#000",
-                            }}>B</div>
-                            <span style={{ fontSize: 14, fontWeight: 700, color: "rgba(255,255,255,0.85)" }}>
-                                BioDynamX
-                            </span>
+            {/* ── Pricing ── */}
+            <section
+                id="pricing"
+                ref={finalCtaRef}
+                className="section-container"
+                style={{
+                    opacity: finalCtaVisible ? 1 : 0,
+                    transform: finalCtaVisible ? 'translateY(0)' : 'translateY(40px)',
+                    transition: 'opacity 0.8s ease-out, transform 0.8s ease-out',
+                }}
+            >
+                <div style={{ maxWidth: 500, margin: "0 auto", textAlign: "center" }}>
+                    <div className="section-label">Investment</div>
+                    <div className="pricing-card" style={{ marginTop: 24 }}>
+                        <div className="popular-badge">ELITE ACCESS</div>
+                        <div style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", marginBottom: 12 }}>BioDynamX Growth Engine</div>
+                        <div className="price-container">
+                            <span className="price-anchor">$997</span>
+                            <span className="price-main">$497</span>
+                            <span className="price-suffix">/mo</span>
                         </div>
-                        <p style={{
-                            fontSize: 12, color: "rgba(255,255,255,0.5)",
-                            lineHeight: 1.6, margin: 0,
-                        }}>
-                            Neuroscience-powered AI platform for sales, marketing, and revenue recovery. We use Neuromarketing, Neurobiology, and Neuro-Sales to help businesses close more deals.
-                            Founded by Billy De La Taurus, 2x Amazon best-selling author.
+                        <p style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", marginTop: 12 }}>
+                            One flat fee. All 8 agents included. Unlimited potential.
                         </p>
                     </div>
+                </div>
+            </section>
 
-                    {/* Platform */}
+            {/* ── Footer ── */}
+            <footer style={{
+                padding: "60px 32px 32px",
+                borderTop: "1px solid rgba(255,255,255,0.05)",
+                background: "rgba(0,0,0,0.2)",
+            }}>
+                <div className="footer-container" style={{
+                    display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 40,
+                    maxWidth: 1200, margin: "0 auto",
+                }}>
                     <div>
-                        <div style={{
-                            fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.55)",
-                            letterSpacing: "0.1em", textTransform: "uppercase",
-                            marginBottom: 10,
-                        }}>Platform</div>
-                        {[
-                            { label: "Voice Diagnostic", href: "/" },
-                            { label: "Free Business Audit", href: "/audit" },
-                            { label: "Pricing", href: "/pricing" },
-                            { label: "Blog", href: "/blog" },
-                            { label: "Google My Business Setup (Free)", href: "/dashboard/gmb-setup" },
-                        ].map((link) => (
-                            <a key={link.label} href={link.href} style={{
-                                display: "block", fontSize: 13,
-                                color: "rgba(255,255,255,0.55)",
-                                textDecoration: "none", marginBottom: 8,
-                                transition: "color 0.2s",
-                            }}
-                                onMouseEnter={e => (e.currentTarget.style.color = "#00ff41")}
-                                onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.55)")}
-                            >{link.label}</a>
-                        ))}
+                        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
+                            <div style={{ width: 28, height: 28, background: "#00ff41", borderRadius: 6 }} />
+                            <span style={{ fontWeight: 800, fontSize: 18, letterSpacing: "-0.02em" }}>BioDynamX</span>
+                        </div>
+                        <p style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", lineHeight: 1.6 }}>
+                            The world&apos;s first neurobiology-powered AI platform for revenue recovery and scales. Built for Web 4.0.
+                        </p>
                     </div>
-
-                    {/* Company */}
                     <div>
-                        <div style={{
-                            fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.55)",
-                            letterSpacing: "0.1em", textTransform: "uppercase",
-                            marginBottom: 10,
-                        }}>Company</div>
-                        {[
-                            { label: "About Us", href: "/about" },
-                            { label: "Client Success Stories", href: "/testimonials" },
-                            { label: "AI Expert Solutions", href: "https://aiexpert.solutions" },
-                            { label: "Partner Community (4,000+)", href: "https://facebook.com/mmapresident" },
-                            { label: "Contact Us", href: "tel:3033923700" },
-                        ].map((link) => (
-                            <a key={link.label} href={link.href} style={{
-                                display: "block", fontSize: 13,
-                                color: "rgba(255,255,255,0.55)",
-                                textDecoration: "none", marginBottom: 8,
-                                transition: "color 0.2s",
-                            }}
-                                onMouseEnter={e => (e.currentTarget.style.color = "#00ff41")}
-                                onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.55)")}
-                            >{link.label}</a>
-                        ))}
+                        <h4 style={{ fontSize: 12, color: "#fff", marginBottom: 16, letterSpacing: "0.1em" }}>PLATFORM</h4>
+                        <a href="/pricing" style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: 13, textDecoration: "none", marginBottom: 10 }}>Pricing</a>
+                        <a href="/audit" style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: 13, textDecoration: "none", marginBottom: 10 }}>Free Audit</a>
                     </div>
-
-                    {/* Trust */}
                     <div>
-                        <div style={{
-                            fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.55)",
-                            letterSpacing: "0.1em", textTransform: "uppercase",
-                            marginBottom: 10,
-                        }}>Trust</div>
-                        {[
-                            "Enterprise Grade",
-                            "SOC 2 Compliant",
-                            "GDPR Ready",
-                            "99.9% Uptime SLA",
-                        ].map((item) => (
-                            <div key={item} style={{
-                                fontSize: 12, color: "rgba(255,255,255,0.5)",
-                                marginBottom: 8,
-                                display: "flex", alignItems: "center", gap: 6,
-                            }}>
-                                <div style={{
-                                    width: 5, height: 5, borderRadius: "50%",
-                                    background: "#00ff41", opacity: 0.7,
-                                }} />
-                                {item}
-                            </div>
-                        ))}
+                        <h4 style={{ fontSize: 12, color: "#fff", marginBottom: 16, letterSpacing: "0.1em" }}>TRUST</h4>
+                        <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 13, marginBottom: 8 }}>✓ GDPR Ready</div>
+                        <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 13, marginBottom: 8 }}>✓ SOC 2 Compliant</div>
                     </div>
                 </div>
-
-                {/* Copyright Bar */}
                 <div style={{
-                    maxWidth: 900, margin: "20px auto 0",
-                    paddingTop: 16,
-                    borderTop: "1px solid rgba(255,255,255,0.08)",
-                    display: "flex", justifyContent: "space-between",
-                    alignItems: "center", flexWrap: "wrap", gap: 8,
+                    marginTop: 60, paddingTop: 24, borderTop: "1px solid rgba(255,255,255,0.05)",
+                    textAlign: "center", fontSize: 12, color: "rgba(255,255,255,0.3)",
                 }}>
-                    <span style={{
-                        fontSize: 11, color: "rgba(255,255,255,0.4)",
-                        letterSpacing: "0.04em",
-                    }}>
-                        © 2026 BioDynamX Engineering Group × AI Expert Solutions. All rights reserved.
-                    </span>
-                    <div style={{ display: "flex", gap: 12 }}>
-                        {["Privacy", "Terms", "Security"].map((link) => (
-                            <a key={link} href="#" style={{
-                                fontSize: 11, color: "rgba(255,255,255,0.4)",
-                                textDecoration: "none", letterSpacing: "0.04em",
-                                transition: "color 0.2s",
-                            }}
-                                onMouseEnter={e => (e.currentTarget.style.color = "rgba(255,255,255,0.7)")}
-                                onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.4)")}
-                            >{link}</a>
-                        ))}
-                    </div>
+                    © 2026 BioDynamX Inc. All rights reserved. Neuroscience for the digital age.
                 </div>
             </footer>
-
-            {/* ── Sticky Floating CTA Bar (Framework 4: Prompt Timing) ── */}
-            {
-                showStickyBar && !isActive && (
-                    <div className="sticky-cta-bar">
-                        <span style={{
-                            fontSize: 13, fontWeight: 600,
-                            color: "rgba(255,255,255,0.7)",
-                        }}>
-                            🟢 <span style={{ color: "#00ff41" }}>Jenny is live right now</span> — 60 seconds to your custom plan
-                        </span>
-                        <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="primary-btn-green" style={{ width: "auto", padding: "10px 24px" }}>
-                            Talk to Jenny →
-                        </button>
-                        <span style={{
-                            fontSize: 11, color: "rgba(255,255,255,0.4)",
-                            whiteSpace: "nowrap",
-                            display: "none", // Hide on smaller screens
-                        }} className="nav-links-desktop">
-                            ✓ No CC required
-                        </span>
-                    </div>
-                )
-            }
-        </div >
+        </div>
     );
 }
-// ─── Stat Item Sub-component (for countdown/countup) ─────────
+
 interface Stat {
     val: number;
     suffix: string;

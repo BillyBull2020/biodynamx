@@ -176,6 +176,13 @@ export const metadata: Metadata = {
     "article:modified_time": new Date().toISOString(),
     "publisher": "BioDynamX Engineering Group",
     "copyright": "© 2026 BioDynamX Engineering Group",
+    // PWA / App Support
+    "apple-mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-status-bar-style": "black-translucent",
+    "apple-mobile-web-app-title": "BioDynamX",
+    "mobile-web-app-capable": "yes",
+    "theme-color": "#00ff41",
+    "format-detection": "telephone=no",
   },
 };
 
@@ -1139,6 +1146,21 @@ export default function RootLayout({
         <main id="main-content" role="main">
           {children}
         </main>
+
+        {/* ── PWA Service Worker Registration ──────────────────────── */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                  navigator.serviceWorker.register('/sw.js', { scope: '/' })
+                    .then(function(reg) { console.log('[BioDynamX] AI OS installed as app ✓'); })
+                    .catch(function(err) { console.warn('[BioDynamX] SW registration failed:', err); });
+                });
+              }
+            `,
+          }}
+        />
 
         {/* ── NOSCRIPT: Core content for AI crawlers that don't execute JS ────── */}
         {/* SEO/GEO/AEO Framework 3: Raw HTML Priority — ensures critical info */}

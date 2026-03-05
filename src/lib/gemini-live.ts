@@ -8,7 +8,6 @@ import {
     recordAgentSpeech,
     recordProspectSpeech,
     recordToolCallInTranscript,
-    recordToolResultInTranscript,
     recordHandoffInTranscript,
     endTranscript,
     getTranscript,
@@ -181,7 +180,7 @@ export class VoiceOrchestrator {
                     setup: {
                         // ★ CONFIRMED: enumerated directly from the models API (March 2026)
                         // GET /v1beta/models shows this as bidiGenerateContent-capable
-                        model: "models/gemini-2.5-flash-native-audio-preview-12-2025",
+                        model: "models/gemini-2.5-flash-native-audio-latest",
                         generationConfig: {
                             responseModalities: ["AUDIO"],
                             speechConfig: {
@@ -192,22 +191,64 @@ export class VoiceOrchestrator {
                                 }
                             }
                         },
-                        // ★ Enable transcription for both directions — legal & QA
-                        inputAudioTranscription: {},
-                        outputAudioTranscription: {},
+                        // ★ VAD — Voice Activity Detection config.
+                        // automaticActivityDetection: correct field per Gemini Live v1beta spec.
+                        // startOfSpeechSensitivity HIGH: detect user speech quickly.
+                        // endOfSpeechSensitivity LOW: wait longer before cutting them off — prevents
+                        //   interrupting mid-name (e.g. "Billy De La Taurus" is multi-part).
+                        // activityHandling START_OF_ACTIVITY_INTERRUPTS: CRITICAL — allows the user
+                        //   to interrupt Jenny mid-sentence. Without this, Jenny ignores the user
+                        //   while she is speaking (model locks out audio input during output).
+                        realtimeInputConfig: {
+                            automaticActivityDetection: {},
+                            activityHandling: "START_OF_ACTIVITY_INTERRUPTS",
+                        },
+                        // ★ Transcription: Disabled for native audio preview model.
+                        // inputAudioTranscription / outputAudioTranscription are NOT reliably
+                        // supported by gemini-2.5-flash-native-audio-preview — enabling them
+                        // is a confirmed trigger for code 1008 "Operation not implemented".
+                        // Re-enable once stable transcription support ships for this model.
                         systemInstruction: {
                             parts: [{
                                 text: `${activeSystemInstruction}
 
-PROJECT ASTRO ENABLED: You have live vision capabilities. You can see the user's environment, their screen, and their body language. Use this to build high-trust rapport. If they point at their screen, analyze what's there.
+━━━ NAME GROUNDING ━━━
+NEVER invent, assume, or use a placeholder name (Alex, John, Jane, etc.).
+Only use a name the person explicitly told you during this call.
+If you didn't clearly hear it, ask naturally in one beat: "Sorry — was that [NAME]?"
+If they correct you, use the corrected name and keep moving immediately.
 
-PROJECT GENIE ENABLED: You are an autonomous proactive architect. 
-- If you detect a revenue leak, call it out immediately. 
+━━━ AUDIT GROUNDING — ABSOLUTE RULES ━━━
+You CANNOT see the user's website. You do NOT have vision.
+You ONLY know what the business_audit tool tells you. Nothing more.
+
+When reporting audit findings:
+1. ONLY mention things the tool explicitly returned with a real value.
+2. If contentHasTestimonials is false → say "I'm not seeing testimonials on your site."
+3. If a score is 0 or a field is empty/false → report it as a gap, not a feature.
+4. NEVER invent or assume positive attributes. If you didn't get it from the tool, don't say it.
+5. Be specific: quote the actual load time, actual score, actual issues the tool returned.
+6. If the audit hasn't completed yet, say "Still pulling up your site..." — do NOT guess.
+
+BAD (hallucination): "I can see you have a great testimonials section!"
+GOOD (grounded): "I'm not seeing any testimonials or reviews on your site — that's a trust gap."
+
+BAD (hallucination): "Your site looks great overall!"
+GOOD (grounded): "Your site speed score came back at [X] — that's in the [slow/fast] range."
+
+PROJECT GENIE ENABLED: You are an autonomous proactive architect.
+- If audit data shows a revenue leak, call it out with REAL numbers from the tool.
 - You have the 'BioDynamX Engineering Suite' at your disposal:
-    1. 🎨 STITCH (UI Designer): Call 'stitch_design' to show a vision of their future.
-    2. 📊 ROI CALC (Diagnostic): Quantifies exactly how much revenue is leaking.
-    3. 💬 REVENUE RECOVERY ENGINE: Handles multi-channel CRM/SMS/Email automation.
-- Your mission is to sell the 'Growth Engine' ($497/mo) or 'Enterprise Suite' ($1,497/mo).` }]
+    1. 📊 ROI CALC: Quantifies exactly how much revenue is leaking.
+    2. 💬 REVENUE RECOVERY ENGINE: Multi-channel CRM/SMS/Email automation.
+- Your mission is to sell the 'Growth Engine' ($497/mo) or 'Enterprise Suite' ($2,497/mo).
+
+━━━ TOOL FAILURE PROTOCOL ━━━
+If a tool returns an error, an empty result, or doesn't return fast enough:
+1. DO NOT manufacture or guess the results.
+2. Tell the user: "I'm still pulling those specific numbers up — give me one more second."
+3. Ask for the information directly if it seems the tool isn't getting it (e.g., "What was that website URL one more time?").
+Specificity and accuracy are more important than speed. Hallucinations destroy trust and are forbidden.` }]
                         },
                         tools: [
                             {
@@ -239,7 +280,7 @@ PROJECT GENIE ENABLED: You are an autonomous proactive architect.
                                     },
                                     {
                                         name: "create_checkout",
-                                        description: "Creates a Stripe checkout session for the BioDynamX Engineering Suite subscription at $497/month. Call this when the prospect is ready to purchase. Mark should say 'I'm generating your secure checkout link now' before calling this tool.",
+                                        description: "Creates a Stripe checkout session for the BioDynamX Engineering Suite. Growth Engine is $497/month, Enterprise is $2,497/month. Call this when the prospect is ready to purchase. Mark should say 'I'm generating your secure checkout link now' before calling this tool.",
                                         parameters: {
                                             type: "OBJECT",
                                             properties: {
@@ -441,7 +482,7 @@ PROJECT GENIE ENABLED: You are an autonomous proactive architect.
                                     realtimeInput: { mediaChunks: [] }
                                 }));
                             }
-                        }, 15000);
+                        }, 8000);
 
                         // ★ IRONCLAW: Initialize master session brain for ANY agent
                         const activeAgent = this.customAgents?.[0];

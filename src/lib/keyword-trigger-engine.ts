@@ -32,6 +32,8 @@ export type SceneId =
     | "idle";
 
 export type TransitionType = "fade" | "slide" | "morph" | "neural";
+export type SpatialAnchor = "left" | "right" | "center" | "full";
+export type ColorTheme = "red" | "amber" | "blue" | "green" | "neutral";
 
 export interface VisualScene {
     id: SceneId;
@@ -40,6 +42,9 @@ export interface VisualScene {
     duration: number; // transition ms
     priority: number; // higher overrides lower
     clearPrevious: boolean; // Miller's Law — clear UI before showing
+    // Dual-Coding Spatial Anchoring (Challenger Sale Science)
+    spatialAnchor: SpatialAnchor; // where on screen visuals appear
+    colorTheme: ColorTheme;       // color palette to signal brain state
 }
 
 // ─── Bio DynamX Scenes ────────────────────────────────────────────────────
@@ -56,6 +61,8 @@ const BIODYNAMX_SCENES: VisualScene[] = [
         duration: 800,
         priority: 8,
         clearPrevious: true,
+        spatialAnchor: "right",  // Science = trust = right
+        colorTheme: "blue",
     },
     {
         id: "ai_flowchart",
@@ -68,6 +75,8 @@ const BIODYNAMX_SCENES: VisualScene[] = [
         duration: 600,
         priority: 7,
         clearPrevious: true,
+        spatialAnchor: "right",  // Solution = right
+        colorTheme: "green",
     },
     {
         id: "performance_compare",
@@ -80,6 +89,8 @@ const BIODYNAMX_SCENES: VisualScene[] = [
         duration: 500,
         priority: 6,
         clearPrevious: true,
+        spatialAnchor: "full",   // Before/after spans full width
+        colorTheme: "neutral",
     },
     {
         id: "seo_dashboard",
@@ -93,6 +104,8 @@ const BIODYNAMX_SCENES: VisualScene[] = [
         duration: 500,
         priority: 7,
         clearPrevious: true,
+        spatialAnchor: "right",  // Results/opportunity = right
+        colorTheme: "green",
     },
     {
         id: "revenue_impact",
@@ -101,22 +114,28 @@ const BIODYNAMX_SCENES: VisualScene[] = [
             "investment", "cost", "dollar", "thousand", "profit", "loss",
             "hemorrhaging", "waste", "table", "leaving money", "missed",
             "opportunity gap", "drain", "bleeding", "uncollected", "unbooked",
+            "draining", "silent killer", "bottleneck", "compound", "compounding",
         ],
         transition: "morph",
         duration: 600,
-        priority: 9, // High priority — loss aversion = most powerful
+        priority: 9,
         clearPrevious: true,
+        spatialAnchor: "left",   // PAIN = LEFT (Challenger Phase 3 — Rational Drowning)
+        colorTheme: "red",       // Red = amygdala threat / loss aversion spike
     },
     {
         id: "competitor_map",
         keywords: [
             "competitor", "ahead", "behind", "market", "competition",
-            "industry", "rival", "edge", "advantage", "versus",
+            "industry", "rival", "edge", "advantage", "versus", "they", "them",
+            "other platforms", "other companies", "everyone else",
         ],
         transition: "slide",
         duration: 500,
         priority: 6,
         clearPrevious: true,
+        spatialAnchor: "left",   // Competition = problem = left
+        colorTheme: "amber",
     },
     {
         id: "team_intro",
@@ -128,6 +147,8 @@ const BIODYNAMX_SCENES: VisualScene[] = [
         duration: 400,
         priority: 5,
         clearPrevious: true,
+        spatialAnchor: "right",  // Our team = solution = right
+        colorTheme: "blue",
     },
     {
         id: "audit_progress",
@@ -139,17 +160,22 @@ const BIODYNAMX_SCENES: VisualScene[] = [
         duration: 500,
         priority: 8,
         clearPrevious: true,
+        spatialAnchor: "center", // Audit is neutral — discovery phase
+        colorTheme: "neutral",
     },
     {
         id: "checkout",
         keywords: [
             "checkout", "payment", "subscribe", "sign up", "get started",
-            "purchase", "buy", "plan", "pricing",
+            "purchase", "buy", "plan", "pricing", "today", "tier 1",
+            "full platform", "audit or", "deployment",
         ],
         transition: "fade",
         duration: 400,
-        priority: 10, // Highest — conversion moment
+        priority: 10,  // Highest — conversion moment
         clearPrevious: true,
+        spatialAnchor: "full",   // Double-bind: both options side-by-side = full width
+        colorTheme: "green",
     },
     {
         id: "website_hero",
@@ -162,11 +188,13 @@ const BIODYNAMX_SCENES: VisualScene[] = [
         duration: 700,
         priority: 6,
         clearPrevious: true,
+        spatialAnchor: "right",  // Our platform = right
+        colorTheme: "green",
     },
     {
         id: "pricing_showcase",
         keywords: [
-            "pricing", "cost", "affordable", "investment", "monthly", "$497",
+            "pricing", "affordable", "investment", "monthly", "$497",
             "four ninety seven", "plan", "package", "value", "what it costs",
             "how much", "budget",
         ],
@@ -174,11 +202,13 @@ const BIODYNAMX_SCENES: VisualScene[] = [
         duration: 500,
         priority: 8,
         clearPrevious: true,
+        spatialAnchor: "right",  // Value/investment = solution = right
+        colorTheme: "blue",
     },
     {
         id: "testimonials_showcase",
         keywords: [
-            "testimonial", "success story", "client", "results", "case study",
+            "testimonial", "success story", "client", "case study",
             "other businesses", "customers", "happy", "satisfied", "helped",
             "transformed", "review", "feedback", "what people say",
         ],
@@ -186,6 +216,8 @@ const BIODYNAMX_SCENES: VisualScene[] = [
         duration: 500,
         priority: 7,
         clearPrevious: true,
+        spatialAnchor: "right",  // Social proof = reward = right
+        colorTheme: "green",
     },
     {
         id: "industry_showcase",
@@ -193,18 +225,16 @@ const BIODYNAMX_SCENES: VisualScene[] = [
             "dental", "dentist", "med spa", "medspa", "real estate", "realtor",
             "call center", "startup", "healthcare", "medical", "practice",
             "office", "clinic", "agency", "therapist", "mental health",
-            "psychologist", "counselor", "daycare", "childcare", "preschool",
-            "attorney", "lawyer", "law firm", "legal", "practice",
+            "psychologist", "attorney", "lawyer", "law firm", "legal",
             "hvac", "painter", "painting", "roofing", "roofer", "plumber",
-            "dispensary", "marijuana", "cannabis", "weed", "pot shop",
-            "orthopedic", "surgeon", "surgery", "medical", "clinic",
-            "bookkeeping", "accounting", "funds", "financial",
-            "oxygen", "concentrator", "medical equipment", "dme", "hme",
+            "dispensary", "cannabis", "bookkeeping", "accounting",
         ],
         transition: "slide",
         duration: 600,
         priority: 6,
         clearPrevious: true,
+        spatialAnchor: "right",  // Industry relevance = we know you = right (trust)
+        colorTheme: "blue",
     },
     {
         id: "guarantee_showcase",
@@ -215,10 +245,96 @@ const BIODYNAMX_SCENES: VisualScene[] = [
         ],
         transition: "morph",
         duration: 600,
-        priority: 9, // High — trust builder
+        priority: 9,
         clearPrevious: true,
+        spatialAnchor: "right",  // Guarantee = trust = right
+        colorTheme: "green",
+    },
+
+    // ═══ CHALLENGER SALE PHASE SCENES ═══
+    // These map to Jenny's 7-phase Dual-Agent choreography.
+    // Triggered by specific Challenger phraseology in the transcript.
+    {
+        id: "performance_compare",  // Phase 1: THE WARMER — Pattern interrupt
+        keywords: [
+            "businesses that are winning", "slow and steady loses", "what most people overlook",
+            "before we dig in", "i want to show you something", "orienting",
+        ],
+        transition: "neural",
+        duration: 900,
+        priority: 7,
+        clearPrevious: true,
+        spatialAnchor: "left",   // Status quo = problem = left
+        colorTheme: "amber",
+    },
+    {
+        id: "competitor_map",  // Phase 2: THE REFRAME — New diagnosis
+        keywords: [
+            "most businesses think", "real silent killer", "new frame", "data across",
+            "their biggest challenge", "actually the problem is", "what they overlook",
+        ],
+        transition: "slide",
+        duration: 600,
+        priority: 7,
+        clearPrevious: true,
+        spatialAnchor: "left",   // Problem reframe = left
+        colorTheme: "amber",
+    },
+    {
+        id: "revenue_impact",  // Phase 3: RATIONAL DROWNING — Math + loss aversion
+        keywords: [
+            "compounds into", "Q4", "peak season", "if nothing changes",
+            "real number", "financial cost", "what that costs you", "compounding",
+            "5 percent becomes", "silent killer", "micro-frictions",
+        ],
+        transition: "morph",
+        duration: 500,
+        priority: 10,  // Highest in problem state
+        clearPrevious: true,
+        spatialAnchor: "left",   // Pain peak = far left
+        colorTheme: "red",
+    },
+    {
+        id: "testimonials_showcase",  // Phase 4: EMOTIONAL IMPACT — Mirror neuron story
+        keywords: [
+            "i had a client", "they described it", "you could hear", "crushing weight",
+            "the call they had to make", "never have to", "felt like", "looked like",
+        ],
+        transition: "fade",
+        duration: 800,
+        priority: 8,
+        clearPrevious: true,
+        spatialAnchor: "left",   // Vicarious pain = left (before pivot)
+        colorTheme: "amber",
+    },
+    {
+        id: "ai_flowchart",  // Phase 5: A NEW WAY — Dopamine, solution pivot
+        keywords: [
+            "what if it just", "self-regulating", "self-corrected", "what would that mean",
+            "begin to see", "imagine this working", "never had to manage", "opens up",
+        ],
+        transition: "morph",
+        duration: 700,
+        priority: 9,
+        clearPrevious: true,
+        spatialAnchor: "right",  // DOPAMINE PIVOT — screen shifts from left to right
+        colorTheme: "blue",
+    },
+    {
+        id: "website_hero",  // Phase 6: YOUR SOLUTION — BioDynamX framework
+        keywords: [
+            "this is the framework", "biodynamx framework", "by deploying",
+            "pays for itself", "adaptive ecosystem", "bio-mimicry", "integration pays",
+        ],
+        transition: "neural",
+        duration: 800,
+        priority: 9,
+        clearPrevious: true,
+        spatialAnchor: "right",  // Solution = right = reward
+        colorTheme: "green",
     },
 ];
+
 
 // ─── Quick Accurate Books Scenes ──────────────────────────────────────────
 
@@ -233,6 +349,8 @@ const QAB_SCENES: VisualScene[] = [
         duration: 600,
         priority: 7,
         clearPrevious: true,
+        spatialAnchor: "left",   // Mess = problem = left
+        colorTheme: "amber",
     },
     {
         id: "financial_summary",
@@ -244,6 +362,8 @@ const QAB_SCENES: VisualScene[] = [
         duration: 500,
         priority: 7,
         clearPrevious: true,
+        spatialAnchor: "right",  // Financial clarity = solution = right
+        colorTheme: "green",
     },
     {
         id: "calendar_widget",
@@ -253,8 +373,10 @@ const QAB_SCENES: VisualScene[] = [
         ],
         transition: "fade",
         duration: 400,
-        priority: 9, // High — conversion action
+        priority: 9,
         clearPrevious: true,
+        spatialAnchor: "right",  // Booking = action = right
+        colorTheme: "blue",
     },
 ];
 
@@ -269,8 +391,11 @@ export interface EngineState {
     previousScene: SceneId;
     transition: TransitionType;
     isTransitioning: boolean;
-    confidence: number; // 0-1, how confident the match is
+    confidence: number;       // 0-1, how confident the match is
     matchedKeywords: string[];
+    // Dual-Coding Spatial Anchoring — tells VaultUI WHERE to place visuals
+    spatialAnchor: SpatialAnchor;
+    colorTheme: ColorTheme;
 }
 
 export type SceneChangeCallback = (
@@ -291,6 +416,8 @@ export class KeywordTriggerEngine {
         isTransitioning: false,
         confidence: 0,
         matchedKeywords: [],
+        spatialAnchor: "center",
+        colorTheme: "neutral",
     };
 
     private wordBuffer: string[] = []; // Sliding window — last 25 words (smaller = more responsive to recent speech)
@@ -347,6 +474,8 @@ export class KeywordTriggerEngine {
             isTransitioning: false,
             confidence: 0,
             matchedKeywords: [],
+            spatialAnchor: "center",
+            colorTheme: "neutral",
         };
         this.lockUntil = 0;
     }
@@ -419,7 +548,8 @@ export class KeywordTriggerEngine {
                 bestMatch.scene.id,
                 bestMatch.scene.transition,
                 bestMatch.matched,
-                bestMatch.score
+                bestMatch.score,
+                bestMatch.scene  // Pass full scene for spatial anchoring
             );
         }
     }
@@ -428,7 +558,8 @@ export class KeywordTriggerEngine {
         sceneId: SceneId,
         transition: TransitionType,
         matchedKeywords: string[],
-        confidence: number
+        confidence: number,
+        scene?: VisualScene
     ): void {
         const previousScene = this.state.activeScene;
 
@@ -439,6 +570,9 @@ export class KeywordTriggerEngine {
             isTransitioning: true,
             confidence,
             matchedKeywords,
+            // Carry spatial anchoring from the matched scene
+            spatialAnchor: scene?.spatialAnchor ?? "center",
+            colorTheme: scene?.colorTheme ?? "neutral",
         };
 
         // Lock to prevent thrashing
@@ -450,7 +584,6 @@ export class KeywordTriggerEngine {
         }
 
         // Clear transitioning flag after animation completes
-        const scene = ALL_SCENES.find((s) => s.id === sceneId);
         const duration = scene?.duration ?? 500;
 
         setTimeout(() => {

@@ -149,7 +149,7 @@ export default function PricingPage() {
                     <div style={{ fontSize: 40, marginBottom: 12 }}>🛡️</div>
                     <h2 style={{ fontSize: 24, fontWeight: 800, marginBottom: 8 }}>The 5x ROI Guarantee</h2>
                     <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 15, lineHeight: 1.7, maxWidth: 500, margin: "0 auto" }}>
-                        If BioDynamX AI doesn&apos;t produce at least <strong style={{ color: "#22c55e" }}>2x your investment</strong> in recovered revenue within 90 days, you don&apos;t pay. Period. We track every call, every booking, every dollar recovered — so you&apos;ll know exactly what your ROI is.
+                        If BioDynamX AI doesn&apos;t produce at least <strong style={{ color: "#22c55e" }}>5x your investment</strong> in recovered revenue within 90 days, you don&apos;t pay. Period. We track every call, every booking, every dollar recovered — so you&apos;ll know exactly what your ROI is.
                     </p>
                 </div>
             </section>

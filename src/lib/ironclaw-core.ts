@@ -17,6 +17,7 @@ import { scoreLeadFromData, type LeadData, type LeadScore } from "./lead-scoring
 // crashing the client bundle. Type-only import is safe.
 import type { LeadAlertData } from "./lead-alerts";
 import type { VisitorProfile } from "./behavior-intel";
+import { generateProposal, sendProposalSMSToBilly, persistProposal } from "./ironclaw-proposal";
 
 // ── Types ──────────────────────────────────────────────────────────
 
@@ -573,22 +574,88 @@ export class IronclawCore {
             }
         }
 
-        // Determine nurture action based on priority
+        // ★ WEB 4.0 AUTONOMOUS ACTION ENGINE ★
+        // IronClaw now does real work post-call — no more console.log stubs.
+        // Everything is async and never blocks the voice stream.
+
         switch (priority) {
-            case "hot":
-                console.log(`[Ironclaw] 🔥 HOT LEAD — Scheduling immediate follow-up`);
-                // In production: trigger immediate SMS/email follow-up
+
+            case "hot": {
+                // 🔥 HOT LEAD — Generate proposal + SMS Billy within 60 seconds
+                console.log(`[Ironclaw] 🔥 HOT LEAD — Generating proposal & alerting Billy...`);
+                try {
+                    const proposal = await generateProposal(session);
+                    await persistProposal(session, proposal);
+                    await sendProposalSMSToBilly(session, proposal);
+                    console.log(`[Ironclaw] ✅ HOT: Proposal delivered to Billy for ${session.prospect.name}`);
+                } catch (err) {
+                    console.error(`[Ironclaw] ⚠️ HOT lead proposal failed:`, err);
+                    // Fallback: at least send the raw lead alert
+                    try {
+                        if (typeof window === "undefined") {
+                            const { sendLeadAlert } = await import("./lead-alerts");
+                            await sendLeadAlert({
+                                name: session.prospect.name,
+                                phone: session.prospect.phone,
+                                email: session.prospect.email,
+                                source: "ironclaw_hot_lead",
+                                businessType: session.prospect.industry,
+                                auditGrade: session.leadScore?.grade,
+                                urgency: "hot",
+                            });
+                        }
+                    } catch { /* silent */ }
+                }
                 break;
-            case "warm":
-                console.log(`[Ironclaw] 🌡️ WARM LEAD — Scheduling 24hr drip`);
-                // In production: schedule 24hr nurture sequence
+            }
+
+            case "warm": {
+                // 🌡️ WARM LEAD — Generate proposal + SMS Billy with 24hr follow-up flag
+                console.log(`[Ironclaw] 🌡️ WARM LEAD — Generating proposal & scheduling 24hr follow-up...`);
+                try {
+                    const proposal = await generateProposal(session);
+                    await persistProposal(session, proposal);
+                    await sendProposalSMSToBilly(session, proposal);
+                    console.log(`[Ironclaw] ✅ WARM: Proposal delivered for ${session.prospect.name}`);
+                } catch (err) {
+                    console.error(`[Ironclaw] ⚠️ WARM lead proposal failed:`, err);
+                }
                 break;
-            case "nurture":
-                console.log(`[Ironclaw] 📋 NURTURE — Adding to long-term sequence`);
-                // In production: add to long-term drip campaign
+            }
+
+            case "nurture": {
+                // 📋 NURTURE — Only alert Billy if they gave contact info worth following up
+                const hasContact = !!(session.prospect.phone || session.prospect.email);
+                if (hasContact) {
+                    console.log(`[Ironclaw] 📋 NURTURE with contact — notifying Billy (low priority)`);
+                    try {
+                        if (typeof window === "undefined") {
+                            const { sendLeadAlert } = await import("./lead-alerts");
+                            await sendLeadAlert({
+                                name: session.prospect.name,
+                                phone: session.prospect.phone,
+                                email: session.prospect.email,
+                                source: "ironclaw_nurture",
+                                businessType: session.prospect.industry,
+                                urgency: "cold",
+                            } as LeadAlertData);
+                        } else {
+                            fetch("/api/leads/alert", {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({ name: session.prospect.name, phone: session.prospect.phone, email: session.prospect.email, source: "ironclaw_nurture", urgency: "cold" }),
+                            }).catch(() => { });
+                        }
+                    } catch { /* silent */ }
+                } else {
+                    console.log(`[Ironclaw] 📋 NURTURE — No contact captured. Archiving session.`);
+                }
                 break;
+            }
+
             case "cold":
-                console.log(`[Ironclaw] ❄️ COLD — Archiving with re-engagement trigger`);
+                // ❄️ COLD — Archive silently, no alert (don't spam Billy)
+                console.log(`[Ironclaw] ❄️ COLD — Archived. No alert sent.`);
                 break;
         }
 

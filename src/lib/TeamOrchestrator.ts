@@ -15,9 +15,12 @@ export type TeamPhase =
     | "jenny_active"   // Jenny is diagnosing
     | "handoff"        // Jenny triggered handoff, killing her stream
     | "mark_active"    // Mark is closing
-    | "aria_active"    // Aria is receiving/routing
-    | "jules_active"   // Jules is doing technical deep-dive
-    | "support_active" // Support is handling care/troubleshooting
+    | "aria_active"    // Aria (Meghan) is receiving/routing
+    | "jules_active"   // Jules (O'Ryan) is doing operations
+    | "support_active" // Alex is handling care/troubleshooting
+    | "hunter_active"  // Hunter is prospecting
+    | "nova_active"    // Nova is doing content/social
+    | "ledger_active"  // Ledger is doing financial analysis
     | "stitching"      // Google Stitch is generating UI
     | "checkout"       // Mark triggered checkout
     | "complete";      // Session complete
@@ -115,8 +118,8 @@ const VISUAL_STATES: Record<TeamPhase, VaultVisualState> = {
         borderColor: "#a78bfa",
         bgOpacity: 0.04,
         pulseActive: true,
-        activeAgentName: "Aria",
-        activeAgentVoice: "Sadaltager",
+        activeAgentName: "Meghan",
+        activeAgentVoice: "Kore",
         waveformMode: "soft",
     },
     jules_active: {
@@ -124,7 +127,7 @@ const VISUAL_STATES: Record<TeamPhase, VaultVisualState> = {
         borderColor: "#f59e0b",
         bgOpacity: 0.04,
         pulseActive: true,
-        activeAgentName: "Jules",
+        activeAgentName: "O'Ryan",
         activeAgentVoice: "Algenib",
         waveformMode: "sharp",
     },
@@ -133,9 +136,36 @@ const VISUAL_STATES: Record<TeamPhase, VaultVisualState> = {
         borderColor: "#34d399",
         bgOpacity: 0.04,
         pulseActive: true,
-        activeAgentName: "Support",
+        activeAgentName: "Alex",
         activeAgentVoice: "Achernar",
         waveformMode: "soft",
+    },
+    hunter_active: {
+        phase: "hunter_active",
+        borderColor: "#3b82f6",
+        bgOpacity: 0.05,
+        pulseActive: true,
+        activeAgentName: "Hunter",
+        activeAgentVoice: "Fenrir",
+        waveformMode: "sharp",
+    },
+    nova_active: {
+        phase: "nova_active",
+        borderColor: "#f59e0b",
+        bgOpacity: 0.05,
+        pulseActive: true,
+        activeAgentName: "Nova",
+        activeAgentVoice: "Sulafat",
+        waveformMode: "soft",
+    },
+    ledger_active: {
+        phase: "ledger_active",
+        borderColor: "#10b981",
+        bgOpacity: 0.05,
+        pulseActive: true,
+        activeAgentName: "Ledger",
+        activeAgentVoice: "Schedar",
+        waveformMode: "sharp",
     },
 };
 
@@ -179,6 +209,10 @@ export class TeamOrchestrator {
             mark_closer: "mark_active",
             jules_architect: "jules_active",
             support_specialist: "support_active",
+            hunter_prospector: "hunter_active",
+            nova_content: "nova_active",
+            ledger_finance: "ledger_active",
+            orion_ops: "jules_active",  // Orion reuses jules phase
             ironclaw_super_agent: "jenny_active",
         };
         this.setPhase(phaseMap[templateKey] ?? "jenny_active");
