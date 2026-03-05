@@ -1249,16 +1249,26 @@ export default function VaultUI({ apiKey }: VaultProps) {
                         <div style={{ background: "rgba(0,255,65,0.05)", padding: "24px", textAlign: "center", fontWeight: 800, color: "#00ff41", fontSize: 11, letterSpacing: "0.1em" }}>BIODYNAMX 4.1</div>
 
                         {[
-                            { label: "Intelligence", comp: "Single-Path Logic", us: "IronClaw Multi-Agent Core" },
-                            { label: "Visualization", comp: "Static Avatars", us: "Nana Banana 2 (Dual-Coding)" },
+                            { label: "Architecture", comp: "Single-Path Chatbots", us: "IronClaw Multi-Agent Core" },
+                            { label: "Visuals", comp: "Static Stock Photos", us: "Nana Banana 2 (Dual-Coding)" },
                             { label: "Response", comp: "15-30 Second Latency", us: "< 1 Second (Native Audio)" },
-                            { label: "Branding", comp: "Vendor-Branded Logos", us: "Absolute Brand Secrecy" },
-                            { label: "Science", comp: "Generic Prompting", us: "Neurobiology & SPIN Native" },
-                            { label: "Pricing", comp: "15% Revenue / Usage Tax", us: "$497 Fixed (Elite 8 Inc.)" },
-                            { label: "Autonomy", comp: "Semi-Automated", us: "Fully Agentic / Self-Nav" },
+                            { label: "Branding", comp: "'Powered by Vendor' Logos", us: "Absolute Brand Secrecy" },
+                            { label: "Psychology", comp: "Generic Prompting", us: "Neurobiology & SPIN Native" },
+                            { label: "Pricing", comp: "15% Revenue / Usage Tax", us: "$1,497 / 90-Day Trial" },
+                            { label: "Autonomy", comp: "Semi-Automated Bots", us: "Fully Agentic / Self-Nav" },
                             { label: "Trust", comp: "No Guarantees", us: "Triple-Lock 5X ROI Guarantee" },
                             { label: "Availability", comp: "Human (9-5/M-F)", us: "Universal (24/7/365)" },
-                            { label: "Latency", comp: "Text-to-Speech Lag", us: "Live Flash Native Audio" }
+                            { label: "Latency", comp: "Text-to-Speech Lag", us: "Live Flash Native Audio" },
+                            { label: "Local SEO", comp: "Manual Updates", us: "Free AI GMB Optimization" },
+                            { label: "Social Media", comp: "Expensive Agencies", us: "24/7 AI Social Admin (Nova)" },
+                            { label: "AI Visibility", comp: "Zero Presence", us: "GEO/AEO Indexing Ready" },
+                            { label: "Reviews", comp: "Forgotten Customers", us: "AI List Reactivation" },
+                            { label: "Inbound", comp: "Voicemail / Missed", us: "Instant AI Textback/Callback" },
+                            { label: "Security", comp: "Standard Encryption", us: "AES-256 Military Grade" },
+                            { label: "Strategy", comp: "Reactive Support", us: "Quarterly Neuro-Audits" },
+                            { label: "Intelligence", comp: "Basic LLM Wrappers", us: "Vertex AI Enterprise Logic" },
+                            { label: "Integration", comp: "Manual Data Entry", us: "1,000+ API Direct Syncs" },
+                            { label: "Experience", comp: "Boring UI/UX", us: "Web 4.0 Immersive Vault" }
                         ].map((row, i) => (
                             <Fragment key={i}>
                                 <div style={{
@@ -1282,6 +1292,54 @@ export default function VaultUI({ apiKey }: VaultProps) {
                                 </div>
                             </Fragment>
                         ))}
+                    </div>
+
+                    {/* ── Pricing Hero ── */}
+                    <div style={{
+                        marginTop: 80,
+                        padding: 48,
+                        borderRadius: 32,
+                        background: "linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(0,255,65,0.02) 100%)",
+                        border: "1px solid rgba(255,255,255,0.05)",
+                        textAlign: "center"
+                    }}>
+                        <div style={{ fontSize: 13, fontWeight: 700, color: "#00ff41", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 16 }}>The Investment</div>
+                        <h2 style={{ fontSize: "clamp(32px, 5vw, 48px)", fontWeight: 900, marginBottom: 24 }}>
+                            A Full Workforce for <span style={{ color: "#00ff41" }}>$1,497/mo.</span>
+                        </h2>
+                        <div style={{ fontSize: 16, color: "rgba(255,255,255,0.5)", marginBottom: 40, maxWidth: 600, margin: "0 auto 40px" }}>
+                            Valued at $10,000+/mo in human labor. Includes all 8 agents, Free GMB Optimization, Social Media Admin, and our Triple-Lock 5X ROI Guarantee.
+                        </div>
+
+                        <div style={{
+                            display: "inline-block",
+                            background: "rgba(34,197,94,0.1)",
+                            border: "1px solid rgba(34,197,94,0.3)",
+                            padding: "32px 48px",
+                            borderRadius: "24px",
+                            textAlign: "center"
+                        }}>
+                            <div style={{ fontSize: 13, fontWeight: 800, color: "#22c55e", textTransform: "uppercase", marginBottom: 8 }}>Limited Elite Offer</div>
+                            <div style={{ fontSize: 36, fontWeight: 900, color: "#fff" }}>90-Day Trial Deal</div>
+                            <div style={{ fontSize: 18, color: "rgba(255,255,255,0.7)", marginTop: 8 }}>Get 50% Off your first 3 months. Only <strong style={{ color: "#fff" }}>$748/mo</strong>.</div>
+                            <button
+                                onClick={() => {/* handle CTA */ }}
+                                style={{
+                                    marginTop: 32,
+                                    padding: "16px 40px",
+                                    borderRadius: 12,
+                                    background: "#00ff41",
+                                    color: "#000",
+                                    fontWeight: 800,
+                                    fontSize: 16,
+                                    border: "none",
+                                    cursor: "pointer",
+                                    boxShadow: "0 10px 30px rgba(0,255,65,0.3)"
+                                }}
+                            >
+                                Claim My 90-Day Trial Offer →
+                            </button>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -1308,9 +1366,9 @@ export default function VaultUI({ apiKey }: VaultProps) {
                                 id: "aria_receptionist",
                                 name: "Meghan",
                                 role: "Reception & First Contact",
-                                chip1: "Sadaltager",
+                                chip1: "Smart Textback",
                                 chip2: "Cognitive Ease · Warm Routing",
-                                desc: "Never lose another lead at hello. Meghan answers every inbound call in under 1 second, 24/7 — and routes them to the right specialist before they hang up and call your competitor.",
+                                desc: "Never lose another lead at hello. Meghan answers every inbound call in under 1 second, 24/7 — and triggers instant textback/callback for missed opportunities.",
                                 result: "Every call answered. Zero leads lost at the door.",
                                 color: "#a78bfa",
                                 icon: "M",
@@ -1319,11 +1377,11 @@ export default function VaultUI({ apiKey }: VaultProps) {
                             {
                                 id: "jenny_discovery",
                                 name: "Jenny",
-                                role: "Discovery & Revenue Audit",
-                                chip1: "Laomedeia",
+                                role: "Audit & Reactivation",
+                                chip1: "Free Audit",
                                 chip2: "Limbic Resonance · Empathy",
-                                desc: "Jenny speaks to the limbic system, not the ego. She finds your exact revenue leak in 60 seconds and makes you feel understood doing it.",
-                                result: "Your revenue gap — quantified and felt.",
+                                desc: "Jenny finds your exact revenue leak in 60 seconds. She also reactivates your old customer list to generate new reviews and repeat bookings instantly.",
+                                result: "Revenue gap quantified + Old lists reactivated.",
                                 color: "#00ff41",
                                 icon: "J",
                                 image: "/agents/jenny.png"
@@ -1343,10 +1401,10 @@ export default function VaultUI({ apiKey }: VaultProps) {
                             {
                                 id: "hunter_prospector",
                                 name: "Hunter",
-                                role: "Lead Prospecting",
-                                chip1: "SPIN Selling",
+                                role: "Lead Hunter",
+                                chip1: "Outbound Lead Gen",
                                 chip2: "Implicit Pain Discovery",
-                                desc: "The seeker. Surfaces implicit pain using SPIN selling and commercial insight to book discovery calls with your top competitors' clients.",
+                                desc: "The seeker. Surfaces implicit pain using neuro-driven prospecting to book discovery calls with your top competitors' clients 24/7.",
                                 result: "Qualified Discovery Calls on your calendar.",
                                 color: "#ef4444",
                                 icon: "H",
@@ -1355,11 +1413,11 @@ export default function VaultUI({ apiKey }: VaultProps) {
                             {
                                 id: "nova_content",
                                 name: "Nova",
-                                role: "Content & Research",
-                                chip1: "Dual-Coding",
-                                chip2: "Brand Desire Architect",
-                                desc: "The brand architect. Nova targets the limbic system through Dual-Coding theory to generate brand desire and market authority.",
-                                result: "High-Authority Brand Presence 24/7.",
+                                role: "SEO / GEO / Social",
+                                chip1: "AEO Visibility",
+                                chip2: "Social Posting Admin",
+                                desc: "Nova keeps you suggested by Perplexity, Gemini, and ChatGPT. She posts all your social media and builds market authority while you sleep.",
+                                result: "AI Engine Visibility + Full Social Posting.",
                                 color: "#fbbf24",
                                 icon: "N",
                                 image: "/agents/nova.png"
@@ -1367,11 +1425,11 @@ export default function VaultUI({ apiKey }: VaultProps) {
                             {
                                 id: "orion_ops",
                                 name: "O'Ryan",
-                                role: "Operations & Workflow",
-                                chip1: "Procedural Logic",
-                                chip2: "Operational Bleed Killer",
-                                desc: "The optimizer. Framed in procedural logic, O'Ryan eliminates 15+ hours of weekly operations bleed by automating your internal workflows.",
-                                result: "15+ Hours Recovered Weekly via Automation.",
+                                role: "GMB & Reviews",
+                                chip1: "GMB Booster",
+                                chip2: "Review Automation",
+                                desc: "The optimizer. O'Ryan sets up your Google Business Profile for free, automates customer reviews, and kills operational revenue bleed.",
+                                result: "Free GMB Setup + Review Dominance.",
                                 color: "#f59e0b",
                                 icon: "O",
                                 image: "/agents/oryan.png"
@@ -1391,11 +1449,11 @@ export default function VaultUI({ apiKey }: VaultProps) {
                             {
                                 id: "ledger_finance",
                                 name: "Ledger",
-                                role: "Financial Assistant",
-                                chip1: "Decimal Precise",
-                                chip2: "ROI Justification",
-                                desc: "The analyst. Appeals to the neocortex with decimal-precise ROI data (e.g. 3.2 months break-even) to justify every investment.",
-                                result: "Neocortical Justification for every spend.",
+                                role: "Security & ROI",
+                                chip1: "Military-Grade",
+                                chip2: "ROI Transparency",
+                                desc: "The custodian. Ledger ensures top-tier AES-256 data security and compliance while tracking every dollar bioDynamX recovers for you.",
+                                result: "Maximum Security + 5X ROI Guarantee.",
                                 color: "#06b6d4",
                                 icon: "L",
                                 image: "/agents/ledger.png"
@@ -1627,24 +1685,24 @@ export default function VaultUI({ apiKey }: VaultProps) {
                     }}>
                         {[
                             { title: "Dual-Agent Architecture", desc: "Jenny Voice + Jenny Visual (Nana Banana 2) synchronized in real-time." },
-                            { title: "Autonomous Site Navigation", desc: "Agents literally walk through your website with visitors manually." },
-                            { title: "Elite 8 Workforce", desc: "8 specialized agents (Meghan, Jenny, Mark, etc.) vs. just one generic bot." },
+                            { title: "Autonomous Site Navigation", desc: "Agents walk through your website with visitors manually." },
+                            { title: "Free GMB Optimization", desc: "O'Ryan sets up your Google Business Profile for total local dominance." },
+                            { title: "AI Visibility (GEO/AEO)", desc: "Nova ensures you are suggested by Perplexity, Gemini, and ChatGPT." },
+                            { title: "Social Media Admin", desc: "Nova posts and manages all your social channels automatically." },
+                            { title: "Customer Reactivation", desc: "Jenny reaches out to old lists to generate reviews and repeat sales." },
+                            { title: "Textback / Callback", desc: "Meghan instantly recovers missed calls via automated SMS & Voice." },
                             { title: "Neuroscience-Engineered", desc: "Built on Triune Brain theory, Dual-Coding, and high-status NLP." },
-                            { title: "Web 4.0 Native", desc: "An immersive, real-time, agentic ecosystem, not just a window widget." },
+                            { title: "Web 4.0 Native", desc: "An immersive, real-time, agentic ecosystem, not just a widget." },
                             { title: "IronClaw Core", desc: "Proprietary autonomous orchestration for zero-latency handoffs." },
                             { title: "Real-Time ROI Modeling", desc: "Mark calculates revenue leaks live while talking to prospects." },
                             { title: "Nana Banana 2 Generative", desc: "Images adapt instantly to the conversation brain state." },
                             { title: "Subconscious Framing", desc: "Matching user language patterns to bypass conscious resistance." },
-                            { title: "24/7 Peak Performance", desc: "Zero-latency responses faster than humanly possible." },
-                            { title: "Multi-Channel Sync", desc: "Phone, SMS, and Email automation in perfect harmony." },
-                            { title: "Result-Locked Closing", desc: "Focused only on revenue recovery and customer acquisition." },
-                            { title: "Dynamic Emotional Pivot", desc: "Agents adapt empathy vs. authority based on prospect tone." },
+                            { title: "Military-Grade Security", desc: "AES-256 Encryption and PII Redaction for total data safety." },
+                            { title: "SPIN-Native Hunting", desc: "Hunter uses 'The Challenger Sale' to capture competitors' clients." },
                             { title: "High-Status Personas", desc: "Each agent maintains an elite professional identity." },
                             { title: "Decision Friction Removal", desc: "Cognitive offloading designed to make saying 'Yes' effortless." },
                             { title: "Loss Aversion Triggering", desc: "We quantify the financial bleed of doing nothing." },
                             { title: "Temporal Contiguity", desc: "Oral narration and visuals are perfectly time-aligned." },
-                            { title: "Spatial Anchoring", desc: "Strategic layout of pain vs. solution across the visual field." },
-                            { title: "Commercial Insight", desc: "Hunter delivers 'The Challenger Sale' market re-frames." },
                             { title: "Absolute Brand Secrecy", desc: "Your backend intelligence is invisible and untouchable." },
                         ].map((adv, idx) => (
                             <div key={idx} style={{
