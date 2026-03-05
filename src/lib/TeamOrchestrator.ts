@@ -204,15 +204,14 @@ export class TeamOrchestrator {
         const agent = cloneAgent(templateKey);
         // Map template key to the correct TeamPhase
         const phaseMap: Record<string, TeamPhase> = {
-            aria_receptionist: "aria_active",
+            aria_receptionist: "meghan_active",
             jenny_discovery: "jenny_active",
             mark_closer: "mark_active",
-            jules_architect: "jules_active",
-            support_specialist: "support_active",
+            support_specialist: "alex_active",
             hunter_prospector: "hunter_active",
             nova_content: "nova_active",
             ledger_finance: "ledger_active",
-            orion_ops: "jules_active",  // Orion reuses jules phase
+            orion_ops: "oryan_active",
             ironclaw_super_agent: "jenny_active",
         };
         this.setPhase(phaseMap[templateKey] ?? "jenny_active");

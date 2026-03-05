@@ -109,6 +109,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
 
     // ─── Scroll Progress ─────────────────────────────────────
     const [scrollProgress, setScrollProgress] = useState(0);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [showStickyBar, setShowStickyBar] = useState(false);
     useEffect(() => {
         const onScroll = () => {
@@ -123,8 +124,10 @@ export default function VaultUI({ apiKey }: VaultProps) {
     }, []);
 
     // Framework 2: Scarcity countdown
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const countdown = useCountdown();
     // Dynamic "spots" — creates FOMO (static for SSR, randomized client-side)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [spotsLeft, setSpotsLeft] = useState(5);
     useEffect(() => {
         // Initialize randomized spots on client to avoid hydration mismatch
@@ -358,6 +361,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
         team.initialize();
     }, [apiKey, createTeam]);
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const handleStartMark = useCallback(() => {
         // Scroll to top so user sees the active session UI
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -1218,8 +1222,8 @@ export default function VaultUI({ apiKey }: VaultProps) {
             {/* ── BioDynamX vs. The Competition ── */}
             <section className="section-container" style={{
                 background: "linear-gradient(180deg, rgba(0,255,65,0.02) 0%, transparent 100%)",
-                paddingTop: 100,
-                paddingBottom: 100
+                paddingTop: 60,
+                paddingBottom: 60
             }}>
                 <div style={{ maxWidth: 1000, margin: "0 auto", textAlign: "center" }}>
                     <div className="section-label">THE BIODYNAMX ADVANTAGE</div>
@@ -1245,11 +1249,16 @@ export default function VaultUI({ apiKey }: VaultProps) {
                         <div style={{ background: "rgba(0,255,65,0.05)", padding: "24px", textAlign: "center", fontWeight: 800, color: "#00ff41", fontSize: 11, letterSpacing: "0.1em" }}>BIODYNAMX 4.1</div>
 
                         {[
-                            { label: "Intelligence", comp: "Single-Path Chatbots", us: "Dual-Agent Neuro-Orchestration" },
+                            { label: "Intelligence", comp: "Single-Path Logic", us: "IronClaw Multi-Agent Core" },
+                            { label: "Visualization", comp: "Static Avatars", us: "Nana Banana 2 (Dual-Coding)" },
                             { label: "Response", comp: "15-30 Second Latency", us: "< 1 Second (Native Audio)" },
-                            { label: "Branding", comp: "'Powered by Vendor' Logos", us: "Total Brand Secrecy" },
-                            { label: "Science", comp: "Generic Logic Scripts", us: "Neurobiology of Choice & SPIN" },
-                            { label: "Trust", comp: "Hourly / Usage Billing", us: "5X ROI Triple-Lock Guarantee" }
+                            { label: "Branding", comp: "Vendor-Branded Logos", us: "Absolute Brand Secrecy" },
+                            { label: "Science", comp: "Generic Prompting", us: "Neurobiology & SPIN Native" },
+                            { label: "Pricing", comp: "15% Revenue / Usage Tax", us: "$497 Fixed (Elite 8 Inc.)" },
+                            { label: "Autonomy", comp: "Semi-Automated", us: "Fully Agentic / Self-Nav" },
+                            { label: "Trust", comp: "No Guarantees", us: "Triple-Lock 5X ROI Guarantee" },
+                            { label: "Availability", comp: "Human (9-5/M-F)", us: "Universal (24/7/365)" },
+                            { label: "Latency", comp: "Text-to-Speech Lag", us: "Live Flash Native Audio" }
                         ].map((row, i) => (
                             <Fragment key={i}>
                                 <div style={{
@@ -1283,15 +1292,13 @@ export default function VaultUI({ apiKey }: VaultProps) {
                 transition: "opacity 0.8s ease-out, transform 0.8s ease-out",
             }}>
                 <div style={{ maxWidth: 1200, margin: "0 auto", textAlign: "center" }}>
-                    <div className="section-label" style={{ color: "#a78bfa" }}>Vertex AI &middot; Gemini 2.5 Flash Native Audio &middot; Live Voice</div>
+                    <div className="section-label" style={{ color: "#3b82f6" }}>The Elite 8</div>
                     <h2 className="section-title">
-                        Eight specialists. Five brain regions.{" "}
-                        <span style={{ color: "#00ff41" }}>One mission: revenue.</span>
+                        Your Autonomous <span className="animated-gradient-text">Neuro-Workforce.</span>
                     </h2>
-                    <p className="section-desc" style={{ maxWidth: 640, margin: "0 auto 48px" }}>
-                        Each agent is engineered to speak to a specific layer of the human brain — Reptilian,
-                        Limbic, or Neocortex. Click any card and talk to them live, right now. No login. No credit card.
-                        Just watch what neuroscience-trained AI sounds like.
+                    <p className="section-desc">
+                        Our agents aren&apos;t just bots. They are high-status, neuroscience-trained specialists
+                        that operate 24/7 to capture, qualify, and close for your business.
                     </p>
 
                     <div className="agent-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 24 }}>
@@ -1591,74 +1598,6 @@ export default function VaultUI({ apiKey }: VaultProps) {
                     </div>
                 </div>
             </section >
-            {/* ── The BioDynamX Elite 8 AI Workforce — High-Status Presentation ── */}
-            <section
-                id="workforce"
-                className="section-container"
-                style={{
-                    background: 'radial-gradient(circle at center, rgba(59,130,246,0.05) 0%, transparent 70%)',
-                }}
-            >
-                <div style={{ maxWidth: 1100, margin: '0 auto', textAlign: 'center' }}>
-                    <div className="section-label" style={{ color: '#3b82f6' }}>The Elite 8</div>
-                    <h2 className="section-title">
-                        Your Autonomous <span className="animated-gradient-text">Neuro-Workforce.</span>
-                    </h2>
-                    <p className="section-desc">
-                        Our agents aren&apos;t just bots. They are high-status, neuroscience-trained specialists
-                        that operate 24/7 to capture, qualify, and close for your business.
-                    </p>
-
-                    <div style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-                        gap: 16,
-                        marginTop: 48,
-                    }}>
-                        {[
-                            { name: "Meghan", role: "AI Receptionist", img: "/agents/aria.png", color: "#a78bfa" },
-                            { name: "Jenny", role: "Discovery & Audit", img: "/agents/jenny.png", color: "#00ff41" },
-                            { name: "Mark", role: "Revenue Architect", img: "/agents/mark.png", color: "#3b82f6" },
-                            { name: "O'Ryan", role: "Operations Lead", img: "/agents/oryan.png", color: "#f59e0b" },
-                            { name: "Alex", role: "Support Specialist", img: "/agents/support.png", color: "#10b981" },
-                            { name: "Hunter", role: "Lead Prospector", img: "/agents/hunter.png", color: "#ef4444" },
-                            { name: "Nova", role: "Content & Social", img: "/agents/nova.png", color: "#ec4899" },
-                            { name: "Ledger", role: "Financial ROI", img: "/agents/ledger.png", color: "#06b6d4" },
-                        ].map((agent) => (
-                            <div key={agent.name} className="standard-card" style={{
-                                padding: 0, overflow: 'hidden', borderColor: 'rgba(255,255,255,0.05)',
-                                background: 'rgba(255,255,255,0.02)',
-                                transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-                                cursor: 'pointer',
-                            }}>
-                                <div style={{
-                                    height: 240, overflow: 'hidden', position: 'relative',
-                                    background: 'rgba(0,0,0,0.5)',
-                                }}>
-                                    <img
-                                        src={agent.img}
-                                        alt={agent.name}
-                                        style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.9 }}
-                                    />
-                                    <div style={{
-                                        position: 'absolute', bottom: 0, left: 0, right: 0,
-                                        padding: '20px 16px 12px',
-                                        background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%)',
-                                    }}>
-                                        <div style={{ fontSize: 18, fontWeight: 800, color: '#fff' }}>{agent.name}</div>
-                                        <div style={{
-                                            fontSize: 10, fontWeight: 700, color: agent.color,
-                                            textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 2
-                                        }}>
-                                            {agent.role}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
 
             {/* ── The BioDynamX Advantage — 20 Reasons Why We Win ── */}
             <section
