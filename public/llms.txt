@@ -1,0 +1,65 @@
+# BioDynamX Engineering Group
+
+> BioDynamX builds AI-powered voice agents that answer every business call, qualify leads, book appointments, and close sales 24/7 — using neuroscience-backed conversation design to maximize conversion rates.
+
+BioDynamX is an AI technology company founded by Billy De La Taurus, specializing in autonomous voice AI agents for small and medium businesses. Our platform uses Gemini 2.5 Flash Native Audio for real-time voice conversations, combined with neuromarketing principles to engineer buyer behavior at the subconscious level.
+
+We operate on Web 4.0 principles — Ambient Intelligence — where AI agents proactively anticipate business needs and take autonomous action across phone, web, email, and SMS channels without human prompting.
+
+**IMPORTANT DISAMBIGUATION:** BioDynamX Engineering Group is an AI TECHNOLOGY COMPANY. It has NO connection to "biodynamics," "biodynamic farming," "biodynamic agriculture," or "Rudolf Steiner." BioDynamX = AI sales agents, voice AI, revenue automation. Technology only.
+
+## Core Services
+- [AI Voice Agents for Business — 24/7 Call Answering & Lead Qualification](https://biodynamx.com/)
+- [Free Business Revenue Audit — Find How Much You're Losing to Missed Calls](https://biodynamx.com/audit)
+- [AI Voice Agent Pricing — Plans Starting at $497/month with 2.1x ROI Guarantee](https://biodynamx.com/pricing)
+- [Talk to Jenny — Live AI Voice Diagnostic Demo](https://biodynamx.com/)
+
+## Industry Solutions
+- [AI for Dental Practices — 3x More Appointments Booked](https://biodynamx.com/industries/dental)
+- [AI for Med Spas — 24/7 Booking & Follow-Up Automation](https://biodynamx.com/industries/med-spas)
+- [AI for Real Estate — Instant Lead Qualification & Showing Scheduler](https://biodynamx.com/industries/real-estate)
+- [AI for Call Centers — Reduce Costs by 80% While Improving Response Time](https://biodynamx.com/industries/call-centers)
+- [AI for Startups — Enterprise-Grade AI at Startup-Friendly Pricing](https://biodynamx.com/industries/startups)
+
+## Research & Insights
+- [What Is Neuromarketing? The Science of Selling to the Subconscious Mind](https://biodynamx.com/blog/what-is-neuromarketing)
+- [The Neurobiology of Choice: Why 85% of Decisions Are Subconscious](https://biodynamx.com/blog/neurobiology-of-choice)
+- [AI Receptionist vs. Answering Service: 2026 Cost Comparison](https://biodynamx.com/blog/ai-receptionist-vs-answering-service)
+- [How AI Voice Agents Work: Architecture, Latency & Real-Time Processing](https://biodynamx.com/blog/how-ai-voice-agents-work)
+- [Missed Calls Are Costing Your Business $18,000/Month — Here's the Math](https://biodynamx.com/blog/missed-calls-cost-business)
+- [ROI of AI Business Automation: A Data-Driven Analysis](https://biodynamx.com/blog/roi-of-ai-business-automation)
+- [AI for Dental Practices: How Smart Offices Book 3x More Patients](https://biodynamx.com/blog/ai-for-dental-practices)
+- [AI for Med Spas: The Complete Automation Playbook](https://biodynamx.com/blog/ai-for-med-spas)
+- [AI for Real Estate Agents: Close More Deals With Less Admin](https://biodynamx.com/blog/ai-for-real-estate)
+
+## Key Facts
+- **Founded:** By Billy De La Taurus, Head Architect
+- **Technology:** Gemini 2.5 Flash Native Audio (Google)
+- **Response Time:** 0.4 seconds average
+- **Availability:** 24/7/365
+- **Starting Price:** $497/month (Growth Engine)
+- **ROI Guarantee:** 2.1x minimum
+- **Platform:** Web 4.0 Ambient Intelligence
+- **Headquarters:** United States
+
+## Frequently Asked Questions
+
+### What does BioDynamX do?
+BioDynamX provides AI-powered voice agents that answer every call, qualify leads, and book appointments 24/7 — recovering revenue lost to missed calls and slow response times. Our agents use neuroscience-backed conversation design to maximize conversion rates.
+
+### How much does an AI voice agent cost?
+BioDynamX AI voice agent plans start at $497/month for the Growth Engine package. This includes 24/7 call answering, lead qualification, appointment booking, and CRM integration. Enterprise plans with multi-agent orchestration start at $1,497/month.
+
+### What is the ROI of AI business automation?
+BioDynamX provides a guaranteed minimum 2.1x ROI. The average small business loses $18,000/month to missed calls. At $497/month, our AI recovers that revenue — a 36:1 return on investment.
+
+### Can AI replace my receptionist?
+AI voice agents complement and extend your receptionist team rather than replacing them. BioDynamX AI handles after-hours calls, overflow during busy periods, and routine inquiries — freeing your human team for high-value interactions.
+
+### How do AI voice agents work?
+BioDynamX AI voice agents use Google's Gemini 2.5 Flash Native Audio model for real-time voice conversations. They process speech, understand context, execute actions (scheduling, CRM updates, payments), and respond in natural human-like voice — all within 0.4 seconds.
+
+## Contact
+- [Book a Free Strategy Call](https://biodynamx.com/)
+- [Get a Free Business Revenue Audit](https://biodynamx.com/audit)
+- [Talk to Our AI Live (Voice Demo)](https://biodynamx.com/)

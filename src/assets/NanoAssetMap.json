@@ -1,0 +1,45 @@
+{
+    "meta": {
+        "version": "1.0",
+        "purpose": "Nano Banana high-fidelity texture prompts for Bento Grid components",
+        "format": "PNG, 1024x1024, transparent where noted"
+    },
+    "assets": [
+        {
+            "id": "vault_bg_texture",
+            "usage": "Full-page background subtle texture overlay",
+            "prompt": "Ultra-subtle noise texture on pure black (#000000). Barely visible grain pattern, like expensive matte paper. No color, only monochrome micro-noise at 3% opacity. 1024x1024 seamless tile.",
+            "opacity": 0.03
+        },
+        {
+            "id": "bento_card_surface",
+            "usage": "Background texture for Bento Grid cards",
+            "prompt": "Dark obsidian stone surface texture. Nearly black with very faint crystalline highlights. Medical-grade, sterile feel. Flat lighting, no reflections. 1024x1024 seamless.",
+            "opacity": 0.08
+        },
+        {
+            "id": "agent_avatar_jenny",
+            "usage": "Agent indicator: Jenny the Diagnostic Surgeon",
+            "prompt": "Minimalist geometric icon of a female silhouette in surgical green (#00ff41) on transparent background. Clean lines, no detail, just the outline suggesting authority and calm. 256x256 PNG.",
+            "opacity": 1.0
+        },
+        {
+            "id": "agent_avatar_mark",
+            "usage": "Agent indicator: Mark the ROI Architect",
+            "prompt": "Minimalist geometric icon of a male silhouette in surgical green (#00ff41) on transparent background. Sharp angular lines suggesting technical precision and authority. 256x256 PNG.",
+            "opacity": 1.0
+        },
+        {
+            "id": "revenue_leak_glyph",
+            "usage": "Icon for revenue leak findings in audit grid",
+            "prompt": "Abstract downward-flowing liquid dropping through a crack in a surface. Surgical green on black. Minimal, geometric, icon-sized. 128x128 PNG transparent background.",
+            "opacity": 1.0
+        },
+        {
+            "id": "roi_graph_bg",
+            "usage": "Background for ROI projection chart",
+            "prompt": "Subtle grid pattern on pure black. Very faint surgical green lines forming a coordinate system. 512x512 seamless tile. Medical monitor aesthetic.",
+            "opacity": 0.1
+        }
+    ]
+}

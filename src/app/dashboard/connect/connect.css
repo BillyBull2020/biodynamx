@@ -1,0 +1,621 @@
+.connect-page {
+    min-height: 100vh;
+    background: #0a0a0f;
+    color: #e0e0e0;
+    font-family: 'Inter', -apple-system, sans-serif;
+    padding: 2rem;
+}
+
+.connect-header {
+    max-width: 900px;
+    margin: 0 auto 2rem;
+    text-align: center;
+}
+
+.connect-header h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 0.5rem;
+}
+
+.connect-header .subtitle {
+    color: #888;
+    font-size: 1rem;
+}
+
+.connect-status-bar {
+    max-width: 900px;
+    margin: 0 auto 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 1rem 2rem;
+    background: rgba(0, 255, 65, 0.05);
+    border: 1px solid rgba(0, 255, 65, 0.15);
+    border-radius: 12px;
+}
+
+.status-count {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #00ff41;
+}
+
+.status-label {
+    color: #888;
+    font-size: 0.875rem;
+}
+
+.connect-grid {
+    max-width: 900px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 1.5rem;
+}
+
+.connect-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 1.75rem;
+    transition: all 0.3s ease;
+}
+
+.connect-card:hover {
+    border-color: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateY(-2px);
+}
+
+.connect-card.connected {
+    border-color: rgba(0, 255, 65, 0.3);
+    background: rgba(0, 255, 65, 0.03);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.card-icon.google {
+    background: rgba(66, 133, 244, 0.15);
+}
+
+.card-icon.meta {
+    background: rgba(66, 103, 178, 0.15);
+}
+
+.card-icon.twilio {
+    background: rgba(241, 35, 47, 0.15);
+}
+
+.card-icon.stripe {
+    background: rgba(99, 91, 255, 0.15);
+}
+
+.card-icon.supabase {
+    background: rgba(62, 207, 142, 0.15);
+}
+
+.card-icon.gemini {
+    background: rgba(138, 43, 226, 0.15);
+}
+
+.card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.card-subtitle {
+    font-size: 0.8rem;
+    color: #888;
+    margin-top: 2px;
+}
+
+.card-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.card-status.live {
+    background: rgba(0, 255, 65, 0.1);
+    color: #00ff41;
+    border: 1px solid rgba(0, 255, 65, 0.2);
+}
+
+.card-status.needs-setup {
+    background: rgba(255, 193, 7, 0.1);
+    color: #ffc107;
+    border: 1px solid rgba(255, 193, 7, 0.2);
+}
+
+.card-status .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+
+.card-status.live .dot {
+    background: #00ff41;
+}
+
+.card-status.needs-setup .dot {
+    background: #ffc107;
+}
+
+.card-body {
+    margin: 1rem 0;
+}
+
+.card-body p {
+    color: #aaa;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.card-features {
+    list-style: none;
+    padding: 0;
+    margin: 0.75rem 0 0;
+}
+
+.card-features li {
+    color: #999;
+    font-size: 0.8rem;
+    padding: 0.2rem 0;
+}
+
+.card-features li::before {
+    content: "✓ ";
+    color: #00ff41;
+}
+
+.card-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+}
+
+.btn-connect {
+    flex: 1;
+    padding: 0.7rem 1.25rem;
+    border-radius: 10px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    text-align: center;
+    display: inline-block;
+}
+
+.btn-connect.primary {
+    background: linear-gradient(135deg, #00ff41, #00cc33);
+    color: #000;
+}
+
+.btn-connect.primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(0, 255, 65, 0.3);
+}
+
+.btn-connect.secondary {
+    background: rgba(255, 255, 255, 0.06);
+    color: #ccc;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-connect.secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.btn-connect.connected-btn {
+    background: rgba(0, 255, 65, 0.08);
+    color: #00ff41;
+    border: 1px solid rgba(0, 255, 65, 0.2);
+    cursor: default;
+}
+
+.connected-account {
+    font-size: 0.8rem;
+    color: #00ff41;
+    margin-top: 0.5rem;
+    opacity: 0.8;
+}
+
+.setup-instructions {
+    max-width: 900px;
+    margin: 3rem auto 0;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+}
+
+.setup-instructions h2 {
+    color: #fff;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+}
+
+.setup-step {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 10px;
+}
+
+.step-number {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(0, 255, 65, 0.15);
+    color: #00ff41;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.step-content h3 {
+    color: #fff;
+    font-size: 0.95rem;
+    margin: 0 0 0.25rem;
+}
+
+.step-content p {
+    color: #888;
+    font-size: 0.825rem;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.step-content a {
+    color: #00ff41;
+    text-decoration: none;
+}
+
+.step-content a:hover {
+    text-decoration: underline;
+}
+
+.step-content code {
+    background: rgba(0, 255, 65, 0.08);
+    color: #00ff41;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-family: 'SF Mono', monospace;
+}
+
+.toast {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    z-index: 1000;
+    animation: slideIn 0.3s ease;
+}
+
+.toast.success {
+    background: rgba(0, 255, 65, 0.15);
+    border: 1px solid rgba(0, 255, 65, 0.3);
+    color: #00ff41;
+}
+
+.toast.error {
+    background: rgba(255, 0, 0, 0.15);
+    border: 1px solid rgba(255, 0, 0, 0.3);
+    color: #ff4444;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.back-link {
+    max-width: 900px;
+    margin: 0 auto 1.5rem;
+    display: block;
+}
+
+.back-link a {
+    color: #888;
+    text-decoration: none;
+    font-size: 0.875rem;
+    transition: color 0.2s;
+}
+
+.back-link a:hover {
+    color: #00ff41;
+}
+
+/* ─── Progress Bar & Layout Helpers ──────────────── */
+.status-center {
+    text-align: center;
+}
+
+.progress-bar-track {
+    flex: 1;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00ff41, #00cc33);
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+.card-title-wrap {
+    flex: 1;
+}
+
+.setup-meta {
+    margin-top: 1.5rem;
+}
+
+/* ═══════════════════════════════════════════════════════
+   STRIPE CONNECT — Additional Styles
+   ═══════════════════════════════════════════════════════ */
+
+/* ── Connect Forms ──────────────────────────────────── */
+
+.connect-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.form-row {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.form-row>* {
+    flex: 1;
+    min-width: 200px;
+}
+
+.connect-input {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    color: #f0f0f0;
+    font-size: 0.95rem;
+    font-family: inherit;
+    transition: border-color 0.2s ease;
+    width: 100%;
+}
+
+.connect-input:focus {
+    outline: none;
+    border-color: rgba(0, 255, 65, 0.5);
+    box-shadow: 0 0 0 3px rgba(0, 255, 65, 0.08);
+}
+
+.connect-input::placeholder {
+    color: #64748b;
+}
+
+/* ── Status Badges (Connect-specific) ──────────────── */
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.82rem;
+    font-weight: 600;
+}
+
+.status-badge.active {
+    background: rgba(0, 255, 65, 0.12);
+    color: #00ff41;
+    border: 1px solid rgba(0, 255, 65, 0.25);
+}
+
+.status-badge.pending {
+    background: rgba(250, 204, 21, 0.12);
+    color: #facc15;
+    border: 1px solid rgba(250, 204, 21, 0.25);
+}
+
+.status-badge.inactive {
+    background: rgba(239, 68, 68, 0.12);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.25);
+}
+
+.status-row {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin: 0.75rem 0;
+}
+
+/* ── Product Grid ──────────────────────────────────── */
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.product-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 1.25rem;
+    transition: all 0.2s ease;
+}
+
+.product-card:hover {
+    border-color: rgba(0, 255, 65, 0.25);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.product-name {
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 0.3rem;
+    color: #fff;
+}
+
+.product-desc {
+    color: #94a3b8;
+    font-size: 0.85rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.4;
+}
+
+.product-price {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #00ff41;
+    margin-bottom: 0.75rem;
+}
+
+/* ── Action Buttons (Connect-specific) ─────────────── */
+
+.connect-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1.25rem;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    font-family: inherit;
+    transition: all 0.2s ease;
+}
+
+.connect-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.connect-btn.green {
+    background: linear-gradient(135deg, #00ff41 0%, #00cc33 100%);
+    color: #000;
+}
+
+.connect-btn.green:hover:not(:disabled) {
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+    transform: translateY(-1px);
+}
+
+.connect-btn.blue {
+    background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+    color: #fff;
+}
+
+.connect-btn.blue:hover:not(:disabled) {
+    box-shadow: 0 0 20px rgba(96, 165, 250, 0.3);
+}
+
+.connect-btn.outline {
+    background: transparent;
+    color: #ccc;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.connect-btn.outline:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(0, 255, 65, 0.3);
+}
+
+/* ── Connect Messages ──────────────────────────────── */
+
+.connect-msg {
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    margin: 0.5rem 0;
+}
+
+.connect-msg.error {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.connect-msg.success {
+    background: rgba(0, 255, 65, 0.08);
+    color: #00ff41;
+    border: 1px solid rgba(0, 255, 65, 0.15);
+}
+
+/* ── Spinner ────────────────────────────────────────── */
+
+.connect-spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-top-color: #00ff41;
+    border-radius: 50%;
+    animation: connect-spin 0.6s linear infinite;
+}
+
+@keyframes connect-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ── Section Divider ────────────────────────────────── */
+
+.connect-hr {
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    margin: 1.5rem 0;
+}

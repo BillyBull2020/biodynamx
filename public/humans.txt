@@ -1,0 +1,41 @@
+/* TEAM */
+Founder & CEO: Billy De La Taurus
+Contact: billy@biodynamx.com
+Twitter: @billydelataurus
+LinkedIn: https://www.linkedin.com/in/billy-delataurus-biodynamx
+Amazon: https://www.amazon.com/stores/Billy-De-La-Taurus/author/B0FRMP7JJF
+Books: "The AI Business Revolution" (#1 Amazon Best-Seller), "The Business Owner's Guide to AI Automation Excellence" (#1 Amazon Best-Seller)
+Location: Denver, Colorado, USA
+
+/* AI TEAM */
+Jenny: Senior Diagnostic Consultant (AI Voice Agent)
+Mark: Technical Architect & Closer (AI Voice Agent)
+Aria: AI Receptionist (24/7 Call Answering)
+Sarah: Client Success Manager (AI)
+Billy (AI): Chief Strategist (AI)
+
+/* COMPANY */
+Name: BioDynamX Engineering Group
+URL: https://biodynamx.com
+Founded: 2025
+Mission: AI-powered revenue recovery using the Neurobiology of Choice
+Expertise: SEO, GEO, AEO, AI Automation, Voice AI, Persuasive Design Engineering
+
+/* TECHNOLOGY */
+Platform: Next.js, React, TypeScript
+AI: Google Gemini 2.5 (multi-modal voice + text)
+Infrastructure: Google Cloud, Firebase, Supabase (PostgreSQL)
+Payments: Stripe
+Telephony: Twilio
+Email: Resend
+Compliance: SOC 2 Type II, GDPR Ready
+Uptime: 99.9% SLA
+
+/* SITE */
+Standards: HTML5, CSS3, ES6+
+Frameworks: Next.js 14, React 18
+Fonts: Inter (Google Fonts)
+Schema: JSON-LD (Schema.org)
+SEO: 16+ structured data schemas
+GEO: llms.txt, DefinedTerm schemas, FAQ schemas
+AEO: Speakable specification, question-based headings

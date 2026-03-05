@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "bio-dynamx"
+  },
+  "targets": {
+    "bio-dynamx": {
+      "hosting": {
+        "app": [
+          "bio-dynamx"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

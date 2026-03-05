@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+    <ShortName>BioDynamX</ShortName>
+    <Description>Search BioDynamX — AI Revenue Recovery Platform. Free business audits, AI voice agents, GEO &amp; AEO optimization.</Description>
+    <Tags>AI automation revenue recovery GEO AEO SEO business audit voice agent</Tags>
+    <Contact>billy@biodynamx.com</Contact>
+    <Url type="text/html" template="https://biodynamx.com/audit?q={searchTerms}"/>
+    <Url type="application/opensearchdescription+xml" rel="self" template="https://biodynamx.com/opensearch.xml"/>
+    <Image height="16" width="16" type="image/x-icon">https://biodynamx.com/favicon.ico</Image>
+    <InputEncoding>UTF-8</InputEncoding>
+    <OutputEncoding>UTF-8</OutputEncoding>
+    <Language>en-us</Language>
+    <SyndicationRight>open</SyndicationRight>
+    <AdultContent>false</AdultContent>
+</OpenSearchDescription>

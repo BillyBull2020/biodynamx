@@ -1,0 +1,41 @@
+{
+    "meta": {
+        "version": "1.0",
+        "purpose": "Veo cinematic background prompts for BioDynamX Obsidian Vault",
+        "resolution": "1920x1080",
+        "framerate": "24fps",
+        "duration": "6-10 seconds looping"
+    },
+    "assets": [
+        {
+            "id": "vault_init",
+            "trigger": "standby → jenny_active",
+            "prompt": "Abstract close-up of data particles flowing through obsidian glass tubes. Deep black background. Faint surgical green (#00ff41) light traces along the edges. Microscopic medical-grade texture. Cinematic 24fps. No text. Ultra-minimal. Dark. Precise.",
+            "loop": true
+        },
+        {
+            "id": "diagnostic_flow",
+            "trigger": "jenny_active",
+            "prompt": "Extreme macro shot of neural pathways activating in sequence. Black background. Thin green luminescent lines propagating left to right. Medical imagery feel — like watching a diagnostic scan. Slow, deliberate movement. Cinematic depth of field. 24fps loop.",
+            "loop": true
+        },
+        {
+            "id": "handoff_flash",
+            "trigger": "handoff",
+            "prompt": "Sharp geometric pulse expanding from center. Pure black to bright surgical green flash, then fading. Like a system reboot. Hard edges, no gradients. 2-second burst. Cinematic.",
+            "loop": false
+        },
+        {
+            "id": "architect_grid",
+            "trigger": "mark_active",
+            "prompt": "Abstract architectural wireframe grid rotating slowly in 3D space. Obsidian black background. Bright surgical green wireframe lines. Engineering blueprint aesthetic. Precise, mathematical, authoritative. 24fps loop.",
+            "loop": true
+        },
+        {
+            "id": "checkout_seal",
+            "trigger": "checkout",
+            "prompt": "Gold and green seal materializing from particles. Premium luxury feel against pure black. Like a wax stamp forming. Surgical green glow around edges. Cinematic slow motion. 24fps.",
+            "loop": false
+        }
+    ]
+}

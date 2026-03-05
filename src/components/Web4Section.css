@@ -1,0 +1,331 @@
+/* ═══════════════════════════════════════════════════════════════════
+   BIODYNAMX — WEB 4.0 SECTION STYLES
+   Premium dark-tech aesthetic with green neural accents
+   ═══════════════════════════════════════════════════════════════════ */
+
+.web4-section {
+    position: relative;
+    padding: clamp(60px, 10vw, 120px) clamp(16px, 5vw, 80px);
+    max-width: 1200px;
+    margin: 0 auto;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.web4-section.web4-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Neural grid background */
+.web4-grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(0, 255, 65, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 65, 0.03) 1px, transparent 1px);
+    background-size: 48px 48px;
+    -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+    pointer-events: none;
+}
+
+/* Section Label */
+.web4-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    background: rgba(0, 255, 65, 0.06);
+    border: 1px solid rgba(0, 255, 65, 0.2);
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: #00ff41;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+}
+
+.web4-label-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #00ff41;
+    box-shadow: 0 0 8px #00ff41;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* Headline */
+.web4-headline {
+    font-size: clamp(28px, 4.5vw, 56px);
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    margin-bottom: 20px;
+    max-width: 800px;
+}
+
+.web4-gradient-text {
+    background: linear-gradient(135deg, #00ff41 0%, #00ccff 50%, #8b5cf6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.web4-subheadline {
+    font-size: clamp(15px, 1.8vw, 18px);
+    color: rgba(255, 255, 255, 0.55);
+    line-height: 1.7;
+    max-width: 700px;
+    margin-bottom: 56px;
+}
+
+/* ─── Timeline ──────────────────────────────────────────────────── */
+
+.web4-timeline {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    margin-bottom: 72px;
+    padding-bottom: 4px;
+}
+
+.web4-era {
+    position: relative;
+    padding: 20px 16px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-right: 8px;
+    font-family: inherit;
+}
+
+.web4-era:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.web4-era-active {
+    background: rgba(0, 255, 65, 0.04) !important;
+    border-color: rgba(0, 255, 65, 0.2) !important;
+    box-shadow: 0 0 30px rgba(0, 255, 65, 0.06);
+}
+
+.web4-era-highlight.web4-era-active {
+    background: rgba(0, 255, 65, 0.06) !important;
+    border-color: rgba(0, 255, 65, 0.3) !important;
+    box-shadow: 0 0 40px rgba(0, 255, 65, 0.12), inset 0 1px 0 rgba(0, 255, 65, 0.2);
+}
+
+.web4-era-icon {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.web4-era-label {
+    font-size: 14px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.01em;
+    margin-bottom: 4px;
+}
+
+.web4-era-year {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.3);
+    font-weight: 500;
+    margin-bottom: 12px;
+}
+
+.web4-era-desc {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.5;
+    animation: fadeUp 0.3s ease-out;
+}
+
+.web4-era-badge {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 3px 10px;
+    background: rgba(0, 255, 65, 0.15);
+    border: 1px solid rgba(0, 255, 65, 0.3);
+    border-radius: 100px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: #00ff41;
+    text-transform: uppercase;
+}
+
+/* Timeline connector */
+.web4-timeline-line {
+    position: absolute;
+    bottom: -12px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 100px;
+}
+
+.web4-timeline-progress {
+    height: 100%;
+    background: linear-gradient(90deg, #00ff41, #00ccff);
+    border-radius: 100px;
+    box-shadow: 0 0 12px rgba(0, 255, 65, 0.4);
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ─── Capabilities ──────────────────────────────────────────────── */
+
+.web4-cap-title {
+    font-size: clamp(18px, 2.5vw, 26px);
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.02em;
+    margin-bottom: 28px;
+    text-align: center;
+}
+
+.web4-cap-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 56px;
+}
+
+@media (max-width: 768px) {
+    .web4-timeline {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .web4-cap-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.web4-cap-card {
+    position: relative;
+    padding: 24px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.web4-cap-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 60% at 50% 0%, rgba(0, 255, 65, 0.05) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.web4-cap-card:hover::before,
+.web4-cap-active::before {
+    opacity: 1 !important;
+}
+
+.web4-cap-card:hover,
+.web4-cap-active {
+    border-color: rgba(0, 255, 65, 0.2) !important;
+    box-shadow: 0 0 30px rgba(0, 255, 65, 0.06);
+    transform: translateY(-2px);
+}
+
+.web4-cap-icon {
+    font-size: 28px;
+    margin-bottom: 12px;
+}
+
+.web4-cap-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    background: rgba(0, 255, 65, 0.12);
+    border: 1px solid rgba(0, 255, 65, 0.25);
+    border-radius: 100px;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    color: #00ff41;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+
+.web4-cap-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+}
+
+.web4-cap-desc {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.5);
+    line-height: 1.6;
+}
+
+/* ─── CTA Strip ─────────────────────────────────────────────────── */
+
+.web4-cta {
+    border: 1px solid rgba(0, 255, 65, 0.15);
+    background: rgba(0, 255, 65, 0.03);
+    border-radius: 20px;
+    padding: 32px 40px;
+    position: relative;
+    overflow: hidden;
+}
+
+.web4-cta::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.4), transparent);
+}
+
+.web4-cta-inner {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.web4-cta-icon {
+    font-size: 40px;
+    flex-shrink: 0;
+}
+
+.web4-cta-headline {
+    font-size: clamp(16px, 2vw, 22px);
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.4;
+    margin-bottom: 6px;
+}
+
+.web4-cta-sub {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+@media (max-width: 600px) {
+    .web4-cta-inner {
+        flex-direction: column;
+        text-align: center;
+    }
+}

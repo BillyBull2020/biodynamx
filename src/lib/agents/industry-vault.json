@@ -1,0 +1,45 @@
+{
+    "ecommerce": {
+        "hunterScript": "You're currently working 14-hour days just to manage inventory and customer tickets. Your competitors are using AI to personalize every email, and it's eating your market share. You're losing thousands every night you sleep.",
+        "engineerScript": "Imagine waking up to a 30% increase in Lifetime Value (LTV) because our AI handled every return and upsell while you were offline. We don't just 'install' AI; we install a 24/7 revenue engine. You get your time back; we give you the 2.1x ROI guarantee.",
+        "dreamState": "Scale Without Stress",
+        "dreamVision": "Your cart abandonment is at 70%. Mark is installing the 'Recovery Agent' right now. It doesn't send generic emails; it starts a human-like text conversation to solve their doubt. We turn your 'Maybe' into 'Paid' while you sleep.",
+        "painPoints": [
+            "Cart Abandonment",
+            "Customer Ticket Overload",
+            "Stale Personalization"
+        ],
+        "smsHook": "Hey {{firstName}}, Journey from BioDynamX. I just ran your store through our leak detector — you're losing ${{leakingRevenue}} per month from cart abandonment alone. Want the fix? 🛒",
+        "fearOfLoss": "Your competitors are already using AI cart recovery. Every abandoned cart is a customer choosing THEM because they followed up and you didn't.",
+        "roiBridge": "If we recover just 10% of your abandoned carts, that's $14,280/mo in new revenue. Your investment is $497/mo. That's a 28x return."
+    },
+    "realestate": {
+        "hunterScript": "70% of your leads go cold because you can't answer the phone while you're at a showing. Those are $50k commissions walking out the door.",
+        "engineerScript": "I've built a 'Lead Concierge' for you. It qualifies, schedules, and nurtures every lead instantly. You only talk to people ready to sign. We turn your voicemail 'cemetery' into a gold mine.",
+        "dreamState": "Ghosting Ends Here",
+        "dreamVision": "While you're at a showing, 5 leads just went to voicemail. Our AI agent just text-back all 5, qualified them, and put them on your calendar for tomorrow. You didn't lift a finger. That's a $200k commission saved.",
+        "painPoints": [
+            "Missed Calls During Showings",
+            "Lead Ghosting",
+            "Pipeline Stagnation"
+        ],
+        "smsHook": "Hey {{firstName}}, Journey here from BioDynamX. I just found 3 leads that called your office this week and got voicemail. Want me to show you what happened to them? 📱",
+        "fearOfLoss": "Every hour without this system, you're bleeding leads to the agent down the street who DOES answer on the first ring.",
+        "roiBridge": "At $497/mo, you only need ONE recovered commission per quarter to hit 15x ROI. We guarantee 2x or we keep working for free."
+    },
+    "medspa": {
+        "hunterScript": "People book treatments at 10 PM on a Sunday. If they can't book with you, they book with the clinic down the street. Your lack of an AI Assistant is a 'Closed' sign on your business.",
+        "engineerScript": "Our AI handles the booking, the follow-up, and the review request. We ensure every chair is filled and every client leaves a 5-star review. We automate the reputation so you can focus on the results.",
+        "dreamState": "Infinite Availability",
+        "dreamVision": "You have 3 low reviews from 2024 killing your GMB ranking. Mark is deploying the 'Review Shield' to automate 5-star requests from your happiest clients today. We're moving you to #1 on the map by Friday.",
+        "painPoints": [
+            "After-Hours Booking Loss",
+            "No-Shows",
+            "Empty Chairs",
+            "Low GMB Reviews"
+        ],
+        "smsHook": "Hey {{firstName}}, Journey from BioDynamX. I just checked your GMB listing — you have {{unansweredReviews}} unanswered reviews dragging your ranking down. Want me to show you the 30-day fix? ⭐",
+        "fearOfLoss": "Right now, 3 out of 4 potential clients see your competitor FIRST on Google Maps. Every day without the Review Shield is another day they own your market.",
+        "roiBridge": "Moving from position #4 to #1 on the map pack typically increases monthly bookings by 40%. At your average ticket of $350, that's an additional $14,000/mo. Your investment: $497/mo."
+    }
+}
