@@ -697,7 +697,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
                             fontSize: 10, fontWeight: 900, color: "#00ff41",
                             letterSpacing: "0.15em", textTransform: "uppercase",
                             opacity: 0.9, textShadow: "0 0 10px rgba(0,255,65,0.3)"
-                        }}>Engineering Group | Ecosystem</div>
+                        }}>Engineering Group</div>
                     </div>
                 </div>
 
@@ -791,14 +791,10 @@ export default function VaultUI({ apiKey }: VaultProps) {
                         animation: "fadeUp 0.8s ease-out",
                     }}>
                         {/* New Eyebrow Badge */}
-                        <div style={{
-                            fontSize: 10, fontWeight: 900, color: "#00ff41",
-                            letterSpacing: "0.15em", textTransform: "uppercase",
-                            marginBottom: 24, padding: "8px 20px", borderRadius: 100,
-                            background: "rgba(0,255,65,0.05)", display: "inline-block",
-                            border: "1px solid rgba(0,255,65,0.15)"
+                        <div className="animate-fade-in" style={{
+                            background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", padding: "10px 24px", borderRadius: 100, fontSize: 13, fontWeight: 800, color: "rgba(255,255,255,0.9)", letterSpacing: "0.05em", marginBottom: 32, display: "inline-block"
                         }}>
-                            🧠 {language === "en" ? "BiodynamX Engineering Group | The Autonomous AI Ecosystem" : "BioDynamX Engineering Group | Ecosistema IA Autónomo"}
+                            🧠 {language === "en" ? "BiodynamX Engineering Group | Autonomous AI Built With NeuroScience & NeuroBiolagy" : "BioDynamX Engineering Group | IA Autónoma Construida con Neurociencia y Neurobiología"}
                         </div>
 
                         <h1 data-speakable="true" className="hero-headline animated-gradient-text" style={{ fontSize: "clamp(32px, 5.5vw, 68px)", fontWeight: 900, lineHeight: 1.05, marginBottom: 28 }}>
