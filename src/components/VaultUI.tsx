@@ -16,6 +16,8 @@ import {
 import CinematicCanvas from "@/components/CinematicCanvas";
 import AnimatedLogo from "./AnimatedLogo";
 import OrbitEcosystem from "./OrbitEcosystem";
+import { VisualJenny } from "@/lib/visual-jenny";
+import { VisualBridge, type VisualCommand } from "@/lib/visual-bridge";
 import "./VaultUI.css";
 
 interface VaultProps {
@@ -112,6 +114,96 @@ export default function VaultUI({ apiKey }: VaultProps) {
         waveformMode: "idle",
     });
     const [errorText, setErrorText] = useState<string | null>(null);
+
+    // ─── Visual Jenny State ──────────────────────────────────────
+    const visualJennyRef = useRef<VisualJenny | null>(null);
+    const [activeVisual, setActiveVisual] = useState<{
+        type: "image" | "stats" | "loading" | "comparison" | null;
+        imageUrl?: string;
+        title?: string;
+        subtitle?: string;
+        brainLayer?: string;
+        neuroReason?: string;
+        stats?: Record<string, string | number>;
+        transition?: string;
+    }>({ type: null });
+    const [visualFading, setVisualFading] = useState(false);
+
+    // ─── Visual Jenny lifecycle ────────────────────────────────
+    useEffect(() => {
+        // Subscribe to visual commands from Visual Jenny
+        const unsub = VisualBridge.onVisualCommand((cmd: VisualCommand) => {
+            switch (cmd.type) {
+                case "show_image":
+                    setVisualFading(false);
+                    setActiveVisual({
+                        type: "image",
+                        imageUrl: cmd.payload.imageDataUrl || cmd.payload.imageUrl,
+                        title: cmd.payload.title,
+                        brainLayer: cmd.payload.brainLayer,
+                        neuroReason: cmd.payload.neuroReason,
+                        transition: cmd.payload.transition,
+                    });
+                    // Auto-clear after duration
+                    if (cmd.payload.duration) {
+                        setTimeout(() => {
+                            setVisualFading(true);
+                            setTimeout(() => setActiveVisual({ type: null }), 600);
+                        }, cmd.payload.duration);
+                    }
+                    break;
+                case "show_stats_card":
+                    setVisualFading(false);
+                    setActiveVisual({
+                        type: "stats",
+                        title: cmd.payload.title,
+                        stats: cmd.payload.stats,
+                        brainLayer: cmd.payload.brainLayer,
+                        neuroReason: cmd.payload.neuroReason,
+                    });
+                    if (cmd.payload.duration) {
+                        setTimeout(() => {
+                            setVisualFading(true);
+                            setTimeout(() => setActiveVisual({ type: null }), 600);
+                        }, cmd.payload.duration);
+                    }
+                    break;
+                case "show_loading":
+                    setVisualFading(false);
+                    setActiveVisual({
+                        type: "loading",
+                        title: cmd.payload.title,
+                        subtitle: cmd.payload.subtitle,
+                    });
+                    break;
+                case "show_comparison":
+                    setVisualFading(false);
+                    setActiveVisual({
+                        type: "comparison",
+                        title: cmd.payload.title,
+                        stats: cmd.payload.stats,
+                        brainLayer: cmd.payload.brainLayer,
+                    });
+                    if (cmd.payload.duration) {
+                        setTimeout(() => {
+                            setVisualFading(true);
+                            setTimeout(() => setActiveVisual({ type: null }), 600);
+                        }, cmd.payload.duration);
+                    }
+                    break;
+                case "clear_visual":
+                    setVisualFading(true);
+                    setTimeout(() => setActiveVisual({ type: null }), 600);
+                    break;
+                case "navigate_section": {
+                    const el = document.getElementById(cmd.payload.sectionId || "");
+                    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+                    break;
+                }
+            }
+        });
+        return () => unsub();
+    }, []);
 
     // ─── Language Support ───────────────────────────────────
     const [language, setLanguage] = useState<"en" | "es">("en");
@@ -371,6 +463,23 @@ export default function VaultUI({ apiKey }: VaultProps) {
         const team = createTeam();
         teamRef.current = team;
         team.initialize();
+
+        // ★ Start Visual Jenny alongside Voice Jenny
+        if (!visualJennyRef.current) {
+            visualJennyRef.current = new VisualJenny({
+                apiKey: apiKey!,
+                onVisualReady: (v) => {
+                    console.log(`[VaultUI] 🎨 Visual Jenny delivered: ${v.brainLayer} — ${v.topic}`);
+                },
+                onNavigate: (sectionId) => {
+                    console.log(`[VaultUI] 🧭 Visual Jenny navigating to: ${sectionId}`);
+                },
+                onStatsCard: (stats, title) => {
+                    console.log(`[VaultUI] 📊 Visual Jenny stats: ${title}`, stats);
+                },
+            });
+        }
+        visualJennyRef.current.start();
     }, [apiKey, createTeam]);
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -699,6 +808,92 @@ export default function VaultUI({ apiKey }: VaultProps) {
                                 ))}
                             </div>
                         )}
+                    </div>
+                )}
+
+                {/* ── VISUAL JENNY OVERLAY PANEL ──────────── */}
+                {isActive && activeVisual.type && (
+                    <div className={`visual-jenny-panel ${visualFading ? 'fading' : 'visible'}`}
+                        id="visual-jenny-overlay"
+                    >
+                        {/* Brain Layer indicator */}
+                        {activeVisual.brainLayer && (
+                            <div className="visual-jenny-layer">
+                                <span className="visual-jenny-layer-dot" />
+                                {activeVisual.brainLayer.toUpperCase()} LAYER
+                            </div>
+                        )}
+
+                        {/* Image Visual */}
+                        {activeVisual.type === "image" && activeVisual.imageUrl && (
+                            <div className="visual-jenny-image-wrap">
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img
+                                    src={activeVisual.imageUrl}
+                                    alt={activeVisual.title || "Visual Jenny"}
+                                    className="visual-jenny-image"
+                                />
+                                {activeVisual.neuroReason && (
+                                    <div className="visual-jenny-caption">
+                                        {activeVisual.neuroReason}
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
+                        {/* Stats Card */}
+                        {activeVisual.type === "stats" && activeVisual.stats && (
+                            <div className="visual-jenny-stats">
+                                {activeVisual.title && (
+                                    <div className="visual-jenny-stats-title">{activeVisual.title}</div>
+                                )}
+                                <div className="visual-jenny-stats-grid">
+                                    {Object.entries(activeVisual.stats).map(([key, value]) => (
+                                        <div key={key} className="visual-jenny-stat-item">
+                                            <div className="visual-jenny-stat-value">{String(value)}</div>
+                                            <div className="visual-jenny-stat-label">{key}</div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Loading State */}
+                        {activeVisual.type === "loading" && (
+                            <div className="visual-jenny-loading">
+                                <div className="visual-jenny-spinner" />
+                                <div className="visual-jenny-loading-title">
+                                    {activeVisual.title || "Analyzing..."}
+                                </div>
+                                {activeVisual.subtitle && (
+                                    <div className="visual-jenny-loading-sub">
+                                        {activeVisual.subtitle}
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
+                        {/* Comparison View */}
+                        {activeVisual.type === "comparison" && activeVisual.stats && (
+                            <div className="visual-jenny-stats">
+                                {activeVisual.title && (
+                                    <div className="visual-jenny-stats-title">{activeVisual.title}</div>
+                                )}
+                                <div className="visual-jenny-stats-grid">
+                                    {Object.entries(activeVisual.stats).map(([key, value]) => (
+                                        <div key={key} className="visual-jenny-stat-item comparison">
+                                            <div className="visual-jenny-stat-value">{String(value)}</div>
+                                            <div className="visual-jenny-stat-label">{key}</div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Visual Jenny branding */}
+                        <div className="visual-jenny-badge">
+                            🧠 Visual Jenny • Autonomous
+                        </div>
                     </div>
                 )}
 

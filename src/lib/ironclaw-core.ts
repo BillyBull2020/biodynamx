@@ -553,6 +553,78 @@ export class IronclawCore {
 
         console.log(`[Ironclaw] 🤖 Post-call automation triggered — Priority: ${priority}`);
 
+        // ★ AGENTIC 4.0: Email transcript to Billy for EVERY conversation
+        try {
+            const durationSec = session.endedAt
+                ? Math.round((session.endedAt - session.startedAt) / 1000)
+                : Math.round((Date.now() - session.startedAt) / 1000);
+
+            // Build a formatted transcript from IronClaw session data
+            const transcriptLines: string[] = [
+                `═══ BIODYNAMX CONVERSATION TRANSCRIPT ═══`,
+                `Session: ${session.sessionId}`,
+                `Date: ${new Date(session.startedAt).toLocaleString("en-US", { timeZone: "America/Denver" })}`,
+                `Duration: ${Math.floor(durationSec / 60)}m ${durationSec % 60}s`,
+                `Agents: ${session.agentsUsed.join(" → ")}`,
+                `Phase: ${session.conversationPhase}`,
+                `Commitment: ${session.prospect.commitmentLevel}%`,
+                `Outcome: ${session.outcome || "unknown"}`,
+                `═══════════════════════════════════════════`,
+            ];
+
+            if (session.auditResult) {
+                transcriptLines.push(`\nAudit Result: ${JSON.stringify(session.auditResult, null, 2).substring(0, 800)}`);
+            }
+
+            const emailPayload = {
+                sessionId: session.sessionId,
+                prospectName: session.prospect.name,
+                prospectEmail: session.prospect.email,
+                prospectPhone: session.prospect.phone,
+                businessUrl: session.prospect.businessUrl,
+                industry: session.prospect.industry,
+                leadScore: session.leadScore?.total,
+                leadGrade: session.leadScore?.grade,
+                leadPriority: priority as "hot" | "warm" | "nurture" | "cold",
+                agentsUsed: session.agentsUsed,
+                durationSeconds: durationSec,
+                turnCount: session.turnCount,
+                commitmentLevel: session.prospect.commitmentLevel,
+                outcome: session.outcome,
+                painPoints: session.prospect.painPoints,
+                objections: session.prospect.objections,
+                toolsCalled: session.toolsCalled,
+                auditGrade: session.auditResult?.grade as string | undefined,
+                auditScore: session.auditResult?.overallScore as number | undefined,
+                monthlyLeak: session.auditResult?.revenueEstimate
+                    ? String((session.auditResult.revenueEstimate as Record<string, unknown>)?.leakingRevenue || "")
+                    : undefined,
+                formattedTranscript: transcriptLines.join("\n"),
+                summary: `${durationSec}s conversation with ${session.agentsUsed.join(" and ")}. ${session.prospect.name ? `Prospect: ${session.prospect.name}.` : ""} ${session.toolsCalled.length > 0 ? `Tools: ${session.toolsCalled.join(", ")}.` : ""} Outcome: ${session.outcome || "unknown"}.`,
+            };
+
+            // Fire email via API route (works from both client and server)
+            if (typeof window !== "undefined") {
+                fetch("/api/transcript/send", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(emailPayload),
+                }).catch(err => console.warn(`[Ironclaw] Email API call failed:`, err));
+            } else {
+                // Server-side: direct import
+                try {
+                    const { sendTranscriptEmail } = await import("./email-transcript");
+                    await sendTranscriptEmail(emailPayload);
+                } catch (emailErr) {
+                    console.warn(`[Ironclaw] Direct email failed:`, emailErr);
+                }
+            }
+
+            console.log(`[Ironclaw] 📧 Transcript email queued for billy@biodynamx.com`);
+        } catch (emailError) {
+            console.warn(`[Ironclaw] ⚠️ Email delivery failed (non-fatal):`, emailError);
+        }
+
         // Record learnings from this session
         if (session.prospect.painPoints.length > 0 && session.prospect.industry) {
             this.recordLearning({

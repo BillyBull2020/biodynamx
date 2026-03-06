@@ -1901,3 +1901,252 @@ html {
     color: rgba(255, 255, 255, 0.5);
     letter-spacing: 0.03em;
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   VISUAL JENNY — Autonomous Visual Panel
+   Glassmorphic overlay that appears during active sessions
+   ═══════════════════════════════════════════════════════════════ */
+
+.visual-jenny-panel {
+    position: relative;
+    width: 100%;
+    max-width: 520px;
+    margin: 16px auto 24px;
+    padding: 20px;
+    background: rgba(10, 10, 10, 0.75);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 255, 65, 0.15);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    box-shadow:
+        0 0 30px rgba(0, 255, 65, 0.05),
+        0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.visual-jenny-panel.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.visual-jenny-panel.fading {
+    opacity: 0;
+    transform: translateY(-12px);
+}
+
+/* Brain Layer indicator pill */
+.visual-jenny-layer {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    background: rgba(0, 255, 65, 0.08);
+    border: 1px solid rgba(0, 255, 65, 0.2);
+    border-radius: 100px;
+    font-size: 9px;
+    font-weight: 800;
+    color: #00ff41;
+    letter-spacing: 0.15em;
+    margin-bottom: 14px;
+}
+
+.visual-jenny-layer-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #00ff41;
+    animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+
+    0%,
+    100% {
+        opacity: 0.5;
+        transform: scale(0.8);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+}
+
+/* Image wrapper */
+.visual-jenny-image-wrap {
+    position: relative;
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 12px;
+}
+
+.visual-jenny-image {
+    width: 100%;
+    height: auto;
+    max-height: 320px;
+    object-fit: cover;
+    border-radius: 14px;
+    animation: fadeIn 0.8s ease-out;
+}
+
+.visual-jenny-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 12px 16px;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.5;
+}
+
+/* Stats Card */
+.visual-jenny-stats {
+    text-align: center;
+}
+
+.visual-jenny-stats-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 16px;
+    letter-spacing: -0.01em;
+}
+
+.visual-jenny-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.visual-jenny-stat-item {
+    padding: 14px 10px;
+    background: rgba(0, 255, 65, 0.04);
+    border: 1px solid rgba(0, 255, 65, 0.1);
+    border-radius: 12px;
+    transition: border-color 0.3s ease, transform 0.3s ease;
+}
+
+.visual-jenny-stat-item:hover {
+    border-color: rgba(0, 255, 65, 0.3);
+    transform: translateY(-2px);
+}
+
+.visual-jenny-stat-item.comparison {
+    border-color: rgba(239, 68, 68, 0.2);
+    background: rgba(239, 68, 68, 0.04);
+}
+
+.visual-jenny-stat-item.comparison:hover {
+    border-color: rgba(239, 68, 68, 0.4);
+}
+
+.visual-jenny-stat-value {
+    font-size: 22px;
+    font-weight: 800;
+    color: #00ff41;
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+}
+
+.visual-jenny-stat-item.comparison .visual-jenny-stat-value {
+    color: #ef4444;
+}
+
+.visual-jenny-stat-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.45);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+}
+
+/* Loading State */
+.visual-jenny-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    padding: 24px 0;
+}
+
+.visual-jenny-spinner {
+    width: 40px;
+    height: 40px;
+    border: 2px solid rgba(0, 255, 65, 0.1);
+    border-top: 2px solid #00ff41;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.visual-jenny-loading-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: -0.01em;
+}
+
+.visual-jenny-loading-sub {
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+/* Badge */
+.visual-jenny-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    font-size: 9px;
+    font-weight: 700;
+    color: rgba(0, 255, 65, 0.35);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Mobile adjustments */
+@media (max-width: 600px) {
+    .visual-jenny-panel {
+        max-width: 100%;
+        margin: 12px 8px 16px;
+        padding: 16px;
+    }
+
+    .visual-jenny-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+
+    .visual-jenny-stat-value {
+        font-size: 18px;
+    }
+
+    .visual-jenny-image {
+        max-height: 220px;
+    }
+}

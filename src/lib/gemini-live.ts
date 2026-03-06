@@ -15,6 +15,7 @@ import {
     getTranscriptJSON,
     updateProspectInfo,
 } from "./conversation-transcript";
+import { VisualBridge } from "./visual-bridge";
 
 
 export type ConnectionStatus = "idle" | "connecting" | "setup_sent" | "ready" | "error";
@@ -136,6 +137,15 @@ export class VoiceOrchestrator {
         });
         console.log(`[VoiceOrchestrator] 🧠 Agentic session initialized: ${this.sessionId}`);
         console.log(`[VoiceOrchestrator] 📝 Transcript recording started for session: ${this.sessionId}`);
+
+        // ★ VISUAL JENNY: Notify session start
+        VisualBridge.emitConversationEvent({
+            type: "session_start",
+            data: { agentName },
+            timestamp: Date.now(),
+            sessionId: this.sessionId,
+            agentName,
+        });
 
         if (this.audioContext) {
             console.log("[VoiceOrchestrator] Using shared AudioContext.");
@@ -501,7 +511,7 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
                             // This is the "agentic" part — the visual system watches the
                             // conversation and acts independently.
                             ironclaw.on("scene_change", (event) => {
-                                const { newPhase } = event.data as { newPhase: string; previousPhase: string };
+                                const { newPhase, previousPhase } = event.data as { newPhase: string; previousPhase: string };
                                 const session = ironclaw.getSession(this.sessionId);
                                 if (!session) return;
 
@@ -519,6 +529,19 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
                                 };
 
                                 const conversationPhase = phaseToNeuroMap[newPhase] || "reptilian";
+
+                                // ★ BRIDGE: Emit to VisualBridge so Visual Jenny can react too
+                                VisualBridge.emitConversationEvent({
+                                    type: "phase_change",
+                                    sessionId: this.sessionId,
+                                    data: {
+                                        phase: newPhase,
+                                        previousPhase,
+                                        brainLayer: conversationPhase,
+                                        industry: session.prospect.industry,
+                                    },
+                                    timestamp: Date.now(),
+                                });
 
                                 // Fire async — never blocks the voice stream
                                 this.dispatchNeuroVisual({
@@ -912,6 +935,15 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
                             timestamp: new Date().toISOString(),
                         });
 
+                        // ★ VISUAL JENNY: Agent speech event
+                        VisualBridge.emitConversationEvent({
+                            type: "agent_speech",
+                            data: { text, agentName },
+                            timestamp: Date.now(),
+                            sessionId: this.sessionId,
+                            agentName,
+                        });
+
                         const lowerText = text.toLowerCase();
 
                         // Handoff detection
@@ -923,6 +955,15 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
                                 this.onHandoff?.(from, to);
                                 recordHandoff(this.sessionId, to);
                                 recordHandoffInTranscript(this.sessionId, from, to);
+
+                                // ★ VISUAL JENNY: Handoff event
+                                VisualBridge.emitConversationEvent({
+                                    type: "handoff",
+                                    data: { from, to },
+                                    timestamp: Date.now(),
+                                    sessionId: this.sessionId,
+                                    agentName: from,
+                                });
                                 break;
                             }
                         }
@@ -932,7 +973,16 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
                             if (pattern.test(text)) {
                                 const sentences = text.split(/[.!?]+/).filter(s => pattern.test(s));
                                 if (sentences.length > 0) {
-                                    this.onDataPoint?.(sentences[0].trim().replace(/^\[(Journey|Mark|Jenny)\]\s*/i, ""));
+                                    const dp = sentences[0].trim().replace(/^\[(Journey|Mark|Jenny)\]\s*/i, "");
+                                    this.onDataPoint?.(dp);
+
+                                    // ★ VISUAL JENNY: Data point event
+                                    VisualBridge.emitConversationEvent({
+                                        type: "data_point",
+                                        data: { text: dp },
+                                        timestamp: Date.now(),
+                                        sessionId: this.sessionId,
+                                    });
                                 }
                                 break;
                             }
@@ -979,6 +1029,14 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
                         timestamp: new Date().toISOString(),
                     });
                     console.log(`[VoiceOrchestrator] 📝 Prospect said: "${userText.trim().slice(0, 100)}..."`);
+
+                    // ★ VISUAL JENNY: Prospect speech event
+                    VisualBridge.emitConversationEvent({
+                        type: "prospect_speech",
+                        data: { text: userText.trim() },
+                        timestamp: Date.now(),
+                        sessionId: this.sessionId,
+                    });
                 }
             }
 
@@ -1009,6 +1067,22 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
 
         try {
             console.log(`[VoiceOrchestrator] 🚀 Executing audit for ${url}...`);
+
+            // ★ VISUAL JENNY: Audit started
+            VisualBridge.emitConversationEvent({
+                type: "audit_started",
+                data: { url },
+                timestamp: Date.now(),
+                sessionId: this.sessionId,
+                agentName: this.customAgents?.[0]?.name || "Jenny",
+            });
+            // Also emit domain_captured
+            VisualBridge.emitConversationEvent({
+                type: "domain_captured",
+                data: { domain: url, businessName: this.lastAuditResult?.businessName },
+                timestamp: Date.now(),
+                sessionId: this.sessionId,
+            });
 
             // ★ CRITICAL: 45-second hard timeout so the audit NEVER hangs forever
             const controller = new AbortController();
@@ -1049,6 +1123,19 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
 
             // Emit audit result to UI
             this.onAuditResult?.(result);
+
+            // ★ VISUAL JENNY: Audit complete
+            VisualBridge.emitConversationEvent({
+                type: "audit_complete",
+                data: {
+                    result,
+                    url,
+                    industry: (result as Record<string, unknown>).detectedIndustry || "business",
+                },
+                timestamp: Date.now(),
+                sessionId: this.sessionId,
+                agentName: this.customAgents?.[0]?.name || "Jenny",
+            });
 
             // Send FULL tool response back to Gemini — all 16 probes
             if (this.ws?.readyState === WebSocket.OPEN) {
@@ -1489,6 +1576,15 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
                 }
             }));
         }
+
+        // ★ VISUAL JENNY: Name captured event
+        VisualBridge.emitConversationEvent({
+            type: "name_captured",
+            data: { name: args.name, email: args.email, phone: args.phone, company: args.company },
+            timestamp: Date.now(),
+            sessionId: this.sessionId,
+            agentName: this.customAgents?.[0]?.name || "Jenny",
+        });
 
         // Update in-memory session with prospect info immediately
         const memory = getMemory(this.sessionId);

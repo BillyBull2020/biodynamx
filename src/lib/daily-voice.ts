@@ -9,8 +9,12 @@
 // needs minimal changes.
 // ════════════════════════════════════════════════════════════════
 
-/// <reference types="@daily-co/daily-js" />
-import DailyIframe, { DailyCall, DailyEventObjectParticipant } from "@daily-co/daily-js";
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type DailyCall = any;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type DailyEventObjectParticipant = any;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let DailyIframe: any;
 
 export type ConnectionStatus = "idle" | "connecting" | "setup_sent" | "ready" | "error";
 export type IntentSignal = "schedule" | "purchase" | "captureLead" | "scheduleAppointment" | "escalate" | null;
@@ -111,7 +115,7 @@ export class DailyVoiceOrchestrator {
                 .on("left-meeting", () => {
                     this.setStatus("idle", "Call ended");
                 })
-                .on("error", (event) => {
+                .on("error", (event: { errorMsg?: string }) => {
                     const msg = event?.errorMsg || "Unknown Daily error";
                     console.error("[DailyVoice] Error:", msg);
                     this.setStatus("error", msg);
@@ -158,7 +162,7 @@ export class DailyVoiceOrchestrator {
             try {
                 const data = JSON.parse(event.data);
                 if (data.type === "show_visual") {
-                    const { type: _, ...args } = data;
+                    const { type: _type, ...args } = data;
                     this.onVisualEvent?.(args);
 
                     // Audit result compat
