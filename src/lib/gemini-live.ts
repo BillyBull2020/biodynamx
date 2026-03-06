@@ -202,9 +202,9 @@ export class VoiceOrchestrator {
                         realtimeInputConfig: {
                             automaticActivityDetection: {
                                 startOfSpeechSensitivity: "START_SENSITIVITY_HIGH",
-                                endOfSpeechSensitivity: "END_SENSITIVITY_LOW",
-                                prefixPaddingMs: 300,
-                                silenceDurationMs: 600
+                                endOfSpeechSensitivity: "END_SENSITIVITY_HIGH",
+                                prefixPaddingMs: 200,
+                                silenceDurationMs: 1000
                             },
                         },
                         systemInstruction: {
@@ -483,7 +483,7 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
                                     realtime_input: { media_chunks: [] }
                                 }));
                             }
-                        }, 5000); // Every 5 seconds — tight keepalive to prevent 1011
+                        }, 3000); // Every 3 seconds — tight keepalive to prevent 1011
 
                         // ★ IRONCLAW: Initialize master session brain for ANY agent
                         const activeAgent = this.customAgents?.[0];
