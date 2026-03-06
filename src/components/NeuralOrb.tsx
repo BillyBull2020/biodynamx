@@ -16,7 +16,6 @@ import { useEffect, useRef, useCallback } from "react";
 
 interface NeuralOrbProps {
     agentName: string | null;
-    agentColor: string;       // hex e.g. "#00ff41"
     amplitude: number;       // 0–1 real-time audio amplitude
     isActive: boolean;
     isSpeaking: boolean;      // agent is currently producing audio

@@ -18,8 +18,12 @@ export type TeamPhase =
     | "vicki_active"    // Vicki (Empathy/Care)
     | "mark_active"     // Mark (Closer)
     | "jenny_closer_active" // Jenny (Consultative Closer)
-    | "ben_gmb_active"  // Ben (GMB/Reviews)
-    | "glia_active"     // Glia-Jenny (Business Lead/Discovery)
+    | "ben_analyst_active" // Ben (Macro-Analyst)
+    | "iris_active"     // Iris (AI Visibility)
+    | "chase_active"    // Chase (Lead Hunter)
+    | "jules_active"    // Jules (Technical Architect)
+    | "alex_active"     // Alex (Support)
+    | "glia_active"     // Glia-Jenny (Discovery)
     | "handoff"         // Handoff state
     | "stitching"       // Generating UI
     | "checkout"        // Transaction mode
@@ -74,7 +78,7 @@ const VISUAL_STATES: Record<TeamPhase, VaultVisualState> = {
         bgOpacity: 0.04,
         pulseActive: true,
         activeAgentName: "Meghan",
-        activeAgentVoice: "Sagitta",
+        activeAgentVoice: "Lyra",
         waveformMode: "soft",
     },
     brock_active: {
@@ -92,7 +96,7 @@ const VISUAL_STATES: Record<TeamPhase, VaultVisualState> = {
         bgOpacity: 0.04,
         pulseActive: true,
         activeAgentName: "Vicki",
-        activeAgentVoice: "Lyra",
+        activeAgentVoice: "Aoede",
         waveformMode: "soft",
     },
     mark_active: {
@@ -113,14 +117,50 @@ const VISUAL_STATES: Record<TeamPhase, VaultVisualState> = {
         activeAgentVoice: "Kore",
         waveformMode: "soft",
     },
-    ben_gmb_active: {
-        phase: "ben_gmb_active",
+    ben_analyst_active: {
+        phase: "ben_analyst_active",
         borderColor: "#fbbf24",
         bgOpacity: 0.05,
         pulseActive: true,
         activeAgentName: "Ben",
+        activeAgentVoice: "Charon",
+        waveformMode: "sharp",
+    },
+    iris_active: {
+        phase: "iris_active",
+        borderColor: "#8b5cf6",
+        bgOpacity: 0.05,
+        pulseActive: true,
+        activeAgentName: "Iris",
+        activeAgentVoice: "Leda",
+        waveformMode: "soft",
+    },
+    chase_active: {
+        phase: "chase_active",
+        borderColor: "#f97316",
+        bgOpacity: 0.06,
+        pulseActive: true,
+        activeAgentName: "Chase",
+        activeAgentVoice: "Enceladus",
+        waveformMode: "sharp",
+    },
+    jules_active: {
+        phase: "jules_active",
+        borderColor: "#60a5fa",
+        bgOpacity: 0.05,
+        pulseActive: true,
+        activeAgentName: "Jules",
         activeAgentVoice: "Puck",
         waveformMode: "sharp",
+    },
+    alex_active: {
+        phase: "alex_active",
+        borderColor: "#06b6d4",
+        bgOpacity: 0.04,
+        pulseActive: true,
+        activeAgentName: "Alex",
+        activeAgentVoice: "Aoede",
+        waveformMode: "soft",
     },
     glia_active: {
         phase: "glia_active",
@@ -128,7 +168,7 @@ const VISUAL_STATES: Record<TeamPhase, VaultVisualState> = {
         bgOpacity: 0.05,
         pulseActive: true,
         activeAgentName: "Jenny",
-        activeAgentVoice: "Aoede",
+        activeAgentVoice: "Kore",
         waveformMode: "soft",
     },
     handoff: {
@@ -216,7 +256,11 @@ export class TeamOrchestrator {
             vicki_empathy: "vicki_active",
             mark_closer: "mark_active",
             jenny_closer: "jenny_closer_active",
-            ben_gmb: "ben_gmb_active",
+            ben_analyst: "ben_analyst_active",
+            nova_visibility: "iris_active",
+            hunter_prospector: "chase_active",
+            jules_architect: "jules_active",
+            alex_support: "alex_active",
             glia_jenny: "glia_active",
             ironclaw_super_agent: "glia_active",
         };

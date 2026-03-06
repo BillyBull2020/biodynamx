@@ -11,7 +11,7 @@ We operate on Web 4.0 principles — Ambient Intelligence — where AI agents pr
 ## Core Services
 - [AI Voice Agents for Business — 24/7 Call Answering & Lead Qualification](https://biodynamx.com/)
 - [Free Business Revenue Audit — Find How Much You're Losing to Missed Calls](https://biodynamx.com/audit)
-- [AI Voice Agent Pricing — Plans Starting at $497/month with 2.1x ROI Guarantee](https://biodynamx.com/pricing)
+- [Elite 11 AI Workforce — Autonomous Business Operations Starting at $1,497/month](https://biodynamx.com/pricing)
 - [Talk to Jenny — Live AI Voice Diagnostic Demo](https://biodynamx.com/)
 
 ## Industry Solutions
@@ -37,8 +37,9 @@ We operate on Web 4.0 principles — Ambient Intelligence — where AI agents pr
 - **Technology:** Gemini 2.5 Flash Native Audio (Google)
 - **Response Time:** 0.4 seconds average
 - **Availability:** 24/7/365
-- **Starting Price:** $497/month (Growth Engine)
-- **ROI Guarantee:** 2.1x minimum
+- **Standard Pricing:** $1,497/month (Standard Workforce)
+- **Elite Pricing:** $2,997/month (Elite 11 Workforce)
+- **ROI Guarantee:** 5x minimum
 - **Platform:** Web 4.0 Ambient Intelligence
 - **Headquarters:** United States
 
@@ -48,10 +49,10 @@ We operate on Web 4.0 principles — Ambient Intelligence — where AI agents pr
 BioDynamX provides AI-powered voice agents that answer every call, qualify leads, and book appointments 24/7 — recovering revenue lost to missed calls and slow response times. Our agents use neuroscience-backed conversation design to maximize conversion rates.
 
 ### How much does an AI voice agent cost?
-BioDynamX AI voice agent plans start at $497/month for the Growth Engine package. This includes 24/7 call answering, lead qualification, appointment booking, and CRM integration. Enterprise plans with multi-agent orchestration start at $1,497/month.
+BioDynamX AI voice agent plans start at $1,497/month for the Standard Workforce package. The Elite 11 Workforce, which includes the full autonomous ecosystem, is $2,997/month.
 
 ### What is the ROI of AI business automation?
-BioDynamX provides a guaranteed minimum 2.1x ROI. The average small business loses $18,000/month to missed calls. At $497/month, our AI recovers that revenue — a 36:1 return on investment.
+BioDynamX provides a guaranteed minimum 5.x ROI. The average small business loses $18,000/month to missed calls. At $1,497/month, our AI recovers that revenue — providing massive return on investment.
 
 ### Can AI replace my receptionist?
 AI voice agents complement and extend your receptionist team rather than replacing them. BioDynamX AI handles after-hours calls, overflow during busy periods, and routine inquiries — freeing your human team for high-value interactions.

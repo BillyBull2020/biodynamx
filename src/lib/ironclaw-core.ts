@@ -159,6 +159,10 @@ export class IronclawCore {
         this.metrics.totalSessions++;
 
         console.log(`[Ironclaw] ★ Session initialized: ${sessionId}`);
+
+        // ★ SCALE: Sync to Supabase
+        this.syncToSupabase(sessionId);
+
         if (preCallProfile) {
             console.log(`[Ironclaw]   Pre-call intel: industry=${preCallProfile.industry || "unknown"}, interest=${preCallProfile.interestScore}, returnVisitor=${preCallProfile.isReturnVisitor}`);
         }
@@ -247,6 +251,9 @@ export class IronclawCore {
 
         Object.assign(session.prospect, updates);
 
+        // ★ SCALE: Sync to Supabase
+        this.syncToSupabase(sessionId);
+
         // Track industry stats
         if (updates.industry) {
             const count = this.metrics.topIndustries.get(updates.industry) || 0;
@@ -284,6 +291,9 @@ export class IronclawCore {
             session.toolsCalled.push(toolName);
         }
 
+        // ★ SCALE: Sync to Supabase
+        this.syncToSupabase(sessionId);
+
         this.emit({
             type: "tool_call",
             sessionId,
@@ -313,6 +323,9 @@ export class IronclawCore {
 
         const previousPhase = session.conversationPhase;
         session.conversationPhase = phase;
+
+        // ★ SCALE: Sync to Supabase
+        this.syncToSupabase(sessionId);
 
         console.log(`[Ironclaw] 🔄 Phase transition: ${previousPhase} → ${phase}`);
 
@@ -546,6 +559,8 @@ export class IronclawCore {
                 commitmentLevel: session.prospect.commitmentLevel,
             },
         });
+        // ★ SCALE: Final Sync to Supabase
+        this.syncToSupabase(sessionId);
     }
 
     private async triggerPostCallAutomation(session: IronclawSession): Promise<void> {
@@ -761,14 +776,8 @@ export class IronclawCore {
 
         console.log(`[Ironclaw] 🧠 Learning recorded: [${entry.type}] ${entry.content.substring(0, 100)}`);
 
-        // ★ WEB 4.0: Persist learning to Supabase immediately (non-blocking)
-        if (typeof window !== "undefined") {
-            fetch("/api/agent-memory/learning", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(entry),
-            }).catch(err => console.warn(`[Ironclaw] Learning persistence failed:`, err));
-        }
+        // ★ WEB 4.0 & SCALE: Persist learning to Supabase immediately (non-blocking)
+        this.syncLearning(entry);
 
         this.emit({
             type: "learning_recorded",
@@ -966,6 +975,52 @@ export class IronclawCore {
         }
 
         return parts.join("\n");
+    }
+
+    // ── Persistence & Scaling Layer ──────────────────────────────
+
+    /**
+     * Internal sync helper — fires and forgets to avoid blocking the voice loop.
+     */
+    private syncToSupabase(sessionId: string): void {
+        const session = this.sessions.get(sessionId);
+        if (!session) return;
+
+        this.backgroundOp(async () => {
+            try {
+                // Use relative URL if in browser, absolute if on server
+                const baseUrl = typeof window !== "undefined" ? "" : (process.env.NEXT_PUBLIC_APP_URL || "");
+                await fetch(`${baseUrl}/api/ironclaw/sync`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ type: "session", data: session }),
+                });
+            } catch (err) {
+                // Silent fail to prevent voice engine disruption
+                console.warn(`[Ironclaw Sync] Failed for ${sessionId}:`, err);
+            }
+        });
+    }
+
+    /**
+     * Persist a specific learning event.
+     */
+    private syncLearning(learning: IronclawLearning): void {
+        this.backgroundOp(async () => {
+            try {
+                const baseUrl = typeof window !== "undefined" ? "" : (process.env.NEXT_PUBLIC_APP_URL || "");
+                await fetch(`${baseUrl}/api/ironclaw/sync`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        type: "learning",
+                        data: { learning, sessionId: "system" }
+                    }),
+                });
+            } catch (err) {
+                console.warn(`[Ironclaw Learning Sync] Failed:`, err);
+            }
+        });
     }
 }
 

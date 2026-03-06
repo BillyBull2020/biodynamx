@@ -117,10 +117,12 @@ CREATE TABLE IF NOT EXISTS agent_learnings (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     learning_type TEXT NOT NULL,
     content TEXT NOT NULL,
+    industry TEXT,
     confidence NUMERIC DEFAULT 0.5,
     source_agent TEXT,
     source_session TEXT,
     applied_count INTEGER DEFAULT 0,
+    metadata JSONB DEFAULT '{}',
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
@@ -216,11 +218,48 @@ CREATE INDEX IF NOT EXISTS idx_hunted_score ON hunted_leads(score DESC);
 CREATE INDEX IF NOT EXISTS idx_learnings_agent ON agent_learnings(source_agent);
 CREATE INDEX IF NOT EXISTS idx_learnings_type ON agent_learnings(learning_type);
 
--- ═══ VECTOR INDEX (for fast similarity search) ═══
--- Uses IVFFlat for approximate nearest neighbor search
+-- ═══ VECTOR INDEX ═══
 -- CREATE INDEX IF NOT EXISTS idx_knowledge_embedding 
 --   ON expert_knowledge USING ivfflat (embedding vector_cosine_ops) WITH (lists = 100);
--- Note: Uncomment above after you have 100+ knowledge entries for optimal performance
+
+-- 9. IRONCLAW SESSIONS — Persistent working memory of the AI Brain
+CREATE TABLE IF NOT EXISTS ironclaw_sessions (
+    id TEXT PRIMARY KEY,
+    lead_id UUID,
+    started_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    ended_at TIMESTAMPTZ,
+    phase TEXT DEFAULT 'greeting',
+    agents_used JSONB DEFAULT '[]',
+    prospect_data JSONB DEFAULT '{}',
+    commitment_level INTEGER DEFAULT 0,
+    commitment_history JSONB DEFAULT '[]',
+    lead_score JSONB DEFAULT '{}',
+    audit_result JSONB DEFAULT '{}',
+    tools_called JSONB DEFAULT '[]',
+    turn_count INTEGER DEFAULT 0,
+    outcome TEXT,
+    raw_audio_url TEXT,
+    metadata JSONB DEFAULT '{}',
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 10. CONVERSATION TRANSCRIPTS — Atomic transcript entries
+CREATE TABLE IF NOT EXISTS conversation_transcripts (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    session_id TEXT NOT NULL,
+    line_index INTEGER NOT NULL,
+    speaker TEXT NOT NULL,
+    agent_name TEXT,
+    content TEXT NOT NULL,
+    sentiment TEXT,
+    metadata JSONB DEFAULT '{}',
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_transcripts_session ON conversation_transcripts(session_id);
+CREATE INDEX IF NOT EXISTS idx_transcripts_speaker ON conversation_transcripts(speaker);
+CREATE INDEX IF NOT EXISTS idx_ironclaw_sessions_lead ON ironclaw_sessions(lead_id);
+CREATE INDEX IF NOT EXISTS idx_learnings_session ON agent_learnings(source_session);
 `;
 
 export async function setupSupabaseTables(): Promise<{ success: boolean; message: string }> {
@@ -264,7 +303,18 @@ export async function setupSupabaseTables(): Promise<{ success: boolean; message
             } else if (queryError) {
                 return { success: false, message: `Connection error: ${queryError.message}` };
             } else {
-                console.log("✅ Tables already exist! Database is ready.");
+                console.log("✅ Core tables already exist. Checking for Agentic 4.0 extensions...");
+                const { error: sessionError } = await supabase.from("ironclaw_sessions").select("id").limit(1);
+
+                if (sessionError && sessionError.code === "42P01") {
+                    console.log("🔄 Agentic 4.0 tables missing. Manual update required.");
+                    return {
+                        success: false,
+                        message: "IronClaw tables missing. Run the updated SQL schema in Supabase SQL Editor."
+                    };
+                }
+
+                console.log("✅ All systems ready! Database is fully scaled.");
                 return { success: true, message: "Tables already exist" };
             }
         }

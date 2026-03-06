@@ -16,6 +16,7 @@ import {
 import CinematicCanvas from "@/components/CinematicCanvas";
 import AnimatedLogo from "./AnimatedLogo";
 import OrbitEcosystem from "./OrbitEcosystem";
+import NeuralOrb from "./NeuralOrb";
 import { VisualJenny } from "@/lib/visual-jenny";
 import { VisualBridge, type VisualCommand } from "@/lib/visual-bridge";
 import "./VaultUI.css";
@@ -97,8 +98,75 @@ function useCountdown() {
         const id = setInterval(update, 1000);
         return () => clearInterval(id);
     }, []);
-    return timeLeft;
 }
+
+interface Stat {
+    val: number;
+    suffix: string;
+    label: string;
+    sub: string;
+}
+
+function StatItem({ stat, isVisible }: { stat: Stat; isVisible: boolean }) {
+    const value = useCountUp(stat.val, isVisible, 2500, stat.suffix);
+    return (
+        <div className="vault-stat-item" style={{
+            background: "rgba(255,255,255,0.02)",
+            border: "1px solid rgba(255,255,255,0.06)",
+            borderRadius: 20,
+            padding: "24px 16px",
+            transition: "transform 0.3s ease",
+        }}>
+            <div className="vault-stat-value" style={{
+                fontSize: 32, fontWeight: 900, color: "#fff",
+                letterSpacing: "-0.02em", marginBottom: 4,
+                textShadow: "0 0 20px rgba(59,130,246,0.3)"
+            }}>
+                {stat.label.includes("Revenue") ? "$" + value : value}
+            </div>
+            <div className="vault-stat-label" style={{
+                fontSize: 11, fontWeight: 800, color: "#3b82f6",
+                textTransform: "uppercase", letterSpacing: "0.1em"
+            }}>{stat.label}</div>
+            <div className="vault-stat-sub" style={{
+                fontSize: 12, color: "rgba(255,255,255,0.4)",
+                marginTop: 4
+            }}>{stat.sub}</div>
+        </div>
+    );
+}
+
+function VisualProjection({ activeVisual, fading }: { activeVisual: any, fading: boolean }) {
+    if (!activeVisual.type) return null;
+    return (
+        <div style={{
+            position: "absolute", bottom: -240, left: "50%", transform: "translateX(-50%)",
+            width: "90vw", maxWidth: 400, zIndex: 100,
+            opacity: fading ? 0 : 1, transition: "opacity 0.6s ease-in-out"
+        }}>
+            <div className="glass-card" style={{ padding: 20, borderRadius: 24, border: "1px solid rgba(0,255,65,0.2)", background: "rgba(0,0,0,0.8)" }}>
+                {activeVisual.type === "image" && activeVisual.imageUrl && (
+                    <div style={{ position: "relative", width: "100%", height: 200, borderRadius: 12, overflow: "hidden", marginBottom: 12 }}>
+                        <Image src={activeVisual.imageUrl} alt={activeVisual.title || "Visual Context"} fill style={{ objectFit: "cover" }} />
+                    </div>
+                )}
+                {activeVisual.type === "stats" && activeVisual.stats && (
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 16 }}>
+                        {Object.entries(activeVisual.stats).map(([k, v]) => (
+                            <div key={k} style={{ padding: 12, background: "rgba(255,255,255,0.05)", borderRadius: 12 }}>
+                                <div style={{ fontSize: 10, color: "rgba(255,255,255,0.5)", textTransform: "uppercase" }}>{k}</div>
+                                <div style={{ fontSize: 16, fontWeight: 800, color: "#00ff41" }}>{v as string}</div>
+                            </div>
+                        ))}
+                    </div>
+                )}
+                <div style={{ fontSize: 14, fontWeight: 700, color: "#fff", marginBottom: 4 }}>{activeVisual.title}</div>
+                {activeVisual.neuroReason && <div style={{ fontSize: 11, color: "rgba(255,255,255,0.5)", fontStyle: "italic" }}>🧠 {activeVisual.neuroReason}</div>}
+            </div>
+        </div>
+    );
+}
+
 
 export default function VaultUI({ apiKey }: VaultProps) {
     const teamRef = useRef<TeamOrchestrator | null>(null);
@@ -128,6 +196,9 @@ export default function VaultUI({ apiKey }: VaultProps) {
         transition?: string;
     }>({ type: null });
     const [visualFading, setVisualFading] = useState(false);
+    const [isSpeaking, setIsSpeaking] = useState(false);
+    const [amplitude, setAmplitude] = useState(0);
+    const [analyser, setAnalyser] = useState<AnalyserNode | null>(null);
 
     // ─── Visual Jenny lifecycle ────────────────────────────────
     useEffect(() => {
@@ -205,6 +276,32 @@ export default function VaultUI({ apiKey }: VaultProps) {
         return () => unsub();
     }, []);
 
+    // ─── Real-time Amplitude Tracking ────────────────────────
+    useEffect(() => {
+        if (!analyser || phase === "standby") {
+            setAmplitude(0);
+            return;
+        }
+        const dataArray = new Uint8Array(analyser.frequencyBinCount);
+        let animId: number;
+
+        const update = () => {
+            analyser.getByteTimeDomainData(dataArray);
+            let sum = 0;
+            for (let i = 0; i < dataArray.length; i++) {
+                const v = (dataArray[i] - 128) / 128;
+                sum += v * v;
+            }
+            const rms = Math.sqrt(sum / dataArray.length);
+            // Amplify for visual effect
+            setAmplitude(Math.min(1.0, rms * 4));
+            animId = requestAnimationFrame(update);
+        };
+
+        animId = requestAnimationFrame(update);
+        return () => cancelAnimationFrame(animId);
+    }, [analyser, phase]);
+
     // ─── Language Support ───────────────────────────────────
     const [language, setLanguage] = useState<"en" | "es">("en");
 
@@ -241,17 +338,17 @@ export default function VaultUI({ apiKey }: VaultProps) {
 
     const TRANSLATIONS = {
         en: {
-            heroHeadline: "Slow and steady used to win the race. Today, slow and steady loses the market.",
+            heroHeadline: "Imagine the absolute freedom—and the extra revenue—you would have if Artificial Intelligence ran your business.",
             heroTypewriterPrefix: "Built for ",
-            heroLossAversion: "Every minute your business isn't responding to buyers, you are actively bleeding revenue. BioDynamX plugs 11 neuroscience-trained AI agents directly into your infrastructure to handle support and close sales 24/7.",
-            heroDiagnosticGap: "Zero extra headcount. Zero ceiling on growth.",
-            heroHook: "Let our lead agent, Jenny, reveal your single biggest profit leak in exactly 60 seconds. Free, live, right now.",
+            heroLossAversion: "You didn't start a business to be chained to a desk. Yet right now, you are losing countless hours to the daily grind. BiodynamX completely eliminates the tasks you hate. We plug an autonomous AI workforce into your company to flawlessly answer calls, return texts, manage emails, and close your sales 24/7.",
+            heroDiagnosticGap: "From building your new website and dominating SEO, to ensuring your brand is the top recommendation on AI search engines like ChatGPT, Perplexity, and Gemini—we handle it all. You take back your freedom. We scale your revenue.",
+            heroHook: "Stop working in your business and start working on it. Let our lead agent, Jenny, map out your custom AI growth strategy in exactly 60 seconds—free, live, on your screen right now.",
             heroBadge: "🧠 Powered by Neuroscience & Neuromarketing",
             heroWeb4Badge: "🌐 WEB 4.0 NATIVE",
             onboardingSpots: `🔴 Only 3 free audits left today | 4,000+ Community Members | 5x ROI Guarantee`,
             offerExpires: `⏳ Offer expires in 10h 36m 10s`,
-            buttonTalkExperts: "Find My Growth Opportunity →",
-            buttonSecondary: "Stop My Revenue Bleed →",
+            buttonTalkExperts: "Show Me My AI Growth Strategy →",
+            buttonSecondary: "Automate the Tasks I Hate →",
             buttonHandoff: "Switching to Mark...",
             buttonHandoffSub: "Building your ROI Bridge",
             buttonJennyActive: "Jenny is Analyzing",
@@ -305,17 +402,17 @@ export default function VaultUI({ apiKey }: VaultProps) {
             ],
         },
         es: {
-            heroHeadline: "Lento y seguro solía ganar la carrera. Hoy, lento y seguro pierde el mercado.",
+            heroHeadline: "Imagine la libertad absoluta—y los ingresos adicionales—que tendría si la Inteligencia Artificial dirigiera su negocio.",
             heroTypewriterPrefix: "Diseñado para ",
-            heroLossAversion: "Ya sea que haya lanzado la semana pasada o haya estado escalando durante 20 años, su competencia nunca duerme. Cada minuto que su negocio no responde, está perdiendo ingresos activamente frente a alguien que sí lo hace.",
-            heroDiagnosticGap: "BioDynamX elimina ese riesgo. Conectamos una flota autónoma de 11 agentes de IA entrenados en neurociencia directamente a su negocio para captar clientes potenciales, brindar soporte y cerrar ventas las 24 horas, los 7 días de la semana. Sin personal extra. Sin límites.",
-            heroHook: "Deje de adivinar dónde están sus cuellos de botella. Nuestra agente líder, Jenny, revelará la mayor fuga de ganancias en su negocio en exactamente 60 segundos: gratis, en vivo, ahora mismo. Sin discursos de venta. Solo inteligencia pura.",
+            heroLossAversion: "No empezó un negocio para estar encadenado a un escritorio. Sin embargo, en este momento, está perdiendo incontables horas en la rutina diaria. BiodynamX elimina por completo las tareas que odia. Conectamos una fuerza de trabajo de IA autónoma en su empresa para responder llamadas, devolver mensajes de texto, gestionar correos electrónicos y cerrar sus ventas las 24 horas, los 7 días de la semana, sin errores.",
+            heroDiagnosticGap: "Desde la creación de su nuevo sitio web y el dominio del SEO, hasta garantizar que su marca sea la recomendación principal en motores de búsqueda de IA como ChatGPT, Perplexity y Gemini—nos encargamos de todo. Usted recupera su libertad. Nosotros escalamos sus ingresos.",
+            heroHook: "Deje de trabajar en su negocio y comience a trabajar en él. Deje que nuestra agente principal, Jenny, diseñe su estrategia de crecimiento de IA personalizada en exactamente 60 segundos—gratis, en vivo, en su pantalla ahora mismo.",
             heroBadge: "🧠 Impulsado por Neurociencia y Neuromarketing",
             heroWeb4Badge: "🌐 WEB 4.0 NATIVO",
             onboardingSpots: `🔴 Solo quedan 3 auditorías gratuitas hoy`,
             offerExpires: `⏳ La oferta expira en 10h 36m 10s`,
-            buttonTalkExperts: "Encontrar Mi Mayor Oportunidad de Crecimiento →",
-            buttonSecondary: "Muéstrame Dónde Estoy Perdiendo Ingresos →",
+            buttonTalkExperts: "Muéstrame Mi Estrategia de Crecimiento de IA →",
+            buttonSecondary: "Automatiza las Tareas que Odio →",
             buttonHandoff: "Cambiando a Mark...",
             buttonHandoffSub: "Construyendo su puente de ROI",
             buttonJennyActive: "Jenny está analizando",
@@ -427,7 +524,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
         return new TeamOrchestrator(apiKey!, {
             onPhaseChange: (p, v) => { setPhase(p); setVisual(v); },
             onStatusChange: () => { },
-            onSpeakerChange: () => { },
+            onSpeakerChange: (speaker) => setIsSpeaking(speaker !== "idle"),
             onAuditRequested: (url) => {
                 console.log(`[VaultUI] 🔍 Tracking audit: ${url}`);
             },
@@ -442,7 +539,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
             },
             onTranscript: () => { },
             onError: (error) => { setErrorText(error); },
-            onAnalyserReady: () => { },
+            onAnalyserReady: (node) => { setAnalyser(node); },
         }, language);
     }, [apiKey, language]);
 
@@ -523,7 +620,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
         const team = new TeamOrchestrator(apiKey!, {
             onPhaseChange: (p, v) => { setPhase(p); setVisual(v); },
             onStatusChange: () => { },
-            onSpeakerChange: () => { },
+            onSpeakerChange: (speaker) => setIsSpeaking(speaker !== "idle"),
             onAuditRequested: (url) => {
                 console.log(`[VaultUI] 🔍 Tracking audit: ${url}`);
             },
@@ -538,7 +635,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
             },
             onTranscript: () => { },
             onError: (error) => { setErrorText(error); },
-            onAnalyserReady: () => { },
+            onAnalyserReady: (node) => { setAnalyser(node); },
         }, "es"); // ★ Hardcoded Spanish
 
         teamRef.current = team;
@@ -596,7 +693,11 @@ export default function VaultUI({ apiKey }: VaultProps) {
                     <AnimatedLogo size={32} />
                     <div>
                         <div className="brand-title">BioDynamX</div>
-                        <div className="brand-tagline">Engineering Group</div>
+                        <div className="brand-tagline" style={{
+                            fontSize: 10, fontWeight: 900, color: "#00ff41",
+                            letterSpacing: "0.15em", textTransform: "uppercase",
+                            opacity: 0.9, textShadow: "0 0 10px rgba(0,255,65,0.3)"
+                        }}>Engineering Group | Ecosystem</div>
                     </div>
                 </div>
 
@@ -681,436 +782,100 @@ export default function VaultUI({ apiKey }: VaultProps) {
             {/* ── Hero Section ────────────────────────────── */}
             <section className="hero-container" style={{
                 minHeight: isActive ? "calc(100vh - 60px)" : "90vh",
+                display: "flex", flexDirection: "column", justifyContent: "center", position: "relative"
             }}>
-                {/* Headline — only show when standby */}
+                {/* STANDBY UI */}
                 {!isActive && (
                     <div style={{
                         textAlign: "center", marginBottom: 32,
                         animation: "fadeUp 0.8s ease-out",
                     }}>
-                        {/* Neuroscience & Web 4.0 Badges — immediately visible */}
-                        <div style={{ display: 'flex', justifyContent: 'center', gap: 12, marginBottom: 16 }}>
-                            <div style={{
-                                display: 'inline-flex', alignItems: 'center', gap: 6,
-                                padding: '6px 16px',
-                                background: 'rgba(139,92,246,0.12)',
-                                border: '1px solid rgba(139,92,246,0.25)',
-                                borderRadius: 100,
-                                fontSize: 10, fontWeight: 700,
-                                color: '#a78bfa',
-                                letterSpacing: '0.04em',
-                                animation: 'pulse 3s ease-in-out infinite',
-                            }}>
-                                {t.heroBadge}
-                            </div>
-                            <div style={{
-                                display: 'inline-flex', alignItems: 'center', gap: 6,
-                                padding: '6px 16px',
-                                background: 'rgba(59,130,246,0.12)',
-                                border: '1px solid rgba(59,130,246,0.25)',
-                                borderRadius: 100,
-                                fontSize: 10, fontWeight: 700,
-                                color: '#3b82f6',
-                                letterSpacing: '0.04em',
-                            }}>
-                                {t.heroWeb4Badge}
-                            </div>
+                        {/* New Eyebrow Badge */}
+                        <div style={{
+                            fontSize: 10, fontWeight: 900, color: "#00ff41",
+                            letterSpacing: "0.15em", textTransform: "uppercase",
+                            marginBottom: 24, padding: "8px 20px", borderRadius: 100,
+                            background: "rgba(0,255,65,0.05)", display: "inline-block",
+                            border: "1px solid rgba(0,255,65,0.15)"
+                        }}>
+                            🧠 {language === "en" ? "BiodynamX Engineering Group | The Autonomous AI Ecosystem" : "BioDynamX Engineering Group | Ecosistema IA Autónomo"}
                         </div>
 
-                        <h1 data-speakable="true" className="hero-headline animated-gradient-text">
+                        <h1 data-speakable="true" className="hero-headline animated-gradient-text" style={{ fontSize: "clamp(32px, 5.5vw, 68px)", fontWeight: 900, lineHeight: 1.05, marginBottom: 28 }}>
                             {t.heroHeadline}
                         </h1>
-                        {/* Typewriter — cycles target audiences */}
-                        <div style={{
-                            fontSize: "clamp(14px, 1.6vw, 17px)",
-                            color: "rgba(255,255,255,0.5)",
-                            marginBottom: 8,
-                            height: 24,
-                            fontWeight: 500,
-                        }}>
-                            {t.heroTypewriterPrefix}
-                            <span style={{ color: "#3b82f6", fontWeight: 700 }}>{typewriterText}</span>
-                            <span className="cursor-blink">|</span>
-                        </div>
-                        {/* F2: Loss Aversion — quantify what they're LOSING */}
-                        <p data-speakable="true" className="hero-subheadline">
-                            {t.heroLossAversion}{" "}
-                            <span style={{ color: "#00ff41", fontWeight: 700 }}>{t.heroDiagnosticGap}</span>
+
+                        <p data-speakable="true" className="hero-subheadline" style={{ maxWidth: 840, margin: "0 auto 32px", fontSize: "clamp(15px, 1.8vw, 19px)", color: "rgba(255,255,255,0.75)", lineHeight: 1.7 }}>
+                            {t.heroLossAversion}
                         </p>
 
-                        {/* The Hook — Jenny 60-second value prop */}
+                        <p style={{ maxWidth: 840, margin: "0 auto 40px", fontSize: 15, color: "rgba(255,255,255,0.45)", lineHeight: 1.6 }}>
+                            {t.heroDiagnosticGap}
+                        </p>
+
+                        {/* The Hook Hook Card */}
                         <div className="animate-fade-in" style={{
-                            padding: "22px 28px",
-                            background: "linear-gradient(135deg, rgba(0,255,65,0.06) 0%, rgba(59,130,246,0.06) 100%)",
-                            border: "1px solid rgba(0,255,65,0.2)",
-                            borderRadius: 16,
-                            maxWidth: 600,
-                            margin: "28px auto 36px",
+                            padding: "24px 32px",
+                            background: "linear-gradient(135deg, rgba(0,255,65,0.08) 0%, rgba(59,130,246,0.08) 100%)",
+                            border: "1px solid rgba(0,255,65,0.25)",
+                            borderRadius: 24,
+                            maxWidth: 640,
+                            margin: "0 auto 48px",
                             position: "relative",
-                            overflow: "hidden",
+                            boxShadow: "0 20px 40px rgba(0,0,0,0.2)"
                         }}>
-                            {/* Subtle glow accent */}
-                            <div style={{
-                                position: "absolute", top: 0, left: 0, right: 0, height: 1,
-                                background: "linear-gradient(90deg, transparent 0%, rgba(0,255,65,0.4) 50%, transparent 100%)",
-                            }} />
-                            <p style={{
-                                fontSize: 16,
-                                color: "rgba(255,255,255,0.9)",
-                                lineHeight: 1.65,
-                                margin: 0,
-                                fontWeight: 500,
-                                letterSpacing: "-0.01em",
-                            }}>
-                                <span style={{ color: "#00ff41", fontWeight: 800, fontSize: 18 }}>⚡</span>
-                                {" "}{t.heroHook}
+                            <div style={{ position: "absolute", inset: 0, opacity: 0.2, background: "radial-gradient(circle at center, #00ff4122 0%, transparent 70%)", pointerEvents: "none" }} />
+                            <p data-speakable="true" style={{ fontSize: 13, fontWeight: 600, color: "rgba(255,255,255,0.95)", margin: 0, lineHeight: 1.6 }}>
+                                {t.heroHook}
                             </p>
                         </div>
-                    </div>
-                )}
 
-                {/* Agent status when active */}
-                {isActive && (
-                    <div style={{
-                        textAlign: "center", marginBottom: 32,
-                        animation: "fadeUp 0.5s ease-out",
-                    }}>
-                        <div style={{
-                            fontSize: 12, fontWeight: 600,
-                            color: "rgba(255,255,255,0.3)",
-                            letterSpacing: "0.1em",
-                            marginBottom: 10,
-                            textTransform: "uppercase",
-                        }}>
-                            {(phase === "glia_active" || phase === "jenny_closer_active") && t.statusDiagnostic}
-                            {phase === "mark_active" && t.statusROI}
-                            {phase === "handoff" && t.statusHandoff}
-                            {phase === "stitching" && t.statusStitch}
-                        </div>
-                        <div style={{
-                            fontSize: "clamp(22px, 3vw, 32px)", fontWeight: 700,
-                            color: "#fff",
-                            letterSpacing: "-0.02em",
-                        }}>
-                            {agentName === "Jenny" && t.jennyAnalyzing}
-                            {agentName === "Mark" && t.markQuantifying}
-                            {isHandoff && t.preparingMark}
-                            {phase === "stitching" && t.stitchingDesign}
-                            {phase === "checkout" && t.toolStackTitle}
-                        </div>
-
-                        {phase === "checkout" && (
-                            <div className="tool-stack-list animate-fade-in" style={{ marginTop: 24 }}>
-                                {t.toolStack.map((tool: string, i: number) => (
-                                    <div key={i} className="tool-stack-item">
-                                        {tool}
-                                    </div>
-                                ))}
+                        {/* THE BUTTONS (Double Bind Strategy) */}
+                        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 20 }}>
+                            <div style={{ position: "relative", width: "100%", maxWidth: 440 }}>
+                                <div style={{ position: "absolute", inset: -10, borderRadius: 24, background: "radial-gradient(ellipse, rgba(0,255,65,0.2) 0%, transparent 70%)", animation: "breathe 3s ease-in-out infinite" }} />
+                                <button onClick={handleStart} className="primary-btn-green" style={{ width: "100%", padding: "22px 32px", fontSize: 19, letterSpacing: "-0.01em" }}>
+                                    {t.buttonTalkExperts}
+                                </button>
                             </div>
-                        )}
-                    </div>
-                )}
-
-                {/* ── VISUAL JENNY OVERLAY PANEL ──────────── */}
-                {isActive && activeVisual.type && (
-                    <div className={`visual-jenny-panel ${visualFading ? 'fading' : 'visible'}`}
-                        id="visual-jenny-overlay"
-                    >
-                        {/* Brain Layer indicator */}
-                        {activeVisual.brainLayer && (
-                            <div className="visual-jenny-layer">
-                                <span className="visual-jenny-layer-dot" />
-                                {activeVisual.brainLayer.toUpperCase()} LAYER
-                            </div>
-                        )}
-
-                        {/* Image Visual */}
-                        {activeVisual.type === "image" && activeVisual.imageUrl && (
-                            <div className="visual-jenny-image-wrap">
-                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img
-                                    src={activeVisual.imageUrl}
-                                    alt={activeVisual.title || "Visual Jenny"}
-                                    className="visual-jenny-image"
-                                />
-                                {activeVisual.neuroReason && (
-                                    <div className="visual-jenny-caption">
-                                        {activeVisual.neuroReason}
-                                    </div>
-                                )}
-                            </div>
-                        )}
-
-                        {/* Stats Card */}
-                        {activeVisual.type === "stats" && activeVisual.stats && (
-                            <div className="visual-jenny-stats">
-                                {activeVisual.title && (
-                                    <div className="visual-jenny-stats-title">{activeVisual.title}</div>
-                                )}
-                                <div className="visual-jenny-stats-grid">
-                                    {Object.entries(activeVisual.stats).map(([key, value]) => (
-                                        <div key={key} className="visual-jenny-stat-item">
-                                            <div className="visual-jenny-stat-value">{String(value)}</div>
-                                            <div className="visual-jenny-stat-label">{key}</div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Loading State */}
-                        {activeVisual.type === "loading" && (
-                            <div className="visual-jenny-loading">
-                                <div className="visual-jenny-spinner" />
-                                <div className="visual-jenny-loading-title">
-                                    {activeVisual.title || "Analyzing..."}
-                                </div>
-                                {activeVisual.subtitle && (
-                                    <div className="visual-jenny-loading-sub">
-                                        {activeVisual.subtitle}
-                                    </div>
-                                )}
-                            </div>
-                        )}
-
-                        {/* Comparison View */}
-                        {activeVisual.type === "comparison" && activeVisual.stats && (
-                            <div className="visual-jenny-stats">
-                                {activeVisual.title && (
-                                    <div className="visual-jenny-stats-title">{activeVisual.title}</div>
-                                )}
-                                <div className="visual-jenny-stats-grid">
-                                    {Object.entries(activeVisual.stats).map(([key, value]) => (
-                                        <div key={key} className="visual-jenny-stat-item comparison">
-                                            <div className="visual-jenny-stat-value">{String(value)}</div>
-                                            <div className="visual-jenny-stat-label">{key}</div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Visual Jenny branding */}
-                        <div className="visual-jenny-badge">
-                            🧠 Visual Jenny • Autonomous
-                        </div>
-                    </div>
-                )}
-
-                {/* ── THE BUTTONS (Double Bind Strategy) ── */}
-                {!isActive ? (
-                    <div style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        gap: 16,
-                        width: "100%",
-                        maxWidth: 480,
-                        margin: "0 auto",
-                    }}>
-                        <div style={{ position: "relative", width: "100%" }}>
-                            <div style={{
-                                position: "absolute",
-                                inset: -8,
-                                borderRadius: 20,
-                                background: "radial-gradient(ellipse, rgba(0,255,65,0.15) 0%, transparent 70%)",
-                                animation: "breathe 3s ease-in-out infinite",
-                                pointerEvents: "none",
-                            }} />
-                            <div aria-hidden="true" style={{
-                                position: "absolute",
-                                top: 0,
-                                left: 0,
-                                right: 0,
-                                bottom: 0,
-                                background: "radial-gradient(circle at center, rgba(167,139,250,0.15) 0%, transparent 70%)",
-                                pointerEvents: "none"
-                            }} />
-                            <button
-                                onClick={handleStart}
-                                style={{
-                                    width: "100%",
-                                    position: "relative",
-                                    background: "linear-gradient(135deg, #00ff41 0%, #00cc33 100%)",
-                                    border: "none",
-                                    color: "#000",
-                                    padding: "20px 32px",
-                                    fontSize: 18,
-                                    fontWeight: 800,
-                                    borderRadius: 14,
-                                    cursor: "pointer",
-                                    transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
-                                    boxShadow: "0 4px 40px rgba(0,255,65,0.35), 0 0 120px rgba(0,255,65,0.12)",
-                                    letterSpacing: "-0.01em",
-                                }}
-                                onMouseEnter={(e) => {
-                                    e.currentTarget.style.transform = "scale(1.02) translateY(-2px)";
-                                    e.currentTarget.style.boxShadow = "0 8px 50px rgba(0,255,65,0.45)";
-                                }}
-                                onMouseLeave={(e) => {
-                                    e.currentTarget.style.transform = "scale(1)";
-                                    e.currentTarget.style.boxShadow = "0 4px 40px rgba(0,255,65,0.35)";
-                                }}
-                            >
-                                {t.buttonTalkExperts}
+                            <button onClick={handleStart} className="button-secondary" style={{ fontSize: 16 }}>
+                                {t.buttonSecondary}
                             </button>
                         </div>
 
-                        <button
-                            onClick={handleStart}
-                            style={{
-                                width: "100%",
-                                background: "rgba(255,255,255,0.05)",
-                                border: "1px solid rgba(255,255,255,0.1)",
-                                color: "#fff",
-                                padding: "16px 32px",
-                                fontSize: 15,
-                                fontWeight: 700,
-                                borderRadius: 14,
-                                cursor: "pointer",
-                                transition: "all 0.3s ease",
-                                letterSpacing: "0.01em",
-                            }}
-                            onMouseEnter={(e) => {
-                                e.currentTarget.style.background = "rgba(255,255,255,0.08)";
-                                e.currentTarget.style.borderColor = "rgba(255,255,255,0.2)";
-                            }}
-                            onMouseLeave={(e) => {
-                                e.currentTarget.style.background = "rgba(255,255,255,0.05)";
-                                e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)";
-                            }}
-                        >
-                            {t.buttonSecondary}
-                        </button>
-                    </div>
-                ) : (
-                    <div style={{ position: "relative", marginBottom: 8 }}>
-                        <button
-                            onClick={handleStart}
-                            disabled={isHandoff}
-                            style={{
-                                position: "relative",
-                                background: "rgba(0,255,65,0.05)",
-                                border: "1px solid rgba(0,255,65,0.3)",
-                                color: "#00ff41",
-                                padding: "16px 40px",
-                                fontSize: 14,
-                                fontWeight: 800,
-                                borderRadius: 14,
-                                cursor: isHandoff ? "wait" : "pointer",
-                                transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
-                                boxShadow: "0 0 40px rgba(0,255,65,0.1)",
-                                transform: "scale(0.95)",
-                                opacity: isHandoff ? 0.5 : 1,
-                            }}
-                        >
-                            {buttonLabel}
-                        </button>
-                    </div>
-                )}
-
-                {/* Sub-label with friction reducer */}
-                <p style={{
-                    fontSize: 13, marginTop: 8,
-                    color: errorText ? "#ff4444" : "rgba(255,255,255,0.85)",
-                    fontWeight: 600,
-                    letterSpacing: "0.02em",
-                }}>
-                    {errorText}
-                </p>
-                {/* ── Micro-Trust & Urgency Indicators (Double Bind Support) ── */}
-                {!isActive && (
-                    <div style={{
-                        display: "flex", alignItems: "center", justifyContent: "center",
-                        gap: 0, marginTop: 16, flexWrap: "wrap",
-                        background: "rgba(255,255,255,0.025)",
-                        border: "1px solid rgba(255,255,255,0.06)",
-                        borderRadius: 50,
-                        padding: "10px 20px",
-                        maxWidth: 480,
-                    }}>
-                        <span style={{
-                            fontSize: 12, fontWeight: 700,
-                            color: "rgba(255,255,255,0.9)",
-                            display: "flex", alignItems: "center", gap: 6,
-                            paddingRight: 14,
-                            borderRight: "1px solid rgba(255,255,255,0.12)",
-                        }}>
-                            <span style={{ animation: "pulse 1.5s ease-in-out infinite" }}>🔴</span>
-                            Only 3 free audits left today
-                        </span>
-                        <span style={{
-                            fontSize: 12, fontWeight: 700,
-                            color: "rgba(255,255,255,0.9)",
-                            display: "flex", alignItems: "center", gap: 6,
-                            paddingLeft: 14,
-                            paddingRight: 14,
-                            borderRight: "1px solid rgba(255,255,255,0.12)",
-                        }}>
-                            4,000+ Community Members
-                        </span>
-                        <span style={{
-                            fontSize: 12, fontWeight: 700,
-                            color: "#00ff41",
-                            display: "flex", alignItems: "center", gap: 6,
-                            paddingLeft: 14,
-                        }}>
-                            ✦ 5x ROI Guarantee
-                        </span>
-                    </div>
-                )}
-
-                {/* ── Social Proof ── */}
-                {!isActive && (
-                    <div style={{
-                        marginTop: 40,
-                        animation: "fadeUp 1.2s ease-out",
-                        display: "flex", flexDirection: "column",
-                        alignItems: "center", gap: 24,
-                    }}>
-                        {/* Live recovery counter */}
-                        <div style={{
-                            display: "flex", alignItems: "center", gap: 8,
-                        }}>
+                        {/* Micro-Trust & Urgency */}
+                        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16, marginTop: 40 }}>
                             <div style={{
-                                width: 6, height: 6, borderRadius: "50%",
-                                background: "#00ff41",
-                                animation: "pulse 1.5s ease-in-out infinite",
-                            }} />
-                            <span style={{
-                                fontSize: 13, fontWeight: 600,
-                                color: "rgba(255,255,255,0.7)",
-                                letterSpacing: "0.02em",
+                                display: "flex", alignItems: "center", background: "rgba(255,255,255,0.03)", padding: "10px 24px", borderRadius: 100, border: "1px solid rgba(255,255,255,0.06)", fontSize: 12, fontWeight: 700, color: "rgba(255,255,255,0.8)"
                             }}>
-                                <span style={{ color: "#00ff41", fontWeight: 700 }}>$2.4M+</span>
-                                {" "}recovered for our partners this quarter
-                            </span>
+                                {t.onboardingSpots}
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* ACTIVE UI */}
+                {isActive && (
+                    <div style={{
+                        display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+                        flex: 1, padding: "40px 20px", position: "relative"
+                    }}>
+                        <NeuralOrb
+                            agentName={agentName}
+                            amplitude={amplitude}
+                            isActive={isActive}
+                            isSpeaking={isSpeaking}
+                        />
+
+                        <div style={{ marginTop: 24, textAlign: "center" }}>
+                            <div style={{ fontSize: 12, fontWeight: 800, color: "#00ff41", letterSpacing: "0.2em", marginBottom: 8 }}>{visual.phase === "handoff" ? "HANDOFF IN PROGRESS" : "NEURAL LINK ACTIVE"}</div>
+                            <button onClick={handleStart} disabled={isHandoff} style={{
+                                background: "rgba(0,255,65,0.08)", border: "1px solid rgba(0,255,65,0.3)", color: "#00ff41", padding: "12px 32px", borderRadius: 100, fontSize: 13, fontWeight: 800, cursor: isHandoff ? "wait" : "pointer"
+                            }}>{buttonLabel}</button>
+                            {errorText && <p style={{ color: "#ff4444", fontSize: 12, marginTop: 12 }}>{errorText}</p>}
                         </div>
 
-                        {/* Condensed trust — three numbers (responsive grid) */}
-                        <div className="hero-stats-row">
-                            {[
-                                { val: "4,000+", label: "Active Members" },
-                                { val: "Private", label: "Business Community" },
-                                { val: "5x", label: "ROI Guarantee" },
-                            ].map((stat, i) => (
-                                <div key={i} className="hero-stat-item">
-                                    <span className="hero-stat-val">{stat.val}</span>
-                                    <span className="hero-stat-label">{stat.label}</span>
-                                </div>
-                            ))}
-                        </div>
-
-                        {/* Scroll indicator */}
-                        <div style={{
-                            marginTop: 16,
-                            animation: "scrollBounce 2s ease-in-out infinite",
-                            opacity: 0.4,
-                        }}>
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ color: "#fff" }}>
-                                <path d="M7 13l5 5 5-5M7 7l5 5 5-5" />
-                            </svg>
-                        </div>
+                        <VisualProjection activeVisual={activeVisual} fading={visualFading} />
                     </div>
                 )}
             </section>
@@ -1148,35 +913,37 @@ export default function VaultUI({ apiKey }: VaultProps) {
             </div>
 
             {/* ── 3D Service Ecosystem — WOW factor ────────── */}
-            {!isActive && (
-                <section className="section-container orbit-section" style={{
-                    background: "linear-gradient(180deg, rgba(0,255,65,0.01) 0%, transparent 50%, rgba(59,130,246,0.01) 100%)",
-                    paddingTop: 80,
-                    paddingBottom: 80,
-                    overflow: "visible",
-                }}>
-                    <div style={{ maxWidth: 1000, margin: "0 auto", textAlign: "center" }}>
-                        <div className="section-label" style={{ color: "#3b82f6" }}>Full-Stack AI Infrastructure</div>
-                        <h2 className="section-title">
-                            Not just agents. <span style={{ color: "#00ff41" }}>An entire AI workforce.</span>
-                        </h2>
-                        <p className="section-desc" style={{ maxWidth: 600, margin: "0 auto 40px" }}>
-                            We don&apos;t sell software. We build the AI engine behind your business —
-                            voice agents, custom software, video production, SEO domination, reputation management,
-                            and AI employees that work 24/7. Everything from A to Z, under one roof.
-                        </p>
-                        <OrbitEcosystem />
-                        <p style={{
-                            fontSize: 13,
-                            color: "rgba(255,255,255,0.4)",
-                            marginTop: 32,
-                            fontWeight: 500,
-                        }}>
-                            We build custom software. We&apos;re not just another AI vendor.
-                        </p>
-                    </div>
-                </section>
-            )}
+            {
+                !isActive && (
+                    <section className="section-container orbit-section" style={{
+                        background: "linear-gradient(180deg, rgba(0,255,65,0.01) 0%, transparent 50%, rgba(59,130,246,0.01) 100%)",
+                        paddingTop: 80,
+                        paddingBottom: 80,
+                        overflow: "visible",
+                    }}>
+                        <div style={{ maxWidth: 1000, margin: "0 auto", textAlign: "center" }}>
+                            <div className="section-label" style={{ color: "#3b82f6" }}>Full-Stack AI Infrastructure</div>
+                            <h2 className="section-title">
+                                Not just agents. <span style={{ color: "#00ff41" }}>An entire AI workforce.</span>
+                            </h2>
+                            <p className="section-desc" style={{ maxWidth: 600, margin: "0 auto 40px" }}>
+                                We don&apos;t sell software. We build the AI engine behind your business —
+                                voice agents, custom software, video production, SEO domination, reputation management,
+                                and AI employees that work 24/7. Everything from A to Z, under one roof.
+                            </p>
+                            <OrbitEcosystem />
+                            <p style={{
+                                fontSize: 13,
+                                color: "rgba(255,255,255,0.4)",
+                                marginTop: 32,
+                                fontWeight: 500,
+                            }}>
+                                We build custom software. We&apos;re not just another AI vendor.
+                            </p>
+                        </div>
+                    </section>
+                )
+            }
 
             <section id="how-it-works" ref={howItWorksRef} aria-label="The BioDynamX Diagnostic Framework" className="section-container" style={{
                 opacity: howItWorksVisible ? 1 : 0,
@@ -1657,11 +1424,11 @@ export default function VaultUI({ apiKey }: VaultProps) {
                                 image: "/agents/vicki.png"
                             },
                             {
-                                id: "ironclaw_super_agent",
+                                id: "jules_architect",
                                 name: "Jules",
                                 role: "Strategy & Architecture",
-                                chip1: "Orchestration",
-                                chip2: "Super Agent · Charon",
+                                chip1: "Technical Lead",
+                                chip2: "Engineering · Puck",
                                 desc: "The strategist. Jules is the lead orchestrator — supervising all agents, ensuring the neuroscience framework is followed, and architecting custom solutions for every partner.",
                                 result: "Full orchestration + Strategic alignment.",
                                 color: "#60a5fa",
@@ -1669,11 +1436,11 @@ export default function VaultUI({ apiKey }: VaultProps) {
                                 image: "/agents/jules.png"
                             },
                             {
-                                id: "ben_gmb",
+                                id: "ben_analyst",
                                 name: "Ben",
-                                role: "GMB & Reviews (Neocortex)",
+                                role: "Macro-Analyst (Neocortex)",
                                 chip1: "Rational Drowning",
-                                chip2: "Logic Math · Puck",
+                                chip2: "Logic Math · Charon",
                                 desc: "The logician. Ben delivers the cold, hard ROI math that the rational brain needs to justify the emotional decision to scale.",
                                 result: "Rational justification + Map ranking roadmap.",
                                 color: "#fbbf24",
@@ -1685,7 +1452,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
                                 name: "Chase",
                                 role: "Lead Prospecting (Chase Response)",
                                 chip1: "Competitive Intel",
-                                chip2: "Pursuit Circuit · Enceladus",
+                                chip2: "Hunter · Enceladus",
                                 desc: "The hunter. Chase activates the lateral hypothalamus pursuit circuit — detecting opportunity and pursuing without hesitation. Competitor intel, market stagnation, and urgency.",
                                 result: "Competitive advantage + Lead pipeline activated.",
                                 color: "#f97316",
@@ -2294,24 +2061,6 @@ export default function VaultUI({ apiKey }: VaultProps) {
                     © 2026 BioDynamX Engineering Group. All rights reserved. Neuroscience for the digital age.
                 </div>
             </footer>
-        </div >
-    );
-}
-
-interface Stat {
-    val: number;
-    suffix: string;
-    label: string;
-    sub: string;
-}
-
-function StatItem({ stat, isVisible }: { stat: Stat, isVisible: boolean }) {
-    const value = useCountUp(stat.val, isVisible, 2000, stat.suffix);
-    return (
-        <div className="vault-stat-item">
-            <div className="vault-stat-value">{stat.label === "Partner Revenue Recovered" ? "$" + value : value}</div>
-            <div className="vault-stat-label">{stat.label}</div>
-            <div className="vault-stat-sub">{stat.sub}</div>
         </div>
     );
 }

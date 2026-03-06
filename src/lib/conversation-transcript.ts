@@ -107,6 +107,25 @@ export function addEntry(
             transcript.toolsCalled.push(toolName);
         }
     }
+
+    // ★ SCALE: Sync this entry to Supabase
+    syncTranscriptEntry(sessionId, transcript.entries.length - 1, transcript.entries[transcript.entries.length - 1]);
+}
+
+/**
+ * Internal helper to sync a single entry to Supabase
+ */
+async function syncTranscriptEntry(sessionId: string, index: number, entry: TranscriptEntry): Promise<void> {
+    try {
+        const baseUrl = typeof window !== "undefined" ? "" : (process.env.NEXT_PUBLIC_APP_URL || "");
+        await fetch(`${baseUrl}/api/transcript/sync`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ sessionId, index, entry }),
+        });
+    } catch (err) {
+        console.warn(`[Transcript Sync] Failed for ${sessionId} line ${index}:`, err);
+    }
 }
 
 /**

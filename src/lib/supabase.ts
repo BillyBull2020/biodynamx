@@ -6,6 +6,8 @@
 // ============================================================================
 
 import { createClient } from "@supabase/supabase-js";
+import type { IronclawSession, IronclawLearning } from "./ironclaw-core";
+import type { TranscriptEntry } from "./conversation-transcript";
 
 // ── Types ───────────────────────────────────────────────────────────────────
 export interface Lead {
@@ -170,5 +172,99 @@ export async function getLeadByPhone(phone: string): Promise<Lead | null> {
     }
 
     return data as Lead;
+}
+
+// ── Agentic 4.0 Scaling Functions ───────────────────────────────────────────
+
+/**
+ * Persists full IronClaw session state (Working Memory)
+ */
+export async function upsertIronclawSession(session: IronclawSession) {
+    const supabase = getSupabaseAdmin();
+    if (!supabase) return;
+
+    const { error } = await supabase
+        .from("ironclaw_sessions")
+        .upsert({
+            id: session.sessionId,
+            started_at: new Date(session.startedAt).toISOString(),
+            ended_at: session.endedAt ? new Date(session.endedAt).toISOString() : null,
+            phase: session.conversationPhase,
+            agents_used: session.agentsUsed,
+            prospect_data: session.prospect,
+            commitment_level: session.prospect.commitmentLevel,
+            lead_score: session.leadScore || {},
+            audit_result: session.auditResult || {},
+            tools_called: session.toolsCalled,
+            turn_count: session.turnCount,
+            outcome: session.outcome,
+            metadata: {
+                preCallIntel: session.preCallIntel,
+                handoffCount: session.handoffCount,
+                visualsShown: session.visualsShown,
+            },
+            updated_at: new Date().toISOString(),
+        });
+
+    if (error) {
+        console.error("[Supabase] Failed to upsert ironclaw session:", error.message);
+    }
+}
+
+/**
+ * Atomicly saves a single transcript line
+ */
+export async function saveTranscriptEntry(
+    sessionId: string,
+    index: number,
+    entry: TranscriptEntry
+) {
+    const supabase = getSupabaseAdmin();
+    if (!supabase) return;
+
+    const { error } = await supabase
+        .from("conversation_transcripts")
+        .insert({
+            session_id: sessionId,
+            line_index: index,
+            speaker: entry.speaker,
+            agent_name: entry.agentName,
+            content: entry.content,
+            sentiment: (entry.metadata?.sentiment as string) || null,
+            metadata: entry.metadata || {},
+            created_at: entry.timestamp,
+        });
+
+    if (error) {
+        console.error("[Supabase] Failed to save transcript line:", error.message);
+    }
+}
+
+/**
+ * Captures an extracted learning for future calls
+ */
+export async function addIronclawLearning(learning: IronclawLearning, sourceSessionId?: string) {
+    const supabase = getSupabaseAdmin();
+    if (!supabase) return;
+
+    const { error } = await supabase
+        .from("agent_learnings")
+        .insert({
+            learning_type: learning.type,
+            content: learning.content,
+            industry: learning.industry,
+            confidence: learning.confidence,
+            source_agent: "ironclaw",
+            source_session: sourceSessionId,
+            applied_count: learning.appliedCount,
+            metadata: {
+                id: learning.id,
+                timestamp: learning.timestamp,
+            },
+        });
+
+    if (error) {
+        console.error("[Supabase] Failed to record learning:", error.message);
+    }
 }
 
