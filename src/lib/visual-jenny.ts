@@ -25,6 +25,7 @@ import {
     type ConversationEventType,
     type VisualCommand,
 } from "./visual-bridge";
+import { getKeywordEngine, type SceneId, type TransitionType } from "./keyword-trigger-engine";
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -77,6 +78,7 @@ export class VisualJenny {
     private decisionQueue: ConversationEvent[] = [];
     private isProcessing = false;
     private debounceTimer: ReturnType<typeof setTimeout> | null = null;
+    private keywordUnsubscribe: (() => void) | null = null;
 
     // Rate limiting — don't spam visuals
     private lastVisualTime = 0;
@@ -120,6 +122,12 @@ export class VisualJenny {
         this.unsubscribe = VisualBridge.onConversationEvent((event) => {
             this.handleConversationEvent(event);
         });
+
+        // Initialize Keyword Engine
+        const engine = getKeywordEngine();
+        this.keywordUnsubscribe = engine.onSceneChange((newScene, prev, transition, keywords, confidence) => {
+            this.handleKeywordSceneChange(newScene, transition, keywords, confidence);
+        });
     }
 
     /** Stop listening and clean up */
@@ -131,6 +139,10 @@ export class VisualJenny {
         }
         if (this.debounceTimer) {
             clearTimeout(this.debounceTimer);
+        }
+        if (this.keywordUnsubscribe) {
+            this.keywordUnsubscribe();
+            this.keywordUnsubscribe = null;
         }
         this.context = this.createFreshContext();
         console.log("[VisualJenny] 🔴 Visual Jenny offline");
@@ -148,7 +160,31 @@ export class VisualJenny {
     }
 
     private updateContext(event: ConversationEvent): void {
-        switch (event.type) {
+        const { type, data } = event;
+
+        if (type === "agent_speech") {
+            const text = data.text as string;
+            this.context.agentSpeechHistory.push(text);
+
+            // Keep last 20 entries
+            if (this.context.agentSpeechHistory.length > 20) {
+                this.context.agentSpeechHistory.shift();
+            }
+
+            // ★ FEED KEYWORD ENGINE
+            const engine = getKeywordEngine();
+            engine.processText(text);
+            return; // Processed, no need for switch
+        } else if (type === "prospect_speech") {
+            const text = (event.data.text as string || "").slice(0, 200);
+            this.context.prospectSpeechHistory.push(text);
+            if (this.context.prospectSpeechHistory.length > 20) {
+                this.context.prospectSpeechHistory.shift();
+            }
+            return; // Processed, no need for switch
+        }
+
+        switch (type) {
             case "session_start":
                 this.context = this.createFreshContext();
                 this.context.currentPhase = "greeting";
@@ -178,25 +214,6 @@ export class VisualJenny {
                 this.context.currentPhase = (event.data.phase as string) || this.context.currentPhase;
                 break;
 
-            case "agent_speech":
-                this.context.agentSpeechHistory.push(
-                    (event.data.text as string || "").slice(0, 200)
-                );
-                // Keep last 20 entries
-                if (this.context.agentSpeechHistory.length > 20) {
-                    this.context.agentSpeechHistory.shift();
-                }
-                break;
-
-            case "prospect_speech":
-                this.context.prospectSpeechHistory.push(
-                    (event.data.text as string || "").slice(0, 200)
-                );
-                if (this.context.prospectSpeechHistory.length > 20) {
-                    this.context.prospectSpeechHistory.shift();
-                }
-                break;
-
             case "competitor_intel":
                 this.context.competitorData = event.data.result as Record<string, unknown> || null;
                 break;
@@ -222,6 +239,51 @@ export class VisualJenny {
     }
 
     // ── Decision Engine ────────────────────────────────────────────────────
+
+    /** Handle granular scene changes from the keyword engine */
+    private handleKeywordSceneChange(
+        sceneId: SceneId,
+        transition: TransitionType,
+        keywords: string[],
+        confidence: number
+    ): void {
+        console.log(`[VisualJenny] 🎯 Keyword Trigger: ${sceneId} (confidence: ${confidence.toFixed(2)})`);
+
+        // If it's a freedom visualization, explicitly show an image
+        if (sceneId === "freedom_visualization") {
+            this.executeDecision({
+                action: "show_image",
+                phase: "limbic",
+                topic: "freedom_visualization",
+                reason: `Keyword match: ${keywords.join(", ")}`,
+                useCache: true,
+                generatePrompt: "Aspirational luxury lifestyle, cinematic business freedom, beautiful nature retreat, premium dark aesthetic.",
+            });
+            return;
+        }
+
+        // Map other scenes to specific actions
+        const sceneToActionMap: Record<string, VisualDecision["action"]> = {
+            "neural_pathway": "show_image",
+            "ai_flowchart": "show_image",
+            "revenue_impact": "show_stats",
+            "competitor_map": "show_comparison",
+            "audit_progress": "show_loading",
+            "checkout": "navigate",
+            "website_hero": "navigate",
+        };
+
+        const action = sceneToActionMap[sceneId];
+        if (action) {
+            this.executeDecision({
+                action,
+                topic: sceneId,
+                reason: `Granular keyword trigger: ${keywords.join(", ")}`,
+                phase: sceneId === "revenue_impact" ? "reptilian" : "neocortex",
+                sectionId: sceneId === "checkout" ? "pricing" : "hero",
+            });
+        }
+    }
 
     private scheduleDecision(): void {
         if (this.debounceTimer) clearTimeout(this.debounceTimer);

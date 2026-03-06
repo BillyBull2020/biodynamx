@@ -29,6 +29,7 @@ export type SceneId =
     | "personalized_proposal"
     | "website_embed"
     | "generated_image"
+    | "freedom_visualization"
     | "idle";
 
 export type TransitionType = "fade" | "slide" | "morph" | "neural";
@@ -248,6 +249,20 @@ const BIODYNAMX_SCENES: VisualScene[] = [
         priority: 9,
         clearPrevious: true,
         spatialAnchor: "right",  // Guarantee = trust = right
+        colorTheme: "green",
+    },
+    {
+        id: "freedom_visualization",
+        keywords: [
+            "imagine the freedom", "absolute freedom", "extra revenue",
+            "extra money", "liberating", "selling a dream", "vacation",
+            "imagine how fun", "running your business",
+        ],
+        transition: "fade",
+        duration: 1200,
+        priority: 10,
+        clearPrevious: true,
+        spatialAnchor: "full",
         colorTheme: "green",
     },
 
