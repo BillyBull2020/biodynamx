@@ -829,12 +829,12 @@ export default function VaultUI({ apiKey }: VaultProps) {
                         {/* THE BUTTONS (Double Bind Strategy) */}
                         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 20 }}>
                             <div style={{ position: "relative", width: "100%", maxWidth: 440 }}>
-                                <div style={{ position: "absolute", inset: -10, borderRadius: 24, background: "radial-gradient(ellipse, rgba(0,255,65,0.2) 0%, transparent 70%)", animation: "breathe 3s ease-in-out infinite" }} />
-                                <button onClick={handleStart} className="primary-btn-green" style={{ width: "100%", padding: "22px 32px", fontSize: 19, letterSpacing: "-0.01em" }}>
+                                <div style={{ position: "absolute", inset: -10, borderRadius: 24, background: "radial-gradient(ellipse, rgba(0,255,65,0.2) 0%, transparent 70%)", animation: "breathe 3s ease-in-out infinite", pointerEvents: "none" }} />
+                                <button onClick={handleStart} className="primary-btn-green hover-lift" style={{ width: "100%", padding: "22px 32px", fontSize: 19, letterSpacing: "-0.01em" }}>
                                     {t.buttonTalkExperts}
                                 </button>
                             </div>
-                            <button onClick={handleStart} className="button-secondary" style={{ fontSize: 16 }}>
+                            <button onClick={handleStart} className="button-premium-secondary hover-lift" style={{ fontSize: 16 }}>
                                 {t.buttonSecondary}
                             </button>
                         </div>
