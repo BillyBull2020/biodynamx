@@ -484,6 +484,17 @@ export class VisualJenny {
                 return { action: "wait", reason: "Data point not actionable for visual" };
             }
 
+            case "agent_speech":
+                // Fallback: If no specific granular keyword matched recently,
+                // show a brain-layer specific status visual to keep the UI active
+                return {
+                    action: "show_image",
+                    phase: this.context.currentPhase === "close" ? "reptilian" : "limbic",
+                    topic: "neural_link",
+                    reason: "Active dialogue — showing neural synchronization",
+                    useCache: true,
+                };
+
             default:
                 return { action: "wait", reason: `No visual action for ${type}` };
         }

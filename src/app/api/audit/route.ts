@@ -460,7 +460,7 @@ async function analyzeSite(url: string): Promise<SiteAnalysisResult> {
  * Provides the "High-Resolution" data Mark needs for the ROI bridge.
  */
 async function scrapeDeepFull(url: string) {
-    const apiKey = process.env.FIRECRAWL_API_KEY || process.env.NEXT_PUBLIC_FIRECRAWL_API_KEY;
+    const apiKey = process.env.FIRECRAWL_API_KEY || process.env.FIRECRAWL_API_KEY;
     if (!apiKey || apiKey === "your_firecrawl_key_here") {
         console.warn("[Firecrawl] ⚠️ Missing API key. Deep crawl skipped.");
         return null;
@@ -551,7 +551,7 @@ function identifyTechDebt(siteScore: number, features: SiteAnalysisResult["htmlF
 }
 
 async function findCompetitors(domain: string) {
-    const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
+    const apiKey = process.env.GEMINI_API_KEY;
 
     if (apiKey) {
         try {

@@ -22,7 +22,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 const GEMINI_API_KEY =
-    process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY || "";
+    process.env.GEMINI_API_KEY || process.env.GEMINI_API_KEY || "";
 const IMAGE_MODEL = "gemini-2.0-flash-exp-image-generation";
 
 // ── Revenue Math Engine ─────────────────────────────────────────────────────

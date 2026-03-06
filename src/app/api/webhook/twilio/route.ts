@@ -12,7 +12,7 @@ import { sendSMS, initiateCallWithGreeting } from "@/lib/twilio";
 import { getLeadByPhone, logNurtureEvent } from "@/lib/supabase";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY || process.env.GEMINI_AUDIT_API_KEY || "");
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || process.env.GEMINI_AUDIT_API_KEY || "");
 const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
 export async function POST(req: NextRequest) {

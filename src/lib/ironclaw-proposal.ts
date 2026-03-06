@@ -7,7 +7,7 @@
 
 import type { IronclawSession } from "./ironclaw-core";
 
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY || "";
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY || process.env.GEMINI_API_KEY || "";
 const BILLY_PHONE = process.env.OWNER_ALERT_PHONE || "+17205732344";
 
 // ── Package Recommendation Logic ──────────────────────────────────────

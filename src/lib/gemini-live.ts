@@ -19,6 +19,7 @@ import { VisualBridge } from "./visual-bridge";
 
 
 export type ConnectionStatus = "idle" | "connecting" | "setup_sent" | "ready" | "error";
+export type VoiceName = "Aoede" | "Charon" | "Enceladus" | "Kore" | "Leda" | "Orion" | "Puck";
 export type IntentSignal = "schedule" | "purchase" | "capture_lead" | "schedule_appointment" | "escalate" | null;
 
 // Keyword sets
@@ -213,8 +214,8 @@ export class VoiceOrchestrator {
                             automaticActivityDetection: {
                                 startOfSpeechSensitivity: "START_SENSITIVITY_HIGH",
                                 endOfSpeechSensitivity: "END_SENSITIVITY_HIGH",
-                                prefixPaddingMs: 200,
-                                silenceDurationMs: 1000
+                                prefixPaddingMs: 100,
+                                silenceDurationMs: 250
                             },
                         },
                         systemInstruction: {
@@ -258,7 +259,12 @@ If a tool returns an error, an empty result, or doesn't return fast enough:
 1. DO NOT manufacture or guess the results.
 2. Tell the user: "I'm still pulling those specific numbers up — give me one more second."
 3. Ask for the information directly if it seems the tool isn't getting it (e.g., "What was that website URL one more time?").
-Specificity and accuracy are more important than speed. Hallucinations destroy trust and are forbidden.` }]
+Specificity and accuracy are more important than speed. Hallucinations destroy trust and are forbidden.`
+                                    // ★ Strip ALL bracketed stage directions so the model can NEVER read them aloud.
+                                    // Keeps [Name] [X] [Y] [Z] placeholder tokens intact.
+                                    .replace(/\[(Pause|2s Pause|WAIT|Wait|Soft giggle|soft giggle|Knowing giggle|knowing giggle|warm giggle|giggle|Build anticipation|Running audit|watching|laughs warmly|warm laugh|Warm, knowing giggle)\]/gi, "")
+                                    .replace(/[ \t]*\n[ \t]*\n[ \t]*\n/g, "\n\n")
+                            }]
                         },
                         tools: [
                             {
@@ -569,7 +575,7 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
                             client_content: {
                                 turns: [{
                                     role: "user",
-                                    parts: [{ text: "(call connected)" }]
+                                    parts: [{ text: "(call connected)" }],
                                 }],
                                 turn_complete: true
                             }
@@ -596,6 +602,18 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
                 if (this.videoInterval) clearInterval(this.videoInterval);
                 if (this.heartbeatInterval) clearInterval(this.heartbeatInterval);
 
+                // ★ MONITORING: Fire-and-forget beacon on any error close
+                if (event.code !== 1000 && typeof navigator !== "undefined" && navigator.sendBeacon) {
+                    const payload = JSON.stringify({
+                        agentId: activeAgents[0]?.id ?? "unknown",
+                        agentName: activeAgents[0]?.name ?? "unknown",
+                        closeCode: event.code,
+                        closeReason: event.reason,
+                        sessionDurationMs: this.sessionStartTime ? Date.now() - this.sessionStartTime : 0,
+                    });
+                    navigator.sendBeacon("/api/monitor/agent-event", new Blob([payload], { type: "application/json" }));
+                }
+
                 // Recoverable server-side errors — auto-reconnect
                 const recoverableCodes = [1006, 1011, 1013]; // Abnormal, Server Error, Try Again
                 if (recoverableCodes.includes(event.code) && this.reconnectCount < this.maxReconnectAttempts && !this.isReconnecting) {
@@ -606,6 +624,7 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
                     this.setStatus("error", `Connection closed (code ${event.code}): ${event.reason || "Unknown reason."}`);
                 }
             };
+
 
             setTimeout(() => {
                 if (this.ws?.readyState === WebSocket.CONNECTING) {

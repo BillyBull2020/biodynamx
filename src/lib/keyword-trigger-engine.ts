@@ -254,16 +254,16 @@ const BIODYNAMX_SCENES: VisualScene[] = [
     {
         id: "freedom_visualization",
         keywords: [
-            "imagine the freedom", "absolute freedom", "extra revenue",
-            "extra money", "liberating", "selling a dream", "vacation",
-            "imagine how fun", "running your business",
+            "imagine", "freedom", "revenue", "money", "dream", "vacating", "vacation",
+            "liberating", "running", "business", "perfect reality", "absolute freedom",
+            "imagine the freedom", "extra revenue", "selling a dream",
         ],
         transition: "fade",
-        duration: 1200,
+        duration: 2000,
         priority: 10,
         clearPrevious: true,
-        spatialAnchor: "full",
-        colorTheme: "green",
+        spatialAnchor: "center",
+        colorTheme: "blue",
     },
 
     // ═══ CHALLENGER SALE PHASE SCENES ═══

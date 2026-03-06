@@ -8,7 +8,29 @@
             "**/node_modules/**"
         ],
         "frameworksBackend": {
-            "region": "us-central1"
+            "region": "us-central1",
+            "secrets": [
+                "GEMINI_API_KEY",
+                "GEMINI_AUDIT_API_KEY",
+                "STRIPE_SECRET_KEY",
+                "STRIPE_WEBHOOK_SECRET",
+                "SUPABASE_URL",
+                "SUPABASE_SERVICE_ROLE_KEY",
+                "TWILIO_ACCOUNT_SID",
+                "TWILIO_AUTH_TOKEN",
+                "TWILIO_PHONE_NUMBER",
+                "RESEND_API_KEY",
+                "FIRECRAWL_API_KEY",
+                "GOOGLE_PLACES_API_KEY",
+                "STITCH_API_KEY",
+                "ELEVENLABS_API_KEY",
+                "DEEPGRAM_API_KEY",
+                "DAILY_API_KEY",
+                "CRON_SECRET",
+                "APIFY_API_TOKEN",
+                "GROQ_API_KEY",
+                "OWNER_ALERT_PHONE"
+            ]
         }
     }
 }

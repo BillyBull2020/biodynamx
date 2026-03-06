@@ -1,6 +1,6 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const ai = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY || process.env.GEMINI_AUDIT_API_KEY || "");
+const ai = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || process.env.GEMINI_AUDIT_API_KEY || "");
 const model = ai.getGenerativeModel({ model: "gemini-2.0-flash" });
 
 // Context for the Social Media Agent

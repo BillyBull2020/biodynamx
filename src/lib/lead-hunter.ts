@@ -176,7 +176,7 @@ function estimateRevenueLeak(category: string, rating: number, reviewCount: numb
 
 // ── Hunt for Leads on Google (via Places Nearby Search) ─────────
 export async function huntLeadsOnGoogle(criteria: HuntingCriteria): Promise<ProspectLead[]> {
-    const apiKey = process.env.GOOGLE_PLACES_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY;
+    const apiKey = process.env.GOOGLE_PLACES_API_KEY || process.env.GEMINI_API_KEY;
 
     if (!apiKey) {
         console.warn("⚠️ No Google API key for lead hunting");

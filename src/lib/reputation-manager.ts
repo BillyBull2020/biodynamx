@@ -95,7 +95,7 @@ function generateResponseSuggestion(review: ReviewData): string {
 
 // ── Fetch GMB Reviews (via Google Places API) ──────────────────
 export async function fetchGMBReviews(placeId: string): Promise<ReviewData[]> {
-    const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY || process.env.GOOGLE_PLACES_API_KEY;
+    const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_PLACES_API_KEY;
 
     if (!apiKey) {
         console.warn("⚠️ No Google API key configured for Places API");
@@ -158,7 +158,7 @@ export async function findBusinessOnGoogle(query: string): Promise<{
     totalReviews: number;
     address: string;
 } | null> {
-    const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY || process.env.GOOGLE_PLACES_API_KEY;
+    const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_PLACES_API_KEY;
 
     if (!apiKey) return null;
 

@@ -5,7 +5,7 @@
 // "Talk to Our AI" — One button. Instant wow.
 // ═══════════════════════════════════════════════════════════════════
 
-import { useRef, useState, useCallback, useEffect, Fragment } from "react";
+import { useRef, useState, useCallback, useEffect } from "react";
 import Image from "next/image";
 import LeadCaptureModal from "./LeadCaptureModal";
 import {
@@ -17,8 +17,10 @@ import CinematicCanvas from "@/components/CinematicCanvas";
 import AnimatedLogo from "./AnimatedLogo";
 import OrbitEcosystem from "./OrbitEcosystem";
 import NeuralOrb from "./NeuralOrb";
+import AdvantageSection from "./AdvantageSection";
 import { VisualJenny } from "@/lib/visual-jenny";
 import { VisualBridge, type VisualCommand } from "@/lib/visual-bridge";
+import { initGSAPAnimations } from "@/lib/gsap-animations";
 import "./VaultUI.css";
 
 interface VaultProps {
@@ -140,7 +142,7 @@ function VisualProjection({ activeVisual, fading }: { activeVisual: any, fading:
     if (!activeVisual.type) return null;
     return (
         <div style={{
-            position: "absolute", bottom: -240, left: "50%", transform: "translateX(-50%)",
+            position: "absolute", bottom: 40, left: "50%", transform: "translateX(-50%)",
             width: "90vw", maxWidth: 400, zIndex: 100,
             opacity: fading ? 0 : 1, transition: "opacity 0.6s ease-in-out"
         }}>
@@ -274,6 +276,16 @@ export default function VaultUI({ apiKey }: VaultProps) {
             }
         });
         return () => unsub();
+    }, []);
+
+    // ─── GSAP Scroll Animations ───────────────────────────────
+    useEffect(() => {
+        // Run after first paint so GSAP can measure layout
+        const id = setTimeout(() => {
+            const cleanup = initGSAPAnimations();
+            return cleanup;
+        }, 300);
+        return () => clearTimeout(id);
     }, []);
 
     // ─── Real-time Amplitude Tracking ────────────────────────
@@ -522,7 +534,14 @@ export default function VaultUI({ apiKey }: VaultProps) {
 
     const createTeam = useCallback(() => {
         return new TeamOrchestrator(apiKey!, {
-            onPhaseChange: (p, v) => { setPhase(p); setVisual(v); },
+            onPhaseChange: (p, v) => {
+                setPhase(p);
+                setVisual(v);
+                // Auto-dismiss error card the moment an agent goes active
+                if (p.endsWith("_active") || p === "checkout" || p === "stitching") {
+                    setErrorText(null);
+                }
+            },
             onStatusChange: () => { },
             onSpeakerChange: (speaker) => setIsSpeaking(speaker !== "idle"),
             onAuditRequested: (url) => {
@@ -791,10 +810,9 @@ export default function VaultUI({ apiKey }: VaultProps) {
                         animation: "fadeUp 0.8s ease-out",
                     }}>
                         {/* New Eyebrow Badge */}
-                        <div className="animate-fade-in" style={{
-                            background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", padding: "10px 24px", borderRadius: 100, fontSize: 13, fontWeight: 800, color: "rgba(255,255,255,0.9)", letterSpacing: "0.05em", marginBottom: 32, display: "inline-block"
-                        }}>
-                            {t.heroBadge}
+                        <div className="hero-premium-badge">
+                            <span className="badge-glow" />
+                            <span className="badge-text">{t.heroBadge}</span>
                         </div>
 
                         <h1 data-speakable="true" className="hero-headline animated-gradient-text" style={{ fontSize: "clamp(32px, 5.5vw, 68px)", fontWeight: 900, lineHeight: 1.05, marginBottom: 28 }}>
@@ -868,7 +886,50 @@ export default function VaultUI({ apiKey }: VaultProps) {
                             <button onClick={handleStart} disabled={isHandoff} style={{
                                 background: "rgba(0,255,65,0.08)", border: "1px solid rgba(0,255,65,0.3)", color: "#00ff41", padding: "12px 32px", borderRadius: 100, fontSize: 13, fontWeight: 800, cursor: isHandoff ? "wait" : "pointer"
                             }}>{buttonLabel}</button>
-                            {errorText && <p style={{ color: "#ff4444", fontSize: 12, marginTop: 12 }}>{errorText}</p>}
+                            {errorText && (
+                                <div style={{
+                                    marginTop: 16,
+                                    background: "rgba(255,68,68,0.08)",
+                                    border: "1px solid rgba(255,68,68,0.3)",
+                                    borderRadius: 12,
+                                    padding: "14px 18px",
+                                    textAlign: "left",
+                                    maxWidth: 420,
+                                    margin: "16px auto 0",
+                                }}>
+                                    <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
+                                        <span style={{ fontSize: 16 }}>⚡</span>
+                                        <span style={{ color: "#ff6b6b", fontWeight: 700, fontSize: 13 }}>
+                                            {errorText.includes("1008") ? "Agent temporarily unavailable" :
+                                                errorText.includes("1007") ? "Connection handshake failed" :
+                                                    errorText.includes("1006") ? "Network disconnected" :
+                                                        "Connection interrupted"}
+                                        </span>
+                                    </div>
+                                    <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 12, margin: "0 0 10px", lineHeight: 1.5 }}>
+                                        {errorText.includes("1008") ? "This agent restarting — try again in a moment." :
+                                            errorText.includes("1006") ? "Check your internet connection and try again." :
+                                                "Tap retry to reconnect instantly."}
+                                    </p>
+                                    <button
+                                        onClick={() => { setErrorText(null); handleStart(); }}
+                                        style={{
+                                            background: "rgba(255,68,68,0.15)",
+                                            border: "1px solid rgba(255,68,68,0.4)",
+                                            color: "#ff6b6b",
+                                            padding: "6px 16px",
+                                            borderRadius: 8,
+                                            fontSize: 12,
+                                            fontWeight: 700,
+                                            cursor: "pointer",
+                                            letterSpacing: "0.05em"
+                                        }}
+                                    >
+                                        RETRY →
+                                    </button>
+                                </div>
+                            )}
+
                         </div>
 
                         <VisualProjection activeVisual={activeVisual} fading={visualFading} />
@@ -928,14 +989,13 @@ export default function VaultUI({ apiKey }: VaultProps) {
                                 and AI employees that work 24/7. Everything from A to Z, under one roof.
                             </p>
                             <OrbitEcosystem />
-                            <p style={{
-                                fontSize: 13,
-                                color: "rgba(255,255,255,0.4)",
-                                marginTop: 32,
-                                fontWeight: 500,
-                            }}>
-                                We build custom software. We&apos;re not just another AI vendor.
-                            </p>
+                            <div className="premium-callout-badge">
+                                <span className="badge-glow" />
+                                <span className="badge-icon">🧠</span>
+                                <span className="badge-text">
+                                    We build custom software. We&apos;re not just another AI vendor.
+                                </span>
+                            </div>
                         </div>
                     </section>
                 )
@@ -1079,20 +1139,45 @@ export default function VaultUI({ apiKey }: VaultProps) {
                         gap: 20,
                     }}>
                         {[
-                            { val: 2.4, suffix: "M+", label: "Partner Revenue Recovered", sub: "This quarter alone" },
-                            { val: 8, suffix: " sec", label: "Response Time", sub: "vs. 14 hr industry avg" },
-                            { val: 73, suffix: "%", label: "Error Reduction", sub: "In lead qualification" },
-                            { val: 6300, suffix: "x", label: "Faster Processing", sub: "Lead response speed" },
-                            { val: 5, suffix: "x", label: "ROI Guaranteed", sub: "Or your money back" },
-                            { val: 7500, suffix: "+", label: "Avg Annual Savings", sub: "Median small business" },
-                            { val: 35, suffix: " days", label: "Scheduling Time Freed", sub: "Per year, per organization" },
-                            { val: 85, suffix: "%", label: "Cost Reduction", sub: "$0.25/call vs $6 human" },
-                        ].map((stat, i) => {
-                            // Using the useCountUp hook for animation
-                            return (
-                                <StatItem key={i} stat={stat} isVisible={resultsStripVisible} />
-                            );
-                        })}
+                            { val: 8, suffix: " sec", label: "Response Time", sub: "vs. 14 hr industry avg", displayVal: "8 sec" },
+                            { val: 73, suffix: "%", label: "Error Reduction", sub: "In lead qualification", displayVal: "73%" },
+                            { val: 6300, suffix: "x", label: "Faster Processing", sub: "Lead response speed", displayVal: "6,300x" },
+                            { val: 5, suffix: "x", label: "ROI Guaranteed", sub: "Or your money back", displayVal: "5x" },
+                            { val: 7500, suffix: "+", label: "Avg Annual Savings", sub: "Median small business", displayVal: "7,500+" },
+                            { val: 35, suffix: " days", label: "Scheduling Time Freed", sub: "Per year, per organization", displayVal: "35 days" },
+                            { val: 85, suffix: "%", label: "Cost Reduction", sub: "$0.25/call vs $6 human", displayVal: "85%" },
+                        ].map((stat, i) => (
+                            <div key={i} className="stat-item-card" style={{
+                                padding: "24px 16px",
+                                background: "rgba(255,255,255,0.03)",
+                                border: "1px solid rgba(255,255,255,0.06)",
+                                borderRadius: 16,
+                                textAlign: "center",
+                            }}>
+                                <div
+                                    data-stat-val={stat.val}
+                                    data-stat-suffix={stat.suffix}
+                                    style={{
+                                        fontSize: "clamp(28px, 4vw, 44px)",
+                                        fontWeight: 900,
+                                        color: "#fff",
+                                        letterSpacing: "-0.04em",
+                                        lineHeight: 1,
+                                        marginBottom: 8,
+                                    }}
+                                >
+                                    {stat.displayVal}
+                                </div>
+                                <div style={{
+                                    fontSize: 10, fontWeight: 800,
+                                    color: "#3b82f6", letterSpacing: "0.12em",
+                                    textTransform: "uppercase", marginBottom: 4,
+                                }}>{stat.label}</div>
+                                <div style={{
+                                    fontSize: 11, color: "rgba(255,255,255,0.4)",
+                                }}>{stat.sub}</div>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </section>
@@ -1141,8 +1226,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
                                 fontSize: 14, color: "rgba(255,255,255,0.8)",
                                 lineHeight: 1.7, margin: "0 0 24px",
                             }}>
-                                2x Amazon best-selling author in AI & Business. Billy founded BioDynamX to merge
-                                **The Neurobiology of Choice** with enterprise-grade engineering. We architect **Persuasive Design** systems that eliminate choice paralysis and scale revenue.
+                                2x Amazon best-selling author in AI & Business. Billy founded BioDynamX to merge **The Neurobiology of Choice** with enterprise-grade engineering. We architect **Persuasive Design** systems that eliminate choice paralysis and scale revenue.
                             </p>
 
                             <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
@@ -1150,9 +1234,9 @@ export default function VaultUI({ apiKey }: VaultProps) {
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" /></svg>
                                     LinkedIn
                                 </a>
-                                <a href="https://www.facebook.com/mmapresident" target="_blank" rel="noopener noreferrer" className="social-pill-link">
+                                <a href="https://www.facebook.com/groups/biodynamx" target="_blank" rel="noopener noreferrer" className="social-pill-link">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 11.123 11.234 3.123v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" /></svg>
-                                    Facebook
+                                    Facebook (4,000+ Group)
                                 </a>
                                 <a href="https://a.co/d/04GCeRAh" target="_blank" rel="noopener noreferrer" className="social-pill-link-alt">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm0 2c5.523 0 10 4.477 10 10s-4.477 10-10 10-10-4.477-10-10 4.477-10 10-10z" /></svg>
@@ -1168,16 +1252,15 @@ export default function VaultUI({ apiKey }: VaultProps) {
                                 <div style={{ fontSize: 24 }}>📘</div>
                                 <div style={{ flex: 1 }}>
                                     <div style={{ fontSize: 9, fontWeight: 800, color: "#ffa726", letterSpacing: "0.12em" }}>#1 BEST-SELLER</div>
-                                    <div style={{ fontSize: 14, fontWeight: 700, color: "#fff" }}>The AI Business Revolution</div>
+                                    <div style={{ fontSize: 13, fontWeight: 700, color: "#fff" }}>The AI Business Revolution</div>
                                 </div>
                             </a>
 
-                            {/* Community Card */}
-                            <a href="https://www.facebook.com/mmapresident" target="_blank" rel="noopener noreferrer" className="partner-community-card">
-                                <div style={{ fontSize: 24 }}>👥</div>
+                            <a href="https://a.co/d/04GCeRAh" target="_blank" rel="noopener noreferrer" className="book-card">
+                                <div style={{ fontSize: 24 }}>📗</div>
                                 <div style={{ flex: 1 }}>
-                                    <div style={{ fontSize: 9, fontWeight: 800, color: "#00ff41", letterSpacing: "0.12em" }}>COMMUNITY</div>
-                                    <div style={{ fontSize: 14, fontWeight: 700, color: "#fff" }}>4,000+ Business Owners</div>
+                                    <div style={{ fontSize: 9, fontWeight: 800, color: "#ffa726", letterSpacing: "0.12em" }}>#1 BEST-SELLER</div>
+                                    <div style={{ fontSize: 13, fontWeight: 700, color: "#fff", lineHeight: 1.2 }}>The Business Owner&apos;s Guide to AI Automation</div>
                                 </div>
                             </a>
                         </div>
@@ -1203,133 +1286,10 @@ export default function VaultUI({ apiKey }: VaultProps) {
                 </div>
             </section>
 
-            {/* ── BioDynamX vs. The Competition ── */}
-            <section className="section-container" style={{
-                background: "linear-gradient(180deg, rgba(0,255,65,0.02) 0%, transparent 100%)",
-                paddingTop: 60,
-                paddingBottom: 60
-            }}>
-                <div style={{ maxWidth: 1000, margin: "0 auto", textAlign: "center" }}>
-                    <div className="section-label">THE BIODYNAMX ADVANTAGE</div>
-                    <h2 className="section-title">
-                        Why We&apos;re the <span style={{ color: "#00ff41" }}>New Gold Standard.</span>
-                    </h2>
-                    <p className="section-desc" style={{ maxWidth: 640, margin: "0 auto 60px" }}>
-                        Most AI companies give you a chatbot. We give you an autonomous workforce backed by the Neurobiology of Choice. Here is why we are light-years ahead.
-                    </p>
+            {/* ── BioDynamX Advantage ── */}
+            <AdvantageSection />
 
-                    <div style={{
-                        display: "grid",
-                        gridTemplateColumns: "1fr 1fr",
-                        gap: 2,
-                        background: "rgba(255,255,255,0.05)",
-                        borderRadius: 24,
-                        overflow: "hidden",
-                        border: "1px solid rgba(255,255,255,0.1)",
-                        boxShadow: "0 20px 50px rgba(0,0,0,0.3)"
-                    }}>
-                        {/* Header Row */}
-                        <div style={{ background: "rgba(10,10,10,0.8)", padding: "24px", textAlign: "center", fontWeight: 800, color: "rgba(255,255,255,0.4)", fontSize: 11, letterSpacing: "0.1em" }}>THE COMPETITION</div>
-                        <div style={{ background: "rgba(0,255,65,0.05)", padding: "24px", textAlign: "center", fontWeight: 800, color: "#00ff41", fontSize: 11, letterSpacing: "0.1em" }}>BIODYNAMX 4.1</div>
-
-                        {[
-                            { label: "Interface", comp: "Antiquated Chatbots (Typing)", us: "100% Live Voice AI (Speaking)" },
-                            { label: "Architecture", comp: "Single-Path Chatbots", us: "IronClaw Multi-Agent Core" },
-                            { label: "Visuals", comp: "Static Stock Photos", us: "Nana Banana 2 (Dual-Coding)" },
-                            { label: "Response", comp: "15-30 Second Latency", us: "< 1 Second (Native Audio)" },
-                            { label: "Branding", comp: "'Powered by Vendor' Logos", us: "Absolute Brand Secrecy" },
-                            { label: "Psychology", comp: "Generic Prompting", us: "Neurobiology & SPIN Native" },
-                            { label: "Pricing", comp: "15% Revenue / Usage Tax", us: "$1,497 / 90-Day Trial" },
-                            { label: "Autonomy", comp: "Semi-Automated Bots", us: "Fully Agentic / Self-Nav" },
-                            { label: "Trust", comp: "No Guarantees", us: "Triple-Lock 5X ROI Guarantee" },
-                            { label: "Availability", comp: "Human (9-5/M-F)", us: "Universal (24/7/365)" },
-                            { label: "Latency", comp: "Text-to-Speech Lag", us: "Live Flash Native Audio" },
-                            { label: "Local SEO", comp: "Manual Updates", us: "Free AI GMB Optimization" },
-                            { label: "Social Media", comp: "Expensive Agencies", us: "24/7 AI Social Admin (Iris)" },
-                            { label: "AI Visibility", comp: "Zero Presence", us: "GEO/AEO Indexing Ready" },
-                            { label: "Reviews", comp: "Forgotten Customers", us: "AI List Reactivation" },
-                            { label: "Inbound", comp: "Voicemail / Missed", us: "Instant AI Textback/Callback" },
-                            { label: "Security", comp: "Standard Encryption", us: "AES-256 Military Grade" },
-                            { label: "Strategy", comp: "Reactive Support", us: "Quarterly Neuro-Audits" },
-                            { label: "Intelligence", comp: "Basic LLM Wrappers", us: "Vertex AI Enterprise Logic" },
-                            { label: "Integration", comp: "Manual Data Entry", us: "1,000+ API Direct Syncs" },
-                            { label: "Experience", comp: "Boring UI/UX", us: "Web 4.0 Immersive Vault" }
-                        ].map((row, i) => (
-                            <Fragment key={i}>
-                                <div style={{
-                                    background: "rgba(5,5,5,0.6)",
-                                    padding: "32px 24px",
-                                    borderTop: "1px solid rgba(255,255,255,0.05)",
-                                    textAlign: "center"
-                                }}>
-                                    <div style={{ fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.3)", marginBottom: 8, textTransform: "uppercase" }}>{row.label}</div>
-                                    <div style={{ fontSize: 15, fontWeight: 500, color: "rgba(255,255,255,0.6)" }}>{row.comp}</div>
-                                </div>
-                                <div style={{
-                                    background: "rgba(0,255,65,0.02)",
-                                    padding: "32px 24px",
-                                    borderTop: "1px solid rgba(0,255,65,0.1)",
-                                    textAlign: "center"
-                                }}>
-                                    <div style={{ fontSize: 10, fontWeight: 700, color: "#00ff41", marginBottom: 8, textTransform: "uppercase", opacity: 0.6 }}>{row.label}
-                                    </div>
-                                    <div style={{ fontSize: 16, fontWeight: 800, color: "#fff" }}>{row.us}</div>
-                                </div>
-                            </Fragment>
-                        ))}
-                    </div>
-
-                    {/* ── Pricing Hero ── */}
-                    <div style={{
-                        marginTop: 80,
-                        padding: 48,
-                        borderRadius: 32,
-                        background: "linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(0,255,65,0.02) 100%)",
-                        border: "1px solid rgba(255,255,255,0.05)",
-                        textAlign: "center"
-                    }}>
-                        <div style={{ fontSize: 13, fontWeight: 700, color: "#00ff41", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 16 }}>The Investment</div>
-                        <h2 style={{ fontSize: "clamp(32px, 5vw, 48px)", fontWeight: 900, marginBottom: 24 }}>
-                            A Full Workforce for <span style={{ color: "#00ff41" }}>$1,497/mo.</span>
-                        </h2>
-                        <div style={{ fontSize: 16, color: "rgba(255,255,255,0.5)", marginBottom: 40, maxWidth: 600, margin: "0 auto 40px" }}>
-                            Valued at $10,000+/mo in human labor. Includes all 11 agents, Free GMB Optimization, Social Media Admin, and our Triple-Lock 5X ROI Guarantee.
-                        </div>
-
-                        <div style={{
-                            display: "inline-block",
-                            background: "rgba(34,197,94,0.1)",
-                            border: "1px solid rgba(34,197,94,0.3)",
-                            padding: "32px 48px",
-                            borderRadius: "24px",
-                            textAlign: "center"
-                        }}>
-                            <div style={{ fontSize: 13, fontWeight: 800, color: "#22c55e", textTransform: "uppercase", marginBottom: 8 }}>Limited Elite Offer</div>
-                            <div style={{ fontSize: 36, fontWeight: 900, color: "#fff" }}>90-Day Trial Deal</div>
-                            <div style={{ fontSize: 18, color: "rgba(255,255,255,0.7)", marginTop: 8 }}>Get 50% Off your first 3 months. Only <strong style={{ color: "#fff" }}>$748/mo</strong>.</div>
-                            <button
-                                onClick={() => {/* handle CTA */ }}
-                                style={{
-                                    marginTop: 32,
-                                    padding: "16px 40px",
-                                    borderRadius: 12,
-                                    background: "#00ff41",
-                                    color: "#000",
-                                    fontWeight: 800,
-                                    fontSize: 16,
-                                    border: "none",
-                                    cursor: "pointer",
-                                    boxShadow: "0 10px 30px rgba(0,255,65,0.3)"
-                                }}
-                            >
-                                Claim My 90-Day Trial Offer →
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </section >
-
-            <section ref={aiTeamRef} aria-label="Meet Your AI Team Jenny and Mark" className="section-container" style={{
+            <section ref={aiTeamRef} aria-label="Meet Your AI Team" className="section-container" style={{
                 opacity: aiTeamVisible ? 1 : 0,
                 transform: aiTeamVisible ? "translateY(0)" : "translateY(40px)",
                 transition: "opacity 0.8s ease-out, transform 0.8s ease-out",
@@ -1678,82 +1638,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
                 </div>
             </section >
 
-            {/* ── The BioDynamX Advantage — 20 Reasons Why We Win ── */}
-            <section
-                id="advantage"
-                className="section-container"
-                style={{
-                    background: 'rgba(255,255,255,0.01)',
-                    borderTop: '1px solid rgba(255,255,255,0.05)',
-                }}
-            >
-                <div style={{ maxWidth: 1000, margin: '0 auto' }}>
-                    <div style={{ textAlign: 'center', marginBottom: 60 }}>
-                        <div className="section-label" style={{ color: '#00ff41' }}>The Competitive Edge</div>
-                        <h2 className="section-title">
-                            Why BioDynamX? <span style={{ color: '#00ff41' }}>20 Dimensions of Superiority.</span>
-                        </h2>
-                        <p className="section-desc">
-                            Other platforms give you a chatbot. We give you a fully autonomous,
-                            neuroscience-engineered engineering suite.
-                        </p>
-                    </div>
 
-                    <div style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-                        gap: 24,
-                    }}>
-                        {[
-                            { title: "Dual-Agent Architecture", desc: "Jenny Voice + Jenny Visual (Nana Banana 2) synchronized in real-time." },
-                            { title: "Autonomous Site Navigation", desc: "Agents walk through your website with visitors manually." },
-                            { title: "Free GMB Optimization", desc: "Ryan sets up your Google Business Profile for total local dominance." },
-                            { title: "AI Visibility (GEO/AEO)", desc: "Iris ensures you are suggested by Perplexity, Gemini, and ChatGPT." },
-                            { title: "Social Media Admin", desc: "Iris posts and manages all your social channels automatically." },
-                            { title: "Customer Reactivation", desc: "Jenny reaches out to old lists to generate reviews and repeat sales." },
-                            { title: "Textback / Callback", desc: "Meghan instantly recovers missed calls via automated SMS & Voice." },
-                            { title: "Neuroscience-Engineered", desc: "Built on Triune Brain theory, Dual-Coding, and high-status NLP." },
-                            { title: "Web 4.0 Native", desc: "An immersive, real-time, agentic ecosystem, not just a widget." },
-                            { title: "IronClaw Core", desc: "Proprietary autonomous orchestration for zero-latency handoffs." },
-                            { title: "Real-Time ROI Modeling", desc: "Mark calculates revenue leaks live while talking to prospects." },
-                            { title: "Nana Banana 2 Generative", desc: "Images adapt instantly to the conversation brain state." },
-                            { title: "Subconscious Framing", desc: "Matching user language patterns to bypass conscious resistance." },
-                            { title: "Military-Grade Security", desc: "AES-256 Encryption and PII Redaction for total data safety." },
-                            { title: "SPIN-Native Hunting", desc: "Chase uses 'The Challenger Sale' to capture competitors' clients." },
-                            { title: "High-Status Personas", desc: "Each agent maintains an elite professional identity." },
-                            { title: "Decision Friction Removal", desc: "Cognitive offloading designed to make saying 'Yes' effortless." },
-                            { title: "Loss Aversion Triggering", desc: "We quantify the financial bleed of doing nothing." },
-                            { title: "Temporal Contiguity", desc: "Oral narration and visuals are perfectly time-aligned." },
-                            { title: "Absolute Brand Secrecy", desc: "Your backend intelligence is invisible and untouchable." },
-                        ].map((adv, idx) => (
-                            <div key={idx} style={{
-                                padding: 24,
-                                background: 'rgba(255,255,255,0.02)',
-                                border: '1px solid rgba(255,255,255,0.05)',
-                                borderRadius: 16,
-                                display: 'flex', gap: 16,
-                                transition: 'transform 0.3s ease',
-                            }}
-                                className="hover-lift"
-                            >
-                                <div style={{
-                                    width: 32, height: 32, borderRadius: '50%',
-                                    background: 'rgba(0,255,65,0.1)',
-                                    color: '#00ff41',
-                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                    fontSize: 12, fontWeight: 800, flexShrink: 0
-                                }}>
-                                    {idx + 1}
-                                </div>
-                                <div>
-                                    <div style={{ fontSize: 16, fontWeight: 700, color: '#fff', marginBottom: 4 }}>{adv.title}</div>
-                                    <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', margin: 0, lineHeight: 1.5 }}>{adv.desc}</p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
 
             {/* ── The Science Behind The Results — Neuroscience Differentiator ── */}
             <section
@@ -2028,31 +1913,32 @@ export default function VaultUI({ apiKey }: VaultProps) {
                         </p>
                     </div>
                     <div>
-                        <h4 style={{ fontSize: 12, color: "#fff", marginBottom: 16, letterSpacing: "0.1em" }}>COMPANY</h4>
-                        <a href="/about" style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: 13, textDecoration: "none", marginBottom: 10 }}>About Us</a>
-                        <a href="/dashboard" style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: 13, textDecoration: "none", marginBottom: 10 }}>Revenue Dashboard</a>
-                        <a href="/testimonials" style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: 13, textDecoration: "none", marginBottom: 10 }}>Success Stories</a>
-                        <a href="/press" style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: 13, textDecoration: "none", marginBottom: 10 }}>Press</a>
+                        <h4 style={{ fontSize: 13, fontWeight: 900, color: "#fff", marginBottom: 20, letterSpacing: "0.15em" }}>COMPANY</h4>
+                        <a href="/about" className="footer-link">About Us</a>
+                        <a href="/dashboard" className="footer-link">Revenue Dashboard</a>
+                        <a href="/testimonials" className="footer-link">Success Stories</a>
+                        <a href="/press" className="footer-link">Press</a>
                     </div>
                     <div>
-                        <h4 style={{ fontSize: 12, color: "#fff", marginBottom: 16, letterSpacing: "0.1em" }}>PLATFORM</h4>
-                        <a href="/pricing" style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: 13, textDecoration: "none", marginBottom: 10 }}>Elite Pricing</a>
-                        <a href="/audit" style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: 13, textDecoration: "none", marginBottom: 10 }}>Free 20-Point Audit</a>
-                        <a href="/llms.txt" style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: 13, textDecoration: "none", marginBottom: 10 }}>AI Directory (llms.txt)</a>
-                        <a href="/partners" style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: 13, textDecoration: "none", marginBottom: 10 }}>Partner Login</a>
+                        <h4 style={{ fontSize: 13, fontWeight: 900, color: "#fff", marginBottom: 20, letterSpacing: "0.15em" }}>PLATFORM</h4>
+                        <a href="/pricing" className="footer-link">Elite Pricing</a>
+                        <a href="/audit" className="footer-link">Free 20-Point Audit</a>
+                        <a href="/llms.txt" className="footer-link">AI Directory (llms.txt)</a>
+                        <a href="/partners" className="footer-link">Partner Login</a>
                     </div>
                     <div>
-                        <h4 style={{ fontSize: 12, color: "#fff", marginBottom: 16, letterSpacing: "0.1em" }}>TRUST &amp; LEGAL</h4>
-                        <a href="/security" style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: 13, textDecoration: "none", marginBottom: 10 }}>Security Protocol</a>
-                        <a href="/privacy" style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: 13, textDecoration: "none", marginBottom: 10 }}>Privacy Policy</a>
-                        <a href="/terms" style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: 13, textDecoration: "none", marginBottom: 10 }}>Terms of Service</a>
-                        <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 11, marginTop: 16 }}>✓ GDPR &amp; SOC 2 READY</div>
-                        <div style={{ color: "rgba(255,255,255,0.3)", fontSize: 10, marginTop: 4 }}>Military-Grade AES-256</div>
+                        <h4 style={{ fontSize: 13, fontWeight: 900, color: "#fff", marginBottom: 20, letterSpacing: "0.15em" }}>TRUST & LEGAL</h4>
+                        <a href="/security" className="footer-link">Security Protocol</a>
+                        <a href="/privacy" className="footer-link">Privacy Policy</a>
+                        <a href="/terms" className="footer-link">Terms of Service</a>
+                        <div style={{ color: "#00ff41", fontSize: 11, fontWeight: 800, marginTop: 16, letterSpacing: "0.05em" }}>✓ GDPR & SOC 2 READY</div>
+                        <div style={{ color: "rgba(255,255,255,0.4)", fontSize: 10, marginTop: 4 }}>Military-Grade AES-256</div>
                     </div>
                 </div>
                 <div style={{
-                    marginTop: 60, paddingTop: 24, borderTop: "1px solid rgba(255,255,255,0.05)",
-                    textAlign: "center", fontSize: 12, color: "rgba(255,255,255,0.3)",
+                    marginTop: 60, paddingTop: 32, borderTop: "1px solid rgba(255,255,255,0.08)",
+                    textAlign: "center", fontSize: 12, color: "rgba(255,255,255,0.4)",
+                    letterSpacing: "0.02em"
                 }}>
                     © 2026 BioDynamX Engineering Group. All rights reserved. Neuroscience for the digital age.
                 </div>

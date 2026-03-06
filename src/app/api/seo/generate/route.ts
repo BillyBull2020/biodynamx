@@ -14,7 +14,7 @@ import { getIronclawSEOAgent } from "@/lib/seo-domination-agent";
 //   POST /api/seo/generate { id: "..." }  → Generate specific content piece
 // ═══════════════════════════════════════════════════════════════════
 
-const GEMINI_API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY || process.env.GEMINI_API_KEY || "";
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY || process.env.GEMINI_API_KEY || "";
 const GEMINI_TEXT_MODEL = "gemini-2.5-flash";
 const GEMINI_TEXT_API = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_TEXT_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
 

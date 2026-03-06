@@ -17,7 +17,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://biodynamx.com";
 const ARIA_VOICE = "Polly.Joanna";
-const GEMINI_KEY = process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY || "";
+const GEMINI_KEY = process.env.GEMINI_API_KEY || process.env.GEMINI_API_KEY || "";
 
 // In-memory conversation store (keyed by CallSid)
 // In production, persist to Supabase sessions table

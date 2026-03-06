@@ -36,8 +36,8 @@ export async function GET() {
             accountName: process.env.SUPABASE_URL?.replace("https://", "").split(".")[0] || null,
         },
         gemini: {
-            clientConfigured: !!(process.env.NEXT_PUBLIC_GEMINI_API_KEY),
-            connected: !!(process.env.NEXT_PUBLIC_GEMINI_API_KEY),
+            clientConfigured: !!(process.env.GEMINI_API_KEY),
+            connected: !!(process.env.GEMINI_API_KEY),
             accountName: "Google AI",
         },
     };
