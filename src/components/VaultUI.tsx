@@ -809,7 +809,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
                             {t.heroLossAversion}
                         </p>
 
-                        <p style={{ maxWidth: 840, margin: "0 auto 40px", fontSize: 15, color: "rgba(255,255,255,0.45)", lineHeight: 1.6 }}>
+                        <p style={{ maxWidth: 840, margin: "0 auto 40px", fontSize: 16, color: "rgba(255,255,255,0.75)", lineHeight: 1.6, fontWeight: 500 }}>
                             {t.heroDiagnosticGap}
                         </p>
 
