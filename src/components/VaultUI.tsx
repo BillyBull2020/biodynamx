@@ -341,7 +341,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
             heroHeadline: "Imagine the absolute freedom—and the extra revenue—you would have if Artificial Intelligence ran your business.",
             heroTypewriterPrefix: "Built for ",
             heroLossAversion: "You didn't start a business to be chained to a desk. Yet right now, you are losing countless hours to the daily grind. BiodynamX completely eliminates the tasks you hate. We plug an autonomous AI workforce into your company to flawlessly answer calls, return texts, manage emails, and close your sales 24/7.",
-            heroDiagnosticGap: "From building your new website and dominating SEO, to ensuring your brand is the top recommendation on AI search engines like ChatGPT, Perplexity, and Gemini—we handle it all. You take back your freedom. We scale your revenue.",
+            heroDiagnosticGap: "From building your new website and dominating AEO & GEO with SEO, to ensuring your brand is the top recommendation on AI search engines like ChatGPT, Perplexity, and Gemini—we handle it all. You take back your freedom. We scale your revenue.",
             heroHook: "Stop working in your business and start working on it. Let our lead agent, Jenny, map out your custom AI growth strategy in exactly 60 seconds—free, live, on your screen right now.",
             heroBadge: "🧠 Powered by Neuroscience & Neuromarketing",
             heroWeb4Badge: "🌐 WEB 4.0 NATIVE",
@@ -405,7 +405,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
             heroHeadline: "Imagine la libertad absoluta—y los ingresos adicionales—que tendría si la Inteligencia Artificial dirigiera su negocio.",
             heroTypewriterPrefix: "Diseñado para ",
             heroLossAversion: "No empezó un negocio para estar encadenado a un escritorio. Sin embargo, en este momento, está perdiendo incontables horas en la rutina diaria. BiodynamX elimina por completo las tareas que odia. Conectamos una fuerza de trabajo de IA autónoma en su empresa para responder llamadas, devolver mensajes de texto, gestionar correos electrónicos y cerrar sus ventas las 24 horas, los 7 días de la semana, sin errores.",
-            heroDiagnosticGap: "Desde la creación de su nuevo sitio web y el dominio del SEO, hasta garantizar que su marca sea la recomendación principal en motores de búsqueda de IA como ChatGPT, Perplexity y Gemini—nos encargamos de todo. Usted recupera su libertad. Nosotros escalamos sus ingresos.",
+            heroDiagnosticGap: "Desde la creación de su nuevo sitio web y el dominio de AEO & GEO con SEO, hasta garantizar que su marca sea la recomendación principal en motores de búsqueda de IA como ChatGPT, Perplexity y Gemini—nos encargamos de todo. Usted recupera su libertad. Nosotros escalamos sus ingresos.",
             heroHook: "Deje de trabajar en su negocio y comience a trabajar en él. Deje que nuestra agente principal, Jenny, diseñe su estrategia de crecimiento de IA personalizada en exactamente 60 segundos—gratis, en vivo, en su pantalla ahora mismo.",
             heroBadge: "🧠 Impulsado por Neurociencia y Neuromarketing",
             heroWeb4Badge: "🌐 WEB 4.0 NATIVO",
@@ -794,7 +794,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
                         <div className="animate-fade-in" style={{
                             background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", padding: "10px 24px", borderRadius: 100, fontSize: 13, fontWeight: 800, color: "rgba(255,255,255,0.9)", letterSpacing: "0.05em", marginBottom: 32, display: "inline-block"
                         }}>
-                            🧠 {language === "en" ? "BiodynamX Engineering Group | Autonomous AI Built With NeuroScience & NeuroBiolagy" : "BioDynamX Engineering Group | IA Autónoma Construida con Neurociencia y Neurobiología"}
+                            🧠 {language === "en" ? "BiodynamX Engineering Group | Neurobiology Autonomous AI" : "BioDynamX Engineering Group | IA Autónoma de Neurobiología"}
                         </div>
 
                         <h1 data-speakable="true" className="hero-headline animated-gradient-text" style={{ fontSize: "clamp(32px, 5.5vw, 68px)", fontWeight: 900, lineHeight: 1.05, marginBottom: 28 }}>
