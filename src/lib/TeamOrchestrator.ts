@@ -12,18 +12,18 @@ import { AgentClone, JENNY_LISTENER, MARK_ARCHITECT, AGENT_TEMPLATES, cloneAgent
 
 export type TeamPhase =
     | "standby"        // Vault idle, waiting for Initialize
-    | "jenny_active"   // Jenny is diagnosing
-    | "handoff"        // Jenny triggered handoff, killing her stream
-    | "mark_active"    // Mark is closing
-    | "meghan_active"  // Meghan is receiving/routing
-    | "oryan_active"   // O'Ryan is doing operations
-    | "alex_active"    // Alex is handling care/troubleshooting
-    | "hunter_active"  // Hunter is prospecting
-    | "nova_active"    // Nova is doing content/social
-    | "ledger_active"  // Ledger is doing financial analysis
-    | "stitching"      // Google Stitch is generating UI
-    | "checkout"       // Mark triggered checkout
-    | "complete";      // Session complete
+    | "milton_active"   // Milton (Hypnotist)
+    | "meghan_active"   // Meghan (Receptionist)
+    | "brock_active"    // Brock (Security/ROI)
+    | "vicki_active"    // Vicki (Empathy/Care)
+    | "mark_active"     // Mark (Closer)
+    | "jenny_closer_active" // Jenny (Consultative Closer)
+    | "ben_gmb_active"  // Ben (GMB/Reviews)
+    | "glia_active"     // Glia-Jenny (Business Lead/Discovery)
+    | "handoff"         // Handoff state
+    | "stitching"       // Generating UI
+    | "checkout"        // Transaction mode
+    | "complete";       // End session
 
 export type VaultVisualState = {
     phase: TeamPhase;
@@ -59,13 +59,76 @@ const VISUAL_STATES: Record<TeamPhase, VaultVisualState> = {
         activeAgentVoice: null,
         waveformMode: "idle",
     },
-    jenny_active: {
-        phase: "jenny_active",
-        borderColor: "#1a1a1a",
-        bgOpacity: 0,
+    milton_active: {
+        phase: "milton_active",
+        borderColor: "#4c1d95",
+        bgOpacity: 0.04,
+        pulseActive: true,
+        activeAgentName: "Milton",
+        activeAgentVoice: "Charon",
+        waveformMode: "soft",
+    },
+    meghan_active: {
+        phase: "meghan_active",
+        borderColor: "#a78bfa",
+        bgOpacity: 0.04,
+        pulseActive: true,
+        activeAgentName: "Meghan",
+        activeAgentVoice: "Sagitta",
+        waveformMode: "soft",
+    },
+    brock_active: {
+        phase: "brock_active",
+        borderColor: "#dc2626",
+        bgOpacity: 0.05,
+        pulseActive: true,
+        activeAgentName: "Brock",
+        activeAgentVoice: "Fenrir",
+        waveformMode: "sharp",
+    },
+    vicki_active: {
+        phase: "vicki_active",
+        borderColor: "#34d399",
+        bgOpacity: 0.04,
+        pulseActive: true,
+        activeAgentName: "Vicki",
+        activeAgentVoice: "Lyra",
+        waveformMode: "soft",
+    },
+    mark_active: {
+        phase: "mark_active",
+        borderColor: "#3b82f6",
+        bgOpacity: 0.06,
+        pulseActive: true,
+        activeAgentName: "Mark",
+        activeAgentVoice: "Orion",
+        waveformMode: "sharp",
+    },
+    jenny_closer_active: {
+        phase: "jenny_closer_active",
+        borderColor: "#00ff41",
+        bgOpacity: 0.05,
         pulseActive: true,
         activeAgentName: "Jenny",
-        activeAgentVoice: "Sulafat",
+        activeAgentVoice: "Kore",
+        waveformMode: "soft",
+    },
+    ben_gmb_active: {
+        phase: "ben_gmb_active",
+        borderColor: "#fbbf24",
+        bgOpacity: 0.05,
+        pulseActive: true,
+        activeAgentName: "Ben",
+        activeAgentVoice: "Puck",
+        waveformMode: "sharp",
+    },
+    glia_active: {
+        phase: "glia_active",
+        borderColor: "#6366f1",
+        bgOpacity: 0.05,
+        pulseActive: true,
+        activeAgentName: "Jenny",
+        activeAgentVoice: "Aoede",
         waveformMode: "soft",
     },
     handoff: {
@@ -77,18 +140,9 @@ const VISUAL_STATES: Record<TeamPhase, VaultVisualState> = {
         activeAgentVoice: null,
         waveformMode: "idle",
     },
-    mark_active: {
-        phase: "mark_active",
-        borderColor: "#00ff41",
-        bgOpacity: 0.05,
-        pulseActive: true,
-        activeAgentName: "Mark",
-        activeAgentVoice: "Charon",
-        waveformMode: "sharp",
-    },
     stitching: {
         phase: "stitching",
-        borderColor: "#8b5cf6", // Purple for Stitch
+        borderColor: "#8b5cf6",
         bgOpacity: 0.1,
         pulseActive: true,
         activeAgentName: null,
@@ -101,7 +155,7 @@ const VISUAL_STATES: Record<TeamPhase, VaultVisualState> = {
         bgOpacity: 0.08,
         pulseActive: true,
         activeAgentName: "Mark",
-        activeAgentVoice: "Charon",
+        activeAgentVoice: "Orion",
         waveformMode: "sharp",
     },
     complete: {
@@ -112,60 +166,6 @@ const VISUAL_STATES: Record<TeamPhase, VaultVisualState> = {
         activeAgentName: null,
         activeAgentVoice: null,
         waveformMode: "idle",
-    },
-    meghan_active: {
-        phase: "meghan_active",
-        borderColor: "#a78bfa",
-        bgOpacity: 0.04,
-        pulseActive: true,
-        activeAgentName: "Meghan",
-        activeAgentVoice: "Kore",
-        waveformMode: "soft",
-    },
-    oryan_active: {
-        phase: "oryan_active",
-        borderColor: "#f59e0b",
-        bgOpacity: 0.04,
-        pulseActive: true,
-        activeAgentName: "O'Ryan",
-        activeAgentVoice: "Algenib",
-        waveformMode: "sharp",
-    },
-    alex_active: {
-        phase: "alex_active",
-        borderColor: "#34d399",
-        bgOpacity: 0.04,
-        pulseActive: true,
-        activeAgentName: "Alex",
-        activeAgentVoice: "Achernar",
-        waveformMode: "soft",
-    },
-    hunter_active: {
-        phase: "hunter_active",
-        borderColor: "#3b82f6",
-        bgOpacity: 0.05,
-        pulseActive: true,
-        activeAgentName: "Hunter",
-        activeAgentVoice: "Fenrir",
-        waveformMode: "sharp",
-    },
-    nova_active: {
-        phase: "nova_active",
-        borderColor: "#f59e0b",
-        bgOpacity: 0.05,
-        pulseActive: true,
-        activeAgentName: "Nova",
-        activeAgentVoice: "Sulafat",
-        waveformMode: "soft",
-    },
-    ledger_active: {
-        phase: "ledger_active",
-        borderColor: "#10b981",
-        bgOpacity: 0.05,
-        pulseActive: true,
-        activeAgentName: "Ledger",
-        activeAgentVoice: "Schedar",
-        waveformMode: "sharp",
     },
 };
 
@@ -190,31 +190,37 @@ export class TeamOrchestrator {
     /** Initialize the full session — boots Jenny immediately */
     async initialize() {
         if (this.currentPhase !== "standby") return;
-        this.setPhase("jenny_active");
+        this.setPhase("glia_active");
         await this.bootAgent(JENNY_LISTENER);
     }
 
     /** Initialize and boot any specific Vertex AI agent by template key */
     async initializeWithAgent(templateKey: string) {
+        // ★ FIX: If a session is already active, tear it down completely
+        // and boot the newly selected agent fresh.
+        // Previous behavior was to barge-in, which meant clicking any agent
+        // card when a session was running did NOTHING useful — agent never booted.
         if (this.currentPhase !== "standby") {
-            // Active session — barge-in instead
-            this.bargeIn();
-            return;
+            console.log(`[TeamOrchestrator] Session active — tearing down to boot: ${templateKey}`);
+            this.killCurrentAgent();
+            this.handoffInProgress = false;
+            // Brief pause so mic/audio resources release before re-acquiring
+            await new Promise(r => setTimeout(r, 300));
         }
+
         const agent = cloneAgent(templateKey);
-        // Map template key to the correct TeamPhase
         const phaseMap: Record<string, TeamPhase> = {
-            aria_receptionist: "meghan_active",
-            jenny_discovery: "jenny_active",
+            milton_hypnotist: "milton_active",
+            meghan_receptionist: "meghan_active",
+            brock_security: "brock_active",
+            vicki_empathy: "vicki_active",
             mark_closer: "mark_active",
-            support_specialist: "alex_active",
-            hunter_prospector: "hunter_active",
-            nova_content: "nova_active",
-            ledger_finance: "ledger_active",
-            orion_ops: "oryan_active",
-            ironclaw_super_agent: "jenny_active",
+            jenny_closer: "jenny_closer_active",
+            ben_gmb: "ben_gmb_active",
+            glia_jenny: "glia_active",
+            ironclaw_super_agent: "glia_active",
         };
-        this.setPhase(phaseMap[templateKey] ?? "jenny_active");
+        this.setPhase(phaseMap[templateKey] ?? "glia_active");
         await this.bootAgent(agent);
     }
 
@@ -359,8 +365,10 @@ export class TeamOrchestrator {
 
         if (targetAgent.name === "Mark") {
             this.setPhase("mark_active");
+        } else if (targetAgent.name === "Jenny") {
+            this.setPhase(targetAgent.voice === "Kore" ? "jenny_closer_active" : "glia_active");
         } else {
-            this.setPhase("jenny_active");
+            this.setPhase("glia_active");
         }
 
         const agentWithContext: AgentClone = {

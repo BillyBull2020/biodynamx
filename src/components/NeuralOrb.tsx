@@ -29,9 +29,9 @@ const AGENT_PALETTES: Record<string, { core: string; mid: string; outer: string;
     Meghan: { core: "#a78bfa", mid: "#7c3aed", outer: "#2e1065", particle: "#a78bfa66" },
     Alex: { core: "#34d399", mid: "#059669", outer: "#062b1c", particle: "#34d39966" },
     Orion: { core: "#f59e0b", mid: "#d97706", outer: "#451a03", particle: "#f59e0b66" },
-    Hunter: { core: "#ef4444", mid: "#b91c1c", outer: "#450a0a", particle: "#ef444466" },
-    Nova: { core: "#fbbf24", mid: "#f59e0b", outer: "#451a03", particle: "#fbbf2466" },
-    Ledger: { core: "#22d3ee", mid: "#0891b2", outer: "#082f49", particle: "#22d3ee66" },
+    Chase: { core: "#ef4444", mid: "#b91c1c", outer: "#450a0a", particle: "#ef444466" },
+    Iris: { core: "#fbbf24", mid: "#f59e0b", outer: "#451a03", particle: "#fbbf2466" },
+    Brock: { core: "#22d3ee", mid: "#0891b2", outer: "#082f49", particle: "#22d3ee66" },
     default: { core: "#00ff41", mid: "#00cc33", outer: "#001a08", particle: "#00ff4166" },
 };
 

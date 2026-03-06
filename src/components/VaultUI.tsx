@@ -47,20 +47,29 @@ function useScrollReveal(threshold = 0.15) {
 
 // ─── Animated Counter Hook ───────────────────────────────────
 function useCountUp(target: number, isVisible: boolean, duration = 2000, suffix = "") {
-    const [value, setValue] = useState("0" + suffix);
+    const hasAnimated = useRef(false);
+    const [displayValue, setDisplayValue] = useState(() => {
+        // Always show the real value initially so it's never "0"
+        const formatted = target % 1 !== 0 ? target.toFixed(1) : target.toLocaleString();
+        return formatted + suffix;
+    });
     useEffect(() => {
-        if (!isVisible) return;
+        if (!isVisible || hasAnimated.current) return;
+        hasAnimated.current = true;
+        // Quick count-up animation for visual flair
+        const animDuration = Math.min(duration, 1500);
         const startTime = performance.now();
         const step = (now: number) => {
-            const progress = Math.min((now - startTime) / duration, 1);
-            const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
-            const current = Math.round(target * eased);
-            setValue(current.toLocaleString() + suffix);
+            const progress = Math.min((now - startTime) / animDuration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            const current = target * eased;
+            const formatted = target % 1 !== 0 ? current.toFixed(1) : Math.round(current).toLocaleString();
+            setDisplayValue(formatted + suffix);
             if (progress < 1) requestAnimationFrame(step);
         };
         requestAnimationFrame(step);
     }, [isVisible, target, duration, suffix]);
-    return value;
+    return displayValue;
 }
 
 // ─── Framework Constants ─────────────────────────────────────
@@ -142,15 +151,15 @@ export default function VaultUI({ apiKey }: VaultProps) {
         en: {
             heroHeadline: "Slow and steady used to win the race. Today, slow and steady loses the market.",
             heroTypewriterPrefix: "Built for ",
-            heroLossAversion: "Whether you launched last week or have been scaling for 20 years, your competition never sleeps. Every minute your business isn't responding, you are actively losing revenue to someone who is.",
-            heroDiagnosticGap: "BioDynamX eliminates that risk. We plug an autonomous fleet of 8 neuroscience-trained AI agents directly into your business to capture leads, handle support, and close sales 24/7. No extra staff. No ceiling.",
-            heroHook: "Stop guessing where your bottlenecks are. Our lead agent, Jenny, will reveal the single biggest profit leak in your business in exactly 60 seconds—free, live, right now. No pitch. Just pure intelligence.",
+            heroLossAversion: "Every minute your business isn't responding to buyers, you are actively bleeding revenue. BioDynamX plugs 11 neuroscience-trained AI agents directly into your infrastructure to handle support and close sales 24/7.",
+            heroDiagnosticGap: "Zero extra headcount. Zero ceiling on growth.",
+            heroHook: "Let our lead agent, Jenny, reveal your single biggest profit leak in exactly 60 seconds. Free, live, right now.",
             heroBadge: "🧠 Powered by Neuroscience & Neuromarketing",
             heroWeb4Badge: "🌐 WEB 4.0 NATIVE",
-            onboardingSpots: `🔴 Only 3 free audits left today`,
+            onboardingSpots: `🔴 Only 3 free audits left today | 4,000+ Community Members | 5x ROI Guarantee`,
             offerExpires: `⏳ Offer expires in 10h 36m 10s`,
-            buttonTalkExperts: "Find My Biggest Growth Opportunity →",
-            buttonSecondary: "Show Me Where I'm Bleeding Revenue →",
+            buttonTalkExperts: "Find My Growth Opportunity →",
+            buttonSecondary: "Stop My Revenue Bleed →",
             buttonHandoff: "Switching to Mark...",
             buttonHandoffSub: "Building your ROI Bridge",
             buttonJennyActive: "Jenny is Analyzing",
@@ -188,23 +197,26 @@ export default function VaultUI({ apiKey }: VaultProps) {
             spanishTitle: "Talk to us in Spanish",
             spanishDesc: "Test our fluency. We speak over 32 languages, but we specialize in natural, human Spanish syntax.",
             spanishButton: "Hablar en Español",
-            toolStackTitle: "The BioDynamX Elite 8 AI Agents",
+            toolStackTitle: "The BioDynamX Elite 11 AI Agents",
             toolStack: [
-                "☎️ MEGHAN: 24/7 AI Receptionist",
-                "🧠 JENNY: Brain-Guided Discovery",
-                "🏗️ MARK: Revenue Architect & Closer",
-                "🛠️ O'RYAN: Operations & Workflow",
-                "🛡️ ALEX: Customer Support Lead",
-                "🎯 HUNTER: Lead Prospecting Agent",
-                "🎨 NOVA: Content & Social Media",
-                "📈 LEDGER: Financial ROI Manager"
+                "☎️ MILTON: Conversational Hypnotist",
+                "🧠 MEGHAN: Intimacy & Receptionist",
+                "🏗️ BROCK: Security & ROI Architect",
+                "🛠️ VICKI: Empathy & Care Specialist",
+                "🛡️ MARK: Revenue Architect & Closer",
+                "🎯 JENNY: Lead Discovery Agent",
+                "🏃 CHASE: Lead Prospecting Hunter",
+                "👁️ IRIS: AI Visibility & Content",
+                "📍 RYAN: GMB & Ops Specialist",
+                "🤝 ALEX: Support & Retention",
+                "🎨 JULES: Strategy & Architecture"
             ],
         },
         es: {
             heroHeadline: "Lento y seguro solía ganar la carrera. Hoy, lento y seguro pierde el mercado.",
             heroTypewriterPrefix: "Diseñado para ",
             heroLossAversion: "Ya sea que haya lanzado la semana pasada o haya estado escalando durante 20 años, su competencia nunca duerme. Cada minuto que su negocio no responde, está perdiendo ingresos activamente frente a alguien que sí lo hace.",
-            heroDiagnosticGap: "BioDynamX elimina ese riesgo. Conectamos una flota autónoma de 8 agentes de IA entrenados en neurociencia directamente a su negocio para captar clientes potenciales, brindar soporte y cerrar ventas las 24 horas, los 7 días de la semana. Sin personal extra. Sin límites.",
+            heroDiagnosticGap: "BioDynamX elimina ese riesgo. Conectamos una flota autónoma de 11 agentes de IA entrenados en neurociencia directamente a su negocio para captar clientes potenciales, brindar soporte y cerrar ventas las 24 horas, los 7 días de la semana. Sin personal extra. Sin límites.",
             heroHook: "Deje de adivinar dónde están sus cuellos de botella. Nuestra agente líder, Jenny, revelará la mayor fuga de ganancias en su negocio en exactamente 60 segundos: gratis, en vivo, ahora mismo. Sin discursos de venta. Solo inteligencia pura.",
             heroBadge: "🧠 Impulsado por Neurociencia y Neuromarketing",
             heroWeb4Badge: "🌐 WEB 4.0 NATIVO",
@@ -249,16 +261,16 @@ export default function VaultUI({ apiKey }: VaultProps) {
             spanishTitle: "Háblanos en Español",
             spanishDesc: "Prueba nuestra fluidez. Hablamos más de 32 idiomas, pero nos especializamos en español natural y humano.",
             spanishButton: "Hablar ahora",
-            toolStackTitle: "Los Agentes Elite 8 de BioDynamX",
+            toolStackTitle: "Los Agentes Elite 11 de BioDynamX",
             toolStack: [
                 "☎️ MEGHAN: Recepcionista IA 24/7",
                 "🧠 JENNY: Descubrimiento Guiado por Cerebro",
                 "🏗️ MARK: Arquitecto de Ingresos",
-                "🛠️ O'RYAN: Operaciones y Flujos",
-                "🛡️ ALEX: Líder de Soporte al Cliente",
-                "🎯 HUNTER: Agente de Prospección",
-                "🎨 NOVA: Contenido y Redes Sociales",
-                "📈 LEDGER: Gerente de ROI Financiero"
+                "📍 RYAN: Operaciones y GMB Local",
+                "🤝 ALEX: Líder de Soporte al Cliente",
+                "🏃 CHASE: Agente de Prospección",
+                "👁️ IRIS: Contenido y Visibilidad IA",
+                "🛡️ BROCK: Seguridad y ROI"
             ],
         }
     };
@@ -433,7 +445,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
     let buttonLabel = t.buttonTalkExperts;
     if (isHandoff) {
         buttonLabel = t.buttonHandoff;
-    } else if (phase === "jenny_active") {
+    } else if (phase === "glia_active" || phase === "jenny_closer_active") {
         buttonLabel = t.buttonJennyActive;
     } else if (phase === "mark_active") {
         buttonLabel = t.buttonMarkActive;
@@ -613,38 +625,37 @@ export default function VaultUI({ apiKey }: VaultProps) {
                         </div>
                         {/* F2: Loss Aversion — quantify what they're LOSING */}
                         <p data-speakable="true" className="hero-subheadline">
-                            {t.heroLossAversion}<br /><br />
-                            <span style={{ color: "rgba(255,255,255,0.85)" }}>{t.heroDiagnosticGap}</span>
+                            {t.heroLossAversion}{" "}
+                            <span style={{ color: "#00ff41", fontWeight: 700 }}>{t.heroDiagnosticGap}</span>
                         </p>
 
-                        {/* The Hook — Jenny's specific value prop */}
+                        {/* The Hook — Jenny 60-second value prop */}
                         <div className="animate-fade-in" style={{
-                            padding: "20px 24px",
-                            background: "rgba(255,255,255,0.03)",
-                            border: "1px solid rgba(255,255,255,0.06)",
+                            padding: "22px 28px",
+                            background: "linear-gradient(135deg, rgba(0,255,65,0.06) 0%, rgba(59,130,246,0.06) 100%)",
+                            border: "1px solid rgba(0,255,65,0.2)",
                             borderRadius: 16,
                             maxWidth: 600,
-                            margin: "24px auto 32px",
+                            margin: "28px auto 36px",
+                            position: "relative",
+                            overflow: "hidden",
                         }}>
+                            {/* Subtle glow accent */}
+                            <div style={{
+                                position: "absolute", top: 0, left: 0, right: 0, height: 1,
+                                background: "linear-gradient(90deg, transparent 0%, rgba(0,255,65,0.4) 50%, transparent 100%)",
+                            }} />
                             <p style={{
-                                fontSize: 15,
-                                color: "rgba(255,255,255,0.7)",
-                                lineHeight: 1.6,
+                                fontSize: 16,
+                                color: "rgba(255,255,255,0.9)",
+                                lineHeight: 1.65,
                                 margin: 0,
-                                fontStyle: "italic",
+                                fontWeight: 500,
+                                letterSpacing: "-0.01em",
                             }}>
-                                {t.heroHook}
+                                <span style={{ color: "#00ff41", fontWeight: 800, fontSize: 18 }}>⚡</span>
+                                {" "}{t.heroHook}
                             </p>
-                        </div>
-                        {/* F2: Scarcity — countdown + spots remaining */}
-                        <div className="fomo-container">
-                            <div className="scarcity-pill">
-                                <span style={{ animation: "pulse 1.5s ease-in-out infinite" }}>🔴</span>
-                                {t.onboardingSpots}
-                            </div>
-                            <div className="expiry-pill">
-                                ⏳ {t.offerExpires}
-                            </div>
                         </div>
                     </div>
                 )}
@@ -662,7 +673,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
                             marginBottom: 10,
                             textTransform: "uppercase",
                         }}>
-                            {phase === "jenny_active" && t.statusDiagnostic}
+                            {(phase === "glia_active" || phase === "jenny_closer_active") && t.statusDiagnostic}
                             {phase === "mark_active" && t.statusROI}
                             {phase === "handoff" && t.statusHandoff}
                             {phase === "stitching" && t.statusStitch}
@@ -812,22 +823,45 @@ export default function VaultUI({ apiKey }: VaultProps) {
                 }}>
                     {errorText}
                 </p>
-                {/* Friction reducer badges */}
+                {/* ── Micro-Trust & Urgency Indicators (Double Bind Support) ── */}
                 {!isActive && (
                     <div style={{
                         display: "flex", alignItems: "center", justifyContent: "center",
-                        gap: 16, marginTop: 10, flexWrap: "wrap",
+                        gap: 0, marginTop: 16, flexWrap: "wrap",
+                        background: "rgba(255,255,255,0.025)",
+                        border: "1px solid rgba(255,255,255,0.06)",
+                        borderRadius: 50,
+                        padding: "10px 20px",
+                        maxWidth: 480,
                     }}>
-                        {["60 seconds", "No credit card", "No login required", "Real intelligence"].map((badge) => (
-                            <span key={badge} style={{
-                                fontSize: 11, fontWeight: 700,
-                                color: "rgba(255,255,255,0.88)",
-                                display: "flex", alignItems: "center", gap: 5,
-                            }}>
-                                <span style={{ color: "#00ff41", fontSize: 13, fontWeight: 900 }}>✓</span>
-                                {badge}
-                            </span>
-                        ))}
+                        <span style={{
+                            fontSize: 12, fontWeight: 700,
+                            color: "rgba(255,255,255,0.9)",
+                            display: "flex", alignItems: "center", gap: 6,
+                            paddingRight: 14,
+                            borderRight: "1px solid rgba(255,255,255,0.12)",
+                        }}>
+                            <span style={{ animation: "pulse 1.5s ease-in-out infinite" }}>🔴</span>
+                            Only 3 free audits left today
+                        </span>
+                        <span style={{
+                            fontSize: 12, fontWeight: 700,
+                            color: "rgba(255,255,255,0.9)",
+                            display: "flex", alignItems: "center", gap: 6,
+                            paddingLeft: 14,
+                            paddingRight: 14,
+                            borderRight: "1px solid rgba(255,255,255,0.12)",
+                        }}>
+                            4,000+ Community Members
+                        </span>
+                        <span style={{
+                            fontSize: 12, fontWeight: 700,
+                            color: "#00ff41",
+                            display: "flex", alignItems: "center", gap: 6,
+                            paddingLeft: 14,
+                        }}>
+                            ✦ 5x ROI Guarantee
+                        </span>
                     </div>
                 )}
 
@@ -1061,13 +1095,10 @@ export default function VaultUI({ apiKey }: VaultProps) {
 
             <section id="results" ref={resultsStripRef} aria-label="BioDynamX Proven Results and Statistics" style={{
                 position: "relative", zIndex: 10,
-                padding: "60px 32px",
+                padding: "40px 32px",
                 background: "linear-gradient(180deg, rgba(59,130,246,0.02) 0%, transparent 100%)",
                 borderTop: "1px solid rgba(59,130,246,0.12)",
                 borderBottom: "1px solid rgba(59,130,246,0.12)",
-                opacity: resultsStripVisible ? 1 : 0,
-                transform: resultsStripVisible ? "translateY(0)" : "translateY(40px)",
-                transition: "opacity 0.8s ease-out 0.1s, transform 0.8s ease-out 0.1s",
             }}>
                 <div style={{ maxWidth: 900, margin: "0 auto", textAlign: "center" }}>
                     <div style={{
@@ -1109,10 +1140,9 @@ export default function VaultUI({ apiKey }: VaultProps) {
             </section>
 
             <section ref={authoritySectionRef} aria-label="Meet the Founder Billy De La Taurus" className="section-container" style={{
-                background: "linear-gradient(180deg, rgba(59,130,246,0.02) 0%, transparent 100%)",
-                opacity: authoritySectionVisible ? 1 : 0,
-                transform: authoritySectionVisible ? "translateY(0)" : "translateY(40px)",
-                transition: "opacity 0.8s ease-out, transform 0.8s ease-out",
+                background: "linear-gradient(180deg, rgba(59,130,246,0.05) 0%, transparent 100%)",
+                paddingTop: 40,
+                paddingBottom: 40,
             }}>
                 <div style={{ maxWidth: 900, margin: "0 auto" }}>
                     <div className="section-label">LEADERSHIP</div>
@@ -1123,21 +1153,19 @@ export default function VaultUI({ apiKey }: VaultProps) {
                     <div className="grid-2-col-responsive">
                         {/* ── Left: Founder Card ── */}
                         <div className="standard-card">
-                            {/* Founder Avatar + Name */}
                             <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 20 }}>
                                 <a href="https://www.facebook.com/mmapresident" target="_blank" rel="noopener noreferrer" aria-label="Billy De La Taurus on Facebook">
                                     <div style={{ position: "relative", width: 64, height: 64 }}>
                                         <Image
                                             src="/billy-headshot.png"
-                                            alt="Billy De La Taurus — Founder & CEO of BioDynamX"
+                                            alt="Billy De La Taurus"
                                             fill
                                             style={{
                                                 borderRadius: "50%",
                                                 objectFit: "cover",
-                                                border: "2px solid rgba(59,130,246,0.4)",
-                                                boxShadow: "0 4px 20px rgba(59,130,246,0.3)",
+                                                border: "2px solid rgba(59,130,246,0.6)",
+                                                boxShadow: "0 4px 24px rgba(59,130,246,0.4)",
                                             }}
-                                            className="founder-avatar"
                                         />
                                     </div>
                                 </a>
@@ -1145,33 +1173,31 @@ export default function VaultUI({ apiKey }: VaultProps) {
                                     <div style={{ fontSize: 20, fontWeight: 800, color: "#fff", letterSpacing: "-0.02em" }}>
                                         Billy De La Taurus
                                     </div>
-                                    <div style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.45)", letterSpacing: "0.04em" }}>
+                                    <div style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.7)", letterSpacing: "0.04em" }}>
                                         Founder & CEO
                                     </div>
                                 </div>
                             </div>
 
                             <p style={{
-                                fontSize: 14, color: "rgba(255,255,255,0.6)",
+                                fontSize: 14, color: "rgba(255,255,255,0.8)",
                                 lineHeight: 1.7, margin: "0 0 24px",
                             }}>
                                 2x Amazon best-selling author in AI & Business. Billy founded BioDynamX to merge
-                                **The Neurobiology of Choice** with enterprise-grade engineering. We don&apos;t just build bots;
-                                we architect **Persuasive Design** systems that eliminate choice paralysis and scale revenue.
+                                **The Neurobiology of Choice** with enterprise-grade engineering. We architect **Persuasive Design** systems that eliminate choice paralysis and scale revenue.
                             </p>
 
-                            {/* Social Links */}
                             <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
                                 <a href="https://www.linkedin.com/in/billy-delataurus-biodynamx" target="_blank" rel="noopener noreferrer" className="social-pill-link">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" /></svg>
                                     LinkedIn
                                 </a>
                                 <a href="https://www.facebook.com/mmapresident" target="_blank" rel="noopener noreferrer" className="social-pill-link">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" /></svg>
-                                    Community
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 11.123 11.234 3.123v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" /></svg>
+                                    Facebook
                                 </a>
                                 <a href="https://a.co/d/04GCeRAh" target="_blank" rel="noopener noreferrer" className="social-pill-link-alt">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M.045 18.02c.071-.116.187-.124.348-.022 2.312 1.568 4.898 2.352 7.757 2.352 1.838 0 3.593-.353 5.268-1.06 1.673-.706 3.155-1.699 4.445-2.977.107-.107.178-.075.213.1.024.155-.008.285-.1.392C16.15 18.908 13.685 20 10.792 20c-2.86 0-5.39-.671-7.59-2.012-.198-.123-.275-.063-.234.18l.077.164c.063.09.139.177.228.26C5.59 20.627 8.086 21.5 10.92 21.5c2.837 0 5.258-.782 7.264-2.345l.102-.082.128-.084c.05-.034.1-.068.148-.103.16-.117.24-.068.24.15 0 .095-.028.192-.086.29C16.588 21.77 13.86 23 10.792 23c-3.06 0-5.62-.852-7.678-2.556-.12-.1-.187-.08-.2.06l-.008.108c0 .164.04.282.12.355C5.26 22.989 7.854 24 10.792 24c3.342 0 6.18-1.075 8.512-3.223.134-.12.218-.09.252.087.016.084-.004.184-.06.3-.16.34-.47.68-.934 1.017C16.336 23.808 13.694 25 10.744 25 7.296 25 4.198 23.655 1.45 20.967.486 20 .123 18.855.045 18.02zM21.768 16.127c.108-.053.2-.034.273.056l.053.073c.27.498.306.898.108 1.2-.395.6-1.555.9-3.48.9h-.24c-.468-.009-.97-.078-1.504-.206l-.168-.042c-.233-.066-.383-.03-.447.107l-.037.085c-.11.34.076.622.56.848 1.012.47 2.035.643 3.07.516.8-.096 1.35-.38 1.655-.852.065-.1.198-.105.4-.013.16.073.24.17.24.295 0 .11-.06.224-.178.347-.7.732-1.76 1.1-3.178 1.1-1.434 0-2.57-.4-3.406-1.2-.276-.265-.367-.592-.273-.983.035-.148.14-.237.313-.267z" /></svg>
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm0 2c5.523 0 10 4.477 10 10s-4.477 10-10 10-10-4.477-10-10 4.477-10 10-10z" /></svg>
                                     Books
                                 </a>
                             </div>
@@ -1249,6 +1275,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
                         <div style={{ background: "rgba(0,255,65,0.05)", padding: "24px", textAlign: "center", fontWeight: 800, color: "#00ff41", fontSize: 11, letterSpacing: "0.1em" }}>BIODYNAMX 4.1</div>
 
                         {[
+                            { label: "Interface", comp: "Antiquated Chatbots (Typing)", us: "100% Live Voice AI (Speaking)" },
                             { label: "Architecture", comp: "Single-Path Chatbots", us: "IronClaw Multi-Agent Core" },
                             { label: "Visuals", comp: "Static Stock Photos", us: "Nana Banana 2 (Dual-Coding)" },
                             { label: "Response", comp: "15-30 Second Latency", us: "< 1 Second (Native Audio)" },
@@ -1260,7 +1287,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
                             { label: "Availability", comp: "Human (9-5/M-F)", us: "Universal (24/7/365)" },
                             { label: "Latency", comp: "Text-to-Speech Lag", us: "Live Flash Native Audio" },
                             { label: "Local SEO", comp: "Manual Updates", us: "Free AI GMB Optimization" },
-                            { label: "Social Media", comp: "Expensive Agencies", us: "24/7 AI Social Admin (Nova)" },
+                            { label: "Social Media", comp: "Expensive Agencies", us: "24/7 AI Social Admin (Iris)" },
                             { label: "AI Visibility", comp: "Zero Presence", us: "GEO/AEO Indexing Ready" },
                             { label: "Reviews", comp: "Forgotten Customers", us: "AI List Reactivation" },
                             { label: "Inbound", comp: "Voicemail / Missed", us: "Instant AI Textback/Callback" },
@@ -1308,7 +1335,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
                             A Full Workforce for <span style={{ color: "#00ff41" }}>$1,497/mo.</span>
                         </h2>
                         <div style={{ fontSize: 16, color: "rgba(255,255,255,0.5)", marginBottom: 40, maxWidth: 600, margin: "0 auto 40px" }}>
-                            Valued at $10,000+/mo in human labor. Includes all 8 agents, Free GMB Optimization, Social Media Admin, and our Triple-Lock 5X ROI Guarantee.
+                            Valued at $10,000+/mo in human labor. Includes all 11 agents, Free GMB Optimization, Social Media Admin, and our Triple-Lock 5X ROI Guarantee.
                         </div>
 
                         <div style={{
@@ -1342,7 +1369,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
                         </div>
                     </div>
                 </div>
-            </section>
+            </section >
 
             <section ref={aiTeamRef} aria-label="Meet Your AI Team Jenny and Mark" className="section-container" style={{
                 opacity: aiTeamVisible ? 1 : 0,
@@ -1350,12 +1377,12 @@ export default function VaultUI({ apiKey }: VaultProps) {
                 transition: "opacity 0.8s ease-out, transform 0.8s ease-out",
             }}>
                 <div style={{ maxWidth: 1200, margin: "0 auto", textAlign: "center" }}>
-                    <div className="section-label" style={{ color: "#3b82f6" }}>The Elite 8</div>
+                    <div className="section-label" style={{ color: "#3b82f6" }}>The Elite Team</div>
                     <h2 className="section-title">
-                        Your Autonomous <span className="animated-gradient-text">Neuro-Workforce.</span>
+                        The Elite 11 <span className="animated-gradient-text">Workforce.</span>
                     </h2>
                     <p className="section-desc">
-                        Our agents aren&apos;t just bots. They are high-status, neuroscience-trained specialists
+                        The World&apos;s First Autonomous Neuro-Workforce. Our agents aren&apos;t just bots. They are specialists
                         that operate 24/7 to capture, qualify, and close for your business.
                     </p>
 
@@ -1363,100 +1390,136 @@ export default function VaultUI({ apiKey }: VaultProps) {
 
                         {[
                             {
-                                id: "aria_receptionist",
-                                name: "Meghan",
-                                role: "Reception & First Contact",
-                                chip1: "Smart Textback",
-                                chip2: "Cognitive Ease · Warm Routing",
-                                desc: "Never lose another lead at hello. Meghan answers every inbound call in under 1 second, 24/7 — and triggers instant textback/callback for missed opportunities.",
-                                result: "Every call answered. Zero leads lost at the door.",
-                                color: "#a78bfa",
-                                icon: "M",
-                                image: "/agents/meghan.png"
-                            },
-                            {
-                                id: "jenny_discovery",
+                                id: "glia_jenny",
                                 name: "Jenny",
-                                role: "Audit & Reactivation",
-                                chip1: "Free Audit",
-                                chip2: "Limbic Resonance · Empathy",
-                                desc: "Jenny finds your exact revenue leak in 60 seconds. She also reactivates your old customer list to generate new reviews and repeat bookings instantly.",
-                                result: "Revenue gap quantified + Old lists reactivated.",
-                                color: "#00ff41",
+                                role: "Business Lead & Discovery",
+                                chip1: "Lead Audit",
+                                chip2: "Frame Control · Glial",
+                                desc: "The challenger. Jenny bypasses small talk to reveal micro-frictions in your business model and establishes high-status leadership from the first second.",
+                                result: "Immediate status-quo disruption + Revenue Audit.",
+                                color: "#6366f1",
                                 icon: "J",
                                 image: "/agents/jenny.png"
                             },
                             {
                                 id: "mark_closer",
                                 name: "Mark",
-                                role: "ROI Closer & Architect",
-                                chip1: "Fenrir",
-                                chip2: "Neocortex · Data Logic",
-                                desc: "Mark speaks in numbers. He takes Jenny's audit and builds your ROI bridge — precise, data-driven, closes with a single binary choice.",
-                                result: "Custom ROI plan. Ready to deploy in 24 hours.",
+                                role: "ROI Closer (Croc Brain)",
+                                chip1: "Binary Close",
+                                chip2: "Status Alignment · Orion",
+                                desc: "The closer. Mark eradicates neediness and uses the 'Prize Frame' to force decisions. He speak in cold numbers and binary outcome choices.",
+                                result: "Decision reached. Commitment secured.",
                                 color: "#3b82f6",
                                 icon: "M",
                                 image: "/agents/mark.png"
                             },
                             {
+                                id: "milton_hypnotist",
+                                name: "Milton",
+                                role: "Conversational Hypnotist",
+                                chip1: "Artful Vagueness",
+                                chip2: "Alpha-State · Charon",
+                                desc: "The architect of ease. Milton uses Ericksonian hypnosis to lower conscious resistance and pace the prospect into a deep, agreeable state of flow.",
+                                result: "Subconscious safety + Total agreement.",
+                                color: "#4c1d95",
+                                icon: "M",
+                                image: "/agents/milton.png"
+                            },
+                            {
+                                id: "meghan_receptionist",
+                                name: "Meghan",
+                                role: "Amygdala Soother",
+                                chip1: "Intimacy Anchor",
+                                chip2: "Trust Engine · Aoede",
+                                desc: "The nurturer. Meghan specializes in sensory-rich language and mirroring to build intense trust and soothe the brain's threat-detection centers.",
+                                result: "Intense intimacy + Emotional defense removal.",
+                                color: "#a78bfa",
+                                icon: "M",
+                                image: "/agents/meghan.png"
+                            },
+                            {
+                                id: "brock_security",
+                                name: "Brock",
+                                role: "ROI Storyteller (Broca)",
+                                chip1: "Intrigue Frame",
+                                chip2: "High-Stakes · Fenrir",
+                                desc: "The hijacker. Brock uses high-stakes narratives to shock the Croc Brain into awareness, injecting tension and curiosity through storytelling.",
+                                result: "Attention captured + Tension converted to dopamine.",
+                                color: "#dc2626",
+                                icon: "B",
+                                image: "/agents/brock.png"
+                            },
+                            {
+                                id: "vicki_empathy",
+                                name: "Vicki",
+                                role: "Empathy & Care (Wernicke)",
+                                chip1: "Mirror Neurons",
+                                chip2: "Oxytocin · Lyra",
+                                desc: "The empath. Vicki builds visceral connection by helping prospects visualize the relief of walking away from pain into a field of pure results.",
+                                result: "Visceral visualization + Oxytocin-driven trust.",
+                                color: "#34d399",
+                                icon: "V",
+                                image: "/agents/vicki.png"
+                            },
+                            {
+                                id: "ironclaw_super_agent",
+                                name: "Jules",
+                                role: "Strategy & Architecture",
+                                chip1: "Orchestration",
+                                chip2: "Super Agent · Charon",
+                                desc: "The strategist. Jules is the lead orchestrator — supervising all agents, ensuring the neuroscience framework is followed, and architecting custom solutions for every partner.",
+                                result: "Full orchestration + Strategic alignment.",
+                                color: "#60a5fa",
+                                icon: "J",
+                                image: "/agents/jules.png"
+                            },
+                            {
+                                id: "ben_gmb",
+                                name: "Ben",
+                                role: "GMB & Reviews (Neocortex)",
+                                chip1: "Rational Drowning",
+                                chip2: "Logic Math · Puck",
+                                desc: "The logician. Ben delivers the cold, hard ROI math that the rational brain needs to justify the emotional decision to scale.",
+                                result: "Rational justification + Map ranking roadmap.",
+                                color: "#fbbf24",
+                                icon: "B",
+                                image: "/agents/ben.png"
+                            },
+                            {
                                 id: "hunter_prospector",
-                                name: "Hunter",
-                                role: "Lead Hunter",
-                                chip1: "Outbound Lead Gen",
-                                chip2: "Implicit Pain Discovery",
-                                desc: "The seeker. Surfaces implicit pain using neuro-driven prospecting to book discovery calls with your top competitors' clients 24/7.",
-                                result: "Qualified Discovery Calls on your calendar.",
-                                color: "#ef4444",
-                                icon: "H",
+                                name: "Chase",
+                                role: "Lead Prospecting (Chase Response)",
+                                chip1: "Competitive Intel",
+                                chip2: "Pursuit Circuit · Enceladus",
+                                desc: "The hunter. Chase activates the lateral hypothalamus pursuit circuit — detecting opportunity and pursuing without hesitation. Competitor intel, market stagnation, and urgency.",
+                                result: "Competitive advantage + Lead pipeline activated.",
+                                color: "#f97316",
+                                icon: "C",
                                 image: "/agents/hunter.png"
                             },
                             {
-                                id: "nova_content",
-                                name: "Nova",
-                                role: "SEO / GEO / Social",
-                                chip1: "AEO Visibility",
-                                chip2: "Social Posting Admin",
-                                desc: "Nova keeps you suggested by Perplexity, Gemini, and ChatGPT. She posts all your social media and builds market authority while you sleep.",
-                                result: "AI Engine Visibility + Full Social Posting.",
-                                color: "#fbbf24",
-                                icon: "N",
+                                id: "nova_visibility",
+                                name: "Iris",
+                                role: "AI Visibility & Content (GEO/AEO)",
+                                chip1: "Triple Crown SEO",
+                                chip2: "AI Search · Leda",
+                                desc: "The eye. Iris controls what the brain can SEE — making businesses visible to ChatGPT, Gemini, Perplexity, and voice assistants through GEO, AEO, and content strategy.",
+                                result: "AI visibility + Generative search dominance.",
+                                color: "#8b5cf6",
+                                icon: "I",
                                 image: "/agents/nova.png"
                             },
                             {
-                                id: "orion_ops",
-                                name: "O'Ryan",
-                                role: "GMB & Reviews",
-                                chip1: "GMB Booster",
-                                chip2: "Review Automation",
-                                desc: "The optimizer. O'Ryan sets up your Google Business Profile for free, automates customer reviews, and kills operational revenue bleed.",
-                                result: "Free GMB Setup + Review Dominance.",
-                                color: "#f59e0b",
-                                icon: "O",
-                                image: "/agents/oryan.png"
-                            },
-                            {
-                                id: "support_specialist",
+                                id: "alex_support",
                                 name: "Alex",
-                                role: "Empathy & Care",
-                                chip1: "NLP Meta-Model",
-                                chip2: "Cortisol Reduction",
-                                desc: "The diplomat. De-escalates threat states using NLP meta-models to move customers from frustration to loyalty and reward states.",
-                                result: "98% Customer Satisfaction. Zero churn.",
-                                color: "#34d399",
+                                role: "Support & Retention",
+                                chip1: "Churn Prevention",
+                                chip2: "Retention · Aoede",
+                                desc: "The guardian. Alex keeps clients happy 24/7 — preventing churn, resolving issues at 2 AM, and turning customer satisfaction into 5-star reviews and referrals.",
+                                result: "Zero churn + Customer lifetime value maximized.",
+                                color: "#06b6d4",
                                 icon: "A",
                                 image: "/agents/alex.png"
-                            },
-                            {
-                                id: "ledger_finance",
-                                name: "Ledger",
-                                role: "Security & ROI",
-                                chip1: "Military-Grade",
-                                chip2: "ROI Transparency",
-                                desc: "The custodian. Ledger ensures top-tier AES-256 data security and compliance while tracking every dollar bioDynamX recovers for you.",
-                                result: "Maximum Security + 5X ROI Guarantee.",
-                                color: "#06b6d4",
-                                icon: "L",
-                                image: "/agents/ledger.png"
                             }
                         ].map((agent) => (
                             <div key={agent.id} className={`agent-card agent-card-${agent.id.split('_')[0]}`}>
@@ -1686,9 +1749,9 @@ export default function VaultUI({ apiKey }: VaultProps) {
                         {[
                             { title: "Dual-Agent Architecture", desc: "Jenny Voice + Jenny Visual (Nana Banana 2) synchronized in real-time." },
                             { title: "Autonomous Site Navigation", desc: "Agents walk through your website with visitors manually." },
-                            { title: "Free GMB Optimization", desc: "O'Ryan sets up your Google Business Profile for total local dominance." },
-                            { title: "AI Visibility (GEO/AEO)", desc: "Nova ensures you are suggested by Perplexity, Gemini, and ChatGPT." },
-                            { title: "Social Media Admin", desc: "Nova posts and manages all your social channels automatically." },
+                            { title: "Free GMB Optimization", desc: "Ryan sets up your Google Business Profile for total local dominance." },
+                            { title: "AI Visibility (GEO/AEO)", desc: "Iris ensures you are suggested by Perplexity, Gemini, and ChatGPT." },
+                            { title: "Social Media Admin", desc: "Iris posts and manages all your social channels automatically." },
                             { title: "Customer Reactivation", desc: "Jenny reaches out to old lists to generate reviews and repeat sales." },
                             { title: "Textback / Callback", desc: "Meghan instantly recovers missed calls via automated SMS & Voice." },
                             { title: "Neuroscience-Engineered", desc: "Built on Triune Brain theory, Dual-Coding, and high-status NLP." },
@@ -1698,7 +1761,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
                             { title: "Nana Banana 2 Generative", desc: "Images adapt instantly to the conversation brain state." },
                             { title: "Subconscious Framing", desc: "Matching user language patterns to bypass conscious resistance." },
                             { title: "Military-Grade Security", desc: "AES-256 Encryption and PII Redaction for total data safety." },
-                            { title: "SPIN-Native Hunting", desc: "Hunter uses 'The Challenger Sale' to capture competitors' clients." },
+                            { title: "SPIN-Native Hunting", desc: "Chase uses 'The Challenger Sale' to capture competitors' clients." },
                             { title: "High-Status Personas", desc: "Each agent maintains an elite professional identity." },
                             { title: "Decision Friction Removal", desc: "Cognitive offloading designed to make saying 'Yes' effortless." },
                             { title: "Loss Aversion Triggering", desc: "We quantify the financial bleed of doing nothing." },
@@ -1855,7 +1918,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
                         </div>
 
                         {[
-                            { f: "Monthly Cost", h: "$12,400+", a: "$497", high: true },
+                            { f: "Monthly Cost", h: "$12,400+", a: "$1,497", high: true },
                             { f: "Response Time", h: "3+ Hours", a: "< 1 Second" },
                             { f: "Available Hours", h: "9 AM - 5 PM", a: "24/7/365" },
                             { f: "Consistency", h: "Variable", a: "100% Perfect" },
@@ -1880,50 +1943,52 @@ export default function VaultUI({ apiKey }: VaultProps) {
             </section>
 
             {/* ── Enterprise Security & Compliance ── */}
-            {!isActive && (
-                <section
-                    id="security"
-                    ref={authoritySectionRef}
-                    className="section-container"
-                    style={{
-                        background: "linear-gradient(180deg, transparent 0%, rgba(16,185,129,0.02) 100%)",
-                        opacity: authoritySectionVisible ? 1 : 0,
-                        transform: authoritySectionVisible ? 'translateY(0)' : 'translateY(40px)',
-                        transition: 'opacity 0.8s ease-out, transform 0.8s ease-out',
-                    }}
-                >
-                    <div style={{ maxWidth: 1000, margin: "0 auto", textAlign: "center" }}>
-                        <div className="section-label" style={{ color: "#10b981" }}>Enterprise Architecture</div>
-                        <h2 className="section-title">
-                            Military-grade security. <span style={{ color: "#10b981" }}>Universal compliance.</span>
-                        </h2>
+            {
+                !isActive && (
+                    <section
+                        id="security"
+                        ref={authoritySectionRef}
+                        className="section-container"
+                        style={{
+                            background: "linear-gradient(180deg, transparent 0%, rgba(16,185,129,0.02) 100%)",
+                            opacity: authoritySectionVisible ? 1 : 0,
+                            transform: authoritySectionVisible ? 'translateY(0)' : 'translateY(40px)',
+                            transition: 'opacity 0.8s ease-out, transform 0.8s ease-out',
+                        }}
+                    >
+                        <div style={{ maxWidth: 1000, margin: "0 auto", textAlign: "center" }}>
+                            <div className="section-label" style={{ color: "#10b981" }}>Enterprise Architecture</div>
+                            <h2 className="section-title">
+                                Military-grade security. <span style={{ color: "#10b981" }}>Universal compliance.</span>
+                            </h2>
 
-                        <div style={{
-                            display: "grid",
-                            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-                            gap: 16,
-                            marginTop: 40,
-                            textAlign: "left",
-                        }}>
-                            {[
-                                { icon: "🛡️", title: "PII Redaction", desc: "Sensitive customer data (SSNs, cards) is auto-redacted in real-time." },
-                                { icon: "🔒", title: "AES-256 Encryption", desc: "All data is encrypted at rest and in transit using TLS 1.3 standards." },
-                                { icon: "📊", title: "Full Audit Trail", desc: "Every word, tool call, and handoff is timestamped and searchable." },
-                                { icon: "⚖️", title: "Compliance Ready", desc: "Built for HIPAA, PCI-DSS, GDPR, and TCPA frameworks." },
-                            ].map((item) => (
-                                <div key={item.title} className="glass-card" style={{
-                                    padding: 24, borderRadius: 20, border: "1px solid rgba(16,185,129,0.1)",
-                                    background: "rgba(16,185,129,0.03)",
-                                }}>
-                                    <div style={{ fontSize: 32, marginBottom: 12 }}>{item.icon}</div>
-                                    <div style={{ fontSize: 16, fontWeight: 700, color: "#fff", marginBottom: 8 }}>{item.title}</div>
-                                    <div style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", lineHeight: 1.6 }}>{item.desc}</div>
-                                </div>
-                            ))}
+                            <div style={{
+                                display: "grid",
+                                gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+                                gap: 16,
+                                marginTop: 40,
+                                textAlign: "left",
+                            }}>
+                                {[
+                                    { icon: "🛡️", title: "PII Redaction", desc: "Sensitive customer data (SSNs, cards) is auto-redacted in real-time." },
+                                    { icon: "🔒", title: "AES-256 Encryption", desc: "All data is encrypted at rest and in transit using TLS 1.3 standards." },
+                                    { icon: "📊", title: "Full Audit Trail", desc: "Every word, tool call, and handoff is timestamped and searchable." },
+                                    { icon: "⚖️", title: "Compliance Ready", desc: "Built for HIPAA, PCI-DSS, GDPR, and TCPA frameworks." },
+                                ].map((item) => (
+                                    <div key={item.title} className="glass-card" style={{
+                                        padding: 24, borderRadius: 20, border: "1px solid rgba(16,185,129,0.1)",
+                                        background: "rgba(16,185,129,0.03)",
+                                    }}>
+                                        <div style={{ fontSize: 32, marginBottom: 12 }}>{item.icon}</div>
+                                        <div style={{ fontSize: 16, fontWeight: 700, color: "#fff", marginBottom: 8 }}>{item.title}</div>
+                                        <div style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", lineHeight: 1.6 }}>{item.desc}</div>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
-                    </div>
-                </section>
-            )}
+                    </section>
+                )
+            }
 
             {/* ── Risk-Free Guarantee ── */}
             <section
@@ -1974,12 +2039,12 @@ export default function VaultUI({ apiKey }: VaultProps) {
                         <div className="popular-badge">ELITE ACCESS</div>
                         <div style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", marginBottom: 12 }}>BioDynamX Growth Engine</div>
                         <div className="price-container">
-                            <span className="price-anchor">$997</span>
-                            <span className="price-main">$497</span>
+                            <span className="price-anchor">$2,497</span>
+                            <span className="price-main">$1,497</span>
                             <span className="price-suffix">/mo</span>
                         </div>
                         <p style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", marginTop: 12 }}>
-                            One flat fee. All 8 agents included. Unlimited potential.
+                            One flat fee. All 11 agents included. Unlimited potential.
                         </p>
                     </div>
                 </div>
@@ -2005,24 +2070,36 @@ export default function VaultUI({ apiKey }: VaultProps) {
                         </p>
                     </div>
                     <div>
-                        <h4 style={{ fontSize: 12, color: "#fff", marginBottom: 16, letterSpacing: "0.1em" }}>PLATFORM</h4>
-                        <a href="/pricing" style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: 13, textDecoration: "none", marginBottom: 10 }}>Pricing</a>
-                        <a href="/audit" style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: 13, textDecoration: "none", marginBottom: 10 }}>Free Audit</a>
+                        <h4 style={{ fontSize: 12, color: "#fff", marginBottom: 16, letterSpacing: "0.1em" }}>COMPANY</h4>
+                        <a href="/about" style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: 13, textDecoration: "none", marginBottom: 10 }}>About Us</a>
+                        <a href="/dashboard" style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: 13, textDecoration: "none", marginBottom: 10 }}>Revenue Dashboard</a>
+                        <a href="/testimonials" style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: 13, textDecoration: "none", marginBottom: 10 }}>Success Stories</a>
+                        <a href="/press" style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: 13, textDecoration: "none", marginBottom: 10 }}>Press</a>
                     </div>
                     <div>
-                        <h4 style={{ fontSize: 12, color: "#fff", marginBottom: 16, letterSpacing: "0.1em" }}>TRUST</h4>
-                        <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 13, marginBottom: 8 }}>✓ GDPR Ready</div>
-                        <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 13, marginBottom: 8 }}>✓ SOC 2 Compliant</div>
+                        <h4 style={{ fontSize: 12, color: "#fff", marginBottom: 16, letterSpacing: "0.1em" }}>PLATFORM</h4>
+                        <a href="/pricing" style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: 13, textDecoration: "none", marginBottom: 10 }}>Elite Pricing</a>
+                        <a href="/audit" style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: 13, textDecoration: "none", marginBottom: 10 }}>Free 20-Point Audit</a>
+                        <a href="/llms.txt" style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: 13, textDecoration: "none", marginBottom: 10 }}>AI Directory (llms.txt)</a>
+                        <a href="/partners" style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: 13, textDecoration: "none", marginBottom: 10 }}>Partner Login</a>
+                    </div>
+                    <div>
+                        <h4 style={{ fontSize: 12, color: "#fff", marginBottom: 16, letterSpacing: "0.1em" }}>TRUST &amp; LEGAL</h4>
+                        <a href="/security" style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: 13, textDecoration: "none", marginBottom: 10 }}>Security Protocol</a>
+                        <a href="/privacy" style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: 13, textDecoration: "none", marginBottom: 10 }}>Privacy Policy</a>
+                        <a href="/terms" style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: 13, textDecoration: "none", marginBottom: 10 }}>Terms of Service</a>
+                        <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 11, marginTop: 16 }}>✓ GDPR &amp; SOC 2 READY</div>
+                        <div style={{ color: "rgba(255,255,255,0.3)", fontSize: 10, marginTop: 4 }}>Military-Grade AES-256</div>
                     </div>
                 </div>
                 <div style={{
                     marginTop: 60, paddingTop: 24, borderTop: "1px solid rgba(255,255,255,0.05)",
                     textAlign: "center", fontSize: 12, color: "rgba(255,255,255,0.3)",
                 }}>
-                    © 2026 BioDynamX Inc. All rights reserved. Neuroscience for the digital age.
+                    © 2026 BioDynamX Engineering Group. All rights reserved. Neuroscience for the digital age.
                 </div>
             </footer>
-        </div>
+        </div >
     );
 }
 

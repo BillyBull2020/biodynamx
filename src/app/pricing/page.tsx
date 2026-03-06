@@ -7,7 +7,7 @@ const PLANS = [
         name: "Trial / Rescue", price: 748, period: "/mo", color: "#22c55e", popular: false,
         tagline: "First 90 Days — Rescue your revenue",
         features: [
-            "Full Elite 8 Workforce (8 Agents)",
+            "Full Elite 11 Workforce (11 Agents)",
             "Free Business Audit & List Reactivation",
             "Free Google My Business (GMB) Optimization",
             "Unlimited Inbound Call Reception",
@@ -19,10 +19,10 @@ const PLANS = [
         cta: "Start 90-Day Trial", ctaLink: "/",
     },
     {
-        name: "Elite 8", price: 1497, period: "/mo", color: "#3b82f6", popular: true,
+        name: "Elite 11", price: 1497, period: "/mo", color: "#3b82f6", popular: true,
         tagline: "Full Autonomous Neuro-Workforce",
         features: [
-            "The Complete Elite 8 AI Team",
+            "The Complete Elite 11 AI Team",
             "Everything in Trial, plus:",
             "SPIN-Native Outbound Lead Hunting",
             "Custom Persona Training",
@@ -32,14 +32,14 @@ const PLANS = [
             "Priority Elite Support",
             "Quarterly Strategy Audits",
         ],
-        cta: "Deploy Elite 8", ctaLink: "/",
+        cta: "Deploy Elite 11", ctaLink: "/",
     },
     {
         name: "Enterprise OS", price: 4997, period: "/mo", color: "#ffa726", popular: false,
         tagline: "Custom AI Infrastructure for Scale",
         features: [
             "Unlimited Agents + Custom Logic",
-            "Everything in Elite 8, plus:",
+            "Everything in Elite 11, plus:",
             "Whitelabel / Brand Secrecy Mode",
             "Dedicated Infrastructure on Vertex AI",
             "Deep CRM / ERP Integrations",

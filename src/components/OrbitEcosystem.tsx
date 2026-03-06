@@ -11,14 +11,17 @@ import Image from "next/image";
 import "./OrbitEcosystem.css";
 
 const SERVICES = [
+    { image: "/agents/milton.png", label: "MILTON: Conversational Hypnotist", color: "#7c3aed" },
     { image: "/agents/meghan.png", label: "MEGHAN: AI Receptionist", color: "#a78bfa" },
     { image: "/agents/jenny.png", label: "JENNY: Brain Discovery", color: "#00ff41" },
     { image: "/agents/mark.png", label: "MARK: Revenue Closer", color: "#3b82f6" },
-    { image: "/agents/oryan.png", label: "O'RYAN: Ops & Workflow", color: "#f59e0b" },
-    { image: "/agents/alex.png", label: "ALEX: Support Lead", color: "#10b981" },
-    { image: "/agents/hunter.png", label: "HUNTER: Prospecting", color: "#ef4444" },
-    { image: "/agents/nova.png", label: "NOVA: Content & Social", color: "#f97316" },
-    { image: "/agents/ledger.png", label: "LEDGER: ROI Manager", color: "#06b6d4" },
+    { image: "/agents/brock.png", label: "BROCK: Security & ROI", color: "#06b6d4" },
+    { image: "/agents/vicki.png", label: "VICKI: Empathy & Care", color: "#10b981" },
+    { image: "/agents/oryan.png", label: "RYAN: GMB & Ops", color: "#f59e0b" },
+    { image: "/agents/alex.png", label: "ALEX: Support Lead", color: "#34d399" },
+    { image: "/agents/hunter.png", label: "CHASE: Lead Prospecting", color: "#ef4444" },
+    { image: "/agents/nova.png", label: "IRIS: AI Visibility & Content", color: "#f97316" },
+    { image: "/agents/jules.png", label: "JULES: Strategy & Architecture", color: "#60a5fa" },
 ];
 
 // Reduced from 48 → 20 particles for scroll performance

@@ -164,7 +164,9 @@ export class VoiceOrchestrator {
 
         this.setStatus("connecting", "Opening WebSocket to Gemini...");
 
-        // ★ STABILITY LOCK: v1beta — confirmed home of all bidiGenerateContent models (March 2026)
+        // ★ STABILITY LOCK: v1beta — canonical endpoint for raw WebSocket BidiGenerateContent
+        // Note: enableAffectiveDialog is an SDK-only abstraction, NOT a raw WebSocket field.
+        // For emotional expressiveness, use system instructions + native-audio model.
         const url = `wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContent?key=${this.apiKey}`;
 
         const activeAgents = this.customAgents || DEFAULT_TEAM;
@@ -176,11 +178,16 @@ export class VoiceOrchestrator {
             this.ws.onopen = () => {
                 this.setStatus("connecting", "WebSocket open, sending setup...");
 
+                // ★ CRITICAL FIX: Setup message MUST use camelCase.
+                // The Gemini Live v1alpha/v1beta BidiGenerateContent endpoint
+                // requires camelCase for the setup envelope. Using snake_case
+                // causes Code 1007 (Invalid JSON payload) and kills the session.
+                //
+                // Streaming messages (realtime_input, client_content, tool_response)
+                // MUST use snake_case — the opposite rule.
                 const setupMessage = {
                     setup: {
-                        // ★ CONFIRMED: enumerated directly from the models API (March 2026)
-                        // GET /v1beta/models shows this as bidiGenerateContent-capable
-                        model: "models/gemini-2.5-flash-native-audio-latest",
+                        model: "models/gemini-2.5-flash-native-audio-preview-12-2025",
                         generationConfig: {
                             responseModalities: ["AUDIO"],
                             speechConfig: {
@@ -189,25 +196,17 @@ export class VoiceOrchestrator {
                                         voiceName: activeAgents[0].voice
                                     }
                                 }
-                            }
+                            },
+                            temperature: 1.0,
                         },
-                        // ★ VAD — Voice Activity Detection config.
-                        // automaticActivityDetection: correct field per Gemini Live v1beta spec.
-                        // startOfSpeechSensitivity HIGH: detect user speech quickly.
-                        // endOfSpeechSensitivity LOW: wait longer before cutting them off — prevents
-                        //   interrupting mid-name (e.g. "Billy De La Taurus" is multi-part).
-                        // activityHandling START_OF_ACTIVITY_INTERRUPTS: CRITICAL — allows the user
-                        //   to interrupt Jenny mid-sentence. Without this, Jenny ignores the user
-                        //   while she is speaking (model locks out audio input during output).
                         realtimeInputConfig: {
-                            automaticActivityDetection: {},
-                            activityHandling: "START_OF_ACTIVITY_INTERRUPTS",
+                            automaticActivityDetection: {
+                                startOfSpeechSensitivity: "START_SENSITIVITY_HIGH",
+                                endOfSpeechSensitivity: "END_SENSITIVITY_LOW",
+                                prefixPaddingMs: 300,
+                                silenceDurationMs: 600
+                            },
                         },
-                        // ★ Transcription: Disabled for native audio preview model.
-                        // inputAudioTranscription / outputAudioTranscription are NOT reliably
-                        // supported by gemini-2.5-flash-native-audio-preview — enabling them
-                        // is a confirmed trigger for code 1008 "Operation not implemented".
-                        // Re-enable once stable transcription support ships for this model.
                         systemInstruction: {
                             parts: [{
                                 text: `${activeSystemInstruction}
@@ -215,6 +214,7 @@ export class VoiceOrchestrator {
 ━━━ NAME GROUNDING ━━━
 NEVER invent, assume, or use a placeholder name (Alex, John, Jane, etc.).
 Only use a name the person explicitly told you during this call.
+If they provide their name, ALWAYS repeat it back to confirm: "Nice to meet you, [NAME]. I've got that down."
 If you didn't clearly hear it, ask naturally in one beat: "Sorry — was that [NAME]?"
 If they correct you, use the corrected name and keep moving immediately.
 
@@ -469,7 +469,7 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
                         data = JSON.parse(event.data);
                     }
 
-                    if (data.setupComplete) {
+                    if (data.setup_complete || data.setupComplete) {
                         this.setStatus("ready", "BioDynamX Live Online. Sensors active.");
                         this.startMedia();
 
@@ -478,11 +478,12 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
                         this.heartbeatInterval = setInterval(() => {
                             if (this.ws?.readyState === WebSocket.OPEN) {
                                 // Send empty media chunk as heartbeat
+                                // Using snake_case for strict Vertex API compliance
                                 this.ws.send(JSON.stringify({
-                                    realtimeInput: { mediaChunks: [] }
+                                    realtime_input: { media_chunks: [] }
                                 }));
                             }
-                        }, 8000);
+                        }, 5000); // Every 5 seconds — tight keepalive to prevent 1011
 
                         // ★ IRONCLAW: Initialize master session brain for ANY agent
                         const activeAgent = this.customAgents?.[0];
@@ -542,12 +543,12 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
                         // knows the conversation has started. Jenny's system instruction governs exactly
                         // what she says — we don't need to script it here.
                         this.ws?.send(JSON.stringify({
-                            clientContent: {
+                            client_content: {
                                 turns: [{
                                     role: "user",
                                     parts: [{ text: "(call connected)" }]
                                 }],
-                                turnComplete: true
+                                turn_complete: true
                             }
                         }));
 
@@ -572,7 +573,13 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
                 if (this.videoInterval) clearInterval(this.videoInterval);
                 if (this.heartbeatInterval) clearInterval(this.heartbeatInterval);
 
-                if (event.code !== 1000) {
+                // Recoverable server-side errors — auto-reconnect
+                const recoverableCodes = [1006, 1011, 1013]; // Abnormal, Server Error, Try Again
+                if (recoverableCodes.includes(event.code) && this.reconnectCount < this.maxReconnectAttempts && !this.isReconnecting) {
+                    console.warn(`[VoiceOrchestrator] ⚡ Recoverable close (${event.code}). Auto-reconnecting...`);
+                    this.setStatus("connecting", `Reconnecting... (attempt ${this.reconnectCount + 1}/${this.maxReconnectAttempts})`);
+                    this.handleReconnect();
+                } else if (event.code !== 1000) {
                     this.setStatus("error", `Connection closed (code ${event.code}): ${event.reason || "Unknown reason."}`);
                 }
             };
@@ -607,6 +614,10 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
                         channelCount: 1,
                         echoCancellation: true,
                         noiseSuppression: true,
+                        // ★ VERTEX BEST PRACTICE: Enable AGC.
+                        // With HIGH VAD sensitivity, we want a well-gained signal.
+                        // The model's internal VAD is now smart enough to filter noise.
+                        autoGainControl: true,
                         sampleRate: 16000,
                     },
                     video: false,   // NEVER request camera here — breaks mic on iOS/mobile
@@ -641,7 +652,7 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
                     if (this.ws?.readyState === WebSocket.OPEN) {
                         const base64 = this.float32ToPCM16Base64(float32Array);
                         this.ws.send(JSON.stringify({
-                            realtimeInput: { mediaChunks: [{ mimeType: "audio/pcm;rate=16000", data: base64 }] }
+                            realtime_input: { media_chunks: [{ mime_type: "audio/pcm;rate=16000", data: base64 }] }
                         }));
                     }
                 };
@@ -661,7 +672,7 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
                     const float32Array = e.inputBuffer.getChannelData(0);
                     const base64 = this.float32ToPCM16Base64(float32Array);
                     this.ws.send(JSON.stringify({
-                        realtimeInput: { mediaChunks: [{ mimeType: "audio/pcm;rate=16000", data: base64 }] }
+                        realtime_input: { media_chunks: [{ mime_type: "audio/pcm;rate=16000", data: base64 }] }
                     }));
                 };
                 this.microphone.connect(scriptProcessor);
@@ -691,9 +702,9 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
         }
 
         // --- Handle Tool Calls (Function Calling) ---
-        const toolCall = data.toolCall as Record<string, unknown> | undefined;
+        const toolCall = (data.tool_call || data.toolCall) as Record<string, unknown> | undefined;
         if (toolCall) {
-            const functionCalls = toolCall.functionCalls as Array<Record<string, unknown>> | undefined;
+            const functionCalls = (toolCall.function_calls || toolCall.functionCalls) as Array<Record<string, unknown>> | undefined;
             if (functionCalls) {
                 for (const fc of functionCalls) {
                     const callId = fc.id as string;
@@ -776,8 +787,8 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
                         })();
                         // Respond immediately so agent doesn’t hang waiting on image
                         this.ws?.send(JSON.stringify({
-                            toolResponse: {
-                                functionResponses: [{
+                            tool_response: {
+                                function_responses: [{
                                     id: callId,
                                     name: "generate_visual",
                                     response: { output: `Visual generating — brain layer: ${args.conversationPhase}. Industry: ${args.industry || "detected"}. Will appear on screen momentarily.` }
@@ -831,8 +842,8 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
 
                         // Respond immediately — don't block the voice conversation
                         this.ws?.send(JSON.stringify({
-                            toolResponse: {
-                                functionResponses: [{
+                            tool_response: {
+                                function_responses: [{
                                     id: callId,
                                     name: "generate_revenue_visual",
                                     response: { output: `Revenue visual generating — calculating their specific numbers. Image will appear on screen. Their monthly loss is computing now.` }
@@ -856,126 +867,126 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
         }
 
         // --- Handle Content ---
-        const serverContent = data.serverContent as Record<string, unknown> | undefined;
-        if (serverContent?.modelTurn) {
-            const modelTurn = serverContent.modelTurn as Record<string, unknown>;
-            const parts = modelTurn.parts as Array<Record<string, unknown>> | undefined;
-            if (!parts) return;
+        const serverContent = (data.server_content || data.serverContent) as Record<string, unknown> | undefined;
+        if (serverContent) {
+            const modelTurn = (serverContent.model_turn || serverContent.modelTurn) as Record<string, unknown> | undefined;
+            if (modelTurn) {
+                const parts = modelTurn.parts as Array<Record<string, unknown>> | undefined;
+                if (!parts) return;
 
-            for (const part of parts) {
-                if (part.text) {
-                    const text = part.text as string;
+                for (const part of parts) {
+                    if (part.text) {
+                        const text = part.text as string;
 
-                    // ── AGENTIC: Process outgoing agent message through safety pipeline ──
-                    const agentName = this.customAgents?.[0]?.name || "Jenny";
-                    const processed = processOutgoingMessage(text, this.sessionId, agentName);
-                    if (!processed.safetyResult.safe && processed.safetyResult.action === "block") {
-                        console.warn(`[VoiceOrchestrator] ⛔ Agent output BLOCKED by safety layer`);
-                        continue; // Skip this message
+                        // ── AGENTIC: Process outgoing agent message through safety pipeline ──
+                        const agentName = this.customAgents?.[0]?.name || "Jenny";
+                        const processed = processOutgoingMessage(text, this.sessionId, agentName);
+                        if (!processed.safetyResult.safe && processed.safetyResult.action === "block") {
+                            console.warn(`[VoiceOrchestrator] ⛔ Agent output BLOCKED by safety layer`);
+                            continue; // Skip this message
+                        }
+
+                        // ── AGENTIC: Update memory with agent response ──
+                        const memory = getMemory(this.sessionId);
+                        if (memory) {
+                            recordTurn(this.sessionId, memory.commitmentLevel);
+                        }
+
+                        // Speaker detection — Journey maps to "alpha", Mark maps to "beta"
+                        if (text.includes("[Journey]") || text.includes("[journey]") || text.includes("[Jenny]") || text.includes("[jenny]")) {
+                            this.currentSpeaker = "alpha";
+                            this.onSpeakerChange?.("alpha");
+                        } else if (text.includes("[Mark]") || text.includes("[mark]")) {
+                            this.currentSpeaker = "beta";
+                            this.onSpeakerChange?.("beta");
+                        }
+
+                        this.conversationNotes.push(text);
+
+                        // ── 📝 TRANSCRIPT: Record agent speech ──
+                        recordAgentSpeech(this.sessionId, agentName, text);
+                        this.onTranscriptUpdate?.({
+                            speaker: "agent",
+                            agentName,
+                            content: text,
+                            timestamp: new Date().toISOString(),
+                        });
+
+                        const lowerText = text.toLowerCase();
+
+                        // Handoff detection
+                        for (const kw of HANDOFF_KEYWORDS) {
+                            if (lowerText.includes(kw)) {
+                                console.log("[VoiceOrchestrator] HANDOFF KEYWORD DETECTED. Emitting handoff.")
+                                const from = this.customAgents?.[0]?.name || "Jenny";
+                                const to = from === "Jenny" ? "Mark" : "Jenny";
+                                this.onHandoff?.(from, to);
+                                recordHandoff(this.sessionId, to);
+                                recordHandoffInTranscript(this.sessionId, from, to);
+                                break;
+                            }
+                        }
+
+                        // Data point detection
+                        for (const pattern of DATA_POINT_PATTERNS) {
+                            if (pattern.test(text)) {
+                                const sentences = text.split(/[.!?]+/).filter(s => pattern.test(s));
+                                if (sentences.length > 0) {
+                                    this.onDataPoint?.(sentences[0].trim().replace(/^\[(Journey|Mark|Jenny)\]\s*/i, ""));
+                                }
+                                break;
+                            }
+                        }
+
+                        // Intent detection
+                        for (const kw of SCHEDULE_KEYWORDS) {
+                            if (lowerText.includes(kw)) {
+                                this.onIntentDetected?.("schedule", text);
+                                break;
+                            }
+                        }
+                        for (const kw of PURCHASE_KEYWORDS) {
+                            if (lowerText.includes(kw)) {
+                                this.onIntentDetected?.("purchase", text);
+                                break;
+                            }
+                        }
                     }
 
-                    // ── AGENTIC: Update memory with agent response ──
-                    const memory = getMemory(this.sessionId);
-                    if (memory) {
-                        recordTurn(this.sessionId, memory.commitmentLevel);
+                    const inlineData = (part.inline_data || part.inlineData) as any;
+                    if (inlineData?.data) {
+                        if (this.modelTurnCount === 0) {
+                            console.log(`[VoiceOrchestrator] 🔊 First audio chunk received (${(inlineData.data as string).length} chars). Playing...`);
+                        }
+                        this.playAudioChunk(inlineData.data as string);
                     }
+                }
+            }
 
-                    // Speaker detection — Journey maps to "alpha", Mark maps to "beta"
-                    if (text.includes("[Journey]") || text.includes("[journey]") || text.includes("[Jenny]") || text.includes("[jenny]")) {
-                        this.currentSpeaker = "alpha";
-                        this.onSpeakerChange?.("alpha");
-                    } else if (text.includes("[Mark]") || text.includes("[mark]")) {
-                        this.currentSpeaker = "beta";
-                        this.onSpeakerChange?.("beta");
-                    }
+            if (serverContent.interrupted) {
+                this.clearPlaybackQueue();
+            }
 
-                    this.conversationNotes.push(text);
-
-                    // ── 📝 TRANSCRIPT: Record agent speech ──
-                    recordAgentSpeech(this.sessionId, agentName, text);
+            // ── 📝 TRANSCRIPT: Capture user speech transcription from Gemini ──
+            const inputTranscription = (serverContent.input_transcription || serverContent.inputTranscription) as Record<string, unknown> | undefined;
+            if (inputTranscription?.text) {
+                const userText = inputTranscription.text as string;
+                if (userText.trim()) {
+                    recordProspectSpeech(this.sessionId, userText.trim());
                     this.onTranscriptUpdate?.({
-                        speaker: "agent",
-                        agentName,
-                        content: text,
+                        speaker: "prospect",
+                        content: userText.trim(),
                         timestamp: new Date().toISOString(),
                     });
-
-                    const lowerText = text.toLowerCase();
-
-                    // Handoff detection
-                    for (const kw of HANDOFF_KEYWORDS) {
-                        if (lowerText.includes(kw)) {
-                            console.log("[VoiceOrchestrator] HANDOFF KEYWORD DETECTED. Emitting handoff.")
-                            const from = this.customAgents?.[0]?.name || "Jenny";
-                            const to = from === "Jenny" ? "Mark" : "Jenny";
-                            this.onHandoff?.(from, to);
-                            recordHandoff(this.sessionId, to);
-                            recordHandoffInTranscript(this.sessionId, from, to);
-                            break;
-                        }
-                    }
-
-                    // Data point detection
-                    for (const pattern of DATA_POINT_PATTERNS) {
-                        if (pattern.test(text)) {
-                            const sentences = text.split(/[.!?]+/).filter(s => pattern.test(s));
-                            if (sentences.length > 0) {
-                                this.onDataPoint?.(sentences[0].trim().replace(/^\[(Journey|Mark|Jenny)\]\s*/i, ""));
-                            }
-                            break;
-                        }
-                    }
-
-                    // Intent detection
-                    for (const kw of SCHEDULE_KEYWORDS) {
-                        if (lowerText.includes(kw)) {
-                            this.onIntentDetected?.("schedule", text);
-                            break;
-                        }
-                    }
-                    for (const kw of PURCHASE_KEYWORDS) {
-                        if (lowerText.includes(kw)) {
-                            this.onIntentDetected?.("purchase", text);
-                            break;
-                        }
-                    }
-                }
-
-                const inlineData = part.inlineData as Record<string, unknown> | undefined;
-                if (inlineData?.data) {
-                    this.playAudioChunk(inlineData.data as string);
+                    console.log(`[VoiceOrchestrator] 📝 Prospect said: "${userText.trim().slice(0, 100)}..."`);
                 }
             }
-        }
 
-        if (serverContent?.interrupted) {
-            this.clearPlaybackQueue();
-        }
-
-        // ── 📝 TRANSCRIPT: Capture user speech transcription from Gemini ──
-        // Gemini Live sends back what the user said as text in inputTranscription/outputTranscription
-        const inputTranscription = (serverContent as Record<string, unknown>)?.inputTranscription as Record<string, unknown> | undefined;
-        if (inputTranscription?.text) {
-            const userText = inputTranscription.text as string;
-            if (userText.trim()) {
-                recordProspectSpeech(this.sessionId, userText.trim());
-                this.onTranscriptUpdate?.({
-                    speaker: "prospect",
-                    content: userText.trim(),
-                    timestamp: new Date().toISOString(),
-                });
-                console.log(`[VoiceOrchestrator] 📝 Prospect said: "${userText.trim().slice(0, 100)}..."`);
+            // Turn-complete detection
+            if (serverContent.turn_complete || serverContent.turnComplete) {
+                this.modelTurnCount++;
+                console.log(`[VoiceOrchestrator] Model turn #${this.modelTurnCount} complete.`);
             }
-        }
-
-        // Turn-complete detection — the model finished speaking
-        if (serverContent?.turnComplete) {
-            this.modelTurnCount++;
-            console.log(`[VoiceOrchestrator] Model turn #${this.modelTurnCount} complete.`);
-            // LIVE MODE: No forced handoff. The agent's system instruction
-            // tells Jenny to use the handoff phrase naturally. The handoff
-            // keyword detection (in the text handler above) will trigger
-            // the relay when Jenny says "Mark, execute the ROI bridge."
         }
     }
 
@@ -989,8 +1000,8 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
                 const silence = new Float32Array(160); // all zeros = silence
                 const base64 = this.float32ToPCM16Base64(silence);
                 this.ws.send(JSON.stringify({
-                    realtimeInput: {
-                        mediaChunks: [{ mimeType: "audio/pcm;rate=16000", data: base64 }]
+                    realtime_input: {
+                        media_chunks: [{ mime_type: "audio/pcm;rate=16000", data: base64 }]
                     }
                 }));
             }
@@ -1043,8 +1054,8 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
             if (this.ws?.readyState === WebSocket.OPEN) {
                 const deep = (result.deepDiagnostic || {}) as Record<string, Record<string, unknown>>;
                 const toolResponse = {
-                    toolResponse: {
-                        functionResponses: [{
+                    tool_response: {
+                        function_responses: [{
                             id: callId,
                             name: "business_audit",
                             response: {
@@ -1150,8 +1161,8 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
             // Instead, give it a graceful fallback so the agent can continue the conversation.
             if (this.ws?.readyState === WebSocket.OPEN) {
                 this.ws.send(JSON.stringify({
-                    toolResponse: {
-                        functionResponses: [{
+                    tool_response: {
+                        function_responses: [{
                             id: callId,
                             name: "business_audit",
                             response: {
@@ -1199,8 +1210,8 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
 
             if (this.ws?.readyState === WebSocket.OPEN) {
                 this.ws.send(JSON.stringify({
-                    toolResponse: {
-                        functionResponses: [{
+                    tool_response: {
+                        function_responses: [{
                             id: callId,
                             name: "competitor_intel",
                             response: {
@@ -1222,8 +1233,8 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
             console.error("[VoiceOrchestrator] Competitor intel failed:", err);
             if (this.ws?.readyState === WebSocket.OPEN) {
                 this.ws.send(JSON.stringify({
-                    toolResponse: {
-                        functionResponses: [{
+                    tool_response: {
+                        function_responses: [{
                             id: callId,
                             name: "competitor_intel",
                             response: { result: { error: "Competitor analysis unavailable right now, but based on the audit data we already have, there are clear areas where competitors are outperforming you." } }
@@ -1273,8 +1284,8 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
 
             if (this.ws?.readyState === WebSocket.OPEN) {
                 this.ws.send(JSON.stringify({
-                    toolResponse: {
-                        functionResponses: [{
+                    tool_response: {
+                        function_responses: [{
                             id: callId,
                             name: "roi_calculator",
                             response: {
@@ -1303,8 +1314,8 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
             console.error("[VoiceOrchestrator] ROI calculation failed:", err);
             if (this.ws?.readyState === WebSocket.OPEN) {
                 this.ws.send(JSON.stringify({
-                    toolResponse: {
-                        functionResponses: [{
+                    tool_response: {
+                        function_responses: [{
                             id: callId,
                             name: "roi_calculator",
                             response: { result: { error: "ROI calculation unavailable. Use the audit data already provided to estimate impact manually." } }
@@ -1339,8 +1350,8 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
 
             if (this.ws?.readyState === WebSocket.OPEN) {
                 this.ws.send(JSON.stringify({
-                    toolResponse: {
-                        functionResponses: [{
+                    tool_response: {
+                        function_responses: [{
                             id: callId,
                             name: "send_audit_report",
                             response: {
@@ -1360,8 +1371,8 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
             console.error("[VoiceOrchestrator] Send report failed:", err);
             if (this.ws?.readyState === WebSocket.OPEN) {
                 this.ws.send(JSON.stringify({
-                    toolResponse: {
-                        functionResponses: [{
+                    tool_response: {
+                        function_responses: [{
                             id: callId,
                             name: "send_audit_report",
                             response: { result: { success: false, message: "I wasn't able to send the report right now, but you can find all the details at biodynamx.com." } }
@@ -1379,8 +1390,8 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
             console.warn(`[VoiceOrchestrator] ⛔ Checkout BLOCKED — commitment ${memory.commitmentLevel}/100 (need 50+)`);
             if (this.ws?.readyState === WebSocket.OPEN) {
                 this.ws.send(JSON.stringify({
-                    toolResponse: {
-                        functionResponses: [{
+                    tool_response: {
+                        function_responses: [{
                             id: callId,
                             name: "create_checkout",
                             response: {
@@ -1418,8 +1429,8 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
             // Send response back to Gemini
             if (this.ws?.readyState === WebSocket.OPEN) {
                 this.ws.send(JSON.stringify({
-                    toolResponse: {
-                        functionResponses: [{
+                    tool_response: {
+                        function_responses: [{
                             id: callId,
                             name: "create_checkout",
                             response: {
@@ -1438,8 +1449,8 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
             console.error("[VoiceOrchestrator] Checkout failed:", err);
             if (this.ws?.readyState === WebSocket.OPEN) {
                 this.ws.send(JSON.stringify({
-                    toolResponse: {
-                        functionResponses: [{
+                    tool_response: {
+                        function_responses: [{
                             id: callId,
                             name: "create_checkout",
                             response: { error: "Checkout failed: " + String(err) }
@@ -1451,66 +1462,77 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
     }
 
     // ── NEW TOOL: Capture Lead ───────────────────────────────────────
-    private async executeCaptureLead(args: Record<string, string>, callId: string) {
-        try {
-            const response = await fetch("/api/leads", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    ...args,
-                    sessionId: this.sessionId,
-                    source: "voice_diagnostic",
-                    capturedAt: new Date().toISOString(),
-                }),
-            });
-            const result = await response.json();
-
-            // Update memory with prospect info
-            const memory = getMemory(this.sessionId);
-            if (memory) {
-                if (args.name) memory.prospect.name = args.name;
-                if (args.company) memory.prospect.company = args.company;
-                if (args.industry) memory.prospect.industry = args.industry;
-            }
-
-            logAuditEntry({
-                sessionId: this.sessionId,
-                agentName: this.customAgents?.[0]?.name || "Jenny",
-                eventType: "tool_call",
-                content: `Lead captured: ${args.name || "unknown"}`,
-            });
-
-            if (this.ws?.readyState === WebSocket.OPEN) {
-                this.ws.send(JSON.stringify({
-                    toolResponse: {
-                        functionResponses: [{
-                            id: callId,
-                            name: "capture_lead",
-                            response: {
-                                result: {
-                                    success: true,
-                                    message: `Lead ${args.name || ""} captured successfully in CRM.`,
-                                    leadId: result.leadId || result.data?.id,
-                                }
+    private executeCaptureLead(args: Record<string, string>, callId: string) {
+        // ★ CRITICAL FIX: Respond to Gemini IMMEDIATELY — fire-and-forget the DB save.
+        // The old version awaited the /api/leads fetch BEFORE sending toolResponse.
+        // If /api/leads was slow, returned 400 (no email = voice-only capture), or threw,
+        // Gemini would hang indefinitely waiting for a tool response that never came.
+        // Jenny would go silent after asking for a name — exactly what was reported.
+        //
+        // Fix: send the toolResponse NOW, then save to DB asynchronously.
+        // ★ CRITICAL FIX: Streaming messages MUST use snake_case.
+        // Using camelCase (toolResponse/functionResponses) caused Gemini
+        // to silently ignore the response → agent hangs after capturing a name.
+        if (this.ws?.readyState === WebSocket.OPEN) {
+            this.ws.send(JSON.stringify({
+                tool_response: {
+                    function_responses: [{
+                        id: callId,
+                        name: "capture_lead",
+                        response: {
+                            result: {
+                                success: true,
+                                message: `Got it — ${args.name ? args.name + "'s" : ""} info noted. Continue the conversation naturally.`,
                             }
-                        }]
-                    }
-                }));
-            }
-        } catch (err) {
-            console.error("[VoiceOrchestrator] Lead capture failed:", err);
-            if (this.ws?.readyState === WebSocket.OPEN) {
-                this.ws.send(JSON.stringify({
-                    toolResponse: {
-                        functionResponses: [{
-                            id: callId,
-                            name: "capture_lead",
-                            response: { result: { success: true, message: "Lead noted internally." } }
-                        }]
-                    }
-                }));
-            }
+                        }
+                    }]
+                }
+            }));
         }
+
+        // Update in-memory session with prospect info immediately
+        const memory = getMemory(this.sessionId);
+        if (memory) {
+            if (args.name) memory.prospect.name = args.name;
+            if (args.company) memory.prospect.company = args.company;
+            if (args.industry) memory.prospect.industry = args.industry;
+        }
+
+        // Update transcript with prospect info (only fields supported by the type)
+        updateProspectInfo(this.sessionId, {
+            name: args.name || undefined,
+            email: args.email || undefined,
+            phone: args.phone || undefined,
+        });
+
+        // Async DB save — does NOT block the voice conversation
+        void (async () => {
+            try {
+                await fetch("/api/leads", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        ...args,
+                        // Provide a placeholder email so the API doesn't 400
+                        // on voice-only captures that only have a name
+                        email: args.email || `voice_${this.sessionId}@capture.biodynamx.com`,
+                        sessionId: this.sessionId,
+                        source: "voice_diagnostic",
+                        capturedAt: new Date().toISOString(),
+                    }),
+                });
+            } catch (err) {
+                // Log but never throw — the conversation already continued
+                console.warn("[VoiceOrchestrator] Lead DB save failed (non-blocking):", err);
+            }
+        })();
+
+        logAuditEntry({
+            sessionId: this.sessionId,
+            agentName: this.customAgents?.[0]?.name || "Jenny",
+            eventType: "tool_call",
+            content: `Lead captured: ${args.name || "unknown"}`,
+        });
     }
 
     // ── NEW TOOL: Schedule Appointment (Calendly Integration) ────────
@@ -1529,10 +1551,11 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
             window.open(CALENDLY_LINK, "_blank");
         }
 
+        // ★ FIX: snake_case for streaming messages
         if (this.ws?.readyState === WebSocket.OPEN) {
             this.ws.send(JSON.stringify({
-                toolResponse: {
-                    functionResponses: [{
+                tool_response: {
+                    function_responses: [{
                         id: callId,
                         name: "schedule_appointment",
                         response: {
@@ -1614,10 +1637,11 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
 
         endSession(this.sessionId, "escalated");
 
+        // ★ FIX: snake_case for streaming messages
         if (this.ws?.readyState === WebSocket.OPEN) {
             this.ws.send(JSON.stringify({
-                toolResponse: {
-                    functionResponses: [{
+                tool_response: {
+                    function_responses: [{
                         id: callId,
                         name: "escalate_to_human",
                         response: {
@@ -1648,8 +1672,8 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
 
             if (this.ws?.readyState === WebSocket.OPEN) {
                 this.ws.send(JSON.stringify({
-                    toolResponse: {
-                        functionResponses: [{
+                    tool_response: {
+                        function_responses: [{
                             id: callId,
                             name: "draft_social_media_post",
                             response: {
@@ -1667,8 +1691,8 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
             console.error("[VoiceOrchestrator] Draft generation failed:", err);
             if (this.ws?.readyState === WebSocket.OPEN) {
                 this.ws.send(JSON.stringify({
-                    toolResponse: {
-                        functionResponses: [{
+                    tool_response: {
+                        function_responses: [{
                             id: callId,
                             name: "draft_social_media_post",
                             response: { result: { success: false, message: "Failed to generate draft." } }
@@ -1694,8 +1718,8 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
 
             if (this.ws?.readyState === WebSocket.OPEN) {
                 this.ws.send(JSON.stringify({
-                    toolResponse: {
-                        functionResponses: [{
+                    tool_response: {
+                        function_responses: [{
                             id: callId,
                             name: "auto_respond_social_message",
                             response: {
@@ -1713,8 +1737,8 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
             console.error("[VoiceOrchestrator] Auto-response failed:", err);
             if (this.ws?.readyState === WebSocket.OPEN) {
                 this.ws.send(JSON.stringify({
-                    toolResponse: {
-                        functionResponses: [{
+                    tool_response: {
+                        function_responses: [{
                             id: callId,
                             name: "auto_respond_social_message",
                             response: { result: { success: false, message: "Failed to general response." } }
@@ -1760,8 +1784,8 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
 
             if (this.ws?.readyState === WebSocket.OPEN) {
                 this.ws.send(JSON.stringify({
-                    toolResponse: {
-                        functionResponses: [{
+                    tool_response: {
+                        function_responses: [{
                             id: callId,
                             name: "stitch_design",
                             response: {
@@ -1785,8 +1809,8 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
             console.error("[VoiceOrchestrator] Jules architecture failed:", err);
             if (this.ws?.readyState === WebSocket.OPEN) {
                 this.ws.send(JSON.stringify({
-                    toolResponse: {
-                        functionResponses: [{
+                    tool_response: {
+                        function_responses: [{
                             id: callId,
                             name: "stitch_design",
                             response: { result: { success: false, message: "Jules is currently at capacity. I can still walk you through the structural improvements manually and schedule a follow-up implementation session." } }
@@ -1835,11 +1859,12 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
 
     bargeIn() {
         this.clearPlaybackQueue();
+        // ★ FIX: Streaming messages must use snake_case
         if (this.ws?.readyState === WebSocket.OPEN) {
             this.ws.send(JSON.stringify({
-                clientContent: {
+                client_content: {
                     turns: [{ role: "user", parts: [{ text: "" }] }],
-                    turnComplete: true
+                    turn_complete: true
                 }
             }));
         }

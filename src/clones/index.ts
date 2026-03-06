@@ -17,6 +17,12 @@ export {
     JULES_ARCHITECT,
     SUPPORT_SPECIALIST,
     IRONCLAW_SUPER_AGENT,
+    BROCK_SECURITY,
+    BEN_GMB,
+    JENNY_CLOSER,
+    HUNTER_PROSPECTOR,
+    NOVA_VISIBILITY,
+    ALEX_SUPPORT,
 } from "./agent-factory";
 
 import { cloneAgent } from "./agent-factory";

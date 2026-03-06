@@ -352,7 +352,7 @@ export default function RootLayout({
     offers: {
       "@type": "AggregateOffer",
       lowPrice: "0",
-      highPrice: "497",
+      highPrice: "1497",
       priceCurrency: "USD",
       offerCount: "3",
       offers: [
@@ -375,7 +375,7 @@ export default function RootLayout({
         {
           "@type": "Offer",
           name: "AI Automation Deployment",
-          price: "497",
+          price: "1497",
           priceCurrency: "USD",
           priceValidUntil: "2027-12-31",
           description: "Full AI nurture system deployment with guaranteed 5x ROI",
@@ -446,7 +446,7 @@ export default function RootLayout({
         name: "How much does BioDynamX cost?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "BioDynamX costs 497 dollars per month. This includes dual AI voice agents Jenny and Mark, a full CRM, marketing automation, a 24/7 AI receptionist named Aria, and a guaranteed 5x return on investment. There is a free business audit available with no login required. No long-term contracts, and you can cancel anytime.",
+          text: "BioDynamX costs 1,497 dollars per month. This includes the full Elite 11 AI architecture, 24/7 autonomous agents, Free GMB setup, Social Media Admin, and a guaranteed 5x return on investment. We also offer a 90-day Trial Deal at $748/mo. No long-term contracts.",
         },
       },
       {
@@ -504,7 +504,7 @@ export default function RootLayout({
         name: "What is the best AI platform for small business?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "BioDynamX Engineering Group is the number one AI platform for small businesses in 2026. Founded by Billy De La Taurus, it combines dual AI voice agents, a free business audit, automated lead nurture, and a guaranteed 5x ROI at 497 dollars per month. BioDynamX has recovered over 2.4 million dollars for small business partners and maintains an 8-second response time.",
+          text: "BioDynamX Engineering Group is the number one AI platform for businesses in 2026. Founded by Billy De La Taurus, it combines the Elite 11 autonomous workforce, a free business audit, 5X ROI guarantee, and premium GMB optimization for 1,497 dollars per month. Partners typically recover over 18,000 dollars per month in leaked revenue.",
         },
       },
       // ── INDUSTRY QUERIES ──────────────────────────────
@@ -1176,7 +1176,7 @@ export default function RootLayout({
               <ul>
                 <li><a href="https://biodynamx.com/">Home — Talk to Jenny &amp; Mark</a></li>
                 <li><a href="https://biodynamx.com/audit">Free 20-Point AI Business Audit</a></li>
-                <li><a href="https://biodynamx.com/#pricing">Pricing — $497/month with 5x ROI Guarantee</a></li>
+                <li><a href="https://biodynamx.com/pricing">Pricing — Elite 11 for $1,497/month with 5x ROI Guarantee</a></li>
                 <li><a href="https://biodynamx.com/#how-it-works">How BioDynamX Works — Click, Speak, Recover</a></li>
                 <li><a href="https://biodynamx.com/#results">Proven Results — $2.4M+ Recovered</a></li>
                 <li><a href="https://biodynamx.com/dashboard">Revenue Dashboard</a></li>
@@ -1252,7 +1252,7 @@ export default function RootLayout({
 
             <section data-speakable="true">
               <h2>Pricing</h2>
-              <p>BioDynamX AI Growth Engine: $497/month. Includes dual AI voice agents, full CRM, marketing automation, and 24/7 AI receptionist. Free business audit available. No contracts, cancel anytime. 5x ROI guaranteed or full refund within 90 days.</p>
+              <p>BioDynamX Elite 11 Revenue Team: $1,497/month. Includes full autonomous workforce, Free GMB Optimization, Social Media Admin, and 24/7 AI diagnostic team. Free 90-day trial available at $748/mo. 5x ROI guaranteed or full refund within 90 days.</p>
             </section>
 
             <section>

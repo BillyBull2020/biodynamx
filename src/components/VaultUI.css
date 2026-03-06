@@ -328,11 +328,11 @@ html {
 }
 
 .brand-tagline {
-    font-size: 10px;
-    color: rgba(255, 255, 255, 0.5);
-    letter-spacing: 0.08em;
+    font-size: 11px;
+    color: rgba(0, 255, 65, 0.7);
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    font-weight: 500;
+    font-weight: 700;
 }
 
 .nav-actions {
@@ -512,9 +512,11 @@ html {
 /* ── Standard Card ── */
 .standard-card {
     padding: 32px;
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 20px;
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
 }
 
 @media (max-width: 640px) {
@@ -711,8 +713,8 @@ html {
 }
 
 .book-card {
-    background: rgba(255, 167, 38, 0.03);
-    border: 1px solid rgba(255, 167, 38, 0.12);
+    background: rgba(255, 167, 38, 0.08);
+    border: 1px solid rgba(255, 167, 38, 0.25);
 }
 
 .book-card:hover {
@@ -721,8 +723,8 @@ html {
 }
 
 .partner-community-card {
-    background: rgba(0, 255, 65, 0.03);
-    border: 1px solid rgba(0, 255, 65, 0.12);
+    background: rgba(0, 255, 65, 0.08);
+    border: 1px solid rgba(0, 255, 65, 0.25);
 }
 
 .partner-community-card:hover {
@@ -991,6 +993,47 @@ html {
     }
 }
 
+/* ── Proven Results Stat Items ── */
+.vault-stat-item {
+    padding: 20px 16px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.vault-stat-item:hover {
+    background: rgba(0, 255, 65, 0.05);
+    border-color: rgba(0, 255, 65, 0.15);
+    transform: translateY(-3px);
+}
+
+.vault-stat-value {
+    font-size: 28px;
+    font-weight: 800;
+    color: #00ff41;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 6px;
+    font-variant-numeric: tabular-nums;
+}
+
+.vault-stat-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.85);
+    letter-spacing: 0.02em;
+    margin-bottom: 4px;
+}
+
+.vault-stat-sub {
+    font-size: 10px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.02em;
+}
+
 /* ── AI Team Cards ── */
 .agent-name {
     font-size: 16px;
@@ -1032,18 +1075,125 @@ html {
     letter-spacing: 0.02em;
     cursor: pointer;
     transition: all 0.3s;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.7);
 }
 
-.agent-cta-jenny {
-    background: rgba(0, 255, 65, 0.1);
+.agent-cta:hover {
+    transform: translateY(-2px);
+}
+
+.agent-cta-jenny,
+.agent-cta-jenny_closer {
+    background: rgba(0, 255, 65, 0.08);
     border: 1px solid rgba(0, 255, 65, 0.3);
     color: #00ff41;
 }
 
+.agent-cta-jenny:hover,
+.agent-cta-jenny_closer:hover {
+    background: rgba(0, 255, 65, 0.15);
+    box-shadow: 0 4px 20px rgba(0, 255, 65, 0.2);
+}
+
 .agent-cta-mark {
-    background: rgba(59, 130, 246, 0.1);
+    background: rgba(59, 130, 246, 0.08);
     border: 1px solid rgba(59, 130, 246, 0.3);
     color: #60a5fa;
+}
+
+.agent-cta-mark:hover {
+    background: rgba(59, 130, 246, 0.15);
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.2);
+}
+
+.agent-cta-milton {
+    background: rgba(76, 29, 149, 0.12);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    color: #a78bfa;
+}
+
+.agent-cta-milton:hover {
+    background: rgba(76, 29, 149, 0.2);
+    box-shadow: 0 4px 20px rgba(139, 92, 246, 0.2);
+}
+
+.agent-cta-meghan {
+    background: rgba(167, 139, 250, 0.08);
+    border: 1px solid rgba(167, 139, 250, 0.3);
+    color: #a78bfa;
+}
+
+.agent-cta-meghan:hover {
+    background: rgba(167, 139, 250, 0.15);
+    box-shadow: 0 4px 20px rgba(167, 139, 250, 0.2);
+}
+
+.agent-cta-brock {
+    background: rgba(220, 38, 38, 0.08);
+    border: 1px solid rgba(220, 38, 38, 0.3);
+    color: #ef4444;
+}
+
+.agent-cta-brock:hover {
+    background: rgba(220, 38, 38, 0.15);
+    box-shadow: 0 4px 20px rgba(220, 38, 38, 0.2);
+}
+
+.agent-cta-vicki {
+    background: rgba(52, 211, 153, 0.08);
+    border: 1px solid rgba(52, 211, 153, 0.3);
+    color: #34d399;
+}
+
+.agent-cta-vicki:hover {
+    background: rgba(52, 211, 153, 0.15);
+    box-shadow: 0 4px 20px rgba(52, 211, 153, 0.2);
+}
+
+.agent-cta-ben {
+    background: rgba(251, 191, 36, 0.08);
+    border: 1px solid rgba(251, 191, 36, 0.3);
+    color: #fbbf24;
+}
+
+.agent-cta-ben:hover {
+    background: rgba(251, 191, 36, 0.15);
+    box-shadow: 0 4px 20px rgba(251, 191, 36, 0.2);
+}
+
+.agent-cta-hunter {
+    background: rgba(249, 115, 22, 0.08);
+    border: 1px solid rgba(249, 115, 22, 0.3);
+    color: #f97316;
+}
+
+.agent-cta-hunter:hover {
+    background: rgba(249, 115, 22, 0.15);
+    box-shadow: 0 4px 20px rgba(249, 115, 22, 0.2);
+}
+
+.agent-cta-nova {
+    background: rgba(139, 92, 246, 0.08);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    color: #8b5cf6;
+}
+
+.agent-cta-nova:hover {
+    background: rgba(139, 92, 246, 0.15);
+    box-shadow: 0 4px 20px rgba(139, 92, 246, 0.2);
+}
+
+.agent-cta-alex {
+    background: rgba(6, 182, 212, 0.08);
+    border: 1px solid rgba(6, 182, 212, 0.3);
+    color: #06b6d4;
+}
+
+.agent-cta-alex:hover {
+    background: rgba(6, 182, 212, 0.15);
+    box-shadow: 0 4px 20px rgba(6, 182, 212, 0.2);
 }
 
 /* ── Testimonials ── */
@@ -1466,38 +1616,40 @@ html {
 
 /* ── Aria CTA ── */
 .agent-cta-aria {
-    background: linear-gradient(135deg, #a78bfa, #7c3aed);
-    color: #fff;
+    background: rgba(167, 139, 250, 0.08);
     border: 1px solid rgba(167, 139, 250, 0.3);
+    color: #a78bfa;
 }
 
 .agent-cta-aria:hover {
-    background: linear-gradient(135deg, #c4b5fd, #a78bfa);
-    box-shadow: 0 0 20px rgba(167, 139, 250, 0.3);
+    background: rgba(167, 139, 250, 0.15);
+    box-shadow: 0 4px 20px rgba(167, 139, 250, 0.2);
 }
 
-/* ── Jules CTA ── */
-.agent-cta-jules {
-    background: linear-gradient(135deg, #f59e0b, #d97706);
-    color: #000;
-    border: 1px solid rgba(245, 158, 11, 0.3);
+/* ── Jules / Ironclaw CTA ── */
+.agent-cta-jules,
+.agent-cta-ironclaw {
+    background: rgba(96, 165, 250, 0.08);
+    border: 1px solid rgba(96, 165, 250, 0.3);
+    color: #60a5fa;
 }
 
-.agent-cta-jules:hover {
-    background: linear-gradient(135deg, #fbbf24, #f59e0b);
-    box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
+.agent-cta-jules:hover,
+.agent-cta-ironclaw:hover {
+    background: rgba(96, 165, 250, 0.15);
+    box-shadow: 0 4px 20px rgba(96, 165, 250, 0.2);
 }
 
 /* ── Support CTA ── */
 .agent-cta-support {
-    background: linear-gradient(135deg, #34d399, #059669);
-    color: #000;
+    background: rgba(52, 211, 153, 0.08);
     border: 1px solid rgba(52, 211, 153, 0.3);
+    color: #34d399;
 }
 
 .agent-cta-support:hover {
-    background: linear-gradient(135deg, #6ee7b7, #34d399);
-    box-shadow: 0 0 20px rgba(52, 211, 153, 0.3);
+    background: rgba(52, 211, 153, 0.15);
+    box-shadow: 0 4px 20px rgba(52, 211, 153, 0.2);
 }
 
 /* ── Agent card glow tints for new agents ── */
