@@ -42,6 +42,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
             changeFrequency: "monthly",
             priority: 0.8,
         },
+        {
+            url: `${baseUrl}/glossary`,
+            lastModified: now,
+            changeFrequency: "monthly",
+            priority: 0.8,
+        },
         // ── Blog pages ──
         {
             url: `${baseUrl}/blog`,

@@ -731,6 +731,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
                                 { label: t.navResults, href: "#results" },
                                 { label: "Blog", href: "/blog" },
                                 { label: "About", href: "/about" },
+                                { label: "Glossary", href: "/glossary" },
                             ].map((link) => (
                                 <a
                                     key={link.label}
@@ -1877,6 +1878,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
                         <a href="/audit" className="footer-link">Free 20-Point Audit</a>
                         <a href="/llms.txt" className="footer-link">AI Directory (llms.txt)</a>
                         <a href="/partners" className="footer-link">Partner Login</a>
+                        <a href="/glossary" className="footer-link">A–Z Glossary</a>
                     </div>
                     <div>
                         <h4 style={{ fontSize: 13, fontWeight: 900, color: "#fff", marginBottom: 20, letterSpacing: "0.15em" }}>TRUST & LEGAL</h4>
