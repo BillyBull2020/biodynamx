@@ -1293,21 +1293,88 @@ export default function VaultUI({ apiKey }: VaultProps) {
                     <div style={{
                         textAlign: "center", marginTop: 48,
                         padding: "32px 24px",
-                        background: "linear-gradient(135deg, rgba(0,255,65,0.06), rgba(59,130,246,0.06))",
-                        border: "1px solid rgba(0,255,65,0.12)",
+                        background: "linear-gradient(135deg, rgba(0,255,65,0.04), rgba(59,130,246,0.04))",
+                        border: "1px solid rgba(255,255,255,0.08)",
                         borderRadius: 20,
                     }}>
                         <p style={{
-                            fontSize: 18, fontWeight: 700, color: "#fff",
-                            margin: "0 0 6px", letterSpacing: "-0.02em",
+                            fontSize: 11, fontWeight: 700, color: "#00ff41",
+                            letterSpacing: "0.12em", textTransform: "uppercase",
+                            margin: "0 0 20px", textAlign: "center",
                         }}>
-                            All of this. One subscription. <span style={{ color: "#00ff41" }}>$497/mo.</span>
+                            TWO WAYS TO GROW
                         </p>
-                        <p style={{
-                            fontSize: 13, color: "rgba(255,255,255,0.5)",
-                            margin: 0,
+
+                        <div style={{
+                            display: "grid",
+                            gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+                            gap: 16,
                         }}>
-                            5x ROI guaranteed or your money back. No contracts. Cancel anytime.
+                            {/* Self-Service Tier */}
+                            <div style={{
+                                padding: "24px 20px",
+                                background: "rgba(255,255,255,0.03)",
+                                border: "1px solid rgba(255,255,255,0.08)",
+                                borderRadius: 14,
+                            }}>
+                                <div style={{
+                                    fontSize: 9, fontWeight: 800, color: "rgba(255,255,255,0.4)",
+                                    letterSpacing: "0.1em", textTransform: "uppercase",
+                                    marginBottom: 8,
+                                }}>SELF-SERVICE · SaaS</div>
+                                <div style={{
+                                    fontSize: 28, fontWeight: 800, color: "#fff",
+                                    letterSpacing: "-0.03em", marginBottom: 6,
+                                }}>
+                                    $497<span style={{ fontSize: 14, fontWeight: 500, color: "rgba(255,255,255,0.4)" }}>/mo</span>
+                                </div>
+                                <p style={{
+                                    fontSize: 13, color: "rgba(255,255,255,0.5)",
+                                    lineHeight: 1.6, margin: 0,
+                                }}>
+                                    Access the platform, tools, and AI agents. <strong style={{ color: "rgba(255,255,255,0.7)" }}>You run it.</strong> Perfect for tech-savvy teams who want control.
+                                </p>
+                            </div>
+
+                            {/* Done-For-You Tier */}
+                            <div style={{
+                                padding: "24px 20px",
+                                background: "linear-gradient(135deg, rgba(0,255,65,0.06), rgba(59,130,246,0.06))",
+                                border: "1px solid rgba(0,255,65,0.2)",
+                                borderRadius: 14,
+                                position: "relative",
+                            }}>
+                                <div style={{
+                                    position: "absolute", top: -10, right: 16,
+                                    fontSize: 9, fontWeight: 800, color: "#000",
+                                    background: "#00ff41", borderRadius: 4,
+                                    padding: "3px 10px", letterSpacing: "0.06em",
+                                }}>MOST POPULAR</div>
+                                <div style={{
+                                    fontSize: 9, fontWeight: 800, color: "#00ff41",
+                                    letterSpacing: "0.1em", textTransform: "uppercase",
+                                    marginBottom: 8,
+                                }}>DONE-FOR-YOU · MANAGED AI</div>
+                                <div style={{
+                                    fontSize: 28, fontWeight: 800, color: "#fff",
+                                    letterSpacing: "-0.03em", marginBottom: 6,
+                                }}>
+                                    $1,497<span style={{ fontSize: 14, fontWeight: 500, color: "rgba(255,255,255,0.4)" }}>/mo</span>
+                                </div>
+                                <p style={{
+                                    fontSize: 13, color: "rgba(255,255,255,0.5)",
+                                    lineHeight: 1.6, margin: 0,
+                                }}>
+                                    <strong style={{ color: "#00ff41" }}>We do everything.</strong> Strategy, setup, optimization, content, video, SEO — your entire AI growth engine, fully managed. You don&apos;t lift a finger.
+                                </p>
+                            </div>
+                        </div>
+
+                        <p style={{
+                            fontSize: 12, color: "rgba(255,255,255,0.35)",
+                            margin: "20px 0 0", textAlign: "center",
+                        }}>
+                            Both tiers include the 5x ROI guarantee. No contracts. Cancel anytime.
                         </p>
                     </div>
                 </div>
