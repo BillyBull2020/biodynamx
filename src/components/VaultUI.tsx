@@ -354,12 +354,12 @@ export default function VaultUI({ apiKey }: VaultProps) {
 
     const TRANSLATIONS = {
         en: {
-            heroHeadline: "Imagine the absolute freedom—and the extra revenue—you would have if Artificial Intelligence ran your business.",
+            heroHeadline: "Imagine If Your Team Never Sleeps, Never Quits, and Never Misses a Close.",
             heroTypewriterPrefix: "Built for ",
-            heroLossAversion: "You didn't start a business to be chained to a desk. Yet right now, you are losing countless hours to the daily grind. BiodynamX completely eliminates the tasks you hate. We plug an autonomous AI workforce into your company to flawlessly answer calls, return texts, manage emails, and close your sales 24/7.",
+            heroLossAversion: "Deploy the BioDynamX voice AI system that doesn't just answer questions—they identify pain, handle objections in real-time, and close deals 24/7 using proven neuro-sales frameworks. Scale your revenue without the overhead of additional employees.",
             heroDiagnosticGap: "From building your new website and dominating AEO & GEO with SEO, to ensuring your brand is the top recommendation on AI search engines like ChatGPT, Perplexity, and Gemini—we handle it all. You take back your freedom. We scale your revenue.",
             heroHook: "Stop working in your business and start working on it. Let our lead agent, Jenny, map out your custom AI growth strategy in exactly 60 seconds—free, live, on your screen right now.",
-            heroBadge: "🧠 BiodynamX Engineering Group | Neurobiology Autonomous AI",
+            heroBadge: "🧠 World's first neurobiology-powered Artificial Intelligence · Built for Web 4.0",
             heroWeb4Badge: "🌐 WEB 4.0 NATIVE",
             onboardingSpots: `🔴 Only 3 free audits left today | 4,000+ Community Members | 5x ROI Guarantee`,
             offerExpires: `⏳ Offer expires in 10h 36m 10s`,
@@ -418,12 +418,12 @@ export default function VaultUI({ apiKey }: VaultProps) {
             ],
         },
         es: {
-            heroHeadline: "Imagine la libertad absoluta—y los ingresos adicionales—que tendría si la Inteligencia Artificial dirigiera su negocio.",
+            heroHeadline: "Imagina Si Tu Equipo Nunca Duerme, Nunca Se Rinde y Nunca Pierde un Cierre.",
             heroTypewriterPrefix: "Diseñado para ",
-            heroLossAversion: "No empezó un negocio para estar encadenado a un escritorio. Sin embargo, en este momento, está perdiendo incontables horas en la rutina diaria. BiodynamX elimina por completo las tareas que odia. Conectamos una fuerza de trabajo de IA autónoma en su empresa para responder llamadas, devolver mensajes de texto, gestionar correos electrónicos y cerrar sus ventas las 24 horas, los 7 días de la semana, sin errores.",
+            heroLossAversion: "Implementa el sistema de voz IA de BioDynamX que no solo responde preguntas—identifica el dolor, maneja objeciones en tiempo real y cierra ventas 24/7 usando marcos comprobados de neuro-ventas. Escala tus ingresos sin el costo de empleados adicionales.",
             heroDiagnosticGap: "Desde la creación de su nuevo sitio web y el dominio de AEO & GEO con SEO, hasta garantizar que su marca sea la recomendación principal en motores de búsqueda de IA como ChatGPT, Perplexity y Gemini—nos encargamos de todo. Usted recupera su libertad. Nosotros escalamos sus ingresos.",
             heroHook: "Deje de trabajar en su negocio y comience a trabajar en él. Deje que nuestra agente principal, Jenny, diseñe su estrategia de crecimiento de IA personalizada en exactamente 60 segundos—gratis, en vivo, en su pantalla ahora mismo.",
-            heroBadge: "🧠 BiodynamX Engineering Group | Neurobiology Autonomous AI",
+            heroBadge: "🧠 La primera Inteligencia Artificial impulsada por neurobiología del mundo · Diseñada para Web 4.0",
             heroWeb4Badge: "🌐 WEB 4.0 NATIVO",
             onboardingSpots: `🔴 Solo quedan 3 auditorías gratuitas hoy`,
             offerExpires: `⏳ La oferta expira en 10h 36m 10s`,
@@ -1318,13 +1318,13 @@ export default function VaultUI({ apiKey }: VaultProps) {
             {/* ── Elite 11 Divider ── */}
             <div style={{
                 height: 2,
-                background: "linear-gradient(90deg, transparent, #6366f1, #8b5cf6, #ec4899, #6366f1, transparent)",
-                opacity: 0.7,
+                background: "linear-gradient(90deg, transparent, #00ff41, #3b82f6, #00ff41, transparent)",
+                opacity: 0.5,
             }} />
 
             <section ref={aiTeamRef} aria-label="Meet Your AI Team" style={{
                 position: "relative",
-                background: "linear-gradient(180deg, #050510 0%, #0a0520 30%, #060318 70%, #020208 100%)",
+                background: "linear-gradient(180deg, #050505 0%, #060a08 30%, #040608 70%, #050505 100%)",
                 padding: "80px 20px 60px",
                 overflow: "hidden",
                 opacity: aiTeamVisible ? 1 : 0,
@@ -1334,7 +1334,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
                 {/* Ambient star field */}
                 <div style={{
                     position: "absolute", inset: 0, pointerEvents: "none",
-                    background: "radial-gradient(ellipse 80% 60% at 50% 0%, #6366f114 0%, transparent 60%), radial-gradient(ellipse 60% 40% at 80% 80%, #8b5cf609 0%, transparent 50%), radial-gradient(ellipse 40% 30% at 20% 60%, #ec489906 0%, transparent 50%)",
+                    background: "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,255,65,0.06) 0%, transparent 60%), radial-gradient(ellipse 60% 40% at 80% 80%, rgba(59,130,246,0.04) 0%, transparent 50%), radial-gradient(ellipse 40% 30% at 20% 60%, rgba(0,255,65,0.03) 0%, transparent 50%)",
                 }} />
 
                 <div style={{ maxWidth: 1200, margin: "0 auto", textAlign: "center" }}>

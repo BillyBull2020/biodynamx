@@ -208,17 +208,18 @@ export class VoiceOrchestrator {
                                     }
                                 }
                             },
-                            temperature: 1.0,
+                            temperature: 0.8,
                         },
                         realtimeInputConfig: {
                             automaticActivityDetection: {
-                                // ★ ANTI-INTERRUPT FIX: Give user time to think and answer.
-                                // 1500ms = wait 1.5 seconds of silence after speech ends.
-                                // END_SENSITIVITY_LOW = wait for obvious end-of-sentence, not brief pause.
-                                startOfSpeechSensitivity: "START_SENSITIVITY_NORMAL",
+                                // ★ 2026 OPTIMIZED VAD: Fast response + accurate detection.
+                                // 300ms silence = responds quickly after user stops speaking.
+                                // START_SENSITIVITY_HIGH = catches speech onset immediately.
+                                // END_SENSITIVITY_LOW = waits for a clear end-of-sentence.
+                                startOfSpeechSensitivity: "START_SENSITIVITY_HIGH",
                                 endOfSpeechSensitivity: "END_SENSITIVITY_LOW",
-                                prefixPaddingMs: 200,
-                                silenceDurationMs: 1500
+                                prefixPaddingMs: 100,
+                                silenceDurationMs: 300
                             },
                         },
                         systemInstruction: {
@@ -496,13 +497,16 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
                         if (this.heartbeatInterval) clearInterval(this.heartbeatInterval);
                         this.heartbeatInterval = setInterval(() => {
                             if (this.ws?.readyState === WebSocket.OPEN) {
-                                // Send empty media chunk as heartbeat
-                                // Using snake_case for strict Vertex API compliance
+                                // ★ Send actual silent PCM16 audio as heartbeat.
+                                // An empty media_chunks: [] is INVALID and confuses the audio pipeline.
+                                // 160 samples of silence = 10ms at 16kHz — minimal but valid.
+                                const silence = new Float32Array(160); // all zeros = silence
+                                const base64 = this.float32ToPCM16Base64(silence);
                                 this.ws.send(JSON.stringify({
-                                    realtime_input: { media_chunks: [] }
+                                    realtime_input: { media_chunks: [{ mime_type: "audio/pcm;rate=16000", data: base64 }] }
                                 }));
                             }
-                        }, 3000); // Every 3 seconds — tight keepalive to prevent 1011
+                        }, 3000); // Every 3 seconds — keepalive to prevent 1011
 
                         // ★ IRONCLAW: Initialize master session brain for ANY agent
                         const activeAgent = this.customAgents?.[0];
