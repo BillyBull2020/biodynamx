@@ -391,11 +391,15 @@ export class VisualJenny {
 
             case "domain_captured":
             case "audit_started":
-                return {
-                    action: "show_loading",
-                    reason: "Audit in progress — showing loading state with industry visual",
-                    topic: "audit_loading",
-                };
+                // Only show loading spinner if we actually have a domain to audit
+                if (this.context.domain) {
+                    return {
+                        action: "show_loading",
+                        reason: "Audit in progress — showing loading state",
+                        topic: "audit_loading",
+                    };
+                }
+                return { action: "wait", reason: "No domain yet, not showing loading" };
 
             case "audit_complete": {
                 const auditData = data.result as Record<string, unknown>;
@@ -485,15 +489,20 @@ export class VisualJenny {
             }
 
             case "agent_speech":
-                // Fallback: If no specific granular keyword matched recently,
-                // show a brain-layer specific status visual to keep the UI active
-                return {
-                    action: "show_image",
-                    phase: this.context.currentPhase === "close" ? "reptilian" : "limbic",
-                    topic: "neural_link",
-                    reason: "Active dialogue — showing neural synchronization",
-                    useCache: true,
-                };
+                // Only show a background image if we know the industry AND
+                // haven't shown a visual recently. Don't fire on every speech event—
+                // the keyword engine handles scene triggers much more precisely.
+                if (this.context.industry && !this.context.visualsShown.includes("intro_industry")) {
+                    return {
+                        action: "show_image",
+                        phase: "reptilian",
+                        topic: "intro_industry",
+                        reason: `First industry-specific visual: ${this.context.industry}`,
+                        useCache: true,
+                    };
+                }
+                // Don't flood the panel with loading states or images before we know who they are
+                return { action: "wait", reason: "Waiting for industry data before showing visuals" };
 
             default:
                 return { action: "wait", reason: `No visual action for ${type}` };

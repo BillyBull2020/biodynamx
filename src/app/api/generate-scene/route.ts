@@ -40,13 +40,14 @@ export async function POST(req: NextRequest) {
             painPoint,
             auditData,            // Optional: real audit numbers to incorporate
             style = "modern cinematic professional dark premium",
+            cacheOnly = false,    // If true: only return cached image, never call Gemini
         } = await req.json();
 
         const apiKey =
             process.env.GEMINI_API_KEY ||
             process.env.GEMINI_API_KEY;
 
-        if (!apiKey) {
+        if (!cacheOnly && !apiKey) {
             return NextResponse.json({ error: "No API key" }, { status: 500 });
         }
 
@@ -61,7 +62,8 @@ export async function POST(req: NextRequest) {
         // return it INSTANTLY — no Gemini call needed.
         // Only bypass cache if we have personalized audit data to show.
         const hasPersonalizedData = !!(auditData || (prospectName && businessName));
-        if (!hasPersonalizedData) {
+        const shouldCheckCache = !hasPersonalizedData;
+        if (shouldCheckCache) {
             const cachedVisual = await getCachedVisual(industry || "default", resolvedPhase);
             if (cachedVisual) {
                 console.log(`[NanaBanana2] ⚡ INSTANT CACHE HIT: ${normalizeIndustry(industry || "")}/${resolvedPhase} — served in < 50ms`);
@@ -78,6 +80,14 @@ export async function POST(req: NextRequest) {
                     fromCache: true,
                 });
             }
+        }
+
+        // ── CACHE-ONLY MODE: Don't call Gemini, just return null if no cache hit ──
+        // VisualJenny calls this first to try the fast path.
+        // If no cache hit, it will make a second non-cacheOnly call with loading state.
+        if (cacheOnly) {
+            console.log(`[NanaBanana2] Cache-only miss: ${normalizeIndustry(industry || "")}/${resolvedPhase} — returning null`);
+            return NextResponse.json({ imageDataUrl: null, fromCache: false, cacheMiss: true });
         }
 
         // ── STEP 3: Build the neuroscience-locked prompt for live generation ──

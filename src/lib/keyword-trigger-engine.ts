@@ -154,8 +154,9 @@ const BIODYNAMX_SCENES: VisualScene[] = [
     {
         id: "audit_progress",
         keywords: [
-            "audit", "diagnostic", "scanning", "analyzing", "pulling up",
-            "let me check", "running", "results", "report", "findings",
+            "running your audit", "pulling up your site", "scanning your website",
+            "analyzing your presence", "let me check that url", "pulling that up now",
+            "running a diagnostic", "give me one second",
         ],
         transition: "morph",
         duration: 500,
@@ -254,9 +255,9 @@ const BIODYNAMX_SCENES: VisualScene[] = [
     {
         id: "freedom_visualization",
         keywords: [
-            "imagine", "freedom", "revenue", "money", "dream", "vacating", "vacation",
-            "liberating", "running", "business", "perfect reality", "absolute freedom",
-            "imagine the freedom", "extra revenue", "selling a dream",
+            "imagine the freedom", "imagine waking up", "imagine your business running itself",
+            "absolute freedom", "selling a dream", "picture this",
+            "what would it mean", "how would your life change",
         ],
         transition: "fade",
         duration: 2000,

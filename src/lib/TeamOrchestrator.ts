@@ -7,6 +7,8 @@
 
 import { VoiceOrchestrator, ConnectionStatus, IntentSignal } from "./gemini-live";
 import { AgentClone, JENNY_LISTENER, MARK_ARCHITECT, AGENT_TEMPLATES, cloneAgent } from "@/clones/agent-factory";
+import { VisualJenny } from "./visual-jenny";
+import { VisualBridge } from "./visual-bridge";
 
 // ─── Types ─────────────────────────────────────────────────────────
 
@@ -49,6 +51,16 @@ export interface TeamOrchestratorCallbacks {
     onTranscript: (agent: string, text: string) => void;
     onError: (error: string) => void;
     onAnalyserReady: (analyser: AnalyserNode) => void;
+    // ★ IronClaw Visual Callbacks — wired to VisualJenny
+    onVisualReady?: (visual: {
+        imageDataUrl: string;
+        brainLayer: string;
+        neuroReason: string;
+        topic: string;
+        businessName?: string;
+    }) => void;
+    onNavigate?: (sectionId: string) => void;
+    onStatsCard?: (stats: Record<string, string | number>, title: string) => void;
 }
 
 // ─── Visual State Presets ──────────────────────────────────────────
@@ -218,6 +230,8 @@ export class TeamOrchestrator {
     private callbacks: TeamOrchestratorCallbacks;
     private language: "en" | "es" = "en";
     private handoffInProgress = false;
+    // ★ IronClaw Visual Intelligence — the missing link
+    private visualJenny: VisualJenny | null = null;
 
     constructor(apiKey: string, callbacks: TeamOrchestratorCallbacks, language: "en" | "es" = "en") {
         this.apiKey = apiKey;
@@ -300,6 +314,12 @@ export class TeamOrchestrator {
     /** Force disconnect everything */
     shutdown() {
         this.killCurrentAgent();
+        // ★ Stop Visual Jenny and reset bridge
+        if (this.visualJenny) {
+            this.visualJenny.stop();
+            this.visualJenny = null;
+        }
+        VisualBridge.reset();
         this.setPhase("standby");
     }
 
@@ -373,6 +393,37 @@ export class TeamOrchestrator {
             if (orchestrator.analyser) {
                 this.callbacks.onAnalyserReady(orchestrator.analyser);
             }
+
+            // ★ IRONCLAW VISUAL INTELLIGENCE — Boot Visual Jenny
+            // This was the missing link: VisualJenny was built but never started.
+            // We create one instance per session. On handoff we keep the same instance
+            // so conversation context accumulates correctly.
+            if (!this.visualJenny) {
+                this.visualJenny = new VisualJenny({
+                    apiKey: this.apiKey,
+                    onVisualReady: (visual) => {
+                        this.callbacks.onVisualReady?.(visual);
+                    },
+                    onNavigate: (sectionId) => {
+                        this.callbacks.onNavigate?.(sectionId);
+                    },
+                    onStatsCard: (stats, title) => {
+                        this.callbacks.onStatsCard?.(stats, title);
+                    },
+                });
+                this.visualJenny.start();
+                console.log("[TeamOrchestrator] ★ IronClaw Visual Intelligence ONLINE — VisualJenny started");
+            }
+
+            // Emit session start event to kick off the visual engine
+            VisualBridge.emitConversationEvent({
+                type: "session_start",
+                data: { agentName: agent.name },
+                timestamp: Date.now(),
+                sessionId: `session_${Date.now()}`,
+                agentName: agent.name,
+            });
+
         } catch (err) {
             console.error(`[TeamOrchestrator] Failed to boot ${agent.name}:`, err);
             if (retryCount < 2) {

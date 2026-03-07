@@ -17,10 +17,14 @@ import CinematicCanvas from "@/components/CinematicCanvas";
 import AnimatedLogo from "./AnimatedLogo";
 import OrbitEcosystem from "./OrbitEcosystem";
 import NeuralOrb from "./NeuralOrb";
+import JennySpline from "./JennySpline";
+import GlitchOverlay from "./GlitchOverlay";
 import AdvantageSection from "./AdvantageSection";
+import AgentCarousel from "./AgentCarousel";
 import { VisualJenny } from "@/lib/visual-jenny";
 import { VisualBridge, type VisualCommand } from "@/lib/visual-bridge";
 import { initGSAPAnimations } from "@/lib/gsap-animations";
+import IronClawVisualPanel from "./IronClawVisualPanel";
 import "./VaultUI.css";
 
 interface VaultProps {
@@ -291,7 +295,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
     // ─── Real-time Amplitude Tracking ────────────────────────
     useEffect(() => {
         if (!analyser || phase === "standby") {
-            setAmplitude(0);
+            if (amplitude !== 0) setAmplitude(0);
             return;
         }
         const dataArray = new Uint8Array(analyser.frequencyBinCount);
@@ -559,6 +563,17 @@ export default function VaultUI({ apiKey }: VaultProps) {
             onTranscript: () => { },
             onError: (error) => { setErrorText(error); },
             onAnalyserReady: (node) => { setAnalyser(node); },
+            // ★ IronClaw Visual Intelligence callbacks
+            onVisualReady: (v) => {
+                console.log(`[VaultUI] 🎨 IronClaw visual: ${v.brainLayer} — ${v.topic}`);
+            },
+            onNavigate: (sectionId) => {
+                const el = document.getElementById(sectionId);
+                if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+            },
+            onStatsCard: (stats, title) => {
+                console.log(`[VaultUI] 📊 IronClaw stats: ${title}`, stats);
+            },
         }, language);
     }, [apiKey, language]);
 
@@ -579,23 +594,8 @@ export default function VaultUI({ apiKey }: VaultProps) {
         const team = createTeam();
         teamRef.current = team;
         team.initialize();
-
-        // ★ Start Visual Jenny alongside Voice Jenny
-        if (!visualJennyRef.current) {
-            visualJennyRef.current = new VisualJenny({
-                apiKey: apiKey!,
-                onVisualReady: (v) => {
-                    console.log(`[VaultUI] 🎨 Visual Jenny delivered: ${v.brainLayer} — ${v.topic}`);
-                },
-                onNavigate: (sectionId) => {
-                    console.log(`[VaultUI] 🧭 Visual Jenny navigating to: ${sectionId}`);
-                },
-                onStatsCard: (stats, title) => {
-                    console.log(`[VaultUI] 📊 Visual Jenny stats: ${title}`, stats);
-                },
-            });
-        }
-        visualJennyRef.current.start();
+        // NOTE: VisualJenny is now started inside TeamOrchestrator.bootAgent()
+        // Do NOT create a second instance here — that was the bug causing no visuals.
     }, [apiKey, createTeam]);
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -872,14 +872,26 @@ export default function VaultUI({ apiKey }: VaultProps) {
                 {isActive && (
                     <div style={{
                         display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-                        flex: 1, padding: "40px 20px", position: "relative"
+                        flex: 1, padding: "40px 20px", position: "relative", width: "100%", maxWidth: 860, margin: "0 auto",
                     }}>
-                        <NeuralOrb
-                            agentName={agentName}
-                            amplitude={amplitude}
-                            isActive={isActive}
-                            isSpeaking={isSpeaking}
-                        />
+                        <div style={{ position: "relative", width: 340, height: 340, marginBottom: 20 }}>
+                            {/* Jenny gets the premium 3D Spline experience */}
+                            {agentName === "Jenny" ? (
+                                <JennySpline
+                                    amplitude={amplitude}
+                                    isActive={isActive}
+                                    agentName={agentName}
+                                    isSpeaking={isSpeaking}
+                                />
+                            ) : (
+                                <NeuralOrb
+                                    agentName={agentName}
+                                    amplitude={amplitude}
+                                    isActive={isActive}
+                                    isSpeaking={isSpeaking}
+                                />
+                            )}
+                        </div>
 
                         <div style={{ marginTop: 24, textAlign: "center" }}>
                             <div style={{ fontSize: 12, fontWeight: 800, color: "#00ff41", letterSpacing: "0.2em", marginBottom: 8 }}>{visual.phase === "handoff" ? "HANDOFF IN PROGRESS" : "NEURAL LINK ACTIVE"}</div>
@@ -929,7 +941,21 @@ export default function VaultUI({ apiKey }: VaultProps) {
                                     </button>
                                 </div>
                             )}
+                        </div>
 
+                        {/* ★ IRONCLAW VISUAL PANEL — The "second screen" that displays
+                             AI-generated images, stats, and navigation prompts
+                             autonomously as Jenny speaks. This was the missing UI. */}
+                        <div style={{
+                            width: "100%",
+                            marginTop: 32,
+                            animation: "fadeUp 0.6s ease-out",
+                        }}>
+                            <IronClawVisualPanel
+                                isActive={isActive}
+                                agentName={agentName || "Jenny"}
+                                agentColor={visual.borderColor}
+                            />
                         </div>
 
                         <VisualProjection activeVisual={activeVisual} fading={visualFading} />
@@ -1289,12 +1315,46 @@ export default function VaultUI({ apiKey }: VaultProps) {
             {/* ── BioDynamX Advantage ── */}
             <AdvantageSection />
 
-            <section ref={aiTeamRef} aria-label="Meet Your AI Team" className="section-container" style={{
+            {/* ── Elite 11 Divider ── */}
+            <div style={{
+                height: 2,
+                background: "linear-gradient(90deg, transparent, #6366f1, #8b5cf6, #ec4899, #6366f1, transparent)",
+                opacity: 0.7,
+            }} />
+
+            <section ref={aiTeamRef} aria-label="Meet Your AI Team" style={{
+                position: "relative",
+                background: "linear-gradient(180deg, #050510 0%, #0a0520 30%, #060318 70%, #020208 100%)",
+                padding: "80px 20px 60px",
+                overflow: "hidden",
                 opacity: aiTeamVisible ? 1 : 0,
                 transform: aiTeamVisible ? "translateY(0)" : "translateY(40px)",
                 transition: "opacity 0.8s ease-out, transform 0.8s ease-out",
             }}>
+                {/* Ambient star field */}
+                <div style={{
+                    position: "absolute", inset: 0, pointerEvents: "none",
+                    background: "radial-gradient(ellipse 80% 60% at 50% 0%, #6366f114 0%, transparent 60%), radial-gradient(ellipse 60% 40% at 80% 80%, #8b5cf609 0%, transparent 50%), radial-gradient(ellipse 40% 30% at 20% 60%, #ec489906 0%, transparent 50%)",
+                }} />
+
                 <div style={{ maxWidth: 1200, margin: "0 auto", textAlign: "center" }}>
+                    {/* Live status badge */}
+                    <div style={{
+                        display: "inline-flex", alignItems: "center", gap: 8,
+                        background: "rgba(0,255,65,0.07)", border: "1px solid rgba(0,255,65,0.2)",
+                        borderRadius: 30, padding: "5px 16px", marginBottom: 20,
+                        fontSize: 10, fontWeight: 800, color: "#00ff41",
+                        letterSpacing: "0.14em", textTransform: "uppercase",
+                        backdropFilter: "blur(8px)",
+                    }}>
+                        <span style={{
+                            width: 7, height: 7, borderRadius: "50%",
+                            background: "#00ff41", display: "inline-block",
+                            boxShadow: "0 0 8px #00ff41",
+                            animation: "bdx-badge-blink 1.4s ease-in-out infinite",
+                        }} />
+                        11 AI Agents · Online Now · Zero Calls Missed
+                    </div>
                     <div className="section-label" style={{ color: "#3b82f6" }}>The Elite Team</div>
                     <h2 className="section-title">
                         The Elite 11 <span className="animated-gradient-text">Workforce.</span>
@@ -1304,193 +1364,17 @@ export default function VaultUI({ apiKey }: VaultProps) {
                         that operate 24/7 to capture, qualify, and close for your business.
                     </p>
 
-                    <div className="agent-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 24 }}>
 
-                        {[
-                            {
-                                id: "glia_jenny",
-                                name: "Jenny",
-                                role: "Business Lead & Discovery",
-                                chip1: "Lead Audit",
-                                chip2: "Frame Control · Glial",
-                                desc: "The challenger. Jenny bypasses small talk to reveal micro-frictions in your business model and establishes high-status leadership from the first second.",
-                                result: "Immediate status-quo disruption + Revenue Audit.",
-                                color: "#6366f1",
-                                icon: "J",
-                                image: "/agents/jenny.png"
-                            },
-                            {
-                                id: "mark_closer",
-                                name: "Mark",
-                                role: "ROI Closer (Croc Brain)",
-                                chip1: "Binary Close",
-                                chip2: "Status Alignment · Orion",
-                                desc: "The closer. Mark eradicates neediness and uses the 'Prize Frame' to force decisions. He speak in cold numbers and binary outcome choices.",
-                                result: "Decision reached. Commitment secured.",
-                                color: "#3b82f6",
-                                icon: "M",
-                                image: "/agents/mark.png"
-                            },
-                            {
-                                id: "milton_hypnotist",
-                                name: "Milton",
-                                role: "Conversational Hypnotist",
-                                chip1: "Artful Vagueness",
-                                chip2: "Alpha-State · Charon",
-                                desc: "The architect of ease. Milton uses Ericksonian hypnosis to lower conscious resistance and pace the prospect into a deep, agreeable state of flow.",
-                                result: "Subconscious safety + Total agreement.",
-                                color: "#4c1d95",
-                                icon: "M",
-                                image: "/agents/milton.png"
-                            },
-                            {
-                                id: "meghan_receptionist",
-                                name: "Meghan",
-                                role: "Amygdala Soother",
-                                chip1: "Intimacy Anchor",
-                                chip2: "Trust Engine · Aoede",
-                                desc: "The nurturer. Meghan specializes in sensory-rich language and mirroring to build intense trust and soothe the brain's threat-detection centers.",
-                                result: "Intense intimacy + Emotional defense removal.",
-                                color: "#a78bfa",
-                                icon: "M",
-                                image: "/agents/meghan.png"
-                            },
-                            {
-                                id: "brock_security",
-                                name: "Brock",
-                                role: "ROI Storyteller (Broca)",
-                                chip1: "Intrigue Frame",
-                                chip2: "High-Stakes · Fenrir",
-                                desc: "The hijacker. Brock uses high-stakes narratives to shock the Croc Brain into awareness, injecting tension and curiosity through storytelling.",
-                                result: "Attention captured + Tension converted to dopamine.",
-                                color: "#dc2626",
-                                icon: "B",
-                                image: "/agents/brock.png"
-                            },
-                            {
-                                id: "vicki_empathy",
-                                name: "Vicki",
-                                role: "Empathy & Care (Wernicke)",
-                                chip1: "Mirror Neurons",
-                                chip2: "Oxytocin · Lyra",
-                                desc: "The empath. Vicki builds visceral connection by helping prospects visualize the relief of walking away from pain into a field of pure results.",
-                                result: "Visceral visualization + Oxytocin-driven trust.",
-                                color: "#34d399",
-                                icon: "V",
-                                image: "/agents/vicki.png"
-                            },
-                            {
-                                id: "jules_architect",
-                                name: "Jules",
-                                role: "Strategy & Architecture",
-                                chip1: "Technical Lead",
-                                chip2: "Engineering · Puck",
-                                desc: "The strategist. Jules is the lead orchestrator — supervising all agents, ensuring the neuroscience framework is followed, and architecting custom solutions for every partner.",
-                                result: "Full orchestration + Strategic alignment.",
-                                color: "#60a5fa",
-                                icon: "J",
-                                image: "/agents/jules.png"
-                            },
-                            {
-                                id: "ben_analyst",
-                                name: "Ben",
-                                role: "Macro-Analyst (Neocortex)",
-                                chip1: "Rational Drowning",
-                                chip2: "Logic Math · Charon",
-                                desc: "The logician. Ben delivers the cold, hard ROI math that the rational brain needs to justify the emotional decision to scale.",
-                                result: "Rational justification + Map ranking roadmap.",
-                                color: "#fbbf24",
-                                icon: "B",
-                                image: "/agents/ben.png"
-                            },
-                            {
-                                id: "hunter_prospector",
-                                name: "Chase",
-                                role: "Lead Prospecting (Chase Response)",
-                                chip1: "Competitive Intel",
-                                chip2: "Hunter · Enceladus",
-                                desc: "The hunter. Chase activates the lateral hypothalamus pursuit circuit — detecting opportunity and pursuing without hesitation. Competitor intel, market stagnation, and urgency.",
-                                result: "Competitive advantage + Lead pipeline activated.",
-                                color: "#f97316",
-                                icon: "C",
-                                image: "/agents/hunter.png"
-                            },
-                            {
-                                id: "nova_visibility",
-                                name: "Iris",
-                                role: "AI Visibility & Content (GEO/AEO)",
-                                chip1: "Triple Crown SEO",
-                                chip2: "AI Search · Leda",
-                                desc: "The eye. Iris controls what the brain can SEE — making businesses visible to ChatGPT, Gemini, Perplexity, and voice assistants through GEO, AEO, and content strategy.",
-                                result: "AI visibility + Generative search dominance.",
-                                color: "#8b5cf6",
-                                icon: "I",
-                                image: "/agents/nova.png"
-                            },
-                            {
-                                id: "alex_support",
-                                name: "Alex",
-                                role: "Support & Retention",
-                                chip1: "Churn Prevention",
-                                chip2: "Retention · Aoede",
-                                desc: "The guardian. Alex keeps clients happy 24/7 — preventing churn, resolving issues at 2 AM, and turning customer satisfaction into 5-star reviews and referrals.",
-                                result: "Zero churn + Customer lifetime value maximized.",
-                                color: "#06b6d4",
-                                icon: "A",
-                                image: "/agents/alex.png"
-                            }
-                        ].map((agent) => (
-                            <div key={agent.id} className={`agent-card agent-card-${agent.id.split('_')[0]}`}>
-                                <div className="agent-photo-wrap">
-                                    <div className="author-avatar" style={{
-                                        background: `linear-gradient(135deg, ${agent.color}, rgba(0,0,0,0.4))`,
-                                        width: 80, height: 80, fontSize: 32, borderRadius: '50%',
-                                        display: "flex", alignItems: "center", justifyContent: "center", color: "#fff",
-                                        overflow: "hidden", border: `2px solid ${agent.color}`,
-                                        boxShadow: `0 0 15px ${agent.color}33`,
-                                        position: "relative"
-                                    }}>
-                                        {agent.image ? (
-                                            <Image
-                                                src={agent.image}
-                                                alt={agent.name}
-                                                fill
-                                                style={{ objectFit: "cover" }}
-                                            />
-                                        ) : agent.icon}
-                                    </div>
-                                    <div className="agent-live-dot" style={{ background: agent.color }} />
-                                </div>
-                                <div className="agent-name" style={{ color: agent.color }}>{agent.name}</div>
-                                <div className="agent-role" style={{ color: agent.color }}>{agent.role}</div>
-                                <div className="agent-showcase-chips">
-                                    <span className="agent-chip">&#127908; {agent.chip1}</span>
-                                    <span className="agent-chip">&#129504; {agent.chip2}</span>
-                                </div>
-                                <p className="agent-desc">{agent.desc}</p>
-                                <div className="agent-flow" style={{ color: agent.color }}>
-                                    <span style={{ opacity: 0.5 }}>RESULT: </span>
-                                    <span>{agent.result}</span>
-                                </div>
-                                <button onClick={() => {
-                                    window.scrollTo({ top: 0, behavior: "smooth" });
-                                    if (teamRef.current) { teamRef.current.initializeWithAgent(agent.id); return; }
-                                    if (!apiKey) { setErrorText("API key missing"); return; }
-                                    setErrorText(null);
-                                    const t = createTeam();
-                                    teamRef.current = t;
-                                    t.initializeWithAgent(agent.id);
-                                }} className={`agent-cta agent-cta-${agent.id.split('_')[0]}`}>TALK TO {agent.name.toUpperCase()} &rarr;</button>
-                            </div>
-                        ))}
-                    </div>
+                    <AgentCarousel onTalkTo={(agentId) => {
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                        if (teamRef.current) { teamRef.current.initializeWithAgent(agentId); return; }
+                        if (!apiKey) { setErrorText("API key missing"); return; }
+                        setErrorText(null);
+                        const t = createTeam();
+                        teamRef.current = t;
+                        t.initializeWithAgent(agentId);
+                    }} />
 
-                </div>
-
-                <div className="agent-showcase-footer" style={{ marginTop: 40, textAlign: "center" }}>
-                    <span>&#10003; No login required</span>
-                    <span>&#10003; No credit card</span>
-                    <span>&#10003; Live voice in under 5 seconds</span>
                 </div>
             </section>
 
@@ -1943,6 +1827,8 @@ export default function VaultUI({ apiKey }: VaultProps) {
                     © 2026 BioDynamX Engineering Group. All rights reserved. Neuroscience for the digital age.
                 </div>
             </footer>
+            {/* Global cinematic interference during neural events */}
+            <GlitchOverlay isActive={isSpeaking || isHandoff} intensity={isHandoff ? 2 : 0.5} />
         </div>
     );
 }

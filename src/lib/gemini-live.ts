@@ -212,10 +212,13 @@ export class VoiceOrchestrator {
                         },
                         realtimeInputConfig: {
                             automaticActivityDetection: {
-                                startOfSpeechSensitivity: "START_SENSITIVITY_HIGH",
-                                endOfSpeechSensitivity: "END_SENSITIVITY_HIGH",
-                                prefixPaddingMs: 100,
-                                silenceDurationMs: 250
+                                // ★ ANTI-INTERRUPT FIX: Give user time to think and answer.
+                                // 1500ms = wait 1.5 seconds of silence after speech ends.
+                                // END_SENSITIVITY_LOW = wait for obvious end-of-sentence, not brief pause.
+                                startOfSpeechSensitivity: "START_SENSITIVITY_NORMAL",
+                                endOfSpeechSensitivity: "END_SENSITIVITY_LOW",
+                                prefixPaddingMs: 200,
+                                silenceDurationMs: 1500
                             },
                         },
                         systemInstruction: {
