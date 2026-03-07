@@ -1036,10 +1036,10 @@ export default function VaultUI({ apiKey }: VaultProps) {
                     <div className="section-label">How It Works</div>
                     <h2 data-speakable="true" className="section-title">
                         Your Customer&apos;s Brain Has 3 Layers.<br />
-                        <span style={{ color: "#00ff41" }}>We Have an Agent for Each One.</span>
+                        <span style={{ color: "#00ff41" }}>Our AI Platform Speaks to All Three.</span>
                     </h2>
                     <p className="section-desc">
-                        The Reptilian Brain responds to threats and survival. The Limbic Brain decides based on emotion. The Neocortex justifies with logic. Our AI agents speak to all three — in the right order, every time.
+                        The Reptilian Brain responds to threats and survival. The Limbic Brain decides based on emotion. The Neocortex justifies with logic. Every agent in our elite workforce is trained to speak to all three — in the right order, every time.
                     </p>
 
                     <div className="grid-responsive">
@@ -1047,15 +1047,15 @@ export default function VaultUI({ apiKey }: VaultProps) {
                             {
                                 step: "01",
                                 icon: "🎯",
-                                title: "Jenny Finds the Leak",
-                                desc: "Jenny runs a live revenue audit on your business — in real-time, on this call. Using your own numbers, she calculates exactly how much you're losing to missed calls, slow follow-up, and unqualified leads. The Reptilian Brain sees the threat. The bleeding stops here.",
+                                title: "AI Reality Audit",
+                                desc: "Our agents run a live revenue audit on your business — in real-time, on the call. Using your own numbers, they calculate exactly how much you're losing to missed calls and slow follow-up. The Reptilian Brain sees the threat. The bleeding stops here.",
                                 color: "#8b5cf6",
                             },
                             {
                                 step: "02",
                                 icon: "💰",
-                                title: "Mark Makes the ROI Undeniable",
-                                desc: "Mark takes what Jenny found and turns it into a financial plan your brain can't argue with. Hard numbers. Real ROI. Your specific situation. The Neocortex gets the data it needs to say yes — while the Limbic Brain is already sold.",
+                                title: "Neural-Financial Bridge",
+                                desc: "We take the audit data and turn it into a plan your brain can't argue with. Hard numbers. Real ROI. Your specific situation. The Neocortex gets the data it needs to say yes — while the Limbic Brain is already sold.",
                                 color: "#3b82f6",
                             },
                             {
