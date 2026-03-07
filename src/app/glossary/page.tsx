@@ -205,6 +205,151 @@ const LETTER_ICONS: Record<string, string> = {
     Y: "📈", Z: "⚡",
 };
 
+// Per-term icons — each icon visually represents the concept
+const TERM_ICONS: Record<string, string> = {
+    // A
+    "A/B Testing": "🧪",
+    "Algorithm": "🧮",
+    "Analytics": "📊",
+    "Amygdala Hijack": "🧠",
+    "Artificial Intelligence (AI)": "🤖",
+    "Audience Segmentation": "👥",
+    "Automation": "⚙️",
+    // B
+    "Backlink": "🔗",
+    "Basal Ganglia (Reptilian Brain)": "🦎",
+    "Biometrics": "👁️",
+    "Bounce Rate": "📉",
+    "Brand Advocate": "📣",
+    "Brand Authenticity": "✅",
+    "Brand Awareness": "🏷️",
+    "Brand Style Guide": "🎨",
+    "Business Objective": "🎯",
+    "Buyer Persona": "🧑‍💼",
+    // C
+    "Call to Action (CTA)": "👆",
+    "Carousel Ads": "🎠",
+    "Character Count": "🔢",
+    "Chatbot": "💬",
+    "Click-Through Rate (CTR)": "🖱️",
+    "Clickbait": "🪝",
+    "Co-marketing": "🤝",
+    "Cognitive Bias": "🧲",
+    "Cognitive Load": "🏋️",
+    "Content Curation": "📚",
+    "Content Marketing": "✍️",
+    "Conversion Tracking": "📈",
+    "CPC (Cost Per Click)": "💰",
+    "CPM (Cost Per Mille)": "💵",
+    "Creative Commons": "©️",
+    "Crowdsourcing": "🌍",
+    "Customer Journey": "🗺️",
+    // D
+    "Dark Social": "🌑",
+    "Decision Fatigue": "😵",
+    "Dopamine": "💊",
+    // E
+    "E-E-A-T": "⭐",
+    "Engagement Rate": "❤️",
+    "Evergreen Content": "🌲",
+    // F
+    "Fear of Missing Out (FOMO)": "😰",
+    "Featured Snippet": "✨",
+    // G
+    "Google Business Profile (GBP)": "📍",
+    "Google Search Console": "🔎",
+    // H
+    "Heatmap": "🔥",
+    // I
+    "Implicit Association": "🧩",
+    "Inbound Marketing": "🧲",
+    // J
+    "Joint Marketing": "🤝",
+    "Journey Mapping": "🗺️",
+    // K
+    "Keyword": "🔑",
+    "Keyword Research": "🔍",
+    "Keyword Stuffing": "🚫",
+    "Knowledge Panel": "📋",
+    "KPI (Key Performance Indicator)": "📊",
+    // L
+    "Landing Page": "🛬",
+    "Lead Magnet": "🧲",
+    "Limbic System": "💜",
+    "Link Building": "🔗",
+    "Local Pack": "📍",
+    // M
+    "Machine Learning": "🤖",
+    "Marketing Funnel": "🔻",
+    "Mirror Neurons": "🪞",
+    "Multi-channel Attribution": "📡",
+    // N
+    "NAP Consistency": "📇",
+    "Native Advertising": "🎭",
+    "Neurobiology": "🧬",
+    "Neuromarketing": "🧠",
+    "Neuroscience": "🔬",
+    "Newsletter": "📧",
+    "Niche Audience": "🎯",
+    // O
+    "Omnichannel Strategy": "🔄",
+    "On-Page SEO": "📄",
+    "Online Reputation Management (ORM)": "⭐",
+    "Organic Reach": "🌱",
+    // P
+    "Page Speed": "⚡",
+    "Paid Media": "💳",
+    "Persona Development": "🧑‍💼",
+    "PPC (Pay-Per-Click)": "💰",
+    "Priming": "🧠",
+    // Q
+    "Qualified Lead": "✅",
+    "Quality Score": "⭐",
+    "Query": "❓",
+    // R
+    "Ranking Factors": "📊",
+    "Reach": "📡",
+    "Reptilian Brain": "🦎",
+    "Retargeting": "🎯",
+    "Review Management": "⭐",
+    "ROI (Return on Investment)": "💰",
+    // S
+    "Sentiment Analysis": "😊",
+    "SEO (Search Engine Optimization)": "🔍",
+    "SERP": "🏆",
+    "Social Listening": "👂",
+    "Social Proof": "👍",
+    // T
+    "Target Audience": "🎯",
+    "Testimonial Marketing": "💬",
+    "Tracking Pixel": "📍",
+    "Trust Signals": "🛡️",
+    // U
+    "UGC (User-Generated Content)": "📸",
+    "URL Shortener": "🔗",
+    "User Flow": "➡️",
+    "UTM Parameters": "🏷️",
+    "UX (User Experience)": "🎨",
+    // V
+    "Video Marketing": "🎬",
+    "Viral Content": "🔥",
+    "Voice Search": "🎙️",
+    // W
+    "Webinar": "💻",
+    "White Hat SEO": "🤍",
+    "Word-of-Mouth": "🗣️",
+    // X
+    "X (formerly Twitter)": "✖️",
+    "XML Sitemap": "🗂️",
+    // Y
+    "Year-over-Year (YoY) Growth": "📈",
+    "YMYL (Your Money or Your Life)": "💰",
+    "YouTube SEO": "▶️",
+    // Z
+    "Zero-Click Search": "⚡",
+    "Z-index": "📐",
+};
+
 export default function GlossaryPage() {
     const [heroRef, heroVisible] = useScrollReveal();
     const [activeLetter, setActiveLetter] = useState("A");
@@ -630,7 +775,7 @@ export default function GlossaryPage() {
                                             marginBottom: 6,
                                             letterSpacing: "-0.01em",
                                         }}>
-                                            <span style={{ color: "#00ff41", marginRight: 8, fontSize: 12, opacity: 0.6 }}>●</span>
+                                            <span style={{ marginRight: 8, fontSize: 18, opacity: 0.85, display: "inline-block", width: 22, textAlign: "center" }}>{TERM_ICONS[entry.term] || "●"}</span>
                                             {entry.term}
                                         </div>
                                         <p style={{
