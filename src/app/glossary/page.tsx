@@ -209,7 +209,15 @@ export default function GlossaryPage() {
     const [heroRef, heroVisible] = useScrollReveal();
     const [activeLetter, setActiveLetter] = useState("A");
     const [searchQuery, setSearchQuery] = useState("");
+    const [showBackToTop, setShowBackToTop] = useState(false);
     const sectionRefs = useRef<Record<string, HTMLElement | null>>({});
+
+    // Show back-to-top button after scrolling
+    useEffect(() => {
+        const onScroll = () => setShowBackToTop(window.scrollY > 600);
+        window.addEventListener("scroll", onScroll, { passive: true });
+        return () => window.removeEventListener("scroll", onScroll);
+    }, []);
 
     // Track active letter on scroll
     useEffect(() => {
@@ -353,11 +361,46 @@ export default function GlossaryPage() {
                     box-shadow: 0 0 20px rgba(0,255,65,0.08);
                 }
                 .search-input::placeholder { color: rgba(255,255,255,0.3); }
+                .back-to-top-btn {
+                    position: fixed;
+                    bottom: 32px;
+                    right: 32px;
+                    z-index: 60;
+                    width: 48px;
+                    height: 48px;
+                    border-radius: 14px;
+                    border: 1px solid rgba(0,255,65,0.3);
+                    background: rgba(10,10,10,0.95);
+                    backdrop-filter: blur(12px);
+                    color: #00ff41;
+                    font-size: 20px;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    box-shadow: 0 4px 24px rgba(0,0,0,0.5), 0 0 15px rgba(0,255,65,0.1);
+                    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+                    opacity: 0;
+                    transform: translateY(20px);
+                    pointer-events: none;
+                }
+                .back-to-top-btn.visible {
+                    opacity: 1;
+                    transform: translateY(0);
+                    pointer-events: auto;
+                }
+                .back-to-top-btn:hover {
+                    background: rgba(0,255,65,0.12);
+                    border-color: rgba(0,255,65,0.5);
+                    box-shadow: 0 4px 24px rgba(0,0,0,0.5), 0 0 25px rgba(0,255,65,0.2);
+                    transform: translateY(-3px);
+                }
                 @media (max-width: 768px) {
                     nav { padding: 12px 16px !important; }
                     nav .gloss-nav-link { display: none; }
                     .alpha-bar-inner { gap: 2px !important; }
                     .alpha-btn { width: 28px !important; height: 28px !important; font-size: 10px !important; }
+                    .back-to-top-btn { bottom: 20px; right: 20px; width: 44px; height: 44px; }
                 }
             `}</style>
 
@@ -666,7 +709,7 @@ export default function GlossaryPage() {
                         transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
                         letterSpacing: "-0.01em",
                     }}>
-                        Contact Us to Scale Your Business
+                        Talk to Jenny — Free Audit
                     </Link>
                 </div>
             </section>
@@ -698,6 +741,15 @@ export default function GlossaryPage() {
                     © {new Date().getFullYear()} BioDynamX Engineering Group. The Neurobiology of Choice.
                 </div>
             </footer>
+
+            {/* ═══ FLOATING BACK-TO-TOP BUTTON ═══ */}
+            <button
+                className={`back-to-top-btn ${showBackToTop ? "visible" : ""}`}
+                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                aria-label="Back to top"
+            >
+                ↑
+            </button>
         </main>
     );
 }

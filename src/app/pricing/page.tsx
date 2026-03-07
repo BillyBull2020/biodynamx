@@ -4,8 +4,8 @@ import { useState } from "react";
 
 const PLANS = [
     {
-        name: "Trial / Rescue", price: 748, period: "/mo", color: "#22c55e", popular: false,
-        tagline: "First 90 Days — Rescue your revenue",
+        name: "Trial / Rescue", price: 1250, period: "/mo", color: "#22c55e", popular: false,
+        tagline: "First 90 Days — 50% Off Elite Access",
         features: [
             "Full Elite 11 Workforce (11 Agents)",
             "Free Business Audit & List Reactivation",
@@ -15,12 +15,13 @@ const PLANS = [
             "Automatic Social Media Posting",
             "Triple-Lock 5X ROI Guarantee",
             "Setup in 24-48 hours",
+            "50% OFF for first 90 days ($2,500 value)",
         ],
         cta: "Start 90-Day Trial", ctaLink: "/",
     },
     {
-        name: "Elite 11", price: 1497, period: "/mo", color: "#3b82f6", popular: true,
-        tagline: "Full Autonomous Neuro-Workforce",
+        name: "Elite 11", price: 2500, period: "/mo", color: "#3b82f6", popular: true,
+        tagline: "Full Autonomous Neuro-Workforce — Done-For-You",
         features: [
             "The Complete Elite 11 AI Team",
             "Everything in Trial, plus:",
@@ -31,6 +32,7 @@ const PLANS = [
             "Advanced ROI Intelligence Dashboard",
             "Priority Elite Support",
             "Quarterly Strategy Audits",
+            "We do everything — you don't lift a finger",
         ],
         cta: "Deploy Elite 11", ctaLink: "/",
     },
@@ -45,7 +47,7 @@ const PLANS = [
             "Deep CRM / ERP Integrations",
             "Multi-Location Central Command",
             "Custom Neuro-Script Development",
-            "Direct Strategery with Billy",
+            "Direct Strategy Sessions with Billy",
             "SLA: 99.999% Neural Uptime",
         ],
         cta: "Request Demo", ctaLink: "/",

@@ -774,23 +774,8 @@ export default function VaultUI({ apiKey }: VaultProps) {
                         </button>
                     )}
 
-                    {/* Start Free — hidden on mobile via CSS, shown in sticky row below instead */}
-                    {!isActive && (
-                        <button onClick={handleStart} className="nav-start-free-desktop">
-                            {t.navStartFree}
-                        </button>
-                    )}
                 </div>
             </nav>
-
-            {/* ── Mobile Start Free sticky row — shown below nav on mobile only ── */}
-            {!isActive && (
-                <div className="mobile-start-free-row">
-                    <button onClick={handleStart} className="mobile-start-free-btn">
-                        {t.navStartFree} →
-                    </button>
-                </div>
-            )}
 
             {/* ── Lead Capture Modal ─────────────────────────── */}
             <LeadCaptureModal
@@ -1216,10 +1201,12 @@ export default function VaultUI({ apiKey }: VaultProps) {
                                 }}>DONE-FOR-YOU · MANAGED AI</div>
                                 <div style={{
                                     fontSize: 28, fontWeight: 800, color: "#fff",
-                                    letterSpacing: "-0.03em", marginBottom: 6,
+                                    letterSpacing: "-0.03em", marginBottom: 2,
                                 }}>
-                                    $1,497<span style={{ fontSize: 14, fontWeight: 500, color: "rgba(255,255,255,0.4)" }}>/mo</span>
+                                    <span style={{ fontSize: 16, textDecoration: "line-through", color: "rgba(255,255,255,0.3)", marginRight: 8 }}>$2,500</span>
+                                    $1,250<span style={{ fontSize: 14, fontWeight: 500, color: "rgba(255,255,255,0.4)" }}>/mo</span>
                                 </div>
+                                <div style={{ fontSize: 10, fontWeight: 700, color: "#00ff41", marginBottom: 8 }}>50% OFF · FIRST 90 DAYS</div>
                                 <p style={{
                                     fontSize: 13, color: "rgba(255,255,255,0.5)",
                                     lineHeight: 1.6, margin: 0,
@@ -1833,14 +1820,15 @@ export default function VaultUI({ apiKey }: VaultProps) {
                     <div className="section-label">Investment</div>
                     <div className="pricing-card" style={{ marginTop: 24 }}>
                         <div className="popular-badge">ELITE ACCESS</div>
-                        <div style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", marginBottom: 12 }}>BioDynamX Growth Engine</div>
+                        <div style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", marginBottom: 12 }}>BioDynamX Growth Engine — Done-For-You</div>
                         <div className="price-container">
-                            <span className="price-anchor">$2,497</span>
-                            <span className="price-main">$1,497</span>
+                            <span className="price-anchor">$2,500</span>
+                            <span className="price-main">$1,250</span>
                             <span className="price-suffix">/mo</span>
                         </div>
+                        <div style={{ fontSize: 11, fontWeight: 700, color: "#00ff41", marginTop: 8 }}>50% OFF · FIRST 90 DAYS</div>
                         <p style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", marginTop: 12 }}>
-                            One flat fee. All 11 agents included. Unlimited potential.
+                            One flat fee. All 11 agents included. We do the work. Unlimited potential.
                         </p>
                     </div>
                 </div>
@@ -1899,6 +1887,6 @@ export default function VaultUI({ apiKey }: VaultProps) {
             </footer>
             {/* Global cinematic interference during neural events */}
             <GlitchOverlay isActive={isSpeaking || isHandoff} intensity={isHandoff ? 2 : 0.5} />
-        </div>
+        </div >
     );
 }
