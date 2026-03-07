@@ -995,148 +995,6 @@ export default function VaultUI({ apiKey }: VaultProps) {
                 </div>
             </div>
 
-            {/* ── 3D Service Ecosystem — WOW factor ────────── */}
-            {
-                !isActive && (
-                    <section className="section-container orbit-section" style={{
-                        background: "linear-gradient(180deg, rgba(0,255,65,0.01) 0%, transparent 50%, rgba(59,130,246,0.01) 100%)",
-                        paddingTop: 80,
-                        paddingBottom: 80,
-                        overflow: "visible",
-                    }}>
-                        <div style={{ maxWidth: 1000, margin: "0 auto", textAlign: "center" }}>
-                            <div className="section-label" style={{ color: "#3b82f6" }}>Full-Stack AI Infrastructure</div>
-                            <h2 className="section-title">
-                                Not just agents. <span style={{ color: "#00ff41" }}>An entire AI workforce.</span>
-                            </h2>
-                            <p className="section-desc" style={{ maxWidth: 600, margin: "0 auto 40px" }}>
-                                We don&apos;t sell software. We build the AI engine behind your business —
-                                voice agents, custom software, video production, SEO domination, reputation management,
-                                and AI employees that work 24/7. Everything from A to Z, under one roof.
-                            </p>
-                            <OrbitEcosystem />
-                            <div className="premium-callout-badge">
-                                <span className="badge-glow" />
-                                <span className="badge-icon">🧠</span>
-                                <span className="badge-text">
-                                    We build custom software. We&apos;re not just another AI vendor.
-                                </span>
-                            </div>
-                        </div>
-                    </section>
-                )
-            }
-
-            <section id="how-it-works" ref={howItWorksRef} aria-label="The BioDynamX Diagnostic Framework" className="section-container" style={{
-                opacity: howItWorksVisible ? 1 : 0,
-                transform: howItWorksVisible ? "translateY(0)" : "translateY(40px)",
-                transition: "opacity 0.8s ease-out, transform 0.8s ease-out",
-            }}>
-                <div style={{ maxWidth: 900, margin: "0 auto", textAlign: "center" }}>
-                    <div className="section-label">How It Works</div>
-                    <h2 data-speakable="true" className="section-title">
-                        Your Customer&apos;s Brain Has 3 Layers.<br />
-                        <span style={{ color: "#00ff41" }}>Our AI Platform Speaks to All Three.</span>
-                    </h2>
-                    <p className="section-desc">
-                        The Reptilian Brain responds to threats and survival. The Limbic Brain decides based on emotion. The Neocortex justifies with logic. Every agent in our elite workforce is trained to speak to all three — in the right order, every time.
-                    </p>
-
-                    <div className="grid-responsive">
-                        {[
-                            {
-                                step: "01",
-                                icon: "🎯",
-                                title: "AI Reality Audit",
-                                desc: "Our agents run a live revenue audit on your business — in real-time, on the call. Using your own numbers, they calculate exactly how much you're losing to missed calls and slow follow-up. The Reptilian Brain sees the threat. The bleeding stops here.",
-                                color: "#8b5cf6",
-                            },
-                            {
-                                step: "02",
-                                icon: "💰",
-                                title: "Neural-Financial Bridge",
-                                desc: "We take the audit data and turn it into a plan your brain can't argue with. Hard numbers. Real ROI. Your specific situation. The Neocortex gets the data it needs to say yes — while the Limbic Brain is already sold.",
-                                color: "#3b82f6",
-                            },
-                            {
-                                step: "03",
-                                icon: "🚀",
-                                title: "Go Live in 24 Hours",
-                                desc: "Your neuroscience-trained AI team goes live in 24 hours. Every call answered in under 1 second. Every lead qualified. Every appointment booked. Revenue recovered while you sleep. This is what BioDynamX does — every single day.",
-                                color: "#ffa726",
-                            },
-                        ].map((item) => (
-                            <div key={item.step} className="standard-card"
-                                onMouseEnter={e => {
-                                    e.currentTarget.style.borderColor = `${item.color}33`;
-                                    e.currentTarget.style.transform = "translateY(-4px)";
-                                }}
-                                onMouseLeave={e => {
-                                    e.currentTarget.style.borderColor = "rgba(255,255,255,0.06)";
-                                    e.currentTarget.style.transform = "translateY(0)";
-                                }}
-                            >
-                                <div style={{
-                                    display: "flex", alignItems: "center", gap: 10,
-                                    marginBottom: 14,
-                                }}>
-                                    <span style={{ fontSize: 28 }}>{item.icon}</span>
-                                    <span style={{
-                                        fontSize: 11, fontWeight: 700,
-                                        color: item.color,
-                                        letterSpacing: "0.1em",
-                                    }}>STEP {item.step}</span>
-                                </div>
-                                <h3 style={{
-                                    fontSize: 22, fontWeight: 700, color: "#fff",
-                                    margin: "0 0 8px", letterSpacing: "-0.02em",
-                                }}>{item.title}</h3>
-                                <p style={{
-                                    fontSize: 14, color: "rgba(255,255,255,0.65)",
-                                    lineHeight: 1.6, margin: 0,
-                                }}>{item.desc}</p>
-                            </div>
-                        ))}
-                    </div>
-
-                    {/* Humanity Challenge CTA */}
-                    {!isActive && (
-                        <div style={{
-                            marginTop: 60,
-                            padding: "40px 32px",
-                            background: "linear-gradient(135deg, rgba(59,130,246,0.08), rgba(139,92,246,0.08))",
-                            border: "1px solid rgba(255,255,255,0.08)",
-                            borderRadius: 24,
-                            textAlign: "center",
-                        }}>
-                            <h3 style={{ fontSize: 24, fontWeight: 800, color: "#fff", marginBottom: 12, letterSpacing: "-0.02em" }}>{t.challengeTitle}</h3>
-                            <p style={{ color: "rgba(255,255,255,0.6)", marginBottom: 24, maxWidth: 560, margin: "0 auto 28px", lineHeight: 1.6, fontSize: 15 }}>
-                                {t.challengeDesc}
-                            </p>
-                            <button
-                                onClick={handleStart}
-                                style={{
-                                    padding: "16px 36px",
-                                    background: "#fff",
-                                    color: "#000",
-                                    fontWeight: 800,
-                                    borderRadius: 100,
-                                    border: "none",
-                                    fontSize: 15,
-                                    cursor: "pointer",
-                                    transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
-                                    boxShadow: "0 10px 30px rgba(255,255,255,0.1)",
-                                }}
-                                onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 15px 40px rgba(255,255,255,0.2)"; }}
-                                onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 10px 30px rgba(255,255,255,0.1)"; }}
-                            >
-                                {t.challengeButton}
-                            </button>
-                        </div>
-                    )}
-                </div>
-            </section>
-
             {/* ── The BioDynamX Platform — Product Grid ── */}
             <section id="platform" aria-label="BioDynamX Platform Capabilities" className="section-container" style={{
                 background: "linear-gradient(180deg, rgba(0,255,65,0.02) 0%, transparent 50%, rgba(59,130,246,0.02) 100%)",
@@ -1379,6 +1237,148 @@ export default function VaultUI({ apiKey }: VaultProps) {
                     </div>
                 </div>
             </section>
+
+            {/* ── 3D Service Ecosystem — WOW factor ────────── */}
+            {
+                !isActive && (
+                    <section className="section-container orbit-section" style={{
+                        background: "linear-gradient(180deg, rgba(0,255,65,0.01) 0%, transparent 50%, rgba(59,130,246,0.01) 100%)",
+                        paddingTop: 80,
+                        paddingBottom: 80,
+                        overflow: "visible",
+                    }}>
+                        <div style={{ maxWidth: 1000, margin: "0 auto", textAlign: "center" }}>
+                            <div className="section-label" style={{ color: "#3b82f6" }}>Full-Stack AI Infrastructure</div>
+                            <h2 className="section-title">
+                                Not just agents. <span style={{ color: "#00ff41" }}>An entire AI workforce.</span>
+                            </h2>
+                            <p className="section-desc" style={{ maxWidth: 600, margin: "0 auto 40px" }}>
+                                We don&apos;t sell software. We build the AI engine behind your business —
+                                voice agents, custom software, video production, SEO domination, reputation management,
+                                and AI employees that work 24/7. Everything from A to Z, under one roof.
+                            </p>
+                            <OrbitEcosystem />
+                            <div className="premium-callout-badge">
+                                <span className="badge-glow" />
+                                <span className="badge-icon">🧠</span>
+                                <span className="badge-text">
+                                    We build custom software. We&apos;re not just another AI vendor.
+                                </span>
+                            </div>
+                        </div>
+                    </section>
+                )
+            }
+
+            <section id="how-it-works" ref={howItWorksRef} aria-label="The BioDynamX Diagnostic Framework" className="section-container" style={{
+                opacity: howItWorksVisible ? 1 : 0,
+                transform: howItWorksVisible ? "translateY(0)" : "translateY(40px)",
+                transition: "opacity 0.8s ease-out, transform 0.8s ease-out",
+            }}>
+                <div style={{ maxWidth: 900, margin: "0 auto", textAlign: "center" }}>
+                    <div className="section-label" style={{ color: '#a78bfa' }}>The Foundations</div>
+                    <h2 data-speakable="true" className="section-title">
+                        Your Customer&apos;s Brain Has 3 Layers.<br />
+                        <span style={{ color: "#00ff41" }}>Our AI Platform Speaks to All Three.</span>
+                    </h2>
+                    <p className="section-desc">
+                        The Reptilian Brain responds to threats and survival. The Limbic Brain decides based on emotion. The Neocortex justifies with logic. Every agent in our elite workforce is trained to speak to all three — in the right order, every time.
+                    </p>
+
+                    <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+                        gap: 20,
+                        marginTop: 40,
+                        textAlign: 'left',
+                    }}>
+                        {/* Reptilian Brain */}
+                        <div className="standard-card" style={{ borderColor: 'rgba(239,68,68,0.2)' }}>
+                            <div style={{ fontSize: 32, marginBottom: 12 }}>🧬</div>
+                            <div style={{
+                                fontSize: 10, fontWeight: 800, color: '#ef4444',
+                                letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 8,
+                            }}>The Reptilian Brain</div>
+                            <div style={{ fontSize: 16, fontWeight: 700, color: '#fff', marginBottom: 8 }}>
+                                Survival &amp; Instinct
+                            </div>
+                            <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', lineHeight: 1.7, margin: 0 }}>
+                                We activate threat-detection first. Our AI agents identify revenue leaks as an
+                                immediate danger to your business survival, triggering the biological need to act.
+                            </p>
+                        </div>
+
+                        {/* Limbic Brain */}
+                        <div className="standard-card" style={{ borderColor: 'rgba(139,92,246,0.2)' }}>
+                            <div style={{ fontSize: 32, marginBottom: 12 }}>💜</div>
+                            <div style={{
+                                fontSize: 10, fontWeight: 800, color: '#a78bfa',
+                                letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 8,
+                            }}>The Limbic Brain</div>
+                            <div style={{ fontSize: 16, fontWeight: 700, color: '#fff', marginBottom: 8 }}>
+                                Emotion &amp; Memory
+                            </div>
+                            <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', lineHeight: 1.7, margin: 0 }}>
+                                We bridge the gap with empathy. Our agents establish rapport and paint the dopaminergic
+                                vision of a frictionless, automated future for your team.
+                            </p>
+                        </div>
+
+                        {/* Neocortex */}
+                        <div className="standard-card" style={{ borderColor: 'rgba(59,130,246,0.2)' }}>
+                            <div style={{ fontSize: 32, marginBottom: 12 }}>🧠</div>
+                            <div style={{
+                                fontSize: 10, fontWeight: 800, color: '#3b82f6',
+                                letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 8,
+                            }}>The Neocortex</div>
+                            <div style={{ fontSize: 16, fontWeight: 700, color: '#fff', marginBottom: 8 }}>
+                                Logic &amp; Justification
+                            </div>
+                            <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', lineHeight: 1.7, margin: 0 }}>
+                                Finally, we provide the ROI math. We give the logical brain the hard data it needs
+                                to justify the decision the subconscious has already made.
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Humanity Challenge CTA */}
+                    {!isActive && (
+                        <div style={{
+                            marginTop: 60,
+                            padding: "40px 32px",
+                            background: "linear-gradient(135deg, rgba(59,130,246,0.08), rgba(139,92,246,0.08))",
+                            border: "1px solid rgba(255,255,255,0.08)",
+                            borderRadius: 24,
+                            textAlign: "center",
+                        }}>
+                            <h3 style={{ fontSize: 24, fontWeight: 800, color: "#fff", marginBottom: 12, letterSpacing: "-0.02em" }}>{t.challengeTitle}</h3>
+                            <p style={{ color: "rgba(255,255,255,0.6)", marginBottom: 24, maxWidth: 560, margin: "0 auto 28px", lineHeight: 1.6, fontSize: 15 }}>
+                                {t.challengeDesc}
+                            </p>
+                            <button
+                                onClick={handleStart}
+                                style={{
+                                    padding: "16px 36px",
+                                    background: "#fff",
+                                    color: "#000",
+                                    fontWeight: 800,
+                                    borderRadius: 100,
+                                    border: "none",
+                                    fontSize: 15,
+                                    cursor: "pointer",
+                                    transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
+                                    boxShadow: "0 10px 30px rgba(255,255,255,0.1)",
+                                }}
+                                onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 15px 40px rgba(255,255,255,0.2)"; }}
+                                onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 10px 30px rgba(255,255,255,0.1)"; }}
+                            >
+                                {t.challengeButton}
+                            </button>
+                        </div>
+                    )}
+                </div>
+            </section>
+
 
             <section id="results" ref={resultsStripRef} aria-label="BioDynamX Proven Results and Statistics" style={{
                 position: "relative", zIndex: 10,
@@ -1767,88 +1767,6 @@ export default function VaultUI({ apiKey }: VaultProps) {
 
 
 
-            {/* ── The Science Behind The Results — Neuroscience Differentiator ── */}
-            <section
-                id="neuroscience"
-                ref={neuroScienceRef}
-                aria-label="The Neuroscience Behind BioDynamX Results"
-                className="section-container"
-                style={{
-                    opacity: neuroScienceVisible ? 1 : 0,
-                    transform: neuroScienceVisible ? 'translateY(0)' : 'translateY(40px)',
-                    transition: 'opacity 0.8s ease-out, transform 0.8s ease-out',
-                    background: 'linear-gradient(180deg, rgba(139,92,246,0.03) 0%, rgba(59,130,246,0.03) 50%, transparent 100%)',
-                    borderTop: '1px solid rgba(139,92,246,0.12)',
-                    borderBottom: '1px solid rgba(59,130,246,0.12)',
-                }}
-            >
-                <div style={{ maxWidth: 900, margin: '0 auto', textAlign: 'center' }}>
-                    <div className="section-label" style={{ color: '#a78bfa' }}>The Foundations</div>
-                    <h2 data-speakable="true" className="section-title">
-                        Engineered for <span className="animated-gradient-text">Subconscious Influence.</span>
-                    </h2>
-                    <p className="section-desc" data-speakable="true">
-                        We don&apos;t just sell to people. We sell to the mind. By mapping our agents to the
-                        three layers of the human brain, we bypass resistance and drive action.
-                    </p>
-
-                    <div style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-                        gap: 20,
-                        marginTop: 40,
-                        textAlign: 'left',
-                    }}>
-                        {/* Reptilian Brain */}
-                        <div className="standard-card" style={{ borderColor: 'rgba(239,68,68,0.2)' }}>
-                            <div style={{ fontSize: 32, marginBottom: 12 }}>🧬</div>
-                            <div style={{
-                                fontSize: 10, fontWeight: 800, color: '#ef4444',
-                                letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 8,
-                            }}>The Reptilian Brain</div>
-                            <div style={{ fontSize: 16, fontWeight: 700, color: '#fff', marginBottom: 8 }}>
-                                Survival & Instinct
-                            </div>
-                            <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', lineHeight: 1.7, margin: 0 }}>
-                                We activate threat-detection first. Our AI agents identify revenue leaks as an
-                                immediate danger to your business survival, triggering the biological need to act.
-                            </p>
-                        </div>
-
-                        {/* Limbic Brain */}
-                        <div className="standard-card" style={{ borderColor: 'rgba(139,92,246,0.2)' }}>
-                            <div style={{ fontSize: 32, marginBottom: 12 }}>💜</div>
-                            <div style={{
-                                fontSize: 10, fontWeight: 800, color: '#a78bfa',
-                                letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 8,
-                            }}>The Limbic Brain</div>
-                            <div style={{ fontSize: 16, fontWeight: 700, color: '#fff', marginBottom: 8 }}>
-                                Emotion & Memory
-                            </div>
-                            <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', lineHeight: 1.7, margin: 0 }}>
-                                We bridge the gap with empathy. Our agents establish rapport and paint the dopaminergic
-                                vision of a frictionaless, automated future for your team.
-                            </p>
-                        </div>
-
-                        {/* Neocortex */}
-                        <div className="standard-card" style={{ borderColor: 'rgba(59,130,246,0.2)' }}>
-                            <div style={{ fontSize: 32, marginBottom: 12 }}>🧠</div>
-                            <div style={{
-                                fontSize: 10, fontWeight: 800, color: '#3b82f6',
-                                letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 8,
-                            }}>The Neocortex</div>
-                            <div style={{ fontSize: 16, fontWeight: 700, color: '#fff', marginBottom: 8 }}>
-                                Logic & Justification
-                            </div>
-                            <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', lineHeight: 1.7, margin: 0 }}>
-                                Finally, we provide the ROI math. We give the logical brain the hard data it needs
-                                to justify the decision the subconscious has already made.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </section>
 
             {/* ── Competitor Comparison ── */}
             <section
