@@ -1137,6 +1137,182 @@ export default function VaultUI({ apiKey }: VaultProps) {
                 </div>
             </section>
 
+            {/* ── The BioDynamX Platform — Product Grid ── */}
+            <section id="platform" aria-label="BioDynamX Platform Capabilities" className="section-container" style={{
+                background: "linear-gradient(180deg, rgba(0,255,65,0.02) 0%, transparent 50%, rgba(59,130,246,0.02) 100%)",
+                paddingTop: 60,
+                paddingBottom: 60,
+            }}>
+                <div style={{ maxWidth: 960, margin: "0 auto" }}>
+                    <div style={{
+                        display: "flex", alignItems: "center", justifyContent: "center", gap: 12,
+                        marginBottom: 12,
+                    }}>
+                        <div style={{
+                            fontSize: 10, fontWeight: 700, color: "#00ff41",
+                            letterSpacing: "0.15em", textTransform: "uppercase",
+                        }}>The Platform</div>
+                        <div style={{
+                            fontSize: 9, fontWeight: 800, color: "#000",
+                            background: "#00ff41", borderRadius: 4,
+                            padding: "2px 8px", letterSpacing: "0.08em",
+                        }}>NEUROSCIENCE-POWERED</div>
+                    </div>
+                    <h2 data-speakable="true" className="section-title" style={{ marginBottom: 16 }}>
+                        One Platform. <span style={{ color: "#00ff41" }}>Every Growth Lever.</span>
+                    </h2>
+                    <p className="section-desc" style={{ maxWidth: 640, margin: "0 auto 48px" }}>
+                        We don&apos;t just answer calls. We build, automate, and dominate every channel your customers use to find you — powered by the neurobiology of decision-making.
+                    </p>
+
+                    <div style={{
+                        display: "grid",
+                        gridTemplateColumns: "repeat(auto-fit, minmax(270px, 1fr))",
+                        gap: 16,
+                    }}>
+                        {[
+                            {
+                                icon: "🎙️",
+                                title: "Voice AI Agents",
+                                badge: "CORE",
+                                badgeColor: "#00ff41",
+                                desc: "11 autonomous AI agents answer calls, qualify leads, handle objections, and close deals 24/7 using neuro-sales frameworks.",
+                                borderColor: "rgba(0,255,65,0.15)",
+                            },
+                            {
+                                icon: "🎬",
+                                title: "Cinematic AI Video",
+                                badge: "NEW",
+                                badgeColor: "#8b5cf6",
+                                desc: "Studio-quality AI commercials, product demos, and brand films — produced in hours, not weeks. Hollywood-grade visuals at startup prices.",
+                                borderColor: "rgba(139,92,246,0.15)",
+                            },
+                            {
+                                icon: "⚡",
+                                title: "Marketing Automation",
+                                badge: null,
+                                badgeColor: null,
+                                desc: "Email sequences, SMS follow-up, win-back campaigns, and drip nurture — all automated. Like Birdeye, but with neuroscience built in.",
+                                borderColor: "rgba(59,130,246,0.15)",
+                            },
+                            {
+                                icon: "🧠",
+                                title: "GEO & AEO Domination",
+                                badge: "AI SEARCH",
+                                badgeColor: "#3b82f6",
+                                desc: "We make ChatGPT, Gemini, and Perplexity recommend YOUR business by name. Generative Engine Optimization is the new SEO — and we own it.",
+                                borderColor: "rgba(59,130,246,0.15)",
+                            },
+                            {
+                                icon: "📍",
+                                title: "Google Business Profile",
+                                badge: null,
+                                badgeColor: null,
+                                desc: "Full GMB setup, optimization, review automation, and local search domination. 46% of Google searches have local intent — we capture them.",
+                                borderColor: "rgba(251,191,36,0.15)",
+                            },
+                            {
+                                icon: "⭐",
+                                title: "Review Engine",
+                                badge: null,
+                                badgeColor: null,
+                                desc: "AI-powered review collection and reputation management. Automatically request, monitor, and respond to reviews across Google and 200+ platforms.",
+                                borderColor: "rgba(255,167,38,0.15)",
+                            },
+                            {
+                                icon: "🌐",
+                                title: "Website Builder",
+                                badge: "WEB 4.0",
+                                badgeColor: "#06b6d4",
+                                desc: "Next-gen websites built with neuroscience-driven UX, ambient voice triggers, and conversion architecture. Not templates — engineered sales machines.",
+                                borderColor: "rgba(6,182,212,0.15)",
+                            },
+                            {
+                                icon: "📱",
+                                title: "Social AI",
+                                badge: null,
+                                badgeColor: null,
+                                desc: "AI agents create, schedule, and monitor social posts tuned for engagement. Content that triggers the Limbic Brain — not just fills a calendar.",
+                                borderColor: "rgba(139,92,246,0.15)",
+                            },
+                            {
+                                icon: "📊",
+                                title: "Revenue Intelligence",
+                                badge: null,
+                                badgeColor: null,
+                                desc: "Real-time dashboards showing exactly where revenue is leaking and how much your AI workforce is recovering. Full audit trail, zero guesswork.",
+                                borderColor: "rgba(59,130,246,0.15)",
+                            },
+                        ].map((product, i) => (
+                            <div key={i} style={{
+                                padding: "28px 24px",
+                                background: "rgba(255,255,255,0.025)",
+                                border: `1px solid ${product.borderColor}`,
+                                borderRadius: 16,
+                                transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
+                                cursor: "default",
+                            }}
+                                onMouseEnter={e => {
+                                    e.currentTarget.style.background = "rgba(255,255,255,0.05)";
+                                    e.currentTarget.style.transform = "translateY(-3px)";
+                                    e.currentTarget.style.borderColor = product.borderColor.replace("0.15", "0.4");
+                                }}
+                                onMouseLeave={e => {
+                                    e.currentTarget.style.background = "rgba(255,255,255,0.025)";
+                                    e.currentTarget.style.transform = "translateY(0)";
+                                    e.currentTarget.style.borderColor = product.borderColor;
+                                }}
+                            >
+                                <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
+                                    <span style={{ fontSize: 24 }}>{product.icon}</span>
+                                    <h3 style={{
+                                        fontSize: 17, fontWeight: 800, color: "#fff",
+                                        margin: 0, letterSpacing: "-0.01em", flex: 1,
+                                    }}>{product.title}</h3>
+                                    {product.badge && (
+                                        <span style={{
+                                            fontSize: 9, fontWeight: 800,
+                                            color: "#000",
+                                            background: product.badgeColor || "#fff",
+                                            borderRadius: 4,
+                                            padding: "2px 8px",
+                                            letterSpacing: "0.08em",
+                                            flexShrink: 0,
+                                        }}>{product.badge}</span>
+                                    )}
+                                </div>
+                                <p style={{
+                                    fontSize: 13, color: "rgba(255,255,255,0.6)",
+                                    lineHeight: 1.65, margin: 0,
+                                }}>{product.desc}</p>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Platform bottom CTA */}
+                    <div style={{
+                        textAlign: "center", marginTop: 48,
+                        padding: "32px 24px",
+                        background: "linear-gradient(135deg, rgba(0,255,65,0.06), rgba(59,130,246,0.06))",
+                        border: "1px solid rgba(0,255,65,0.12)",
+                        borderRadius: 20,
+                    }}>
+                        <p style={{
+                            fontSize: 18, fontWeight: 700, color: "#fff",
+                            margin: "0 0 6px", letterSpacing: "-0.02em",
+                        }}>
+                            All of this. One subscription. <span style={{ color: "#00ff41" }}>$497/mo.</span>
+                        </p>
+                        <p style={{
+                            fontSize: 13, color: "rgba(255,255,255,0.5)",
+                            margin: 0,
+                        }}>
+                            5x ROI guaranteed or your money back. No contracts. Cancel anytime.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
             <section id="results" ref={resultsStripRef} aria-label="BioDynamX Proven Results and Statistics" style={{
                 position: "relative", zIndex: 10,
                 padding: "40px 32px",
