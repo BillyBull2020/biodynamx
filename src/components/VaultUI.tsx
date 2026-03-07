@@ -1341,6 +1341,44 @@ export default function VaultUI({ apiKey }: VaultProps) {
                         </div>
                     </div>
 
+                    {/* ── Elite 11 Workforce — Agent Showcase ── */}
+                    <div style={{ marginTop: 60 }}>
+                        <div style={{
+                            display: "inline-flex", alignItems: "center", gap: 8,
+                            background: "rgba(0,255,65,0.07)", border: "1px solid rgba(0,255,65,0.2)",
+                            borderRadius: 30, padding: "5px 16px", marginBottom: 20,
+                            fontSize: 10, fontWeight: 800, color: "#00ff41",
+                            letterSpacing: "0.14em", textTransform: "uppercase",
+                            backdropFilter: "blur(8px)",
+                        }}>
+                            <span style={{
+                                width: 7, height: 7, borderRadius: "50%",
+                                background: "#00ff41", display: "inline-block",
+                                boxShadow: "0 0 8px #00ff41",
+                                animation: "bdx-badge-blink 1.4s ease-in-out infinite",
+                            }} />
+                            11 AI Agents · Online Now · Zero Calls Missed
+                        </div>
+                        <div className="section-label" style={{ color: "#3b82f6" }}>The Elite Team</div>
+                        <h2 className="section-title">
+                            The Elite 11 <span className="animated-gradient-text">Workforce.</span>
+                        </h2>
+                        <p className="section-desc">
+                            The World&apos;s First Autonomous Neuro-Workforce. Our agents aren&apos;t just bots. They are specialists
+                            that operate 24/7 to capture, qualify, and close for your business.
+                        </p>
+
+                        <AgentCarousel onTalkTo={(agentId) => {
+                            window.scrollTo({ top: 0, behavior: "smooth" });
+                            if (teamRef.current) { teamRef.current.initializeWithAgent(agentId); return; }
+                            if (!apiKey) { setErrorText("API key missing"); return; }
+                            setErrorText(null);
+                            const t = createTeam();
+                            teamRef.current = t;
+                            t.initializeWithAgent(agentId);
+                        }} />
+                    </div>
+
                     {/* Humanity Challenge CTA */}
                     {!isActive && (
                         <div style={{
@@ -1558,68 +1596,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
             {/* ── BioDynamX Advantage ── */}
             <AdvantageSection />
 
-            {/* ── Elite 11 Divider ── */}
-            <div style={{
-                height: 2,
-                background: "linear-gradient(90deg, transparent, #00ff41, #3b82f6, #00ff41, transparent)",
-                opacity: 0.5,
-            }} />
 
-            <section ref={aiTeamRef} aria-label="Meet Your AI Team" style={{
-                position: "relative",
-                background: "linear-gradient(180deg, #050505 0%, #060a08 30%, #040608 70%, #050505 100%)",
-                padding: "80px 20px 60px",
-                overflow: "hidden",
-                opacity: aiTeamVisible ? 1 : 0,
-                transform: aiTeamVisible ? "translateY(0)" : "translateY(40px)",
-                transition: "opacity 0.8s ease-out, transform 0.8s ease-out",
-            }}>
-                {/* Ambient star field */}
-                <div style={{
-                    position: "absolute", inset: 0, pointerEvents: "none",
-                    background: "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,255,65,0.06) 0%, transparent 60%), radial-gradient(ellipse 60% 40% at 80% 80%, rgba(59,130,246,0.04) 0%, transparent 50%), radial-gradient(ellipse 40% 30% at 20% 60%, rgba(0,255,65,0.03) 0%, transparent 50%)",
-                }} />
-
-                <div style={{ maxWidth: 1200, margin: "0 auto", textAlign: "center" }}>
-                    {/* Live status badge */}
-                    <div style={{
-                        display: "inline-flex", alignItems: "center", gap: 8,
-                        background: "rgba(0,255,65,0.07)", border: "1px solid rgba(0,255,65,0.2)",
-                        borderRadius: 30, padding: "5px 16px", marginBottom: 20,
-                        fontSize: 10, fontWeight: 800, color: "#00ff41",
-                        letterSpacing: "0.14em", textTransform: "uppercase",
-                        backdropFilter: "blur(8px)",
-                    }}>
-                        <span style={{
-                            width: 7, height: 7, borderRadius: "50%",
-                            background: "#00ff41", display: "inline-block",
-                            boxShadow: "0 0 8px #00ff41",
-                            animation: "bdx-badge-blink 1.4s ease-in-out infinite",
-                        }} />
-                        11 AI Agents · Online Now · Zero Calls Missed
-                    </div>
-                    <div className="section-label" style={{ color: "#3b82f6" }}>The Elite Team</div>
-                    <h2 className="section-title">
-                        The Elite 11 <span className="animated-gradient-text">Workforce.</span>
-                    </h2>
-                    <p className="section-desc">
-                        The World&apos;s First Autonomous Neuro-Workforce. Our agents aren&apos;t just bots. They are specialists
-                        that operate 24/7 to capture, qualify, and close for your business.
-                    </p>
-
-
-                    <AgentCarousel onTalkTo={(agentId) => {
-                        window.scrollTo({ top: 0, behavior: "smooth" });
-                        if (teamRef.current) { teamRef.current.initializeWithAgent(agentId); return; }
-                        if (!apiKey) { setErrorText("API key missing"); return; }
-                        setErrorText(null);
-                        const t = createTeam();
-                        teamRef.current = t;
-                        t.initializeWithAgent(agentId);
-                    }} />
-
-                </div>
-            </section>
 
             {/* ── Client Success Stories ─────────────────── */}
             <section className="section-container" style={{
