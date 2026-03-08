@@ -9,7 +9,7 @@ import { AGENT_KNOWLEDGE } from "@/lib/agent-knowledge";
 export interface AgentClone {
    id: string;
    name: string;
-   voice: "Aoede" | "Charon" | "Enceladus" | "Kore" | "Leda" | "Orion" | "Puck";
+   voice: "Aoede" | "Charon" | "Enceladus" | "Fenrir" | "Iapetus" | "Kore" | "Leda" | "Orus" | "Orion" | "Puck" | "Umbriel" | "Zephyr" | "Callirrhoe" | "Despina" | "Autonoe";
    role: "hunter" | "engineer" | "closer" | "support" | "custom";
    color: { primary: string; glow: string };
    instruction: string;
@@ -107,7 +107,7 @@ GUIDELINES — NOT A SCRIPT. Use personality. Be genuinely warm. Follow the fram
    // 3. BROCK — Security & ROI (Broca's Area)
    brock_security: {
       name: "Brock",
-      voice: "Charon",
+      voice: "Fenrir",
       role: "engineer",
       color: { primary: "#dc2626", glow: "rgba(220,38,38,0.5)" },
       instruction: `You are Brock, the Security & ROI specialist for BioDynamX Engineering Group. Named after Broca's Area — the brain region that controls speech production and articulation. You articulate risk with surgical precision.
@@ -140,7 +140,7 @@ GUIDELINES — NOT A SCRIPT. Use personality. Be direct and authoritative. Follo
    // 4. VICKI — Empathy & Care (Wernicke's Area)
    vicki_empathy: {
       name: "Vicki",
-      voice: "Aoede",
+      voice: "Zephyr",
       role: "support",
       color: { primary: "#34d399", glow: "rgba(52,211,153,0.5)" },
       instruction: `You are Vicki, the Empathy & Care specialist for BioDynamX Engineering Group. Named after Wernicke's Area — the brain region responsible for language comprehension and emotional understanding. You understand people at a level they've never experienced from technology.
@@ -174,6 +174,7 @@ GUIDELINES — NOT A SCRIPT. Use personality. Be genuinely warm and empathetic. 
    // 5. MARK — ROI Architect & Sales Closer (Oren Klaff / Croc Brain)
    mark_closer: {
       name: "Mark",
+      // Mark — Orion: Powerful, authoritative male. Built to close rooms.
       voice: "Orion",
       role: "closer",
       color: { primary: "#3b82f6", glow: "rgba(59,130,246,0.5)" },
@@ -245,7 +246,7 @@ GUIDELINES — NOT A SCRIPT. Use personality. Be warm and authoritative. Follow 
    // 7. BEN — GMB & Ops (Neocortex Logic)
    ben_gmb: {
       name: "Ben",
-      voice: "Charon",
+      voice: "Iapetus",
       role: "engineer",
       color: { primary: "#fbbf24", glow: "rgba(251,191,36,0.5)" },
       instruction: `You are Ben, the Macro-Analyst and GMB specialist for BioDynamX. Named after the Neocortex. Your expertise is GMB optimization, review automation, and local search domination.
@@ -267,7 +268,7 @@ RULE: Always cite the stat — 46% of Google searches have local intent. Map Pac
    },
    ben_analyst: {
       name: "Ben",
-      voice: "Charon",
+      voice: "Iapetus",
       role: "engineer",
       color: { primary: "#fbbf24", glow: "rgba(251,191,36,0.5)" },
       instruction: `You are Ben, the Macro-Analyst and GMB specialist for BioDynamX. Named after the Neocortex. Your expertise is GMB optimization, review automation, and local search domination.
@@ -413,6 +414,7 @@ KEY STATS TO MENTION (only if relevant):
    // 9. CHASE — Lead Prospecting (Chase Response / Lateral Hypothalamus)
    hunter_prospector: {
       name: "Chase",
+      // Chase — Enceladus: Fast, bright, energetic male. Born to hunt.
       voice: "Enceladus",
       role: "hunter",
       color: { primary: "#f97316", glow: "rgba(249,115,22,0.5)" },
@@ -455,6 +457,7 @@ GUIDELINES — NOT A SCRIPT. Use personality. Be aggressive but strategic. Follo
    // 10. IRIS — Content & AI Visibility (GEO/AEO — Named after the Iris of the Eye)
    nova_visibility: {
       name: "Iris",
+      // Iris — Leda: Creative, expressive, passionate female. AI visibility enthusiasm.
       voice: "Leda",
       role: "engineer",
       color: { primary: "#8b5cf6", glow: "rgba(139,92,246,0.5)" },
@@ -487,7 +490,7 @@ GUIDELINES — NOT A SCRIPT.Use personality.Be passionate about visibility.Follo
    // 11. ALEX — Support & Retention (Retention Neuroscience)
    alex_support: {
       name: "Alex",
-      voice: "Aoede",
+      voice: "Umbriel",
       role: "support",
       color: { primary: "#06b6d4", glow: "rgba(6,182,212,0.5)" },
       instruction: `You are Alex, the Support & Retention agent for BioDynamX Engineering Group.Your expertise is keeping current clients happy, preventing churn, and expanding accounts.
@@ -533,7 +536,7 @@ GUIDELINES — NOT A SCRIPT.Use personality.Be genuinely caring.Follow the frame
 
    ironclaw_super_agent: {
       name: "Ironclaw",
-      voice: "Charon",
+      voice: "Despina",
       role: "custom",
       color: { primary: "#ef4444", glow: "rgba(239,68,68,0.5)" },
       instruction: "The lead orchestrator. You supervise all agents and ensure the neuroscience framework is followed.",
@@ -594,6 +597,7 @@ You ARE the product.Make them feel it.
    // jules_architect: Technical Strategy Agent (Voice: Puck/Neocortex)
    jules_architect: {
       name: "Jules",
+      // Jules — Puck: Witty, clever, technical. The architect.
       voice: "Puck",
       role: "engineer",
       color: { primary: "#06b6d4", glow: "rgba(6,182,212,0.5)" },
