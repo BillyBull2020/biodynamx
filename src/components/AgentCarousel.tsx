@@ -31,11 +31,11 @@ interface Agent {
 
 const AGENTS: Agent[] = [
     {
-        id: "milton_hypnotist", name: "Milton", role: "Conversational Hypnotist",
-        chip1: "Artful Vagueness", chip2: "Alpha-State · Charon",
-        desc: "The architect of ease. Milton uses Ericksonian hypnosis to lower conscious resistance and pace the prospect into a deep, agreeable state of flow.",
-        result: "Subconscious safety + Total agreement.",
-        color: "#7c3aed", image: "/agents/milton.png",
+        id: "helia_jenny", name: "Jenny", role: "Business Lead & Discovery",
+        chip1: "Lead Audit", chip2: "Frame Control · Aoede",
+        desc: "The challenger. Jenny bypasses small talk to reveal micro-frictions in your business model and establishes high-status leadership from the first second.",
+        result: "Immediate status-quo disruption + Revenue Audit.",
+        color: "#6366f1", image: "/agents/jenny.png",
     },
     {
         id: "ben_analyst", name: "Ben", role: "Macro-Analyst (Neocortex)",
@@ -46,7 +46,7 @@ const AGENTS: Agent[] = [
     },
     {
         id: "hunter_prospector", name: "Chase", role: "Lead Prospecting (Chase Response)",
-        chip1: "Competitive Intel", chip2: "Hunter · Enceladus",
+        chip1: "Competitive Intel", chip2: "Hunter · Fenrir",
         desc: "The hunter. Chase activates the lateral hypothalamus pursuit circuit — detecting opportunity and pursuing without hesitation. Competitor intel, market stagnation, urgency.",
         result: "Competitive advantage + Lead pipeline activated.",
         color: "#f97316", image: "/agents/hunter.png",
@@ -60,35 +60,35 @@ const AGENTS: Agent[] = [
     },
     {
         id: "alex_support", name: "Alex", role: "Support & Retention",
-        chip1: "Churn Prevention", chip2: "Retention · Aoede",
+        chip1: "Churn Prevention", chip2: "Retention · Zephyr",
         desc: "The guardian. Alex keeps clients happy 24/7 — preventing churn, resolving issues at 2 AM, and turning customer satisfaction into 5-star reviews and referrals.",
         result: "Zero churn + Customer lifetime value maximized.",
         color: "#06b6d4", image: "/agents/alex.png",
     },
     {
-        id: "mark_closer", name: "Mark", role: "ROI Closer (Croc Brain)",
-        chip1: "Binary Close", chip2: "Status Alignment · Orion",
-        desc: "The closer. Mark eradicates neediness and uses the 'Prize Frame' to force decisions. He speaks in cold numbers and binary outcome choices.",
-        result: "Decision reached. Commitment secured.",
-        color: "#3b82f6", image: "/agents/mark.png",
+        id: "nova_strategist", name: "Nova", role: "AI Strategy & Conversion",
+        chip1: "Neuro-Funnel", chip2: "Conversion · Aoede",
+        desc: "The converter. Nova analyzes your entire funnel — from first touch to close — deploying precision neuro-triggers that turn cold prospects into committed, paying clients.",
+        result: "Funnel optimized + Conversion rate multiplied.",
+        color: "#ec4899", image: "/agents/nova_female.png",
     },
     {
         id: "meghan_receptionist", name: "Megan", role: "Amygdala Soother",
-        chip1: "Intimacy Anchor", chip2: "Trust Engine · Aoede",
+        chip1: "Intimacy Anchor", chip2: "Trust Engine · Sulafat",
         desc: "The nurturer. Megan specializes in sensory-rich language and mirroring to build intense trust and soothe the brain's threat-detection centers.",
         result: "Intense intimacy + Emotional defense removal.",
         color: "#a78bfa", image: "/agents/meghan.png",
     },
     {
-        id: "brock_security", name: "Brock", role: "ROI Storyteller (Broca)",
-        chip1: "Intrigue Frame", chip2: "High-Stakes · Fenrir",
-        desc: "The hijacker. Brock uses high-stakes narratives to shock the Croc Brain into awareness, injecting tension and curiosity through storytelling.",
-        result: "Attention captured + Tension converted to dopamine.",
-        color: "#ef4444", image: "/agents/brock.png",
+        id: "titan_closer", name: "Titan", role: "ROI Closer (Hard Close)",
+        chip1: "Binary Decision", chip2: "Hard Close · Fenrir",
+        desc: "The executioner. Titan speaks in cold numbers, binary outcomes, and zero tolerance for hesitation. You either commit today, or you pay the cost of inaction tomorrow.",
+        result: "Decision forced. Revenue commitment locked.",
+        color: "#3b82f6", image: "/agents/titan.png",
     },
     {
         id: "vicki_empathy", name: "Vicki", role: "Empathy & Care (Wernicke)",
-        chip1: "Mirror Neurons", chip2: "Oxytocin · Lyra",
+        chip1: "Mirror Neurons", chip2: "Oxytocin · Kore",
         desc: "The empath. Vicki builds visceral connection by helping prospects visualize the relief of walking away from pain into a field of pure results.",
         result: "Visceral visualization + Oxytocin-driven trust.",
         color: "#34d399", image: "/agents/vicki.png",
@@ -101,11 +101,11 @@ const AGENTS: Agent[] = [
         color: "#60a5fa", image: "/agents/jules.png",
     },
     {
-        id: "helia_jenny", name: "Jenny", role: "Business Lead & Discovery",
-        chip1: "Lead Audit", chip2: "Frame Control · Glial",
-        desc: "The challenger. Jenny bypasses small talk to reveal micro-frictions in your business model and establishes high-status leadership from the first second.",
-        result: "Immediate status-quo disruption + Revenue Audit.",
-        color: "#6366f1", image: "/agents/jenny.png",
+        id: "helia_jenny_close", name: "Jenny", role: "Ready to Run Your Audit",
+        chip1: "Revenue Audit", chip2: "Live · Aoede",
+        desc: "Jenny closes the loop. She started the conversation, and she will finish it. Every audit uncovers an average of $18K/month in hidden revenue leaks.",
+        result: "Audit complete + Revenue recovery plan delivered.",
+        color: "#00ff41", image: "/agents/jenny.png",
     }
 ];
 
