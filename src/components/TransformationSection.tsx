@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -11,13 +11,15 @@ export default function TransformationSection() {
     const sectionRef = useRef<HTMLDivElement>(null);
     const frictionRef = useRef<HTMLDivElement>(null);
     const flowRef = useRef<HTMLDivElement>(null);
-    const mathRef = useRef<HTMLDivElement>(null);
-    const glowRef = useRef<HTMLDivElement>(null);
+    const visualizerRef = useRef<HTMLDivElement>(null);
+    const ctaRef = useRef<HTMLButtonElement>(null);
+    const [audioPlaying, setAudioPlaying] = useState(false);
 
     useEffect(() => {
         if (typeof window === "undefined") return;
 
         const ctx = gsap.context(() => {
+            // 1. Initial Transformation Scrub
             const transformTL = gsap.timeline({
                 scrollTrigger: {
                     trigger: sectionRef.current,
@@ -27,18 +29,17 @@ export default function TransformationSection() {
                 }
             });
 
-            // The Friction side degrades and falls back
+            // The Friction side degrades
             transformTL.to(frictionRef.current, {
                 x: -40,
                 y: 20,
-                opacity: 0.15,
+                opacity: 0.2,
                 rotationY: -10,
                 scale: 0.9,
-                filter: "blur(8px) sepia(50%) hue-rotate(-30deg) saturate(150%)",
+                filter: "blur(5px) grayscale(100%) sepia(30%) hue-rotate(-20deg) saturate(150%)",
                 duration: 1
             }, 0)
-
-                // The Flow side emerges into dominance
+                // The Flow side emerges
                 .fromTo(flowRef.current, {
                     x: 60,
                     y: 40,
@@ -54,57 +55,114 @@ export default function TransformationSection() {
                     boxShadow: "0 20px 80px rgba(255, 215, 0, 0.25), inset 0 0 40px rgba(255, 215, 0, 0.1)",
                     duration: 1.5,
                     ease: "power2.out"
-                }, 0.2)
+                }, 0.2);
 
-                // Background glow flares up
-                .to(glowRef.current, {
-                    opacity: 0.8,
-                    scale: 1.2,
-                    duration: 1.5,
-                }, 0.2)
-
-                // The Math section slams in
-                .fromTo(mathRef.current, {
-                    y: 100,
-                    scale: 0.9,
-                    opacity: 0,
-                    filter: "blur(10px)"
-                }, {
-                    y: 0,
-                    scale: 1,
-                    opacity: 1,
-                    filter: "blur(0px)",
-                    ease: "elastic.out(1.2, 0.4)",
-                    duration: 1.2
-                }, 1);
+            // Ambient background visualizer pulse when idle
+            gsap.to(visualizerRef.current, {
+                scale: 1.05,
+                opacity: 0.8,
+                duration: 2,
+                repeat: -1,
+                yoyo: true,
+                ease: "sine.inOut"
+            });
 
         }, sectionRef);
 
         return () => ctx.revert();
     }, []);
 
+    const handleActivateBen = () => {
+        if (audioPlaying) return;
+        setAudioPlaying(true);
+
+        const script = "I just saw the same math you’re looking at. $12,400 a month for a human team that sleeps, gets sick, and lets 80 leads a month rot in voicemail? That’s not a payroll; that’s a hemorrhage. I’m Ben. I don't sleep, I don't have 'bad days,' and I answer every single one of those missed calls in under a second. While your competitors are waiting for their coffee to kick in, I’ve already qualified your lead, booked the appointment, and sent the follow-up. You’re not just saving 96% on costs—you’re buying back the revenue you’re currently leaving on the table. Ready to stop the leak?";
+
+        // Fallback or explicit synthetic voice activation
+        const utterance = new SpeechSynthesisUtterance(script);
+        utterance.rate = 1.05;
+        utterance.pitch = 0.95;
+        // Try to pick a male English synthetic voice
+        const voices = window.speechSynthesis.getVoices();
+        const benVoice = voices.find(v => v.lang.includes("en") && (v.name.includes("Male") || v.name.includes("Daniel") || v.name.includes("Alex") || v.name.includes("US")));
+        if (benVoice) utterance.voice = benVoice;
+
+        utterance.onend = () => {
+            setAudioPlaying(false);
+            gsap.killTweensOf(frictionRef.current);
+            gsap.to(frictionRef.current, { backgroundColor: "rgba(20, 15, 15, 0.4)", duration: 0.5 });
+            gsap.killTweensOf(visualizerRef.current);
+            gsap.to(visualizerRef.current, { scale: 1, boxShadow: "none", duration: 1 });
+            gsap.killTweensOf(ctaRef.current);
+            gsap.to(ctaRef.current, { scale: 1, backgroundColor: "transparent", color: "#FFD700", duration: 0.5 });
+        };
+
+        window.speechSynthesis.speak(utterance);
+
+        const ctx = gsap.context(() => {
+            const benTalkTL = gsap.timeline();
+
+            // Simulate the timeline of the speech
+            // AT ~4s: "80 leads rot in voicemail" -> Pulse red warning on friction side
+            benTalkTL.to(frictionRef.current, {
+                backgroundColor: "rgba(255,0,0,0.2)",
+                boxShadow: "0 0 40px rgba(255,0,0,0.3)",
+                duration: 0.3,
+                repeat: 3,
+                yoyo: true,
+                ease: "power1.inOut"
+            }, 5.0); // Rough timing estimate
+
+            // AT ~12s: "Under a second" -> Gold flash on Ben's Visualizer
+            benTalkTL.to(visualizerRef.current, {
+                boxShadow: "0 0 100px #FFD700, inset 0 0 40px #FFD700",
+                scale: 1.2,
+                duration: 0.5,
+                yoyo: true,
+                repeat: 1
+            }, 13.0);
+
+            // AT ~26s: "Ready to stop the leak?" -> Animate the CTA button
+            benTalkTL.to(ctaRef.current, {
+                scale: 1.1,
+                backgroundColor: "#FFD700",
+                color: "#000",
+                boxShadow: "0 0 30px rgba(255,215,0,0.6)",
+                repeat: -1,
+                yoyo: true,
+                duration: 0.5
+            }, 27.0);
+
+        }, sectionRef);
+
+        utterance.onend = () => {
+            setAudioPlaying(false);
+            ctx.revert(); // clean up animation timeline
+        };
+    };
+
     const frictionItems = [
         { label: "80+ Voicemails", desc: "Revenue vanishing into thin air." },
         { label: "3-Hour Lag", desc: "Leads die while you're busy." },
         { label: "Competitor Wins", desc: "They close because they're faster." },
-        { label: "9-5 Limits", desc: "Your business sleeps; costs don't." },
+        { label: "$12,400+ Payroll", desc: "High tax for low output." },
     ];
 
     const flowItems = [
-        { label: "1s Response", desc: "Every call captured, 24/7/365." },
+        { label: "100% Capture", desc: "Ben answers in <1s. Every time." },
         { label: "8s Textback", desc: "Instant, autonomous engagement." },
-        { label: "Total Dominance", desc: "AI qualifies and books for you." },
-        { label: "Universal Presence", desc: "Your highest-converting hours." },
+        { label: "Total Dominance", desc: "Ben qualifies and books for you." },
+        { label: "$1,497 Total", desc: "96% less cost. 10x more output." },
     ];
 
     return (
         <section
             ref={sectionRef}
-            className="transformation-section"
+            className="ben-transformation-section"
             style={{
                 position: "relative",
                 padding: "160px 24px 120px",
-                backgroundImage: "url('/neural-friction-flow.png')",
+                backgroundImage: "url('/ben-visualizer-bg.png')",
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 backgroundAttachment: "fixed",
@@ -114,48 +172,109 @@ export default function TransformationSection() {
                 flexDirection: "column",
                 alignItems: "center",
                 perspective: "1200px",
+                background: "#000",
+                color: "#fff",
+                fontFamily: "var(--font-inter)",
             }}
         >
             {/* Cinematic Overlays */}
             <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, #050508 0%, rgba(5,5,8,0.7) 20%, rgba(5,5,8,0.7) 80%, #050508 100%)", zIndex: 1 }} />
             <div style={{ position: "absolute", inset: 0, background: "radial-gradient(circle at center, transparent 0%, rgba(5,5,8,0.95) 90%)", zIndex: 1 }} />
 
-            {/* Ambient Flow Glow */}
-            <div ref={glowRef} style={{
-                position: "absolute", right: "20%", top: "40%", width: "40vw", height: "40vw",
-                background: "radial-gradient(circle, rgba(255,215,0,0.15) 0%, transparent 70%)",
-                filter: "blur(60px)", opacity: 0, zIndex: 1, pointerEvents: "none",
+            {/* Ambient Background Grid for Neuro Vibe */}
+            <div style={{
+                position: "absolute", inset: 0,
+                backgroundSize: "60px 60px",
+                backgroundImage: "radial-gradient(circle, rgba(255,215,0,0.05) 1px, transparent 1px)",
+                opacity: 0.6,
+                zIndex: 1, pointerEvents: "none"
             }} />
 
             {/* Header Content */}
-            <div style={{ textAlign: "center", marginBottom: 80, position: "relative", zIndex: 10, maxWidth: 900 }}>
+            <div style={{ textAlign: "center", marginBottom: 64, position: "relative", zIndex: 10, maxWidth: 900 }}>
                 <div style={{
                     display: "inline-flex", alignItems: "center", gap: 12,
                     background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.1)",
                     padding: "8px 24px", borderRadius: 100, marginBottom: 24,
                     backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)",
                 }}>
-                    <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#FFD700", boxShadow: "0 0 10px #FFD700" }} />
+                    <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#FFD700", boxShadow: "0 0 16px #FFD700" }} />
                     <span style={{ color: "rgba(255,255,255,0.8)", fontSize: 11, fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase" }}>
-                        The Bio-Logical Transformation
+                        The Ben Revenue Audit (Master Module)
                     </span>
                 </div>
                 <h2 style={{
-                    fontSize: "clamp(36px, 6vw, 72px)", fontWeight: 900, lineHeight: 1.05,
+                    fontSize: "clamp(36px, 5.5vw, 64px)", fontWeight: 900, lineHeight: 1.05,
                     margin: "0 0 24px",
-                    background: "linear-gradient(135deg, #fff 40%, rgba(255,255,255,0.4) 100%)",
+                    background: "linear-gradient(135deg, #fff 40%, rgba(255,255,255,0.6) 100%)",
                     WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
                     letterSpacing: "-0.02em",
                 }}>
-                    The $600/Day <br className="md:hidden" />
-                    <span style={{ color: "#ef4444", textShadow: "0 0 40px rgba(239,68,68,0.4)", WebkitTextFillColor: "#ef4444" }}>Revenue Hemorrhage</span>
+                    Ben is Not a Chatbot.<br className="md:hidden" />
+                    <span style={{ color: "#FFD700", WebkitTextFillColor: "#FFD700" }}> He is Your New Top Producer.</span>
                 </h2>
                 <p style={{
                     fontSize: "clamp(18px, 2.5vw, 24px)", color: "rgba(255,255,255,0.6)",
                     maxWidth: 700, margin: "0 auto", lineHeight: 1.5, fontWeight: 400,
                 }}>
-                    Stop losing prospects to human friction. <br className="hidden md:block" />Start closing with <strong style={{ color: "#fff", fontWeight: 700 }}>Bio-Logical Flow.</strong>
+                    Stop the <strong style={{ color: "#ef4444" }}>$600/Day Hemorrhage. </strong>
+                    <br className="hidden md:block" />Start the <strong style={{ color: "#fff", fontWeight: 700 }}>Bio-Logical Flow.</strong>
                 </p>
+            </div>
+
+            {/* The Sphere Visualizer */}
+            <div style={{ position: "relative", zIndex: 10, marginBottom: 64 }}>
+                <div
+                    ref={visualizerRef}
+                    className="ben-visualizer"
+                    style={{
+                        width: 250,
+                        height: 250,
+                        borderRadius: "50%",
+                        background: "radial-gradient(circle, rgba(255,215,0,0.15) 0%, transparent 70%)",
+                        border: "1px solid rgba(255, 215, 0, 0.5)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        margin: "0 auto",
+                        cursor: "pointer",
+                        position: "relative",
+                        boxShadow: "0 0 40px rgba(255,215,0,0.2), inset 0 0 20px rgba(255,215,0,0.1)",
+                        transition: "all 0.3s ease",
+                    }}
+                    onClick={handleActivateBen}
+                >
+                    <div style={{
+                        position: "absolute", top: -20, right: -20, bottom: -20, left: -20,
+                        border: "1px dashed rgba(255,215,0,0.3)", borderRadius: "50%",
+                        animation: "spin 20s linear infinite", pointerEvents: "none"
+                    }} />
+
+                    <div style={{
+                        textAlign: "center", zIndex: 2
+                    }}>
+                        {!audioPlaying ? (
+                            <>
+                                <div style={{ fontSize: 40, marginBottom: 8 }}>🎙️</div>
+                                <div style={{ fontSize: 13, fontWeight: 800, color: "#FFD700", letterSpacing: "0.1em", textTransform: "uppercase" }}>
+                                    Activate Ben
+                                </div>
+                            </>
+                        ) : (
+                            <>
+                                <div style={{ display: "flex", gap: 4, height: 40, alignItems: "center", justifyContent: "center" }}>
+                                    {[1, 2, 3, 4, 5].map(i => (
+                                        <div key={i} style={{
+                                            width: 4, height: "100%", background: "#FFD700", borderRadius: 4,
+                                            animation: `bounce ${0.4 + (i * 0.1)}s ease infinite alternate`
+                                        }} />
+                                    ))}
+                                </div>
+                                <div style={{ fontSize: 11, fontWeight: 800, color: "#FFD700", marginTop: 12, letterSpacing: "0.1em" }}>ANALYZING...</div>
+                            </>
+                        )}
+                    </div>
+                </div>
             </div>
 
             {/* GSAP Transformation Container */}
@@ -166,7 +285,7 @@ export default function TransformationSection() {
             }}>
 
                 {/* ── THE FRICTION SIDE ── */}
-                <div ref={frictionRef} style={{
+                <div ref={frictionRef} className="human-friction-side" style={{
                     background: "rgba(20, 15, 15, 0.4)",
                     backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)",
                     borderRadius: 32,
@@ -176,20 +295,16 @@ export default function TransformationSection() {
                     overflow: "hidden",
                     transformOrigin: "right center",
                 }}>
-                    {/* Dark gradient fade for depth */}
                     <div style={{ position: "absolute", inset: 0, background: "linear-gradient(225deg, transparent 50%, rgba(0,0,0,0.6) 100%)", pointerEvents: "none" }} />
                     <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: "linear-gradient(90deg, #ef4444, transparent)" }} />
-
-                    {/* Noise texture */}
-                    <div style={{ position: "absolute", inset: 0, background: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E\")", pointerEvents: "none" }} />
 
                     <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 40, position: "relative", zIndex: 2 }}>
                         <div style={{ width: 44, height: 44, borderRadius: 12, background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.2)", display: "flex", alignItems: "center", justifyContent: "center", color: "#ef4444", fontSize: 20 }}>
                             ✗
                         </div>
                         <div>
-                            <div style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 4 }}>The Manual Trap</div>
-                            <div style={{ fontSize: 22, fontWeight: 800, color: "#ef4444", letterSpacing: "-0.02em" }}>Biological Friction</div>
+                            <div style={{ fontSize: 11, color: "rgba(239,68,68,0.6)", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 4 }}>The Antiquated Way</div>
+                            <div style={{ fontSize: 22, fontWeight: 800, color: "#fff", letterSpacing: "-0.02em" }}>Manual Labor</div>
                         </div>
                     </div>
 
@@ -198,7 +313,7 @@ export default function TransformationSection() {
                             <div key={i} style={{ display: "flex", gap: 16, alignItems: "flex-start" }}>
                                 <div style={{ width: 2, height: 40, background: "rgba(239,68,68,0.3)", borderRadius: 2, marginTop: 4 }} />
                                 <div>
-                                    <div style={{ color: "#fff", fontSize: 18, fontWeight: 800, marginBottom: 6 }}>{item.label}</div>
+                                    <div style={{ color: "#ef4444", fontSize: 18, fontWeight: 800, marginBottom: 6 }}>{item.label}</div>
                                     <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 15, lineHeight: 1.5 }}>{item.desc}</div>
                                 </div>
                             </div>
@@ -207,7 +322,7 @@ export default function TransformationSection() {
                 </div>
 
                 {/* ── THE FLOW SIDE ── */}
-                <div ref={flowRef} style={{
+                <div ref={flowRef} className="ben-flow-side" style={{
                     background: "rgba(20, 18, 10, 0.75)",
                     backdropFilter: "blur(40px)", WebkitBackdropFilter: "blur(40px)",
                     borderRadius: 32,
@@ -216,19 +331,18 @@ export default function TransformationSection() {
                     position: "relative",
                     overflow: "hidden",
                     transformOrigin: "left center",
-                    boxShadow: "0 20px 80px rgba(255, 215, 0, 0)", // animated in
+                    boxShadow: "0 20px 80px rgba(255, 215, 0, 0)",
                 }}>
                     <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, transparent 40%, rgba(255,215,0,0.05) 100%)", pointerEvents: "none" }} />
                     <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: "linear-gradient(90deg, #FFD700, #F59E0B)" }} />
-                    <div style={{ position: "absolute", top: -100, right: -100, width: 300, height: 300, background: "radial-gradient(circle, rgba(255,215,0,0.2) 0%, transparent 70%)", filter: "blur(50px)", pointerEvents: "none" }} />
 
                     <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 40, position: "relative", zIndex: 2 }}>
                         <div style={{ width: 44, height: 44, borderRadius: 12, background: "rgba(255,215,0,0.15)", border: "1px solid rgba(255,215,0,0.4)", display: "flex", alignItems: "center", justifyContent: "center", color: "#FFD700", fontSize: 20, boxShadow: "0 0 20px rgba(255,215,0,0.2)" }}>
                             ✓
                         </div>
                         <div>
-                            <div style={{ fontSize: 11, color: "rgba(255,215,0,0.6)", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 4 }}>The BioDynamX Way</div>
-                            <div style={{ fontSize: 22, fontWeight: 800, color: "#fff", textShadow: "0 0 30px rgba(255,215,0,0.4)", letterSpacing: "-0.02em" }}>Neural Flow</div>
+                            <div style={{ fontSize: 11, color: "#FFD700", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 4 }}>The Ben Advantage</div>
+                            <div style={{ fontSize: 22, fontWeight: 800, color: "#fff", textShadow: "0 0 30px rgba(255,215,0,0.4)", letterSpacing: "-0.02em" }}>Autonomous Growth</div>
                         </div>
                     </div>
 
@@ -248,94 +362,41 @@ export default function TransformationSection() {
                 </div>
             </div>
 
-            {/* ── THE MATH HIGHLIGHT ── */}
-            <div ref={mathRef} style={{ width: "100%", maxWidth: 1200, margin: "64px auto 0", position: "relative", zIndex: 10 }}>
-                <div style={{
-                    background: "rgba(10,10,14,0.7)",
-                    backdropFilter: "blur(30px)", WebkitBackdropFilter: "blur(30px)",
-                    borderRadius: 32,
-                    border: "1px solid rgba(255,255,255,0.08)",
-                    padding: "48px",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    boxShadow: "0 40px 100px rgba(0,0,0,0.8)",
-                }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 40 }}>
-                        <div style={{ height: 1, width: 40, background: "rgba(255,255,255,0.1)" }} />
-                        <div style={{ fontSize: 12, fontWeight: 800, color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: "0.25em" }}>
-                            The Math of the New Gold Standard
-                        </div>
-                        <div style={{ height: 1, width: 40, background: "rgba(255,255,255,0.1)" }} />
-                    </div>
-
-                    <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", gap: 24, width: "100%", alignItems: "center" }}>
-
-                        {/* Old Way */}
-                        <div style={{ flex: 1, minWidth: 260, padding: "20px" }}>
-                            <div style={{ fontSize: 13, color: "rgba(255,255,255,0.4)", fontWeight: 700, marginBottom: 8, letterSpacing: "0.08em" }}>HUMAN TEAM</div>
-                            <div style={{ fontSize: "clamp(32px, 4vw, 48px)", fontWeight: 800, color: "rgba(255,255,255,0.8)", lineHeight: 1, letterSpacing: "-0.02em" }}>
-                                $12,400<span style={{ fontSize: "0.5em", color: "rgba(255,255,255,0.3)" }}>/mo</span>
-                            </div>
-                            <div style={{ display: "flex", gap: 8, marginTop: 16 }}>
-                                <span style={{ padding: "6px 12px", borderRadius: 8, background: "rgba(239,68,68,0.1)", color: "#ef4444", border: "1px solid rgba(239,68,68,0.2)", fontSize: 11, fontWeight: 700 }}>High Tax</span>
-                                <span style={{ padding: "6px 12px", borderRadius: 8, background: "rgba(255,255,255,0.03)", color: "rgba(255,255,255,0.5)", border: "1px solid rgba(255,255,255,0.1)", fontSize: 11, fontWeight: 700 }}>Low Output</span>
-                            </div>
-                        </div>
-
-                        {/* VS Badge */}
-                        <div style={{
-                            width: 64, height: 64, borderRadius: "50%", background: "rgba(20,20,24,0.8)", border: "1px solid rgba(255,255,255,0.05)",
-                            display: "flex", alignItems: "center", justifyContent: "center", color: "rgba(255,255,255,0.2)", fontSize: 14, fontWeight: 800, fontStyle: "italic", flexShrink: 0,
-                            boxShadow: "inset 0 4px 10px rgba(0,0,0,0.5)"
-                        }}>
-                            VS
-                        </div>
-
-                        {/* BioDynamX Limitless Widget */}
-                        <div style={{
-                            flex: 1.5, minWidth: 320,
-                            padding: "32px 48px", borderRadius: 24,
-                            background: "linear-gradient(135deg, rgba(255, 215, 0, 0.12), rgba(0, 255, 65, 0.04))",
-                            border: "1px solid rgba(255, 215, 0, 0.5)",
-                            boxShadow: "0 20px 60px rgba(255, 215, 0, 0.15), inset 0 0 30px rgba(255, 215, 0, 0.08)",
-                            position: "relative", overflow: "hidden"
-                        }}>
-                            {/* Circuit Pattern overlay */}
-                            <div style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", background: "url(\"data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23FFD700' fill-opacity='0.04' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='2'/%3E%3Cpath d='M3 5h2v2H3V5zm0 4h2v2H3V9zm0 4h2v2H3v-2zm0 4h2v2H3v-2zm4-12h2v2H7V5zm0 4h2v2H7V9zm0 4h2v2H7v-2zm0 4h2v2H7v-2zm4-12h2v2h-2V5zm0 4h2v2h-2V9zm0 4h2v2h-2v-2zm0 4h2v2h-2v-2zm4-12h2v2h-2V5zm0 4h2v2h-2V9zm0 4h2v2h-2v-2zm0 4h2v2h-2v-2z'/%3E%3C/g%3E%3C/svg%3E\")", pointerEvents: "none" }} />
-
-                            {/* Golden Edge Light */}
-                            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: "linear-gradient(90deg, transparent, #FFD700, transparent)" }} />
-
-                            <div style={{ position: "relative", zIndex: 2 }}>
-                                <div style={{ fontSize: 13, color: "#FFD700", fontWeight: 800, marginBottom: 12, letterSpacing: "0.15em", textTransform: "uppercase" }}>
-                                    BioDynamX Web 4.0
-                                </div>
-                                <div style={{
-                                    fontSize: "clamp(48px, 6vw, 76px)", fontWeight: 900, lineHeight: 1,
-                                    background: "linear-gradient(135deg, #FFD700 30%, #fff 100%)",
-                                    WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
-                                    filter: "drop-shadow(0 4px 16px rgba(255,215,0,0.4))",
-                                    letterSpacing: "-0.02em"
-                                }}>
-                                    $1,497<span style={{ fontSize: "0.4em", color: "rgba(255,255,255,0.7)", WebkitTextFillColor: "rgba(255,255,255,0.7)", filter: "none" }}>/mo</span>
-                                </div>
-                                <div style={{ display: "flex", flexWrap: "wrap", gap: 12, marginTop: 20 }}>
-                                    <div style={{ padding: "8px 16px", borderRadius: 10, background: "rgba(255,215,0,0.15)", border: "1px solid rgba(255,215,0,0.2)", display: "flex", alignItems: "center", gap: 8 }}>
-                                        <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#FFD700", boxShadow: "0 0 8px #FFD700" }} />
-                                        <span style={{ color: "#FFD700", fontSize: 13, fontWeight: 800 }}>96% Less Cost</span>
-                                    </div>
-                                    <div style={{ padding: "8px 16px", borderRadius: 10, background: "rgba(0,255,65,0.12)", border: "1px solid rgba(0,255,65,0.2)", display: "flex", alignItems: "center", gap: 8 }}>
-                                        <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#00ff41", boxShadow: "0 0 8px #00ff41" }} />
-                                        <span style={{ color: "#00ff41", fontSize: 13, fontWeight: 800 }}>10x More Output</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
+            <div style={{ marginTop: 64, position: "relative", zIndex: 10, textAlign: "center" }}>
+                <button
+                    ref={ctaRef}
+                    className="activate-ben-btn cta-button"
+                    onClick={() => {
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                    }}
+                    style={{
+                        padding: "20px 48px",
+                        borderRadius: 100,
+                        background: "transparent",
+                        border: "2px solid #FFD700",
+                        color: "#FFD700",
+                        fontSize: 16,
+                        fontWeight: 800,
+                        letterSpacing: "0.1em",
+                        textTransform: "uppercase",
+                        cursor: "pointer",
+                        transition: "all 0.3s ease",
+                    }}
+                >
+                    Ready to Stop the Leak?
+                </button>
             </div>
+
+            <style>{`
+                @keyframes spin {
+                    from { transform: rotate(0deg); }
+                    to { transform: rotate(360deg); }
+                }
+                @keyframes bounce {
+                    from { height: 10px; }
+                    to { height: 32px; }
+                }
+            `}</style>
 
         </section>
     );
