@@ -976,93 +976,182 @@ export default function VaultUI({ apiKey }: VaultProps) {
             {/* ── BioDynamX Advantage Vault — 21-Card Horizontal Kinetic Stack ── */}
             <AdvantageVault />
 
-            {/* ── The Platform — Bridge below Vault, above Carousel ── */}
+            {/* ── ONE PLATFORM — 9 Capability Cards ────────────────────────── */}
             <section className="section-container" style={{
                 textAlign: "center",
                 paddingTop: 100,
-                paddingBottom: 60,
+                paddingBottom: 80,
                 position: "relative",
                 overflow: "hidden",
             }}>
+                {/* BG glow */}
                 <div style={{
                     position: "absolute", inset: 0, pointerEvents: "none",
-                    background: "radial-gradient(ellipse 60% 40% at 50% 50%, rgba(59,130,246,0.06) 0%, transparent 70%)",
+                    background: "radial-gradient(ellipse 70% 50% at 50% 50%, rgba(59,130,246,0.05) 0%, transparent 70%)",
                 }} />
 
+                {/* Top rule */}
                 <div style={{
-                    width: 120, height: 2, margin: "0 auto 40px",
+                    width: 120, height: 2, margin: "0 auto 48px",
                     background: "linear-gradient(90deg, transparent, #3b82f6 30%, #00ff41 70%, transparent)",
                     borderRadius: 2,
                 }} />
 
-                <div style={{ maxWidth: 820, margin: "0 auto", position: "relative" }}>
-                    <div style={{
-                        display: "inline-flex", alignItems: "center", gap: 8,
-                        background: "rgba(59,130,246,0.08)",
-                        border: "1px solid rgba(59,130,246,0.25)",
-                        borderRadius: 30, padding: "6px 18px", marginBottom: 24,
-                        fontSize: 10, fontWeight: 800, color: "#60a5fa",
-                        letterSpacing: "0.16em", textTransform: "uppercase",
-                        backdropFilter: "blur(8px)",
-                    }}>
-                        <span style={{
-                            width: 6, height: 6, borderRadius: "50%",
-                            background: "#3b82f6", display: "inline-block",
-                            boxShadow: "0 0 8px #3b82f6",
-                        }} />
-                        The Platform
-                    </div>
-
-                    <div className="section-label" style={{ color: "#3b82f6", marginBottom: 16 }}>
-                        NEUROSCIENCE-POWERED
-                    </div>
-
-                    <h2 className="section-title" style={{ marginBottom: 24 }}>
-                        One Platform.{" "}
-                        <span className="animated-gradient-text">Every Growth Level.</span>
-                    </h2>
-
-                    <p className="section-desc" style={{ maxWidth: 660, margin: "0 auto 0" }}>
-                        We don&apos;t just answer calls. We build, automate, and dominate every channel
-                        your customers use to find you — powered by the neurobiology of decision-making.
-                    </p>
+                {/* Badge */}
+                <div style={{
+                    display: "inline-flex", alignItems: "center", gap: 8,
+                    background: "rgba(59,130,246,0.08)", border: "1px solid rgba(59,130,246,0.25)",
+                    borderRadius: 30, padding: "6px 18px", marginBottom: 20,
+                    fontSize: 10, fontWeight: 800, color: "#60a5fa",
+                    letterSpacing: "0.16em", textTransform: "uppercase",
+                    backdropFilter: "blur(8px)",
+                }}>
+                    <span style={{
+                        width: 6, height: 6, borderRadius: "50%",
+                        background: "#3b82f6", display: "inline-block",
+                        boxShadow: "0 0 8px #3b82f6",
+                    }} />
+                    The Platform
                 </div>
 
+                {/* Label */}
+                <div className="section-label" style={{ color: "#3b82f6", marginBottom: 16 }}>
+                    NEUROSCIENCE-POWERED
+                </div>
+
+                {/* H2 */}
+                <h2 className="section-title" style={{ marginBottom: 20 }}>
+                    One Platform.{" "}
+                    <span className="animated-gradient-text">Every Growth Level.</span>
+                </h2>
+
+                {/* Body */}
+                <p className="section-desc" style={{ maxWidth: 660, margin: "0 auto 64px" }}>
+                    We don&apos;t just answer calls. We build, automate, and dominate every channel
+                    your customers use to find you — powered by the neurobiology of decision-making.
+                </p>
+
+                {/* 9-Card Grid */}
                 <div style={{
-                    width: 80, height: 1, margin: "48px auto 0",
-                    background: "linear-gradient(90deg, transparent, rgba(59,130,246,0.4), transparent)",
-                }} />
+                    display: "grid",
+                    gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+                    gap: 20,
+                    maxWidth: 1100,
+                    margin: "0 auto",
+                    textAlign: "left",
+                }}>
+                    {[
+                        {
+                            icon: "🎙️", label: "CORE", badge: "rgba(0,255,65,0.15)", badgeTxt: "#00ff41",
+                            title: "Voice AI Agents",
+                            body: "11 autonomous AI agents answer calls, qualify leads, handle objections, and close deals 24/7 using neuro-sales frameworks.",
+                        },
+                        {
+                            icon: "🎬", label: "NEW", badge: "rgba(139,92,246,0.15)", badgeTxt: "#a78bfa",
+                            title: "Cinematic AI Video",
+                            body: "Studio-quality AI commercials, product demos, and brand films — produced in hours, not weeks. Hollywood-grade visuals at startup prices.",
+                        },
+                        {
+                            icon: "⚡", label: "", badge: "", badgeTxt: "",
+                            title: "Marketing Automation",
+                            body: "Email sequences, SMS follow-up, win-back campaigns, and drip nurture — all automated. Like Birdeye, but with neuroscience built in.",
+                        },
+                        {
+                            icon: "🧠", label: "AI SEARCH", badge: "rgba(59,130,246,0.15)", badgeTxt: "#60a5fa",
+                            title: "GEO & AEO Domination",
+                            body: "We make ChatGPT, Gemini, and Perplexity recommend YOUR business by name. Generative Engine Optimization is the new SEO — and we own it.",
+                        },
+                        {
+                            icon: "📍", label: "", badge: "", badgeTxt: "",
+                            title: "Google Business Profile",
+                            body: "Full GMB setup, optimization, review automation, and local search domination. 46% of Google searches have local intent — we capture them.",
+                        },
+                        {
+                            icon: "⭐", label: "", badge: "", badgeTxt: "",
+                            title: "Review Engine",
+                            body: "AI-powered review collection and reputation management. Automatically request, monitor, and respond to reviews across Google and 200+ platforms.",
+                        },
+                        {
+                            icon: "🌐", label: "WEB 4.0", badge: "rgba(251,191,36,0.15)", badgeTxt: "#fbbf24",
+                            title: "Website Builder",
+                            body: "Next-gen websites built with neuroscience-driven UX, ambient voice triggers, and conversion architecture. Not templates — engineered sales machines.",
+                        },
+                        {
+                            icon: "📱", label: "", badge: "", badgeTxt: "",
+                            title: "Social AI",
+                            body: "AI agents create, schedule, and monitor social posts tuned for engagement. Content that triggers the Limbic Brain — not just fills a calendar.",
+                        },
+                        {
+                            icon: "📊", label: "", badge: "", badgeTxt: "",
+                            title: "Revenue Intelligence",
+                            body: "Real-time dashboards showing exactly where revenue is leaking and how much your AI workforce is recovering. Full audit trail, zero guesswork.",
+                        },
+                    ].map((card) => (
+                        <div
+                            key={card.title}
+                            style={{
+                                background: "rgba(255,255,255,0.035)",
+                                backdropFilter: "blur(16px)",
+                                WebkitBackdropFilter: "blur(16px)",
+                                border: "1px solid rgba(59,130,246,0.15)",
+                                borderRadius: 18,
+                                padding: "28px 24px",
+                                transition: "border-color 0.35s, box-shadow 0.35s, transform 0.35s",
+                                cursor: "default",
+                            }}
+                            onMouseEnter={e => {
+                                const el = e.currentTarget;
+                                el.style.borderColor = "rgba(59,130,246,0.5)";
+                                el.style.transform = "translateY(-4px)";
+                                el.style.boxShadow = "0 0 28px rgba(59,130,246,0.12), 0 8px 40px rgba(0,0,0,0.4)";
+                            }}
+                            onMouseLeave={e => {
+                                const el = e.currentTarget;
+                                el.style.borderColor = "rgba(59,130,246,0.15)";
+                                el.style.transform = "";
+                                el.style.boxShadow = "";
+                            }}
+                        >
+                            {/* Icon + optional badge */}
+                            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
+                                <span style={{ fontSize: 28, lineHeight: 1 }}>{card.icon}</span>
+                                {card.label && (
+                                    <span style={{
+                                        fontSize: 9, fontWeight: 900,
+                                        background: card.badge,
+                                        color: card.badgeTxt,
+                                        padding: "3px 10px", borderRadius: 20,
+                                        letterSpacing: "0.12em",
+                                        border: `1px solid ${card.badgeTxt}33`,
+                                    }}>
+                                        {card.label}
+                                    </span>
+                                )}
+                            </div>
+
+                            {/* Title */}
+                            <h3 style={{
+                                fontSize: 17, fontWeight: 800, color: "#fff",
+                                margin: "0 0 10px", lineHeight: 1.3,
+                            }}>
+                                {card.title}
+                            </h3>
+
+                            {/* Body */}
+                            <p style={{
+                                fontSize: 13, color: "rgba(255,255,255,0.5)",
+                                lineHeight: 1.65, margin: 0,
+                            }}>
+                                {card.body}
+                            </p>
+                        </div>
+                    ))}
+                </div>
             </section>
 
-
-            {/* ── Elite 11 Workforce — Agent Showcase (Carousel) ── */}
-            <section className="section-container" style={{ textAlign: "center", paddingTop: 80, paddingBottom: 80 }}>
+            {/* ── Elite 11 Live Agents — AgentCarousel ─────────────────────── */}
+            <section className="section-container" style={{ paddingTop: 20, paddingBottom: 80 }}>
                 <div style={{ maxWidth: 1000, margin: "0 auto" }}>
-                    <div style={{
-                        display: "inline-flex", alignItems: "center", gap: 8,
-                        background: "rgba(0,255,65,0.07)", border: "1px solid rgba(0,255,65,0.2)",
-                        borderRadius: 30, padding: "5px 16px", marginBottom: 20,
-                        fontSize: 10, fontWeight: 800, color: "#00ff41",
-                        letterSpacing: "0.14em", textTransform: "uppercase",
-                        backdropFilter: "blur(8px)",
-                    }}>
-                        <span style={{
-                            width: 7, height: 7, borderRadius: "50%",
-                            background: "#00ff41", display: "inline-block",
-                            boxShadow: "0 0 8px #00ff41",
-                            animation: "bdx-badge-blink 1.4s ease-in-out infinite",
-                        }} />
-                        11 AI Agents · Online Now · Zero Calls Missed
-                    </div>
-                    <div className="section-label" style={{ color: "#3b82f6" }}>The Elite Team</div>
-                    <h2 className="section-title">
-                        The Elite 11 <span className="animated-gradient-text">Workforce.</span>
-                    </h2>
-                    <p className="section-desc">
-                        The World&apos;s First Autonomous Neuro-Workforce. Our agents aren&apos;t just bots. They are specialists
-                        that operate 24/7 to capture, qualify, and close for your business.
-                    </p>
-
                     <AgentCarousel onTalkTo={(agentId) => {
                         window.scrollTo({ top: 0, behavior: "smooth" });
                         if (teamRef.current) { teamRef.current.initializeWithAgent(agentId); return; }
@@ -1074,6 +1163,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
                     }} />
                 </div>
             </section>
+
 
             {/* ── Trusted By — Animated Ticker ───────────── */}
             <div className="ticker-wrapper">
