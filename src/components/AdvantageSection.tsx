@@ -253,6 +253,7 @@ function ClusterBlock({ cluster, isActive, onToggle }: {
                         paddingBottom: 32,
                         cursor: "grab",
                         userSelect: "none",
+                        touchAction: "pan-y", /* allow vertical page scroll on touch */
                     }}
                     onMouseDown={onMouseDown}
                     onMouseMove={onMouseMove}

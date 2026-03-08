@@ -56,10 +56,16 @@ body {
 }
 
 /* ═══ MOBILE OPTIMIZATION ═══ */
+
+/* Only html/body get overflow-x:hidden — never div/section
+   (applying it to divs kills vertical scroll on mobile)    */
 html,
 body {
   overflow-x: hidden;
+  overflow-y: auto;
   max-width: 100vw;
+  touch-action: pan-y;
+  /* allow vertical touch scroll everywhere */
 }
 
 @media (max-width: 768px) {
@@ -68,26 +74,27 @@ body {
   body {
     -webkit-overflow-scrolling: touch;
     overflow-x: hidden !important;
+    overflow-y: auto !important;
     position: relative;
     width: 100%;
     max-width: 100vw;
   }
 
-  /* Prevent any element from causing horizontal overflow */
+  /* Only target the actual containers that create horizontal overflow;
+     do NOT apply overflow-x:hidden to generic div — it breaks scroll */
   main,
   section,
-  div,
   footer,
   nav,
   header {
     max-width: 100vw;
-    overflow-x: hidden;
+    overflow-x: clip;
+    /* clip, not hidden — keeps vertical scroll intact */
   }
 
   /* Force all sections to respect mobile width */
   .section-container {
     padding: 40px 16px !important;
-    overflow: hidden;
   }
 
   /* Fix font sizes for mobile */
