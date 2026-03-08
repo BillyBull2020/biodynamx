@@ -973,8 +973,6 @@ export default function VaultUI({ apiKey }: VaultProps) {
                 </div>
             </section>
 
-            {/* ── BioDynamX Advantage Vault — 21-Card Horizontal Kinetic Stack ── */}
-            <AdvantageVault />
 
             {/* ── ONE PLATFORM — 9 Capability Cards ────────────────────────── */}
             <section className="section-container" style={{
@@ -1148,6 +1146,9 @@ export default function VaultUI({ apiKey }: VaultProps) {
                     ))}
                 </div>
             </section>
+
+            {/* ── BioDynamX Advantage Vault — 21-Card Horizontal Kinetic Stack ── */}
+            <AdvantageVault />
 
             {/* ── Elite 11 Live Agents — AgentCarousel ─────────────────────── */}
             <section className="section-container" style={{ paddingTop: 20, paddingBottom: 80 }}>
