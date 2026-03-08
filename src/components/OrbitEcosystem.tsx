@@ -128,6 +128,8 @@ export default function OrbitEcosystem() {
     const [hasStarted, setHasStarted] = useState(false);
     const [activeIdx, setActiveIdx] = useState(-1);
     const [showPrompt, setShowPrompt] = useState(false); // "Tap to hear"
+    const [orbFlashColor, setOrbFlashColor] = useState<string | null>(null);
+    const orbFlashTimerRef = useRef<NodeJS.Timeout | null>(null);
 
     // Responsive orbit radius
     useEffect(() => {
@@ -216,6 +218,18 @@ export default function OrbitEcosystem() {
         window.addEventListener("biodynamx:stop-relay", handler);
         return () => window.removeEventListener("biodynamx:stop-relay", handler);
     }, [stopRelay]);
+
+    // ★ ORB FLASH: When a user selects an agent for 1:1, flash the orb
+    useEffect(() => {
+        const handler = (e: Event) => {
+            const { color } = (e as CustomEvent<{ color: string }>).detail;
+            setOrbFlashColor(color);
+            if (orbFlashTimerRef.current) clearTimeout(orbFlashTimerRef.current);
+            orbFlashTimerRef.current = setTimeout(() => setOrbFlashColor(null), 2500);
+        };
+        window.addEventListener("biodynamx:orb-flash", handler);
+        return () => window.removeEventListener("biodynamx:orb-flash", handler);
+    }, []);
 
     // Gate 1: ONLY click / touchstart unlock audio — scroll does NOT
     useEffect(() => {
@@ -308,7 +322,14 @@ export default function OrbitEcosystem() {
 
     return (
         <div ref={containerRef} className={`orbit3d-viewport ${isVisible ? "visible" : ""}`}>
-            <div className="orbit3d-ambient" />
+            {/* ★ Orb ambient — flashes to agent color on 1:1 selection */}
+            <div
+                className="orbit3d-ambient"
+                style={orbFlashColor ? {
+                    background: `radial-gradient(ellipse 80% 80% at 50% 50%, ${orbFlashColor}28 0%, transparent 70%)`,
+                    transition: "background 0.4s ease",
+                } : { transition: "background 1.5s ease" }}
+            />
 
             <div className="orbit3d-scene">
                 <div className="orbit3d-track orbit3d-track-1" />
