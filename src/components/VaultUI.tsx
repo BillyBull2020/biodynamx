@@ -19,7 +19,7 @@ import OrbitEcosystem from "./OrbitEcosystem";
 import NeuralOrb from "./NeuralOrb";
 import JennySpline from "./JennySpline";
 import GlitchOverlay from "./GlitchOverlay";
-import AdvantageSection from "./AdvantageSection";
+import TransformationSection from "./TransformationSection";
 import AgentCarousel from "./AgentCarousel";
 import { VisualJenny } from "@/lib/visual-jenny";
 import { VisualBridge, type VisualCommand } from "@/lib/visual-bridge";
@@ -1510,8 +1510,8 @@ export default function VaultUI({ apiKey }: VaultProps) {
                 </div>
             </section>
 
-            {/* ── BioDynamX Advantage ── */}
-            <AdvantageSection />
+            {/* ── The Neuroscience Transformation (Friction vs Flow) ── */}
+            <TransformationSection />
 
 
 
