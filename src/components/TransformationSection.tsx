@@ -74,8 +74,29 @@ export default function TransformationSection() {
 
     const audioRef = useRef<HTMLAudioElement | null>(null);
 
+    const gsapCtxRef = useRef<gsap.Context | null>(null);
+
     const handleActivateBen = () => {
-        if (audioPlaying) return;
+        if (audioPlaying) {
+            // DEACTIVATE LOGIC
+            setAudioPlaying(false);
+            if (audioRef.current) {
+                audioRef.current.pause();
+                audioRef.current.currentTime = 0;
+            }
+            if (gsapCtxRef.current) {
+                gsapCtxRef.current.revert();
+            }
+            // Manually reset styles quickly just in case
+            gsap.killTweensOf(frictionRef.current);
+            gsap.to(frictionRef.current, { backgroundColor: "rgba(20, 15, 15, 0.4)", duration: 0.5 });
+            gsap.killTweensOf(visualizerRef.current);
+            gsap.to(visualizerRef.current, { scale: 1, boxShadow: "none", duration: 1 });
+            gsap.killTweensOf(ctaRef.current);
+            gsap.to(ctaRef.current, { scale: 1, backgroundColor: "transparent", color: "#FFD700", duration: 0.5 });
+            return;
+        }
+
         setAudioPlaying(true);
 
         const url = "/assets/voices/ben-audit.mp3";
@@ -119,6 +140,8 @@ export default function TransformationSection() {
 
         }, sectionRef);
 
+        gsapCtxRef.current = ctx;
+
         audio.onended = () => {
             setAudioPlaying(false);
             ctx.revert(); // clean up animation timeline
@@ -161,6 +184,13 @@ export default function TransformationSection() {
                 position: "relative",
                 padding: "80px 24px",
                 fontFamily: "var(--font-inter)",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                perspective: "1200px",
+                width: "100%",
+                maxWidth: "100%",
+                overflowX: "hidden",
             }}
         >
             {/* Ambient Background Grid for Neuro Vibe */}
@@ -244,15 +274,10 @@ export default function TransformationSection() {
                             </>
                         ) : (
                             <>
-                                <div style={{ display: "flex", gap: 4, height: 40, alignItems: "center", justifyContent: "center" }}>
-                                    {[1, 2, 3, 4, 5].map(i => (
-                                        <div key={i} style={{
-                                            width: 4, height: "100%", background: "#FFD700", borderRadius: 4,
-                                            animation: `bounce ${0.4 + (i * 0.1)}s ease infinite alternate`
-                                        }} />
-                                    ))}
+                                <div style={{ fontSize: 40, marginBottom: 8 }}>🛑</div>
+                                <div style={{ fontSize: 13, fontWeight: 800, color: "#ef4444", letterSpacing: "0.1em", textTransform: "uppercase" }}>
+                                    Deactivate
                                 </div>
-                                <div style={{ fontSize: 11, fontWeight: 800, color: "#FFD700", marginTop: 12, letterSpacing: "0.1em" }}>ANALYZING...</div>
                             </>
                         )}
                     </div>

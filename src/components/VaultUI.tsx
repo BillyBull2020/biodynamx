@@ -952,6 +952,50 @@ export default function VaultUI({ apiKey }: VaultProps) {
             {/* ═══════════════════════════════════════════════════════════ */}
             {/* BELOW THE FOLD                                            */}
             {/* ═══════════════════════════════════════════════════════════ */}
+
+            {/* ── The Neuroscience Transformation (Friction vs Flow / Orb) ── */}
+            <TransformationSection />
+
+            {/* ── Elite 11 Workforce — Agent Showcase (Carousel) ── */}
+            <section className="section-container" style={{ textAlign: "center", paddingTop: 80, paddingBottom: 80 }}>
+                <div style={{ maxWidth: 1000, margin: "0 auto" }}>
+                    <div style={{
+                        display: "inline-flex", alignItems: "center", gap: 8,
+                        background: "rgba(0,255,65,0.07)", border: "1px solid rgba(0,255,65,0.2)",
+                        borderRadius: 30, padding: "5px 16px", marginBottom: 20,
+                        fontSize: 10, fontWeight: 800, color: "#00ff41",
+                        letterSpacing: "0.14em", textTransform: "uppercase",
+                        backdropFilter: "blur(8px)",
+                    }}>
+                        <span style={{
+                            width: 7, height: 7, borderRadius: "50%",
+                            background: "#00ff41", display: "inline-block",
+                            boxShadow: "0 0 8px #00ff41",
+                            animation: "bdx-badge-blink 1.4s ease-in-out infinite",
+                        }} />
+                        11 AI Agents · Online Now · Zero Calls Missed
+                    </div>
+                    <div className="section-label" style={{ color: "#3b82f6" }}>The Elite Team</div>
+                    <h2 className="section-title">
+                        The Elite 11 <span className="animated-gradient-text">Workforce.</span>
+                    </h2>
+                    <p className="section-desc">
+                        The World&apos;s First Autonomous Neuro-Workforce. Our agents aren&apos;t just bots. They are specialists
+                        that operate 24/7 to capture, qualify, and close for your business.
+                    </p>
+
+                    <AgentCarousel onTalkTo={(agentId) => {
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                        if (teamRef.current) { teamRef.current.initializeWithAgent(agentId); return; }
+                        if (!apiKey) { setErrorText("API key missing"); return; }
+                        setErrorText(null);
+                        const t = createTeam();
+                        teamRef.current = t;
+                        t.initializeWithAgent(agentId);
+                    }} />
+                </div>
+            </section>
+
             {/* ── Trusted By — Animated Ticker ───────────── */}
             <div className="ticker-wrapper">
                 <div className="section-label" style={{ marginBottom: 18 }}>Trusted By Industry Leaders</div>
@@ -1328,43 +1372,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
                         </div>
                     </div>
 
-                    {/* ── Elite 11 Workforce — Agent Showcase ── */}
-                    <div style={{ marginTop: 60 }}>
-                        <div style={{
-                            display: "inline-flex", alignItems: "center", gap: 8,
-                            background: "rgba(0,255,65,0.07)", border: "1px solid rgba(0,255,65,0.2)",
-                            borderRadius: 30, padding: "5px 16px", marginBottom: 20,
-                            fontSize: 10, fontWeight: 800, color: "#00ff41",
-                            letterSpacing: "0.14em", textTransform: "uppercase",
-                            backdropFilter: "blur(8px)",
-                        }}>
-                            <span style={{
-                                width: 7, height: 7, borderRadius: "50%",
-                                background: "#00ff41", display: "inline-block",
-                                boxShadow: "0 0 8px #00ff41",
-                                animation: "bdx-badge-blink 1.4s ease-in-out infinite",
-                            }} />
-                            11 AI Agents · Online Now · Zero Calls Missed
-                        </div>
-                        <div className="section-label" style={{ color: "#3b82f6" }}>The Elite Team</div>
-                        <h2 className="section-title">
-                            The Elite 11 <span className="animated-gradient-text">Workforce.</span>
-                        </h2>
-                        <p className="section-desc">
-                            The World&apos;s First Autonomous Neuro-Workforce. Our agents aren&apos;t just bots. They are specialists
-                            that operate 24/7 to capture, qualify, and close for your business.
-                        </p>
 
-                        <AgentCarousel onTalkTo={(agentId) => {
-                            window.scrollTo({ top: 0, behavior: "smooth" });
-                            if (teamRef.current) { teamRef.current.initializeWithAgent(agentId); return; }
-                            if (!apiKey) { setErrorText("API key missing"); return; }
-                            setErrorText(null);
-                            const t = createTeam();
-                            teamRef.current = t;
-                            t.initializeWithAgent(agentId);
-                        }} />
-                    </div>
 
                     {/* Humanity Challenge CTA */}
                     {!isActive && (
@@ -1509,9 +1517,6 @@ export default function VaultUI({ apiKey }: VaultProps) {
                     )}
                 </div>
             </section>
-
-            {/* ── The Neuroscience Transformation (Friction vs Flow) ── */}
-            <TransformationSection />
 
 
 
