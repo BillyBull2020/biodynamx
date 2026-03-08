@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import SignalDeckCarousel, { SIGNAL_VIDEOS } from "@/components/SignalDeckCarousel";
+import SignalDeckCarousel from "@/components/SignalDeckCarousel";
 import { SiteNav, SiteFooter } from "@/components/SiteNavFooter";
+import { SIGNAL_VIDEOS } from "@/data/signalVideos";
 
 // ── SEO ─────────────────────────────────────────────────────────────────────
 export const metadata: Metadata = {
