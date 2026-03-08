@@ -2286,3 +2286,249 @@ html {
         max-height: 220px;
     }
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+   MOBILE ACTIVE SESSION — ORB AS THE INTERFACE
+   "Orb is the controller. Text lives below it, never above it."
+   Directive: Top 55% = Orb. Bottom 45% = translucent speech shelf.
+   ═══════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+
+    /* ── When a voice session is ACTIVE on mobile ── */
+
+    /* The outer active session wrapper becomes a full-viewport flex column */
+    .vault-container.active .hero-container {
+        min-height: 100dvh;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        overflow: hidden;
+    }
+
+    /* Inner content: orb pinned to top 55% of screen */
+    .vault-container.active .hero-container>section>div:first-of-type {
+        width: 100%;
+        padding: 0;
+        flex: 0 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+    }
+
+    /* ── Orb container: centered, top portion, never overlap ── */
+    .vault-container.active .hero-container>section .orb-wrapper,
+    .vault-container.active [data-orb-wrap],
+    .vault-container.active .hero-container>section>div>div:first-child {
+        width: 240px !important;
+        height: 240px !important;
+        margin: 8px auto 0 !important;
+        flex-shrink: 0;
+    }
+
+    /* ── Neural link / button row: compact, sits right below orb ── */
+    .vault-container.active .hero-container>section>div>div:nth-child(2) {
+        margin-top: 8px !important;
+        padding: 0 16px;
+    }
+
+    /* ── IronClaw Visual Panel on mobile: bottom glass shelf ──
+          Never covers the orb. Translucent fade from bottom.        */
+    .vault-container.active [class*="IronClaw"],
+    .vault-container.active .ironclaw-visual-panel,
+    .vault-container.active .visual-panel-wrap {
+        position: fixed !important;
+        bottom: 80px;
+        /* sits above the Agent Dock */
+        left: 8px;
+        right: 8px;
+        max-height: 32vh;
+        overflow-y: auto;
+        background: linear-gradient(180deg,
+                rgba(0, 0, 0, 0) 0%,
+                rgba(0, 0, 0, 0.82) 18%,
+                rgba(0, 0, 0, 0.93) 100%) !important;
+        backdrop-filter: blur(14px) !important;
+        -webkit-backdrop-filter: blur(14px) !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 20px 20px 0 0;
+        padding: 12px 14px 16px !important;
+        z-index: 1200;
+    }
+
+    /* ── VisualProjection panel: same bottom shelf ── */
+    .vault-container.active .visual-projection-wrap {
+        position: fixed !important;
+        bottom: 80px;
+        left: 8px;
+        right: 8px;
+        max-height: 30vh;
+        overflow: hidden;
+        z-index: 1190;
+        border-radius: 20px 20px 0 0;
+        background: rgba(0, 0, 0, 0.85) !important;
+        backdrop-filter: blur(14px) !important;
+        -webkit-backdrop-filter: blur(14px) !important;
+    }
+
+    /* ── NEURAL LINK / status text: compact on mobile ── */
+    .vault-container.active .hero-container>section>div>div:nth-child(2)>div:first-child {
+        font-size: 9px !important;
+        letter-spacing: 0.12em !important;
+    }
+
+    /* ── Error panel: compact, not full-width card ── */
+    .vault-container.active .hero-container>section>div>div:nth-child(2)>div:last-child {
+        max-width: calc(100vw - 32px);
+        font-size: 11px !important;
+    }
+
+}
+
+/* Even smaller phones: shrink orb so it fits fully */
+@media (max-width: 480px) {
+
+    .vault-container.active .hero-container>section .orb-wrapper,
+    .vault-container.active [data-orb-wrap],
+    .vault-container.active .hero-container>section>div>div:first-child {
+        width: 200px !important;
+        height: 200px !important;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   KINETIC TYPOGRAPHY — Web 4.0 Live Generation Feel
+   Text feels like it is being spoken, not pre-printed.
+   Applied to IronClaw visual panel text during active sessions.
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Each word in the visual panel text animates in sequentially */
+.ironclaw-kinetic-text span,
+.visual-jenny-panel p span,
+.ironclaw-visual-panel p span {
+    display: inline;
+    opacity: 0;
+    animation: ktWordIn 0.22s ease-out forwards;
+}
+
+/* Each word gets a staggered delay via inline style or nth-child pattern */
+.ironclaw-kinetic-text span:nth-child(1) {
+    animation-delay: 0.00s;
+}
+
+.ironclaw-kinetic-text span:nth-child(2) {
+    animation-delay: 0.06s;
+}
+
+.ironclaw-kinetic-text span:nth-child(3) {
+    animation-delay: 0.12s;
+}
+
+.ironclaw-kinetic-text span:nth-child(4) {
+    animation-delay: 0.18s;
+}
+
+.ironclaw-kinetic-text span:nth-child(5) {
+    animation-delay: 0.24s;
+}
+
+.ironclaw-kinetic-text span:nth-child(6) {
+    animation-delay: 0.30s;
+}
+
+.ironclaw-kinetic-text span:nth-child(7) {
+    animation-delay: 0.36s;
+}
+
+.ironclaw-kinetic-text span:nth-child(8) {
+    animation-delay: 0.42s;
+}
+
+.ironclaw-kinetic-text span:nth-child(9) {
+    animation-delay: 0.48s;
+}
+
+.ironclaw-kinetic-text span:nth-child(10) {
+    animation-delay: 0.54s;
+}
+
+.ironclaw-kinetic-text span:nth-child(n+11) {
+    animation-delay: 0.60s;
+}
+
+@keyframes ktWordIn {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+        filter: blur(2px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+    }
+}
+
+/* Typing cursor on active speech panels */
+.ironclaw-kinetic-text::after,
+.vault-speaking .ironclaw-visual-panel p::after {
+    content: "▋";
+    display: inline-block;
+    opacity: 1;
+    color: rgba(0, 255, 65, 0.7);
+    font-size: 0.75em;
+    margin-left: 2px;
+    animation: ktCursor 0.9s step-end infinite;
+}
+
+@keyframes ktCursor {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+}
+
+/* ── Orb "breathing" animation when idle ──────────────────────── */
+.vault-container.active .neural-orb-idle {
+    animation: orbBreathe 4s ease-in-out infinite;
+}
+
+@keyframes orbBreathe {
+
+    0%,
+    100% {
+        transform: scale(1);
+        filter: brightness(1);
+    }
+
+    50% {
+        transform: scale(1.03);
+        filter: brightness(1.08);
+    }
+}
+
+/* ── Orb "pulse" when agent is speaking ──────────────────────── */
+.vault-container.active .neural-orb-speaking {
+    animation: orbSpeak 0.6s ease-in-out infinite alternate;
+}
+
+@keyframes orbSpeak {
+    from {
+        transform: scale(1);
+        filter: brightness(1);
+    }
+
+    to {
+        transform: scale(1.06);
+        filter: brightness(1.15) saturate(1.2);
+    }
+}
