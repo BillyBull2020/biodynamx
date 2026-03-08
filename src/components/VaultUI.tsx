@@ -368,17 +368,18 @@ export default function VaultUI({ apiKey }: VaultProps) {
 
     const TRANSLATIONS = {
         en: {
-            heroHeadline: "Imagine If Your Team Never Sleeps, Never Quits, and Never Misses a Close.",
+            heroHeadline: "Hire the Autonomous Workforce That Never Sleeps, Never Quits, and Never Drops a Lead.",
             heroTypewriterPrefix: "Built for ",
-            heroLossAversion: "Deploy the BioDynamX voice AI system that doesn't just answer questions—they identify pain, handle objections in real-time, and close deals 24/7 using proven neuro-sales frameworks. Scale your revenue without the overhead of additional employees.",
-            heroDiagnosticGap: "From building your new website and dominating AEO & GEO with SEO, to ensuring your brand is the top recommendation on AI search engines like ChatGPT, Perplexity, and Gemini—we handle it all. You take back your freedom. We scale your revenue.",
-            heroHook: "Stop working in your business and start working on it. Let our lead agent, Jenny, map out your custom AI growth strategy in exactly 60 seconds—free, live, on your screen right now.",
-            heroBadge: "🧠 World's first neurobiology-powered Artificial Intelligence · Built for Web 4.0",
-            heroWeb4Badge: "🌐 WEB 4.0 NATIVE",
-            onboardingSpots: `🔴 Only 3 free audits left today | 4,000+ Community Members | 5x ROI Guarantee`,
-            offerExpires: `⏳ Offer expires in 10h 36m 10s`,
-            buttonTalkExperts: "Show Me My AI Growth Strategy →",
-            buttonSecondary: "Automate the Tasks I Hate →",
+            heroLossAversion: "Right now, your business is bleeding revenue through missed calls, slow follow-ups, and abandoned funnels. Deploy the BioDynamX Swarm: an elite, 11-agent AI workforce that identifies pain, handles objections, and closes deals 24/7.",
+            heroDiagnosticGap: "From dominating AEO, GEO, and SEO to commanding the top recommendation slot on ChatGPT, Perplexity, and Gemini — we handle the architecture. You collect the recovered revenue.",
+            heroHook: "Your competitors are already deploying autonomous AI workforces. Every day you wait is another day of revenue walking out the door. Let Jenny run your free 60-second revenue audit — live, on your screen, right now.",
+            heroBadge: "\uD83E\uDDE0 World’s first neurobiology-powered Artificial Intelligence · Built for Web 4.0",
+            heroWeb4Badge: "\uD83C\uDF10 WEB 4.0 NATIVE",
+            onboardingSpots: `\uD83D\uDD34 Only 3 free audits left today | 4,000+ Community Members | 5x ROI Guarantee`,
+            offerExpires: `\u23F3 Offer expires in 10h 36m 10s`,
+            buttonTalkExperts: "Trigger My Free Revenue Audit \u2192",
+            buttonSecondary: "Deploy Jenny Live \u2192",
+
             buttonHandoff: "Switching to Mark...",
             buttonHandoffSub: "Building your ROI Bridge",
             buttonJennyActive: "Jenny is Analyzing",
@@ -432,17 +433,18 @@ export default function VaultUI({ apiKey }: VaultProps) {
             ],
         },
         es: {
-            heroHeadline: "Imagina Si Tu Equipo Nunca Duerme, Nunca Se Rinde y Nunca Pierde un Cierre.",
+            heroHeadline: "Contrata la Fuerza Laboral Autónoma Que Nunca Duerme, Nunca Se Rinde y Nunca Pierde un Lead.",
             heroTypewriterPrefix: "Diseñado para ",
-            heroLossAversion: "Implementa el sistema de voz IA de BioDynamX que no solo responde preguntas—identifica el dolor, maneja objeciones en tiempo real y cierra ventas 24/7 usando marcos comprobados de neuro-ventas. Escala tus ingresos sin el costo de empleados adicionales.",
-            heroDiagnosticGap: "Desde la creación de su nuevo sitio web y el dominio de AEO & GEO con SEO, hasta garantizar que su marca sea la recomendación principal en motores de búsqueda de IA como ChatGPT, Perplexity y Gemini—nos encargamos de todo. Usted recupera su libertad. Nosotros escalamos sus ingresos.",
-            heroHook: "Deje de trabajar en su negocio y comience a trabajar en él. Deje que nuestra agente principal, Jenny, diseñe su estrategia de crecimiento de IA personalizada en exactamente 60 segundos—gratis, en vivo, en su pantalla ahora mismo.",
-            heroBadge: "🧠 La primera Inteligencia Artificial impulsada por neurobiología del mundo · Diseñada para Web 4.0",
-            heroWeb4Badge: "🌐 WEB 4.0 NATIVO",
-            onboardingSpots: `🔴 Solo quedan 3 auditorías gratuitas hoy`,
-            offerExpires: `⏳ La oferta expira en 10h 36m 10s`,
-            buttonTalkExperts: "Muéstrame Mi Estrategia de Crecimiento de IA →",
-            buttonSecondary: "Automatiza las Tareas que Odio →",
+            heroLossAversion: "Ahora mismo, su negocio está perdiendo ingresos a través de llamadas perdidas, seguimientos lentos y embudos abandonados. Despliegue el enjambre BioDynamX: una fuerza laboral de IA de élite con 11 agentes que identifican el dolor, manejan objeciones y cierran tratos 24/7.",
+            heroDiagnosticGap: "Desde dominar AEO, GEO y SEO hasta comandar el puesto de recomendación principal en ChatGPT, Perplexity y Gemini — nosotros manejamos la arquitectura. Usted recauda los ingresos recuperados.",
+            heroHook: "Sus competidores ya están desplegando fuerzas de trabajo de IA autónomas. Cada día que espera es otro día de ingresos saliendo por la puerta. Deje que Jenny ejecute su auditoría de ingresos gratuita de 60 segundos — en vivo, en su pantalla, ahora mismo.",
+            heroBadge: "\uD83E\uDDE0 La primera Inteligencia Artificial impulsada por neurobiología del mundo · Diseñada para Web 4.0",
+            heroWeb4Badge: "\uD83C\uDF10 WEB 4.0 NATIVO",
+            onboardingSpots: `\uD83D\uDD34 Solo quedan 3 auditorías gratuitas hoy`,
+            offerExpires: `\u23F3 La oferta expira en 10h 36m 10s`,
+            buttonTalkExperts: "Iniciar Mi Auditoría de Ingresos Gratis \u2192",
+            buttonSecondary: "Desplegar Jenny En Vivo \u2192",
+
             buttonHandoff: "Cambiando a Mark...",
             buttonHandoffSub: "Construyendo su puente de ROI",
             buttonJennyActive: "Jenny está analizando",
@@ -1710,7 +1712,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
             }
 
 
-            {/* ── Risk-Free Guarantee ── */}
+            {/* ── Triple-Lock Guarantee ── */}
             <section
                 ref={auditCtaRef}
                 className="section-container"
@@ -1724,23 +1726,42 @@ export default function VaultUI({ apiKey }: VaultProps) {
                 <div style={{
                     maxWidth: 800, margin: "0 auto", textAlign: "center",
                     padding: "60px 40px",
-                    background: "linear-gradient(135deg, rgba(0,255,65,0.04) 0%, rgba(59,130,246,0.04) 100%)",
-                    border: "1px solid rgba(0,255,65,0.15)",
+                    background: "linear-gradient(135deg, rgba(0,255,65,0.06) 0%, rgba(59,130,246,0.06) 100%)",
+                    border: "1px solid rgba(0,255,65,0.2)",
                     borderRadius: 32,
                 }}>
                     <div style={{ fontSize: 48, marginBottom: 16 }}>🛡️</div>
-                    <h2 className="section-title">5x ROI — or your money back.</h2>
-                    <p className="section-desc" style={{ maxWidth: 540, margin: "0 auto 32px" }}>
-                        If our AI doesn&apos;t deliver at least 5x your investment in recovered revenue within 90 days, we&apos;ll refund every penny. No questions asked.
+                    <h2 className="section-title">The Triple-Lock 5X ROI Guarantee.</h2>
+                    <p className="section-desc" style={{ maxWidth: 600, margin: "0 auto 12px" }}>
+                        We don&apos;t do &ldquo;software trials.&rdquo; We execute enterprise deployments.
                     </p>
-                    <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="primary-btn-green" style={{ width: "auto", padding: "18px 48px" }}>
-                        Start Risk-Free Trial
+                    <p className="section-desc" style={{ maxWidth: 600, margin: "0 auto 32px" }}>
+                        If the BioDynamX Swarm does not recover at least 5X your $1,497 investment within 90 days, we wire every penny back. You assume absolutely zero financial risk. The only real risk is letting your competitors deploy this infrastructure before you do.
+                    </p>
+                    <button
+                        id="guarantee-cta"
+                        onClick={() => {
+                            // Neural Lock: Visual Isolation + Haptic + OneCallClose
+                            if (typeof window !== "undefined") {
+                                // 1 — Haptic pulse (mobile tangibility)
+                                if (navigator.vibrate) navigator.vibrate([15, 10, 15]);
+                                // 2 — Dispatch to OneCallClose overlay
+                                window.dispatchEvent(new CustomEvent("bdx:one-call-close", {
+                                    detail: { packageTier: "BIODYNAMX_90_DAY_VAULT", lockedPrice: 1497, source: "cta_button_guarantee" }
+                                }));
+                            }
+                        }}
+                        className="primary-btn-green cta-lock-guarantee stripe-trigger"
+                        style={{ width: "auto", padding: "18px 48px" }}
+                    >
+                        Lock In My 5X Guarantee →
                     </button>
                     <div style={{ marginTop: 16, fontSize: 12, color: "rgba(255,255,255,0.4)" }}>
-                        No contracts · Cancel anytime · Results in under 14 days
+                        No contracts &middot; Zero risk &middot; Results in under 14 days
                     </div>
                 </div>
             </section>
+
 
             {/* ── Pricing ── */}
             <section
@@ -1754,23 +1775,44 @@ export default function VaultUI({ apiKey }: VaultProps) {
                     transition: 'opacity 0.8s ease-out, transform 0.8s ease-out',
                 }}
             >
-                <div style={{ maxWidth: 500, margin: "0 auto", textAlign: "center" }}>
+                <div style={{ maxWidth: 520, margin: "0 auto", textAlign: "center" }}>
                     <div className="section-label">Investment</div>
                     <div className="pricing-card" style={{ marginTop: 24 }}>
-                        <div className="popular-badge">ELITE ACCESS</div>
-                        <div style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", marginBottom: 12 }}>BioDynamX Growth Engine — Done-For-You</div>
+                        <div className="popular-badge">THE BIODYNAMX VAULT</div>
+                        <div style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", marginBottom: 12 }}>All 11 Elite Agents — Fully Activated</div>
                         <div className="price-container">
                             <span className="price-anchor">$2,497</span>
                             <span className="price-main">$1,497</span>
                             <span className="price-suffix">/mo</span>
                         </div>
-                        <div style={{ fontSize: 11, fontWeight: 700, color: "#ff6b6b", marginTop: 8 }}>⚠️ Price increases to $2,497/mo after 90 days</div>
+                        <div style={{ fontSize: 11, fontWeight: 700, color: "#fbbf24", marginTop: 8 }}>
+                            🔒 Founder&apos;s Rate Locked-In — Standard Enterprise Rate: $2,497/mo (Waived, First 90 Days)
+                        </div>
                         <p style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", marginTop: 12 }}>
-                            One flat fee. All 11 agents included. We do the work. Unlimited potential.
+                            One flat deployment fee. We handle the architecture. You collect the recovered revenue.
                         </p>
+                        <button
+                            id="pricing-cta"
+                            className="primary-btn-green cta-lock-guarantee stripe-trigger"
+                            style={{ width: "100%", marginTop: 24, padding: "18px 0" }}
+                            onClick={() => {
+                                if (typeof window !== "undefined") {
+                                    if (navigator.vibrate) navigator.vibrate([15, 10, 15]);
+                                    window.dispatchEvent(new CustomEvent("bdx:one-call-close", {
+                                        detail: { packageTier: "BIODYNAMX_90_DAY_VAULT", lockedPrice: 1497, source: "cta_button_pricing" }
+                                    }));
+                                }
+                            }}
+                        >
+                            Lock In My 5X Guarantee →
+                        </button>
+                        <div style={{ marginTop: 12, fontSize: 11, color: "rgba(255,255,255,0.35)" }}>
+                            Zero financial risk &middot; 90-day guarantee &middot; Instant deployment
+                        </div>
                     </div>
                 </div>
             </section>
+
 
             {/* ── Footer ── */}
             <footer style={{

@@ -516,6 +516,10 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
                                                 bonus_applied: {
                                                     type: "BOOLEAN",
                                                     description: "Set true if Recovery Protocol was triggered and 12-month VIP bonus was offered to this prospect."
+                                                },
+                                                locked_price: {
+                                                    type: "INTEGER",
+                                                    description: "The locked-in Founder's rate being confirmed. Default: 1497. Use 0 if bonus/recovery variant applies."
                                                 }
                                             },
                                             required: ["package_tier", "bonus_applied"]
