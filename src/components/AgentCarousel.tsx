@@ -397,7 +397,18 @@ export default function AgentCarousel({ onTalkTo }: Props) {
           filter:brightness(1.18);
           transform:translateY(-2px);
         }
+        /* ── Mobile: center the coverflow stage, prevent overflow ── */
+        @media (max-width: 600px) {
+          .bdx-carousel-stage {
+            overflow: hidden !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          .bdx-arrow { display: none !important; }
+        }
       `}</style>
+
 
             <div
                 style={{ position: "relative" }}
@@ -499,7 +510,7 @@ export default function AgentCarousel({ onTalkTo }: Props) {
                                     key={a.id}
                                     onClick={() => !isActive && go(i)}
                                     style={{
-                                        position: "absolute", width: 392,
+                                        position: "absolute", width: "min(392px, 88vw)",
                                         transform: `translateX(${translateX}px) rotateY(${rotateY}deg) scale(${scale})`,
                                         transformOrigin: "center center",
                                         opacity, zIndex,

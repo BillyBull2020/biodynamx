@@ -903,24 +903,31 @@ export default function VaultUI({ apiKey }: VaultProps) {
             {/* BELOW THE FOLD                                            */}
             {/* ═══════════════════════════════════════════════════════════ */}
 
-            {/* ── 3D Neural Orbit — 11-Agent Voice Relay (right under hero) ── */}
-            <section className="section-container orbit-section" style={{
-                background: "linear-gradient(180deg, rgba(0,255,65,0.01) 0%, transparent 50%, rgba(59,130,246,0.01) 100%)",
-                paddingTop: 80,
-                paddingBottom: 80,
-                overflow: "visible",
-            }}>
-                <div style={{ maxWidth: 1000, margin: "0 auto", textAlign: "center" }}>
+            {/* ── 3D Neural Orbit — 11-Agent Voice Relay ── */}
+            <section
+                className="section-container orbit-section"
+                style={{
+                    background: "linear-gradient(180deg, rgba(0,255,65,0.01) 0%, transparent 50%, rgba(59,130,246,0.01) 100%)",
+                    padding: "clamp(40px,6vw,80px) clamp(12px,4vw,40px)",
+                    overflow: "visible",
+                }}
+            >
+                {/* Header — always above orb, never overlapping */}
+                <div style={{ maxWidth: 700, margin: "0 auto", textAlign: "center", marginBottom: "clamp(24px,4vw,40px)" }}>
                     <div className="section-label" style={{ color: "#3b82f6" }}>Meet the Elite 11</div>
-                    <h2 className="section-title">
+                    <h2 className="section-title" style={{ fontSize: "clamp(22px,4vw,40px)" }}>
                         The World&apos;s First <span style={{ color: "#00ff41" }}>Autonomous Neuro-Workforce.</span>
                     </h2>
-                    <p className="section-desc" style={{ maxWidth: 600, margin: "0 auto 40px" }}>
-                        Scroll down and listen as each agent introduces themselves. Every voice, every name, every role — engineered to close.
+                    <p className="section-desc" style={{ maxWidth: 560, margin: "0 auto" }}>
+                        Tap any agent and listen as they introduce themselves.
                     </p>
+                </div>
+                {/* Orb — full width, properly centered */}
+                <div style={{ width: "100%", maxWidth: 700, margin: "0 auto", position: "relative", zIndex: 1 }}>
                     <OrbitEcosystem />
                 </div>
             </section>
+
 
 
             {/* ── ONE PLATFORM — 9 Capability Cards ────────────────────────── */}
