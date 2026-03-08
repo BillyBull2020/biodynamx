@@ -27,11 +27,13 @@ import AgentDock from "./AgentDock";
 import AutonomousPing from "./AutonomousPing";
 import SwarmCollaboration from "./SwarmCollaboration";
 import OneCallClose from "./OneCallClose";
+import SwarmRecovery from "./SwarmRecovery";
 import { NeuralMemory } from "@/lib/neural-memory";
 import { triggerFullHandoff } from "@/lib/neural-audio";
 import { VisualJenny } from "@/lib/visual-jenny";
 import { VisualBridge, type VisualCommand } from "@/lib/visual-bridge";
 import { getKeywordEngine } from "@/lib/keyword-trigger-engine";
+import { useProximityHaptics } from "@/lib/use-proximity-haptics";
 import { initGSAPAnimations } from "@/lib/gsap-animations";
 import IronClawVisualPanel from "./IronClawVisualPanel";
 import "./VaultUI.css";
@@ -185,6 +187,9 @@ function VisualProjection({ activeVisual, fading }: { activeVisual: any, fading:
 
 export default function VaultUI({ apiKey }: VaultProps) {
     const teamRef = useRef<TeamOrchestrator | null>(null);
+
+    // ★ Predictive Haptics — proximity vibration on Advanta-Pods + Stripe triggers
+    useProximityHaptics();
 
     const [phase, setPhase] = useState<TeamPhase>("standby");
     const [visual, setVisual] = useState<VaultVisualState>({
@@ -739,6 +744,11 @@ export default function VaultUI({ apiKey }: VaultProps) {
 
             {/* ── Web 4.0: One-Call Close — 11-agent convergence overlay */}
             <OneCallClose />
+
+            {/* ── Web 4.0: Recovery Swarm — Hail Mary exit-intent closer */}
+            {/* Fires on mouseleave (tab-close intent) or 45s checkout stall */}
+            <SwarmRecovery />
+
             {/* ── Scroll Progress Bar ──────────────────────── */}
             {!isActive && (
                 <div
