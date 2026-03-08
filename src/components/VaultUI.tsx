@@ -21,6 +21,7 @@ import JennySpline from "./JennySpline";
 import GlitchOverlay from "./GlitchOverlay";
 
 import AgentCarousel from "./AgentCarousel";
+import AdvantageVault from "./AdvantageVault";
 import { VisualJenny } from "@/lib/visual-jenny";
 import { VisualBridge, type VisualCommand } from "@/lib/visual-bridge";
 import { initGSAPAnimations } from "@/lib/gsap-animations";
@@ -972,7 +973,10 @@ export default function VaultUI({ apiKey }: VaultProps) {
                 </div>
             </section>
 
-            {/* ── The Platform — Bridge section between Orbit and Carousel ── */}
+            {/* ── BioDynamX Advantage Vault — 21-Card Horizontal Kinetic Stack ── */}
+            <AdvantageVault />
+
+            {/* ── The Platform — Bridge below Vault, above Carousel ── */}
             <section className="section-container" style={{
                 textAlign: "center",
                 paddingTop: 100,
@@ -980,14 +984,11 @@ export default function VaultUI({ apiKey }: VaultProps) {
                 position: "relative",
                 overflow: "hidden",
             }}>
-                {/* Subtle background glow */}
                 <div style={{
-                    position: "absolute", inset: 0,
+                    position: "absolute", inset: 0, pointerEvents: "none",
                     background: "radial-gradient(ellipse 60% 40% at 50% 50%, rgba(59,130,246,0.06) 0%, transparent 70%)",
-                    pointerEvents: "none",
                 }} />
 
-                {/* Top accent rule */}
                 <div style={{
                     width: 120, height: 2, margin: "0 auto 40px",
                     background: "linear-gradient(90deg, transparent, #3b82f6 30%, #00ff41 70%, transparent)",
@@ -995,7 +996,6 @@ export default function VaultUI({ apiKey }: VaultProps) {
                 }} />
 
                 <div style={{ maxWidth: 820, margin: "0 auto", position: "relative" }}>
-                    {/* Eyebrow badge */}
                     <div style={{
                         display: "inline-flex", alignItems: "center", gap: 8,
                         background: "rgba(59,130,246,0.08)",
@@ -1013,30 +1013,27 @@ export default function VaultUI({ apiKey }: VaultProps) {
                         The Platform
                     </div>
 
-                    {/* Overline */}
                     <div className="section-label" style={{ color: "#3b82f6", marginBottom: 16 }}>
                         NEUROSCIENCE-POWERED
                     </div>
 
-                    {/* H2 */}
                     <h2 className="section-title" style={{ marginBottom: 24 }}>
                         One Platform.{" "}
-                        <span className="animated-gradient-text">Every Growth Lever.</span>
+                        <span className="animated-gradient-text">Every Growth Level.</span>
                     </h2>
 
-                    {/* Body */}
                     <p className="section-desc" style={{ maxWidth: 660, margin: "0 auto 0" }}>
                         We don&apos;t just answer calls. We build, automate, and dominate every channel
                         your customers use to find you — powered by the neurobiology of decision-making.
                     </p>
                 </div>
 
-                {/* Bottom accent rule */}
                 <div style={{
                     width: 80, height: 1, margin: "48px auto 0",
                     background: "linear-gradient(90deg, transparent, rgba(59,130,246,0.4), transparent)",
                 }} />
             </section>
+
 
             {/* ── Elite 11 Workforce — Agent Showcase (Carousel) ── */}
             <section className="section-container" style={{ textAlign: "center", paddingTop: 80, paddingBottom: 80 }}>
