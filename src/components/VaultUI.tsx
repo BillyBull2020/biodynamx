@@ -25,7 +25,10 @@ import AgentCarousel from "./AgentCarousel";
 import AdvantageVault from "./AdvantageVault";
 import AgentDock from "./AgentDock";
 import AutonomousPing from "./AutonomousPing";
+import SwarmCollaboration from "./SwarmCollaboration";
+import OneCallClose from "./OneCallClose";
 import { NeuralMemory } from "@/lib/neural-memory";
+import { triggerFullHandoff } from "@/lib/neural-audio";
 import { VisualJenny } from "@/lib/visual-jenny";
 import { VisualBridge, type VisualCommand } from "@/lib/visual-bridge";
 import { initGSAPAnimations } from "@/lib/gsap-animations";
@@ -550,6 +553,10 @@ export default function VaultUI({ apiKey }: VaultProps) {
                 if (p.endsWith("_active") || p === "checkout" || p === "stitching") {
                     setErrorText(null);
                 }
+                // ★ OneCallClose: fire when intent === purchase (checkout phase)
+                if (p === "checkout") {
+                    window.dispatchEvent(new CustomEvent("bdx:one-call-close"));
+                }
             },
             onStatusChange: () => { },
             onSpeakerChange: (speaker) => setIsSpeaking(speaker !== "idle"),
@@ -594,6 +601,11 @@ export default function VaultUI({ apiKey }: VaultProps) {
             setErrorText("API key missing");
             return;
         }
+
+        // ★ Neural Audio: play handoff whoosh as session begins
+        triggerFullHandoff();
+        // ★ Neural Memory: mark conversation active
+        NeuralMemory.update({ conversationActive: true, sessionStage: "Discovery" });
 
         setErrorText(null);
         const team = createTeam();
@@ -690,6 +702,12 @@ export default function VaultUI({ apiKey }: VaultProps) {
 
             {/* ── Web 4.0: Autonomous background task pings (top-right toasts) */}
             <AutonomousPing />
+
+            {/* ── Web 4.0: Swarm Collaboration feed (live session side-channel) */}
+            <SwarmCollaboration />
+
+            {/* ── Web 4.0: One-Call Close — 11-agent convergence overlay */}
+            <OneCallClose />
             {/* ── Scroll Progress Bar ──────────────────────── */}
             {!isActive && (
                 <div

@@ -23,6 +23,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import gsap from "gsap";
+import { triggerFullHandoff, triggerNeuralPing } from "@/lib/neural-audio";
 
 // ─── AGENT DATA ──────────────────────────────────────────────────────────────
 
@@ -618,6 +619,8 @@ export default function AgentCarousel({ onTalkTo }: Props) {
     const openDashboard = useCallback((agent: Agent) => {
         setDashboardAgent(agent);
         setDashboardVisible(true);
+        // ★ Neural Audio: spatial whoosh → neural ping (Web 4.0 handoff signal)
+        triggerFullHandoff();
         // Dispatch orb flash event with agent color
         window.dispatchEvent(new CustomEvent("biodynamx:orb-flash", { detail: { color: agent.color } }));
         window.dispatchEvent(new Event("biodynamx:stop-relay"));
@@ -630,6 +633,8 @@ export default function AgentCarousel({ onTalkTo }: Props) {
 
     const handleStartTalk = useCallback(() => {
         if (!dashboardAgent) return;
+        // ★ Neural Audio: confirmation ping on INITIATE 1:1
+        triggerNeuralPing();
         onTalkTo(dashboardAgent.id);
         setDashboardVisible(false);
     }, [dashboardAgent, onTalkTo]);
