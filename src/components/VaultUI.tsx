@@ -1200,8 +1200,14 @@ export default function VaultUI({ apiKey }: VaultProps) {
 
 
 
+            <section id="how-it-works" ref={howItWorksRef} aria-label="The BioDynamX Diagnostic Framework" className="section-container" style={{
+                opacity: howItWorksVisible ? 1 : 0,
+                transform: howItWorksVisible ? "translateY(0)" : "translateY(40px)",
+                transition: "opacity 0.8s ease-out, transform 0.8s ease-out",
+            }}>
                 <div style={{ maxWidth: 900, margin: "0 auto", textAlign: "center" }}>
                     <div className="section-label" style={{ color: '#a78bfa' }}>The Foundations</div>
+
                     <h2 data-speakable="true" className="section-title">
                         Your Customer&apos;s Brain Has 3 Layers.<br />
                         <span style={{ color: "#00ff41" }}>Our AI Platform Speaks to All Three.</span>
@@ -1414,378 +1420,378 @@ export default function VaultUI({ apiKey }: VaultProps) {
 
 
 
-    {/* ── Client Success Stories ─────────────────── */ }
-    <section className="section-container" style={{
-        background: "linear-gradient(180deg, transparent 0%, rgba(0,255,65,0.02) 50%, transparent 100%)",
-    }}>
-        <div style={{ maxWidth: 900, margin: "0 auto" }}>
-            <div className="section-label">Real Results From Real Businesses</div>
-            <h2 className="section-title">
-                Here&apos;s what happened <span style={{ color: "#00ff41" }}>after they said yes.</span>
-            </h2>
-
-            <div className="grid-responsive">
-                {/* Testimonial 1 — Dental */}
-                <div className="testimonial-card">
-                    <div className="testimonial-stat-pill stat-pill-green">+$14,200/mo</div>
-                    <div className="testimonial-quote">&ldquo;</div>
-                    <p className="testimonial-text">
-                        We were losing 40+ after-hours calls a month. BioDynamX&apos;s AI answers every single one,
-                        books them into our calendar, and follows up with a text. Our new patient numbers jumped 34%
-                        in the first month alone.
-                    </p>
-                    <div className="testimonial-author">
-                        <div className="author-avatar" style={{ background: "linear-gradient(135deg, #22c55e, #15803d)" }}>D</div>
-                        <div>
-                            <div className="author-name">Dr. Mike Santana</div>
-                            <div className="author-title">7-Location Dental Group · Phoenix, AZ</div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Testimonial 2 — Call Center */}
-                <div className="testimonial-card">
-                    <div className="testimonial-stat-pill stat-pill-blue">85% cost reduction</div>
-                    <div className="testimonial-quote">&ldquo;</div>
-                    <p className="testimonial-text">
-                        I was paying $6 per call with human agents and our close rate was terrible. BioDynamX
-                        handles our entire after-hours intake for $0.25/call. Close rate went from 12% to 31%.
-                        I wish I&apos;d found them sooner.
-                    </p>
-                    <div className="testimonial-author">
-                        <div className="author-avatar" style={{ background: "linear-gradient(135deg, #3b82f6, #2563eb)" }}>R</div>
-                        <div>
-                            <div className="author-name">Rachel Torres</div>
-                            <div className="author-title">Operations Director, PrimeConnect · Dallas, TX</div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Testimonial 3 — Real Estate */}
-                <div className="testimonial-card">
-                    <div className="testimonial-stat-pill stat-pill-orange">$22K recovered</div>
-                    <div className="testimonial-quote">&ldquo;</div>
-                    <p className="testimonial-text">
-                        Billy&apos;s team showed me I was losing $22K/month in dead leads. The AI texts back in 8 seconds
-                        and books showings automatically. My team went from chasing leads to closing deals.
-                        Best investment I&apos;ve made this year.
-                    </p>
-                    <div className="testimonial-author">
-                        <div className="author-avatar" style={{ background: "linear-gradient(135deg, #f59e0b, #d97706)" }}>J</div>
-                        <div>
-                            <div className="author-name">Jordan Smith</div>
-                            <div className="author-title">Principal Broker, Smith & Co. Realty · Miami, FL</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    {/* ── Before/After Transformation (Framework 5) ─────── */ }
-    <section className="section-container" style={{
-        background: "linear-gradient(180deg, transparent 0%, rgba(255,107,107,0.02) 30%, rgba(0,255,65,0.02) 70%, transparent 100%)",
-    }}>
-        <div style={{ maxWidth: 800, margin: "0 auto", textAlign: "center" }}>
-            <div className="section-label" style={{ color: "#ff6b6b" }}>The Transformation</div>
-            <h2 className="section-title">
-                This is the gap that&rsquo;s costing you <span style={{ color: "#ff6b6b" }}>$600/day.</span>
-            </h2>
-
-            <div className="grid-2-col-responsive" style={{ marginTop: 32, textAlign: "left" }}>
-                {/* WITHOUT */}
-                <div style={{
-                    padding: 28,
-                    background: "rgba(255,107,107,0.04)",
-                    border: "1px solid rgba(255,107,107,0.15)",
-                    borderRadius: 20,
-                }}>
-                    <div style={{
-                        fontSize: 11, fontWeight: 800, color: "#ff6b6b",
-                        letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 16,
-                    }}>❌ Without BioDynamX</div>
-                    {[
-                        "80+ calls/month go to voicemail",
-                        "Leads wait 3+ hours for a response",
-                        "You respond — your competitor already closed them",
-                        "After-hours calls = lost revenue",
-                        "No idea which leads are serious",
-                        "Revenue silently leaking every month",
-                    ].map((item) => (
-                        <div key={item} style={{
-                            fontSize: 13, color: "rgba(255,255,255,0.65)",
-                            padding: "8px 0",
-                            borderBottom: "1px solid rgba(255,255,255,0.05)",
-                            display: "flex", gap: 8, alignItems: "flex-start",
-                        }}>
-                            <span style={{ color: "#ff6b6b", flexShrink: 0 }}>✗</span>
-                            {item}
-                        </div>
-                    ))}
-                </div>
-
-                {/* WITH */}
-                <div style={{
-                    padding: 28,
-                    background: "rgba(0,255,65,0.04)",
-                    border: "1px solid rgba(0,255,65,0.15)",
-                    borderRadius: 20,
-                }}>
-                    <div style={{
-                        fontSize: 11, fontWeight: 800, color: "#00ff41",
-                        letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 16,
-                    }}>✅ With BioDynamX</div>
-                    {[
-                        "Every call answered in <1 second — 24/7",
-                        "Leads texted back in 8 seconds automatically",
-                        "AI qualifies, books, and follows up for you",
-                        "After-hours = your highest-converting time slot",
-                        "Every lead scored, tagged, and prioritized",
-                        "Revenue recovered — specific to YOUR business",
-                    ].map((item) => (
-                        <div key={item} style={{
-                            fontSize: 13, color: "rgba(255,255,255,0.75)",
-                            padding: "8px 0",
-                            borderBottom: "1px solid rgba(255,255,255,0.05)",
-                            display: "flex", gap: 8, alignItems: "flex-start",
-                        }}>
-                            <span style={{ color: "#00ff41", flexShrink: 0 }}>✓</span>
-                            {item}
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </div>
-    </section >
-
-
-
-
-    {/* ── Competitor Comparison ── */ }
-    <section
-        id="comparison"
-        ref={resultsStripRef}
-        className="section-container"
-        style={{
-            opacity: resultsStripVisible ? 1 : 0,
-            transform: resultsStripVisible ? 'translateY(0)' : 'translateY(40px)',
-            transition: 'opacity 0.8s ease-out, transform 0.8s ease-out',
-        }}
-    >
-        <div style={{ maxWidth: 800, margin: "0 auto", textAlign: "center" }}>
-            <div className="section-label">Why Not Just Hire?</div>
-            <h2 className="section-title">
-                BioDynamX vs. hiring a team. <span style={{ color: "#00ff41" }}>Do the math.</span>
-            </h2>
-
-            <div style={{
-                marginTop: 40,
-                background: "rgba(255,255,255,0.02)",
-                border: "1px solid rgba(255,255,255,0.08)",
-                borderRadius: 24,
-                overflow: "hidden",
+            {/* ── Client Success Stories ─────────────────── */}
+            <section className="section-container" style={{
+                background: "linear-gradient(180deg, transparent 0%, rgba(0,255,65,0.02) 50%, transparent 100%)",
             }}>
-                <div style={{
-                    display: "grid", gridTemplateColumns: "2fr 1.2fr 1.2fr",
-                    padding: "16px 24px",
-                    background: "rgba(255,255,255,0.04)",
-                    borderBottom: "1px solid rgba(255,255,255,0.08)",
-                    fontSize: 11, fontWeight: 800,
-                    color: "rgba(255,255,255,0.4)", letterSpacing: "0.1em",
-                }}>
-                    <span>FEATURE</span>
-                    <span style={{ textAlign: "center" }}>HUMAN TEAM</span>
-                    <span style={{ textAlign: "center", color: "#00ff41" }}>BIODYNAMX AI</span>
-                </div>
-
-                {[
-                    { f: "Monthly Cost", h: "$12,400+", a: "$1,497", high: true },
-                    { f: "Response Time", h: "3+ Hours", a: "< 1 Second" },
-                    { f: "Available Hours", h: "9 AM - 5 PM", a: "24/7/365" },
-                    { f: "Consistency", h: "Variable", a: "100% Perfect" },
-                    { f: "Sick Days / Turnover", h: "Constant", a: "Zero" },
-                ].map((row) => (
-                    <div key={row.f} style={{
-                        display: "grid", gridTemplateColumns: "2fr 1.2fr 1.2fr",
-                        padding: "14px 24px",
-                        borderBottom: "1px solid rgba(255,255,255,0.04)",
-                        fontSize: 13,
-                    }}>
-                        <span style={{ fontWeight: 600, color: "#fff" }}>{row.f}</span>
-                        <span style={{ textAlign: "center", color: row.high ? "#ff6b6b" : "rgba(255,255,255,0.4)" }}>{row.h}</span>
-                        <span style={{ textAlign: "center", color: "#00ff41", fontWeight: 700 }}>{row.a}</span>
-                    </div>
-                ))}
-            </div>
-            <div style={{ marginTop: 24, fontSize: 14, color: "rgba(255,255,255,0.6)" }}>
-                That&apos;s <span style={{ color: "#00ff41", fontWeight: 800 }}>96% less cost</span> for <span style={{ color: "#00ff41", fontWeight: 800 }}>10x more productivity.</span>
-            </div>
-        </div>
-    </section>
-
-    {/* ── Enterprise Security & Compliance ── */ }
-    {
-        !isActive && (
-            <section
-                id="security"
-                ref={authoritySectionRef}
-                className="section-container"
-                style={{
-                    background: "linear-gradient(180deg, transparent 0%, rgba(16,185,129,0.02) 100%)",
-                    opacity: authoritySectionVisible ? 1 : 0,
-                    transform: authoritySectionVisible ? 'translateY(0)' : 'translateY(40px)',
-                    transition: 'opacity 0.8s ease-out, transform 0.8s ease-out',
-                }}
-            >
-                <div style={{ maxWidth: 1000, margin: "0 auto", textAlign: "center" }}>
-                    <div className="section-label" style={{ color: "#10b981" }}>Enterprise Architecture</div>
+                <div style={{ maxWidth: 900, margin: "0 auto" }}>
+                    <div className="section-label">Real Results From Real Businesses</div>
                     <h2 className="section-title">
-                        Military-grade security. <span style={{ color: "#10b981" }}>Universal compliance.</span>
+                        Here&apos;s what happened <span style={{ color: "#00ff41" }}>after they said yes.</span>
                     </h2>
 
-                    <div style={{
-                        display: "grid",
-                        gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-                        gap: 16,
-                        marginTop: 40,
-                        textAlign: "left",
-                    }}>
-                        {[
-                            { icon: "🛡️", title: "PII Redaction", desc: "Sensitive customer data (SSNs, cards) is auto-redacted in real-time." },
-                            { icon: "🔒", title: "AES-256 Encryption", desc: "All data is encrypted at rest and in transit using TLS 1.3 standards." },
-                            { icon: "📊", title: "Full Audit Trail", desc: "Every word, tool call, and handoff is timestamped and searchable." },
-                            { icon: "⚖️", title: "Compliance Ready", desc: "Built for HIPAA, PCI-DSS, GDPR, and TCPA frameworks." },
-                        ].map((item) => (
-                            <div key={item.title} className="glass-card" style={{
-                                padding: 24, borderRadius: 20, border: "1px solid rgba(16,185,129,0.1)",
-                                background: "rgba(16,185,129,0.03)",
-                            }}>
-                                <div style={{ fontSize: 32, marginBottom: 12 }}>{item.icon}</div>
-                                <div style={{ fontSize: 16, fontWeight: 700, color: "#fff", marginBottom: 8 }}>{item.title}</div>
-                                <div style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", lineHeight: 1.6 }}>{item.desc}</div>
+                    <div className="grid-responsive">
+                        {/* Testimonial 1 — Dental */}
+                        <div className="testimonial-card">
+                            <div className="testimonial-stat-pill stat-pill-green">+$14,200/mo</div>
+                            <div className="testimonial-quote">&ldquo;</div>
+                            <p className="testimonial-text">
+                                We were losing 40+ after-hours calls a month. BioDynamX&apos;s AI answers every single one,
+                                books them into our calendar, and follows up with a text. Our new patient numbers jumped 34%
+                                in the first month alone.
+                            </p>
+                            <div className="testimonial-author">
+                                <div className="author-avatar" style={{ background: "linear-gradient(135deg, #22c55e, #15803d)" }}>D</div>
+                                <div>
+                                    <div className="author-name">Dr. Mike Santana</div>
+                                    <div className="author-title">7-Location Dental Group · Phoenix, AZ</div>
+                                </div>
                             </div>
-                        ))}
+                        </div>
+
+                        {/* Testimonial 2 — Call Center */}
+                        <div className="testimonial-card">
+                            <div className="testimonial-stat-pill stat-pill-blue">85% cost reduction</div>
+                            <div className="testimonial-quote">&ldquo;</div>
+                            <p className="testimonial-text">
+                                I was paying $6 per call with human agents and our close rate was terrible. BioDynamX
+                                handles our entire after-hours intake for $0.25/call. Close rate went from 12% to 31%.
+                                I wish I&apos;d found them sooner.
+                            </p>
+                            <div className="testimonial-author">
+                                <div className="author-avatar" style={{ background: "linear-gradient(135deg, #3b82f6, #2563eb)" }}>R</div>
+                                <div>
+                                    <div className="author-name">Rachel Torres</div>
+                                    <div className="author-title">Operations Director, PrimeConnect · Dallas, TX</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Testimonial 3 — Real Estate */}
+                        <div className="testimonial-card">
+                            <div className="testimonial-stat-pill stat-pill-orange">$22K recovered</div>
+                            <div className="testimonial-quote">&ldquo;</div>
+                            <p className="testimonial-text">
+                                Billy&apos;s team showed me I was losing $22K/month in dead leads. The AI texts back in 8 seconds
+                                and books showings automatically. My team went from chasing leads to closing deals.
+                                Best investment I&apos;ve made this year.
+                            </p>
+                            <div className="testimonial-author">
+                                <div className="author-avatar" style={{ background: "linear-gradient(135deg, #f59e0b, #d97706)" }}>J</div>
+                                <div>
+                                    <div className="author-name">Jordan Smith</div>
+                                    <div className="author-title">Principal Broker, Smith & Co. Realty · Miami, FL</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
-        )
-    }
 
+            {/* ── Before/After Transformation (Framework 5) ─────── */}
+            <section className="section-container" style={{
+                background: "linear-gradient(180deg, transparent 0%, rgba(255,107,107,0.02) 30%, rgba(0,255,65,0.02) 70%, transparent 100%)",
+            }}>
+                <div style={{ maxWidth: 800, margin: "0 auto", textAlign: "center" }}>
+                    <div className="section-label" style={{ color: "#ff6b6b" }}>The Transformation</div>
+                    <h2 className="section-title">
+                        This is the gap that&rsquo;s costing you <span style={{ color: "#ff6b6b" }}>$600/day.</span>
+                    </h2>
 
-    {/* ── Risk-Free Guarantee ── */ }
-    <section
-        ref={auditCtaRef}
-        className="section-container"
-        style={{
-            padding: "80px 32px",
-            opacity: auditCtaVisible ? 1 : 0,
-            transform: auditCtaVisible ? 'translateY(0)' : 'translateY(40px)',
-            transition: 'opacity 0.8s ease-out, transform 0.8s ease-out',
-        }}
-    >
-        <div style={{
-            maxWidth: 800, margin: "0 auto", textAlign: "center",
-            padding: "60px 40px",
-            background: "linear-gradient(135deg, rgba(0,255,65,0.04) 0%, rgba(59,130,246,0.04) 100%)",
-            border: "1px solid rgba(0,255,65,0.15)",
-            borderRadius: 32,
-        }}>
-            <div style={{ fontSize: 48, marginBottom: 16 }}>🛡️</div>
-            <h2 className="section-title">5x ROI — or your money back.</h2>
-            <p className="section-desc" style={{ maxWidth: 540, margin: "0 auto 32px" }}>
-                If our AI doesn&apos;t deliver at least 5x your investment in recovered revenue within 90 days, we&apos;ll refund every penny. No questions asked.
-            </p>
-            <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="primary-btn-green" style={{ width: "auto", padding: "18px 48px" }}>
-                Start Risk-Free Trial
-            </button>
-            <div style={{ marginTop: 16, fontSize: 12, color: "rgba(255,255,255,0.4)" }}>
-                No contracts · Cancel anytime · Results in under 14 days
-            </div>
-        </div>
-    </section>
+                    <div className="grid-2-col-responsive" style={{ marginTop: 32, textAlign: "left" }}>
+                        {/* WITHOUT */}
+                        <div style={{
+                            padding: 28,
+                            background: "rgba(255,107,107,0.04)",
+                            border: "1px solid rgba(255,107,107,0.15)",
+                            borderRadius: 20,
+                        }}>
+                            <div style={{
+                                fontSize: 11, fontWeight: 800, color: "#ff6b6b",
+                                letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 16,
+                            }}>❌ Without BioDynamX</div>
+                            {[
+                                "80+ calls/month go to voicemail",
+                                "Leads wait 3+ hours for a response",
+                                "You respond — your competitor already closed them",
+                                "After-hours calls = lost revenue",
+                                "No idea which leads are serious",
+                                "Revenue silently leaking every month",
+                            ].map((item) => (
+                                <div key={item} style={{
+                                    fontSize: 13, color: "rgba(255,255,255,0.65)",
+                                    padding: "8px 0",
+                                    borderBottom: "1px solid rgba(255,255,255,0.05)",
+                                    display: "flex", gap: 8, alignItems: "flex-start",
+                                }}>
+                                    <span style={{ color: "#ff6b6b", flexShrink: 0 }}>✗</span>
+                                    {item}
+                                </div>
+                            ))}
+                        </div>
 
-    {/* ── Pricing ── */ }
-    <section
-        id="pricing"
-        ref={finalCtaRef}
-        className="section-container"
-        style={{
-            opacity: finalCtaVisible ? 1 : 0,
-            transform: finalCtaVisible ? 'translateY(0)' : 'translateY(40px)',
-            transition: 'opacity 0.8s ease-out, transform 0.8s ease-out',
-        }}
-    >
-        <div style={{ maxWidth: 500, margin: "0 auto", textAlign: "center" }}>
-            <div className="section-label">Investment</div>
-            <div className="pricing-card" style={{ marginTop: 24 }}>
-                <div className="popular-badge">ELITE ACCESS</div>
-                <div style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", marginBottom: 12 }}>BioDynamX Growth Engine — Done-For-You</div>
-                <div className="price-container">
-                    <span className="price-anchor">$2,497</span>
-                    <span className="price-main">$1,497</span>
-                    <span className="price-suffix">/mo</span>
+                        {/* WITH */}
+                        <div style={{
+                            padding: 28,
+                            background: "rgba(0,255,65,0.04)",
+                            border: "1px solid rgba(0,255,65,0.15)",
+                            borderRadius: 20,
+                        }}>
+                            <div style={{
+                                fontSize: 11, fontWeight: 800, color: "#00ff41",
+                                letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 16,
+                            }}>✅ With BioDynamX</div>
+                            {[
+                                "Every call answered in <1 second — 24/7",
+                                "Leads texted back in 8 seconds automatically",
+                                "AI qualifies, books, and follows up for you",
+                                "After-hours = your highest-converting time slot",
+                                "Every lead scored, tagged, and prioritized",
+                                "Revenue recovered — specific to YOUR business",
+                            ].map((item) => (
+                                <div key={item} style={{
+                                    fontSize: 13, color: "rgba(255,255,255,0.75)",
+                                    padding: "8px 0",
+                                    borderBottom: "1px solid rgba(255,255,255,0.05)",
+                                    display: "flex", gap: 8, alignItems: "flex-start",
+                                }}>
+                                    <span style={{ color: "#00ff41", flexShrink: 0 }}>✓</span>
+                                    {item}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                 </div>
-                <div style={{ fontSize: 11, fontWeight: 700, color: "#ff6b6b", marginTop: 8 }}>⚠️ Price increases to $2,497/mo after 90 days</div>
-                <p style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", marginTop: 12 }}>
-                    One flat fee. All 11 agents included. We do the work. Unlimited potential.
-                </p>
-            </div>
-        </div>
-    </section>
+            </section >
 
-    {/* ── Footer ── */ }
-    <footer style={{
-        padding: "60px 32px 32px",
-        borderTop: "1px solid rgba(255,255,255,0.05)",
-        background: "rgba(0,0,0,0.2)",
-    }}>
-        <div className="footer-container" style={{
-            display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 40,
-            maxWidth: 1200, margin: "0 auto",
-        }}>
-            <div>
-                <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
-                    <div style={{ width: 28, height: 28, background: "#00ff41", borderRadius: 6 }} />
-                    <span style={{ fontWeight: 800, fontSize: 18, letterSpacing: "-0.02em" }}>BioDynamX</span>
+
+
+
+            {/* ── Competitor Comparison ── */}
+            <section
+                id="comparison"
+                ref={resultsStripRef}
+                className="section-container"
+                style={{
+                    opacity: resultsStripVisible ? 1 : 0,
+                    transform: resultsStripVisible ? 'translateY(0)' : 'translateY(40px)',
+                    transition: 'opacity 0.8s ease-out, transform 0.8s ease-out',
+                }}
+            >
+                <div style={{ maxWidth: 800, margin: "0 auto", textAlign: "center" }}>
+                    <div className="section-label">Why Not Just Hire?</div>
+                    <h2 className="section-title">
+                        BioDynamX vs. hiring a team. <span style={{ color: "#00ff41" }}>Do the math.</span>
+                    </h2>
+
+                    <div style={{
+                        marginTop: 40,
+                        background: "rgba(255,255,255,0.02)",
+                        border: "1px solid rgba(255,255,255,0.08)",
+                        borderRadius: 24,
+                        overflow: "hidden",
+                    }}>
+                        <div style={{
+                            display: "grid", gridTemplateColumns: "2fr 1.2fr 1.2fr",
+                            padding: "16px 24px",
+                            background: "rgba(255,255,255,0.04)",
+                            borderBottom: "1px solid rgba(255,255,255,0.08)",
+                            fontSize: 11, fontWeight: 800,
+                            color: "rgba(255,255,255,0.4)", letterSpacing: "0.1em",
+                        }}>
+                            <span>FEATURE</span>
+                            <span style={{ textAlign: "center" }}>HUMAN TEAM</span>
+                            <span style={{ textAlign: "center", color: "#00ff41" }}>BIODYNAMX AI</span>
+                        </div>
+
+                        {[
+                            { f: "Monthly Cost", h: "$12,400+", a: "$1,497", high: true },
+                            { f: "Response Time", h: "3+ Hours", a: "< 1 Second" },
+                            { f: "Available Hours", h: "9 AM - 5 PM", a: "24/7/365" },
+                            { f: "Consistency", h: "Variable", a: "100% Perfect" },
+                            { f: "Sick Days / Turnover", h: "Constant", a: "Zero" },
+                        ].map((row) => (
+                            <div key={row.f} style={{
+                                display: "grid", gridTemplateColumns: "2fr 1.2fr 1.2fr",
+                                padding: "14px 24px",
+                                borderBottom: "1px solid rgba(255,255,255,0.04)",
+                                fontSize: 13,
+                            }}>
+                                <span style={{ fontWeight: 600, color: "#fff" }}>{row.f}</span>
+                                <span style={{ textAlign: "center", color: row.high ? "#ff6b6b" : "rgba(255,255,255,0.4)" }}>{row.h}</span>
+                                <span style={{ textAlign: "center", color: "#00ff41", fontWeight: 700 }}>{row.a}</span>
+                            </div>
+                        ))}
+                    </div>
+                    <div style={{ marginTop: 24, fontSize: 14, color: "rgba(255,255,255,0.6)" }}>
+                        That&apos;s <span style={{ color: "#00ff41", fontWeight: 800 }}>96% less cost</span> for <span style={{ color: "#00ff41", fontWeight: 800 }}>10x more productivity.</span>
+                    </div>
                 </div>
-                <p style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", lineHeight: 1.6 }}>
-                    The world&apos;s first neurobiology-powered AI platform for revenue recovery and scales. Built for Web 4.0.
-                </p>
-            </div>
-            <div>
-                <h4 style={{ fontSize: 13, fontWeight: 900, color: "#fff", marginBottom: 20, letterSpacing: "0.15em" }}>COMPANY</h4>
-                <a href="/about" className="footer-link">About Us</a>
-                <a href="/dashboard" className="footer-link">Revenue Dashboard</a>
-                <a href="/testimonials" className="footer-link">Success Stories</a>
-                <a href="/press" className="footer-link">Press</a>
-            </div>
-            <div>
-                <h4 style={{ fontSize: 13, fontWeight: 900, color: "#fff", marginBottom: 20, letterSpacing: "0.15em" }}>PLATFORM</h4>
-                <a href="/pricing" className="footer-link">Elite Pricing</a>
-                <a href="/audit" className="footer-link">Free 20-Point Audit</a>
-                <a href="/llms.txt" className="footer-link">AI Directory (llms.txt)</a>
-                <a href="/partners" className="footer-link">Partner Login</a>
-                <a href="/glossary" className="footer-link">A–Z Glossary</a>
-            </div>
-            <div>
-                <h4 style={{ fontSize: 13, fontWeight: 900, color: "#fff", marginBottom: 20, letterSpacing: "0.15em" }}>TRUST & LEGAL</h4>
-                <a href="/security" className="footer-link">Security Protocol</a>
-                <a href="/privacy" className="footer-link">Privacy Policy</a>
-                <a href="/terms" className="footer-link">Terms of Service</a>
-                <div style={{ color: "#00ff41", fontSize: 11, fontWeight: 800, marginTop: 16, letterSpacing: "0.05em" }}>✓ GDPR & SOC 2 READY</div>
-                <div style={{ color: "rgba(255,255,255,0.4)", fontSize: 10, marginTop: 4 }}>Military-Grade AES-256</div>
-            </div>
-        </div>
-        <div style={{
-            marginTop: 60, paddingTop: 32, borderTop: "1px solid rgba(255,255,255,0.08)",
-            textAlign: "center", fontSize: 12, color: "rgba(255,255,255,0.4)",
-            letterSpacing: "0.02em"
-        }}>
-            © 2026 BioDynamX Engineering Group. All rights reserved. Neuroscience for the digital age.
-        </div>
-    </footer>
-    {/* Global cinematic interference during neural events */ }
-    <GlitchOverlay isActive={isSpeaking || isHandoff} intensity={isHandoff ? 2 : 0.5} />
+            </section>
+
+            {/* ── Enterprise Security & Compliance ── */}
+            {
+                !isActive && (
+                    <section
+                        id="security"
+                        ref={authoritySectionRef}
+                        className="section-container"
+                        style={{
+                            background: "linear-gradient(180deg, transparent 0%, rgba(16,185,129,0.02) 100%)",
+                            opacity: authoritySectionVisible ? 1 : 0,
+                            transform: authoritySectionVisible ? 'translateY(0)' : 'translateY(40px)',
+                            transition: 'opacity 0.8s ease-out, transform 0.8s ease-out',
+                        }}
+                    >
+                        <div style={{ maxWidth: 1000, margin: "0 auto", textAlign: "center" }}>
+                            <div className="section-label" style={{ color: "#10b981" }}>Enterprise Architecture</div>
+                            <h2 className="section-title">
+                                Military-grade security. <span style={{ color: "#10b981" }}>Universal compliance.</span>
+                            </h2>
+
+                            <div style={{
+                                display: "grid",
+                                gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+                                gap: 16,
+                                marginTop: 40,
+                                textAlign: "left",
+                            }}>
+                                {[
+                                    { icon: "🛡️", title: "PII Redaction", desc: "Sensitive customer data (SSNs, cards) is auto-redacted in real-time." },
+                                    { icon: "🔒", title: "AES-256 Encryption", desc: "All data is encrypted at rest and in transit using TLS 1.3 standards." },
+                                    { icon: "📊", title: "Full Audit Trail", desc: "Every word, tool call, and handoff is timestamped and searchable." },
+                                    { icon: "⚖️", title: "Compliance Ready", desc: "Built for HIPAA, PCI-DSS, GDPR, and TCPA frameworks." },
+                                ].map((item) => (
+                                    <div key={item.title} className="glass-card" style={{
+                                        padding: 24, borderRadius: 20, border: "1px solid rgba(16,185,129,0.1)",
+                                        background: "rgba(16,185,129,0.03)",
+                                    }}>
+                                        <div style={{ fontSize: 32, marginBottom: 12 }}>{item.icon}</div>
+                                        <div style={{ fontSize: 16, fontWeight: 700, color: "#fff", marginBottom: 8 }}>{item.title}</div>
+                                        <div style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", lineHeight: 1.6 }}>{item.desc}</div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+                )
+            }
+
+
+            {/* ── Risk-Free Guarantee ── */}
+            <section
+                ref={auditCtaRef}
+                className="section-container"
+                style={{
+                    padding: "80px 32px",
+                    opacity: auditCtaVisible ? 1 : 0,
+                    transform: auditCtaVisible ? 'translateY(0)' : 'translateY(40px)',
+                    transition: 'opacity 0.8s ease-out, transform 0.8s ease-out',
+                }}
+            >
+                <div style={{
+                    maxWidth: 800, margin: "0 auto", textAlign: "center",
+                    padding: "60px 40px",
+                    background: "linear-gradient(135deg, rgba(0,255,65,0.04) 0%, rgba(59,130,246,0.04) 100%)",
+                    border: "1px solid rgba(0,255,65,0.15)",
+                    borderRadius: 32,
+                }}>
+                    <div style={{ fontSize: 48, marginBottom: 16 }}>🛡️</div>
+                    <h2 className="section-title">5x ROI — or your money back.</h2>
+                    <p className="section-desc" style={{ maxWidth: 540, margin: "0 auto 32px" }}>
+                        If our AI doesn&apos;t deliver at least 5x your investment in recovered revenue within 90 days, we&apos;ll refund every penny. No questions asked.
+                    </p>
+                    <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="primary-btn-green" style={{ width: "auto", padding: "18px 48px" }}>
+                        Start Risk-Free Trial
+                    </button>
+                    <div style={{ marginTop: 16, fontSize: 12, color: "rgba(255,255,255,0.4)" }}>
+                        No contracts · Cancel anytime · Results in under 14 days
+                    </div>
+                </div>
+            </section>
+
+            {/* ── Pricing ── */}
+            <section
+                id="pricing"
+                ref={finalCtaRef}
+                className="section-container"
+                style={{
+                    opacity: finalCtaVisible ? 1 : 0,
+                    transform: finalCtaVisible ? 'translateY(0)' : 'translateY(40px)',
+                    transition: 'opacity 0.8s ease-out, transform 0.8s ease-out',
+                }}
+            >
+                <div style={{ maxWidth: 500, margin: "0 auto", textAlign: "center" }}>
+                    <div className="section-label">Investment</div>
+                    <div className="pricing-card" style={{ marginTop: 24 }}>
+                        <div className="popular-badge">ELITE ACCESS</div>
+                        <div style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", marginBottom: 12 }}>BioDynamX Growth Engine — Done-For-You</div>
+                        <div className="price-container">
+                            <span className="price-anchor">$2,497</span>
+                            <span className="price-main">$1,497</span>
+                            <span className="price-suffix">/mo</span>
+                        </div>
+                        <div style={{ fontSize: 11, fontWeight: 700, color: "#ff6b6b", marginTop: 8 }}>⚠️ Price increases to $2,497/mo after 90 days</div>
+                        <p style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", marginTop: 12 }}>
+                            One flat fee. All 11 agents included. We do the work. Unlimited potential.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            {/* ── Footer ── */}
+            <footer style={{
+                padding: "60px 32px 32px",
+                borderTop: "1px solid rgba(255,255,255,0.05)",
+                background: "rgba(0,0,0,0.2)",
+            }}>
+                <div className="footer-container" style={{
+                    display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 40,
+                    maxWidth: 1200, margin: "0 auto",
+                }}>
+                    <div>
+                        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
+                            <div style={{ width: 28, height: 28, background: "#00ff41", borderRadius: 6 }} />
+                            <span style={{ fontWeight: 800, fontSize: 18, letterSpacing: "-0.02em" }}>BioDynamX</span>
+                        </div>
+                        <p style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", lineHeight: 1.6 }}>
+                            The world&apos;s first neurobiology-powered AI platform for revenue recovery and scales. Built for Web 4.0.
+                        </p>
+                    </div>
+                    <div>
+                        <h4 style={{ fontSize: 13, fontWeight: 900, color: "#fff", marginBottom: 20, letterSpacing: "0.15em" }}>COMPANY</h4>
+                        <a href="/about" className="footer-link">About Us</a>
+                        <a href="/dashboard" className="footer-link">Revenue Dashboard</a>
+                        <a href="/testimonials" className="footer-link">Success Stories</a>
+                        <a href="/press" className="footer-link">Press</a>
+                    </div>
+                    <div>
+                        <h4 style={{ fontSize: 13, fontWeight: 900, color: "#fff", marginBottom: 20, letterSpacing: "0.15em" }}>PLATFORM</h4>
+                        <a href="/pricing" className="footer-link">Elite Pricing</a>
+                        <a href="/audit" className="footer-link">Free 20-Point Audit</a>
+                        <a href="/llms.txt" className="footer-link">AI Directory (llms.txt)</a>
+                        <a href="/partners" className="footer-link">Partner Login</a>
+                        <a href="/glossary" className="footer-link">A–Z Glossary</a>
+                    </div>
+                    <div>
+                        <h4 style={{ fontSize: 13, fontWeight: 900, color: "#fff", marginBottom: 20, letterSpacing: "0.15em" }}>TRUST & LEGAL</h4>
+                        <a href="/security" className="footer-link">Security Protocol</a>
+                        <a href="/privacy" className="footer-link">Privacy Policy</a>
+                        <a href="/terms" className="footer-link">Terms of Service</a>
+                        <div style={{ color: "#00ff41", fontSize: 11, fontWeight: 800, marginTop: 16, letterSpacing: "0.05em" }}>✓ GDPR & SOC 2 READY</div>
+                        <div style={{ color: "rgba(255,255,255,0.4)", fontSize: 10, marginTop: 4 }}>Military-Grade AES-256</div>
+                    </div>
+                </div>
+                <div style={{
+                    marginTop: 60, paddingTop: 32, borderTop: "1px solid rgba(255,255,255,0.08)",
+                    textAlign: "center", fontSize: 12, color: "rgba(255,255,255,0.4)",
+                    letterSpacing: "0.02em"
+                }}>
+                    © 2026 BioDynamX Engineering Group. All rights reserved. Neuroscience for the digital age.
+                </div>
+            </footer>
+            {/* Global cinematic interference during neural events */}
+            <GlitchOverlay isActive={isSpeaking || isHandoff} intensity={isHandoff ? 2 : 0.5} />
         </div >
     );
 }
