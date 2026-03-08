@@ -674,16 +674,34 @@ export default function AgentCarousel({ onTalkTo }: Props) {
           transform:translateY(-2px);
         }
         .bdx-swarm-flash { animation: bdx-swarm-pulse 0.6s ease forwards; }
-        /* ── Mobile: center the coverflow stage, prevent overflow ── */
+        /* ── Mobile: tighter cards, smaller dash, no overlap ── */
         @media (max-width: 600px) {
           .bdx-carousel-stage {
             overflow: hidden !important;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            height: 420px !important;
+            perspective: 900px !important;
+          }
+          /* Shrink cards so they don't overlap */
+          .bdx-carousel-stage > div {
+            width: min(260px, 72vw) !important;
           }
           .bdx-arrow { display: none !important; }
-          .bdx-neural-dash { right: 4vw !important; width: 88vw !important; top: 6% !important; }
+          /* Neural dash: bottom-pinned, glass, max 35vh */
+          .bdx-neural-dash {
+            position: absolute !important;
+            right: 2vw !important;
+            left: 2vw !important;
+            bottom: 0 !important;
+            top: auto !important;
+            width: 96vw !important;
+            max-height: 35vh !important;
+            overflow-y: auto !important;
+            background: rgba(5, 5, 10, 0.85) !important;
+            backdrop-filter: blur(14px) !important;
+            -webkit-backdrop-filter: blur(14px) !important;
+            border-radius: 20px 20px 0 0 !important;
+            z-index: 600 !important;
+          }
         }
       `}</style>
 
@@ -783,8 +801,9 @@ export default function AgentCarousel({ onTalkTo }: Props) {
 
                             const isActive = absOff === 0;
                             const isInDash = dashboardAgent?.id === a.id && dashboardVisible;
-                            const translateX = offset * 240;
-                            const rotateY = -offset * 26;
+                            const isMobile = typeof window !== "undefined" && window.innerWidth <= 600;
+                            const translateX = offset * (isMobile ? 140 : 240);
+                            const rotateY = -offset * (isMobile ? 18 : 26);
                             const scale = isActive ? 1 : Math.max(0.5, 0.8 - (absOff - 1) * 0.16);
                             const opacity = isActive ? 1 : Math.max(0.1, 0.62 - (absOff - 1) * 0.22);
                             const zIndex = 40 - absOff * 10;
@@ -797,7 +816,7 @@ export default function AgentCarousel({ onTalkTo }: Props) {
                                     onClick={() => !isActive && go(i)}
                                     className={isGlowing && !isActive ? "bdx-swarm-flash" : ""}
                                     style={{
-                                        position: "absolute", width: "min(392px, 88vw)",
+                                        position: "absolute", width: isMobile ? "min(280px, 78vw)" : "min(392px, 88vw)",
                                         transform: `translateX(${translateX}px) rotateY(${rotateY}deg) scale(${scale})`,
                                         transformOrigin: "center center",
                                         opacity: isInDash ? 0.5 : opacity,
