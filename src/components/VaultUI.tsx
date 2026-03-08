@@ -23,6 +23,9 @@ import HeroMorphGSAP from "./HeroMorphGSAP";
 
 import AgentCarousel from "./AgentCarousel";
 import AdvantageVault from "./AdvantageVault";
+import AgentDock from "./AgentDock";
+import AutonomousPing from "./AutonomousPing";
+import { NeuralMemory } from "@/lib/neural-memory";
 import { VisualJenny } from "@/lib/visual-jenny";
 import { VisualBridge, type VisualCommand } from "@/lib/visual-bridge";
 import { initGSAPAnimations } from "@/lib/gsap-animations";
@@ -682,6 +685,11 @@ export default function VaultUI({ apiKey }: VaultProps) {
 
     return (
         <div className={`vault-container ${isActive ? 'active' : ''}`}>
+            {/* ── Web 4.0: Persistent Agent Dock (follows user down page) */}
+            <AgentDock />
+
+            {/* ── Web 4.0: Autonomous background task pings (top-right toasts) */}
+            <AutonomousPing />
             {/* ── Scroll Progress Bar ──────────────────────── */}
             {!isActive && (
                 <div
@@ -905,6 +913,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
 
             {/* ── 3D Neural Orbit — 11-Agent Voice Relay ── */}
             <section
+                data-dock-section="orbit"
                 className="section-container orbit-section"
                 style={{
                     background: "linear-gradient(180deg, rgba(0,255,65,0.01) 0%, transparent 50%, rgba(59,130,246,0.01) 100%)",
@@ -1107,9 +1116,17 @@ export default function VaultUI({ apiKey }: VaultProps) {
             <AdvantageVault />
 
             {/* ── Elite 11 Live Agents — AgentCarousel ─────────────────────── */}
-            <section className="section-container" style={{ paddingTop: 20, paddingBottom: 80 }}>
+            <section data-dock-section="agents" className="section-container" style={{ paddingTop: 20, paddingBottom: 80 }}>
                 <div style={{ maxWidth: 1000, margin: "0 auto" }}>
                     <AgentCarousel onTalkTo={(agentId) => {
+                        // ★ Neural Memory: record which agent the user selected
+                        const agentName = agentId.split("_")[0];
+                        const capitalised = agentName.charAt(0).toUpperCase() + agentName.slice(1);
+                        NeuralMemory.update({
+                            lastTalkedTo: capitalised,
+                            sessionStage: "Discovery",
+                            conversationActive: true,
+                        });
                         window.scrollTo({ top: 0, behavior: "smooth" });
                         if (teamRef.current) { teamRef.current.initializeWithAgent(agentId); return; }
                         if (!apiKey) { setErrorText("API key missing"); return; }
@@ -1156,7 +1173,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
 
 
 
-            <section id="how-it-works" ref={howItWorksRef} aria-label="The BioDynamX Diagnostic Framework" className="section-container" style={{
+            <section id="how-it-works" data-dock-section="how-it-works" ref={howItWorksRef} aria-label="The BioDynamX Diagnostic Framework" className="section-container" style={{
                 opacity: howItWorksVisible ? 1 : 0,
                 transform: howItWorksVisible ? "translateY(0)" : "translateY(40px)",
                 transition: "opacity 0.8s ease-out, transform 0.8s ease-out",
@@ -1669,6 +1686,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
             {/* ── Pricing ── */}
             <section
                 id="pricing"
+                data-dock-section="pricing"
                 ref={finalCtaRef}
                 className="section-container"
                 style={{
