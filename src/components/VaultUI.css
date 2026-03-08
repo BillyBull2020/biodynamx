@@ -2532,3 +2532,233 @@ html {
         filter: brightness(1.15) saturate(1.2);
     }
 }
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   MOBILE UI FIX: ORB VISIBILITY & SPEECH BUBBLE POSITION
+   "Free the Orb. Text is a subtitle, never an obstacle."
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+
+    /* ── 1. SPEECH BUBBLE / IronClaw — bottom glass shelf ── */
+    .vault-container.active [class*="IronClaw"],
+    .vault-container.active .ironclaw-visual-panel,
+    .vault-container.active .visual-panel-wrap,
+    .vault-container.active .speech-bubble-wrapper,
+    .vault-container.active .active-agent-text {
+        position: fixed !important;
+        bottom: 110px !important;
+        left: 5% !important;
+        right: 5% !important;
+        width: 90% !important;
+        max-height: 22vh !important;
+        overflow-y: auto !important;
+        background: rgba(10, 10, 15, 0.45) !important;
+        backdrop-filter: blur(12px) !important;
+        -webkit-backdrop-filter: blur(12px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        border-radius: 24px !important;
+        z-index: 50 !important;
+        padding: 12px 14px 16px !important;
+    }
+
+    /* Text readability inside the speech shelf */
+    .vault-container.active .active-agent-text p,
+    .vault-container.active .ironclaw-visual-panel p,
+    .vault-container.active .speech-bubble-wrapper p {
+        font-size: 15px !important;
+        line-height: 1.5 !important;
+        padding: 2px 4px !important;
+    }
+
+    /* Visual Projection: same shelf treatment */
+    .vault-container.active .visual-projection-wrap {
+        position: fixed !important;
+        bottom: 110px !important;
+        left: 5% !important;
+        right: 5% !important;
+        width: 90% !important;
+        max-height: 20vh !important;
+        overflow: hidden !important;
+        z-index: 48 !important;
+        border-radius: 24px !important;
+        background: rgba(0, 0, 0, 0.75) !important;
+        backdrop-filter: blur(12px) !important;
+        -webkit-backdrop-filter: blur(12px) !important;
+    }
+
+    /* ── 2. AGENT CAROUSEL — mobile card sizing ── */
+    .bdx-carousel-stage {
+        height: 460px !important;
+        perspective: 1000px !important;
+    }
+
+    /* Cards shrink for mobile thumb reach */
+    .bdx-carousel-stage>div {
+        width: min(320px, 80vw) !important;
+    }
+
+    /* Arrows: lock to edges, slightly smaller */
+    .bdx-arrow {
+        width: 42px !important;
+        height: 42px !important;
+    }
+
+    /* Agent showcase cards: full-width on mobile with snap */
+    .agent-showcase-card {
+        width: 85vw !important;
+        max-width: 350px !important;
+        flex: 0 0 85vw !important;
+        scroll-snap-align: center !important;
+    }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   VAULT CHECKOUT — Mobile App "Bottom Sheet" Stripe Modal
+   Obsidian dark. Bio-Logical green glow. Zero redirect.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+#biodynamx-vault-checkout {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 85vh;
+    background: #050508;
+    border-top: 1px solid rgba(0, 255, 0, 0.3);
+    border-top-left-radius: 28px;
+    border-top-right-radius: 28px;
+    box-shadow: 0 -10px 40px rgba(0, 255, 0, 0.15);
+    z-index: 9999;
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+#biodynamx-vault-checkout.vault-modal-active {
+    transform: translateY(0%);
+}
+
+/* Backdrop overlay when vault is open */
+.vault-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 9998;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+.vault-backdrop.vault-backdrop-active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Native app drag handle */
+.vault-drag-handle {
+    width: 40px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    margin: 12px auto;
+    flex-shrink: 0;
+}
+
+/* Header bar */
+.vault-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px 15px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    flex-shrink: 0;
+}
+
+.vault-header h3 {
+    color: #fff;
+    font-size: 16px;
+    margin: 0;
+    font-weight: 600;
+}
+
+.vault-header h3 .lock-icon {
+    margin-right: 8px;
+}
+
+#close-vault-btn {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 20px;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: color 0.2s, background 0.2s;
+}
+
+#close-vault-btn:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* Stripe embed container */
+#stripe-checkout-embed {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+/* Pricing summary inside vault */
+.vault-price-summary {
+    text-align: center;
+    padding: 24px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.vault-price-summary .vault-tier-label {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    color: #00ff41;
+    margin-bottom: 8px;
+}
+
+.vault-price-summary .vault-price {
+    font-size: 42px;
+    font-weight: 800;
+    color: #fff;
+}
+
+.vault-price-summary .vault-price-suffix {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.4);
+    font-weight: 400;
+}
+
+.vault-price-summary .vault-guarantee-badge {
+    margin-top: 8px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Responsive — desktop vault narrower */
+@media (min-width: 769px) {
+    #biodynamx-vault-checkout {
+        left: 50%;
+        transform: translateX(-50%) translateY(100%);
+        width: 480px;
+        height: 80vh;
+        border-radius: 28px 28px 0 0;
+    }
+
+    #biodynamx-vault-checkout.vault-modal-active {
+        transform: translateX(-50%) translateY(0%);
+    }
+}

@@ -27,6 +27,7 @@ import AgentDock from "./AgentDock";
 import AutonomousPing from "./AutonomousPing";
 import SwarmCollaboration from "./SwarmCollaboration";
 import OneCallClose from "./OneCallClose";
+import VaultCheckout from "./VaultCheckout";
 import SwarmRecovery from "./SwarmRecovery";
 import { NeuralMemory } from "@/lib/neural-memory";
 import { triggerFullHandoff } from "@/lib/neural-audio";
@@ -746,6 +747,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
 
             {/* ── Web 4.0: One-Call Close — 11-agent convergence overlay */}
             <OneCallClose />
+            <VaultCheckout />
 
             {/* ── Web 4.0: Recovery Swarm — Hail Mary exit-intent closer */}
             {/* Fires on mouseleave (tab-close intent) or 45s checkout stall */}
