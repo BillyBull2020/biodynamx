@@ -789,68 +789,178 @@ export default function VaultUI({ apiKey }: VaultProps) {
                 minHeight: isActive ? "calc(100vh - 60px)" : "90vh",
                 display: "flex", flexDirection: "column", justifyContent: "center", position: "relative"
             }}>
-                {/* STANDBY UI */}
+                {/* STANDBY UI — two-column: text left, robot→man morph right */}
                 {!isActive && (
                     <div style={{
-                        textAlign: "center", marginBottom: 32,
+                        display: "grid",
+                        gridTemplateColumns: "1fr auto",
+                        gap: "clamp(24px, 4vw, 80px)",
+                        alignItems: "center",
                         animation: "fadeUp 0.8s ease-out",
+                        textAlign: "left",
                     }}>
-                        {/* New Eyebrow Badge */}
-                        <div className="hero-premium-badge">
-                            <span className="badge-glow" />
-                            <span className="badge-text">{t.heroBadge}</span>
-                        </div>
 
-                        <h1 data-speakable="true" className="hero-headline animated-gradient-text" style={{ fontSize: "clamp(32px, 5.5vw, 68px)", fontWeight: 900, lineHeight: 1.05, marginBottom: 28 }}>
-                            {t.heroHeadline}
-                        </h1>
+                        {/* ── LEFT: Text Column ─────────────────────────────── */}
+                        <div>
+                            <div className="hero-premium-badge" style={{ justifyContent: "flex-start" }}>
+                                <span className="badge-glow" />
+                                <span className="badge-text">{t.heroBadge}</span>
+                            </div>
 
-                        <p data-speakable="true" className="hero-subheadline" style={{ maxWidth: 840, margin: "0 auto 32px", fontSize: "clamp(15px, 1.8vw, 19px)", color: "rgba(255,255,255,0.75)", lineHeight: 1.7 }}>
-                            {t.heroLossAversion}
-                        </p>
+                            <h1 data-speakable="true" className="hero-headline animated-gradient-text" style={{ fontSize: "clamp(28px, 4.5vw, 62px)", fontWeight: 900, lineHeight: 1.05, marginBottom: 24, textAlign: "left" }}>
+                                {t.heroHeadline}
+                            </h1>
 
-                        <p style={{ maxWidth: 840, margin: "0 auto 40px", fontSize: 16, color: "rgba(255,255,255,0.75)", lineHeight: 1.6, fontWeight: 500 }}>
-                            {t.heroDiagnosticGap}
-                        </p>
-
-                        {/* The Hook Hook Card */}
-                        <div className="animate-fade-in" style={{
-                            padding: "24px 32px",
-                            background: "linear-gradient(135deg, rgba(0,255,65,0.08) 0%, rgba(59,130,246,0.08) 100%)",
-                            border: "1px solid rgba(0,255,65,0.25)",
-                            borderRadius: 24,
-                            maxWidth: 640,
-                            margin: "0 auto 48px",
-                            position: "relative",
-                            boxShadow: "0 20px 40px rgba(0,0,0,0.2)"
-                        }}>
-                            <div style={{ position: "absolute", inset: 0, opacity: 0.2, background: "radial-gradient(circle at center, #00ff4122 0%, transparent 70%)", pointerEvents: "none" }} />
-                            <p data-speakable="true" style={{ fontSize: 13, fontWeight: 600, color: "rgba(255,255,255,0.95)", margin: 0, lineHeight: 1.6 }}>
-                                {t.heroHook}
+                            <p data-speakable="true" className="hero-subheadline" style={{ maxWidth: 640, margin: "0 0 24px", fontSize: "clamp(14px, 1.6vw, 18px)", color: "rgba(255,255,255,0.75)", lineHeight: 1.7 }}>
+                                {t.heroLossAversion}
                             </p>
-                        </div>
 
-                        {/* THE BUTTONS (Double Bind Strategy) */}
-                        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 20 }}>
-                            <div style={{ position: "relative", width: "100%", maxWidth: 440 }}>
-                                <div style={{ position: "absolute", inset: -10, borderRadius: 24, background: "radial-gradient(ellipse, rgba(0,255,65,0.2) 0%, transparent 70%)", animation: "breathe 3s ease-in-out infinite", pointerEvents: "none" }} />
-                                <button onClick={handleStart} className="primary-btn-green hover-lift" style={{ width: "100%", padding: "22px 32px", fontSize: 19, letterSpacing: "-0.01em" }}>
-                                    {t.buttonTalkExperts}
+                            <p style={{ maxWidth: 600, margin: "0 0 32px", fontSize: 15, color: "rgba(255,255,255,0.65)", lineHeight: 1.6, fontWeight: 500 }}>
+                                {t.heroDiagnosticGap}
+                            </p>
+
+                            {/* Hook Card */}
+                            <div className="animate-fade-in" style={{
+                                padding: "20px 28px",
+                                background: "linear-gradient(135deg, rgba(0,255,65,0.08) 0%, rgba(59,130,246,0.08) 100%)",
+                                border: "1px solid rgba(0,255,65,0.25)",
+                                borderRadius: 20,
+                                maxWidth: 560,
+                                marginBottom: 40,
+                                position: "relative",
+                                boxShadow: "0 20px 40px rgba(0,0,0,0.2)"
+                            }}>
+                                <div style={{ position: "absolute", inset: 0, opacity: 0.2, background: "radial-gradient(circle at center, #00ff4122 0%, transparent 70%)", pointerEvents: "none" }} />
+                                <p data-speakable="true" style={{ fontSize: 13, fontWeight: 600, color: "rgba(255,255,255,0.95)", margin: 0, lineHeight: 1.6 }}>
+                                    {t.heroHook}
+                                </p>
+                            </div>
+
+                            {/* CTAs */}
+                            <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 16 }}>
+                                <div style={{ position: "relative", width: "100%", maxWidth: 420 }}>
+                                    <div style={{ position: "absolute", inset: -10, borderRadius: 24, background: "radial-gradient(ellipse, rgba(0,255,65,0.2) 0%, transparent 70%)", animation: "breathe 3s ease-in-out infinite", pointerEvents: "none" }} />
+                                    <button onClick={handleStart} className="primary-btn-green hover-lift" style={{ width: "100%", padding: "20px 32px", fontSize: 18, letterSpacing: "-0.01em" }}>
+                                        {t.buttonTalkExperts}
+                                    </button>
+                                </div>
+                                <button onClick={handleStart} className="button-premium-secondary hover-lift" style={{ fontSize: 15 }}>
+                                    {t.buttonSecondary}
                                 </button>
                             </div>
-                            <button onClick={handleStart} className="button-premium-secondary hover-lift" style={{ fontSize: 16 }}>
-                                {t.buttonSecondary}
-                            </button>
-                        </div>
 
-                        {/* Micro-Trust & Urgency */}
-                        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16, marginTop: 40 }}>
-                            <div style={{
-                                display: "flex", alignItems: "center", background: "rgba(255,255,255,0.03)", padding: "10px 24px", borderRadius: 100, border: "1px solid rgba(255,255,255,0.06)", fontSize: 12, fontWeight: 700, color: "rgba(255,255,255,0.8)"
-                            }}>
+                            <div style={{ display: "flex", alignItems: "center", marginTop: 28, background: "rgba(255,255,255,0.03)", padding: "8px 20px", borderRadius: 100, border: "1px solid rgba(255,255,255,0.06)", fontSize: 12, fontWeight: 700, color: "rgba(255,255,255,0.7)", width: "fit-content" }}>
                                 {t.onboardingSpots}
                             </div>
                         </div>
+
+                        {/* ── RIGHT: Robot → Man morph ─────────────────────── */}
+                        <div style={{
+                            position: "relative",
+                            width: "clamp(220px, 28vw, 420px)",
+                            aspectRatio: "3/4",
+                            flexShrink: 0,
+                            display: "none",
+                        }} className="hero-morph-panel">
+
+                            {/* Base glow */}
+                            <div style={{
+                                position: "absolute", inset: 0,
+                                background: "radial-gradient(ellipse at 50% 80%, rgba(255,215,0,0.12) 0%, rgba(0,255,65,0.06) 40%, transparent 70%)",
+                                borderRadius: 32,
+                                filter: "blur(20px)",
+                                zIndex: 0,
+                            }} />
+
+                            {/* Robot (starts visible, fades out) */}
+                            <img
+                                src="/assets/hero_robot.png"
+                                alt="BioDynamX AI — Autonomous AI System"
+                                style={{
+                                    position: "absolute", inset: 0,
+                                    width: "100%", height: "100%",
+                                    objectFit: "contain",
+                                    objectPosition: "bottom center",
+                                    animation: "heroRobot 8s ease-in-out infinite",
+                                    zIndex: 2,
+                                    filter: "drop-shadow(0 0 40px rgba(59,130,246,0.3))",
+                                }}
+                            />
+
+                            {/* Man / Billy (starts invisible, fades in) */}
+                            <img
+                                src="/assets/hero_man.png"
+                                alt="Billy de la Torres — BioDynamX Founder"
+                                style={{
+                                    position: "absolute", inset: 0,
+                                    width: "100%", height: "100%",
+                                    objectFit: "contain",
+                                    objectPosition: "bottom center",
+                                    animation: "heroMan 8s ease-in-out infinite",
+                                    zIndex: 3,
+                                    filter: "drop-shadow(0 0 30px rgba(255,215,0,0.2))",
+                                }}
+                            />
+
+                            {/* Scan line sweep */}
+                            <div style={{
+                                position: "absolute", inset: 0, zIndex: 4,
+                                background: "linear-gradient(180deg, transparent 0%, rgba(0,255,65,0.06) 50%, transparent 100%)",
+                                animation: "heroScan 4s linear infinite",
+                                pointerEvents: "none",
+                                borderRadius: 32,
+                            }} />
+
+                            {/* Gold frame accent */}
+                            <div style={{
+                                position: "absolute", inset: 0, zIndex: 1,
+                                border: "1px solid rgba(255,215,0,0.12)",
+                                borderRadius: 32,
+                                boxShadow: "0 0 60px rgba(255,215,0,0.08), inset 0 0 30px rgba(0,0,0,0.4)",
+                                pointerEvents: "none",
+                            }} />
+
+                            {/* Caption badge */}
+                            <div style={{
+                                position: "absolute", bottom: -16, left: "50%",
+                                transform: "translateX(-50%)",
+                                background: "rgba(0,0,0,0.8)",
+                                border: "1px solid rgba(255,215,0,0.3)",
+                                borderRadius: 30, padding: "6px 18px",
+                                fontSize: 10, fontWeight: 800, color: "#FFD700",
+                                letterSpacing: "0.12em", textTransform: "uppercase",
+                                whiteSpace: "nowrap", zIndex: 10,
+                                backdropFilter: "blur(12px)",
+                            }}>
+                                ⚡ AI × Human Intelligence
+                            </div>
+                        </div>
+
+                        <style>{`
+                            /* Show morph panel on desktop only */
+                            @media (min-width: 768px) {
+                                .hero-morph-panel { display: block !important; }
+                            }
+                            /* Robot: visible 0→3s, fades OUT 3→5s, gone 5→8s */
+                            @keyframes heroRobot {
+                                0%   { opacity: 1; }
+                                37%  { opacity: 1; }
+                                62%  { opacity: 0; }
+                                100% { opacity: 0; }
+                            }
+                            /* Man: gone 0→3s, fades IN 3→5s, visible 5→8s */
+                            @keyframes heroMan {
+                                0%   { opacity: 0; }
+                                37%  { opacity: 0; }
+                                62%  { opacity: 1; }
+                                87%  { opacity: 1; }
+                                100% { opacity: 0; }
+                            }
+                            @keyframes heroScan {
+                                0%   { transform: translateY(-100%); }
+                                100% { transform: translateY(200%); }
+                            }
+                        `}</style>
                     </div>
                 )}
 
