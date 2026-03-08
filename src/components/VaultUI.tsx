@@ -953,6 +953,9 @@ export default function VaultUI({ apiKey }: VaultProps) {
             {/* BELOW THE FOLD                                            */}
             {/* ═══════════════════════════════════════════════════════════ */}
 
+            {/* ── The Neural Orb — 11-Agent Voice Relay ── */}
+            <TransformationSection />
+
             {/* ── Elite 11 Workforce — Agent Showcase (Carousel) ── */}
             <section className="section-container" style={{ textAlign: "center", paddingTop: 80, paddingBottom: 80 }}>
                 <div style={{ maxWidth: 1000, margin: "0 auto" }}>
@@ -1774,8 +1777,6 @@ export default function VaultUI({ apiKey }: VaultProps) {
                 )
             }
 
-            {/* ── The Neuroscience Transformation (Friction vs Flow / Orb) ── */}
-            <TransformationSection />
 
             {/* ── Risk-Free Guarantee ── */}
             <section

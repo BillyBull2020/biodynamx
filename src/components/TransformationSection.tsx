@@ -1,421 +1,469 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-if (typeof window !== "undefined") {
-    gsap.registerPlugin(ScrollTrigger);
+// ── 11-AGENT RELAY DATA ──────────────────────────────────────────────────────
+
+const RELAY = [
+    {
+        name: "Milton", color: "#7c3aed",
+        script: "Imagine if your team never sleeps, never quits, and never misses a close. A workforce that identifies pain and handles objections in real-time.",
+        file: "milton",
+    },
+    {
+        name: "Ben", color: "#fbbf24",
+        script: "Welcome to BioDynamX Engineering Group. You're looking at the world's first neurobiology-powered AI, built specifically for the transition to Web 4.0.",
+        file: "ben",
+    },
+    {
+        name: "Chase", color: "#f97316",
+        script: "We don't just build bots; we deploy voice AI systems using proven neuro-sales frameworks to trigger the 'Old Brain' and drive immediate decision-making.",
+        file: "chase",
+    },
+    {
+        name: "Iris", color: "#8b5cf6",
+        script: "From building your high-conversion website to dominating AEO and GEO—we ensure your brand is the top recommendation on AI search engines.",
+        file: "iris",
+    },
+    {
+        name: "Alex", color: "#06b6d4",
+        script: "Whether it's ChatGPT, Perplexity, or Gemini, we ensure you are indexed and visible where the future of search is actually happening.",
+        file: "alex",
+    },
+    {
+        name: "Mark", color: "#3b82f6",
+        script: "This is how you scale your revenue without the overhead, the drama, or the high tax of additional employees. We handle the friction; you take back your freedom.",
+        file: "mark",
+    },
+    {
+        name: "Megan", color: "#a78bfa",
+        script: "But we don't expect you to take our word for it. We want to prove the math to you. Right now, our growth strategist Jenny is standing by.",
+        file: "megan",
+    },
+    {
+        name: "Brock", color: "#ef4444",
+        script: "She's armed with our proprietary Neuro-Audit tool to find exactly where your revenue is leaking and how our $1,497 system plugs that hole forever.",
+        file: "brock",
+    },
+    {
+        name: "Vicki", color: "#34d399",
+        script: "Stop the $600-a-day hemorrhage. Look for the 'Talk to Jenny' button on this page to initiate your free, zero-risk Neural Revenue Audit.",
+        file: "vicki",
+    },
+    {
+        name: "Jules", color: "#60a5fa",
+        script: "It's time to move past antiquated chatbots and step into the new gold standard of autonomous business growth. Jenny is ready when you are.",
+        file: "jules",
+    },
+    {
+        name: "Jenny", color: "#6366f1",
+        script: "I'm right here. Click the button to start your audit, and let's look at your numbers together. It's time to scale your revenue—and then some.",
+        file: "jenny",
+    },
+];
+
+const SEGMENT_MS = 5500; // time per agent in ms
+
+// ── ORBITING AGENT DOTS ───────────────────────────────────────────────────────
+
+function OrbitRing({ activeIdx }: { activeIdx: number }) {
+    const total = RELAY.length;
+    return (
+        <div style={{ position: "absolute", inset: -50, pointerEvents: "none", zIndex: 3 }}>
+            {RELAY.map((agent, i) => {
+                const angle = (i / total) * 360;
+                const isActive = i === activeIdx;
+                const radians = (angle * Math.PI) / 180;
+                const radius = 115;
+                const x = Math.cos(radians) * radius;
+                const y = Math.sin(radians) * radius;
+                return (
+                    <div
+                        key={agent.name}
+                        style={{
+                            position: "absolute",
+                            left: "50%",
+                            top: "50%",
+                            transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`,
+                            transition: "all 0.5s ease",
+                            zIndex: isActive ? 5 : 2,
+                        }}
+                    >
+                        <div style={{
+                            width: isActive ? 36 : 20,
+                            height: isActive ? 36 : 20,
+                            borderRadius: "50%",
+                            background: isActive
+                                ? `radial-gradient(circle, ${agent.color} 0%, ${agent.color}88 100%)`
+                                : `rgba(255,255,255,0.12)`,
+                            border: `2px solid ${isActive ? agent.color : "rgba(255,255,255,0.15)"}`,
+                            boxShadow: isActive ? `0 0 16px ${agent.color}, 0 0 32px ${agent.color}55` : "none",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            transition: "all 0.5s ease",
+                        }}>
+                            {isActive && (
+                                <div style={{ fontSize: 8, fontWeight: 900, color: "#fff", lineHeight: 1, textAlign: "center" }}>
+                                    {agent.name.slice(0, 2).toUpperCase()}
+                                </div>
+                            )}
+                        </div>
+                        {isActive && (
+                            <div style={{
+                                position: "absolute",
+                                top: "100%",
+                                left: "50%",
+                                transform: "translateX(-50%)",
+                                marginTop: 4,
+                                fontSize: 8,
+                                fontWeight: 800,
+                                color: agent.color,
+                                whiteSpace: "nowrap",
+                                letterSpacing: "0.08em",
+                                textShadow: `0 0 10px ${agent.color}`,
+                            }}>
+                                {agent.name.toUpperCase()}
+                            </div>
+                        )}
+                    </div>
+                );
+            })}
+        </div>
+    );
 }
 
+// ── MAIN COMPONENT ────────────────────────────────────────────────────────────
+
 export default function TransformationSection() {
-    const sectionRef = useRef<HTMLDivElement>(null);
-    const frictionRef = useRef<HTMLDivElement>(null);
-    const flowRef = useRef<HTMLDivElement>(null);
-    const visualizerRef = useRef<HTMLDivElement>(null);
-    const ctaRef = useRef<HTMLButtonElement>(null);
-    const [audioPlaying, setAudioPlaying] = useState(false);
+    const [activeIdx, setActiveIdx] = useState(0);
+    const [hasStarted, setHasStarted] = useState(false);
+    const containerRef = useRef<HTMLDivElement>(null);
+    const orbRef = useRef<HTMLDivElement>(null);
+    const audioRef = useRef<HTMLAudioElement | null>(null);
+    const gestureRef = useRef(false);
+    const inViewRef = useRef(false);
+    const startedRef = useRef(false);
+    const activeIdxRef = useRef(0);
 
+    // Preload first voice
     useEffect(() => {
-        if (typeof window === "undefined") return;
-
-        const ctx = gsap.context(() => {
-            // 1. Initial Transformation Scrub
-            const transformTL = gsap.timeline({
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: "top 75%",
-                    end: "bottom 80%",
-                    scrub: 1.5,
-                }
-            });
-
-            // The Friction side degrades
-            transformTL.to(frictionRef.current, {
-                x: -40,
-                y: 20,
-                opacity: 0.2,
-                rotationY: -10,
-                scale: 0.9,
-                filter: "blur(5px) grayscale(100%) sepia(30%) hue-rotate(-20deg) saturate(150%)",
-                duration: 1
-            }, 0)
-                // The Flow side emerges
-                .fromTo(flowRef.current, {
-                    x: 60,
-                    y: 40,
-                    opacity: 0,
-                    rotationY: 15,
-                    scale: 0.85,
-                }, {
-                    x: 0,
-                    y: 0,
-                    opacity: 1,
-                    rotationY: 0,
-                    scale: 1.05,
-                    boxShadow: "0 20px 80px rgba(255, 215, 0, 0.25), inset 0 0 40px rgba(255, 215, 0, 0.1)",
-                    duration: 1.5,
-                    ease: "power2.out"
-                }, 0.2);
-
-            // Ambient background visualizer pulse when idle
-            gsap.to(visualizerRef.current, {
-                scale: 1.05,
-                opacity: 0.8,
-                duration: 2,
-                repeat: -1,
-                yoyo: true,
-                ease: "sine.inOut"
-            });
-
-        }, sectionRef);
-
-        return () => ctx.revert();
+        const pre = new Audio("/assets/voices/milton.mp3");
+        pre.preload = "auto";
+        pre.load();
     }, []);
 
-    const audioRef = useRef<HTMLAudioElement | null>(null);
+    const playAgent = useCallback((idx: number) => {
+        const agent = RELAY[idx];
+        activeIdxRef.current = idx;
+        setActiveIdx(idx);
 
-    const gsapCtxRef = useRef<gsap.Context | null>(null);
-
-    const handleActivateBen = () => {
-        if (audioPlaying) {
-            // DEACTIVATE LOGIC
-            setAudioPlaying(false);
-            if (audioRef.current) {
-                audioRef.current.pause();
-                audioRef.current.currentTime = 0;
-            }
-            if (gsapCtxRef.current) {
-                gsapCtxRef.current.revert();
-            }
-            // Manually reset styles quickly just in case
-            gsap.killTweensOf(frictionRef.current);
-            gsap.to(frictionRef.current, { backgroundColor: "rgba(20, 15, 15, 0.4)", duration: 0.5 });
-            gsap.killTweensOf(visualizerRef.current);
-            gsap.to(visualizerRef.current, { scale: 1, boxShadow: "none", duration: 1 });
-            gsap.killTweensOf(ctaRef.current);
-            gsap.to(ctaRef.current, { scale: 1, backgroundColor: "transparent", color: "#FFD700", duration: 0.5 });
-            return;
+        // Stop previous
+        if (audioRef.current) {
+            audioRef.current.pause();
+            audioRef.current.currentTime = 0;
+            audioRef.current.src = "";
         }
 
-        setAudioPlaying(true);
-
-        const url = "/assets/voices/ben-audit.mp3";
-        const audio = new Audio(url);
+        const audio = new Audio(`/assets/voices/${agent.file}.mp3`);
+        audio.load();
         audioRef.current = audio;
+        audio.play().catch(() => { });
 
-        // Visual Sync GSAP Context
-        const ctx = gsap.context(() => {
-            const benTalkTL = gsap.timeline();
-
-            // IMMEDIATE FEEDBACK (0.0s) -> Flash visualizer so user knows it started
-            benTalkTL.to(visualizerRef.current, {
-                boxShadow: "0 0 80px #FFD700, inset 0 0 30px #FFD700",
-                scale: 1.05,
-                duration: 0.3,
-                yoyo: true,
-                repeat: 3,
-                ease: "power2.out"
-            }, 0.0);
-
-            // Simulate the timeline of the speech based on expected audio length
-            // AT ~4s: "80 leads rot in voicemail" -> Pulse red warning on friction side
-            benTalkTL.to(frictionRef.current, {
-                backgroundColor: "rgba(255,0,0,0.2)",
-                boxShadow: "0 0 40px rgba(255,0,0,0.3)",
-                duration: 0.3,
-                repeat: 3,
-                yoyo: true,
-                ease: "power1.inOut"
-            }, 5.0);
-
-            // AT ~12s: "Under a second" -> Gold flash on Ben's Visualizer
-            benTalkTL.to(visualizerRef.current, {
-                boxShadow: "0 0 100px #FFD700, inset 0 0 40px #FFD700",
-                scale: 1.2,
+        // Pulse orb with the agent color
+        if (orbRef.current) {
+            gsap.to(orbRef.current, {
+                boxShadow: `0 0 60px ${agent.color}88, 0 0 120px ${agent.color}33, inset 0 0 40px ${agent.color}22`,
+                borderColor: agent.color,
                 duration: 0.5,
-                yoyo: true,
-                repeat: 1
-            }, 13.0);
+                ease: "power2.out",
+            });
+        }
+    }, []);
 
-            // AT ~26s: "Ready to stop the leak?" -> Animate the CTA button
-            benTalkTL.to(ctaRef.current, {
-                scale: 1.1,
-                backgroundColor: "#FFD700",
-                color: "#000",
-                boxShadow: "0 0 30px rgba(255,215,0,0.6)",
-                repeat: -1,
-                yoyo: true,
-                duration: 0.5
-            }, 27.0);
+    const startRelay = useCallback(() => {
+        if (startedRef.current) return;
+        startedRef.current = true;
+        setHasStarted(true);
 
-        }, sectionRef);
+        // Play Milton immediately
+        playAgent(0);
 
-        gsapCtxRef.current = ctx;
+        // Advance every SEGMENT_MS
+        let idx = 0;
+        const timer = setInterval(() => {
+            idx = (idx + 1) % RELAY.length;
+            playAgent(idx);
+        }, SEGMENT_MS);
 
-        audio.onended = () => {
-            setAudioPlaying(false);
-            ctx.revert(); // clean up animation timeline
+        return () => clearInterval(timer);
+    }, [playAgent]);
 
-            // Clean up visual state manually if needed
-            gsap.killTweensOf(frictionRef.current);
-            gsap.to(frictionRef.current, { backgroundColor: "rgba(20, 15, 15, 0.4)", duration: 0.5 });
-            gsap.killTweensOf(visualizerRef.current);
-            gsap.to(visualizerRef.current, { scale: 1, boxShadow: "none", duration: 1 });
-            gsap.killTweensOf(ctaRef.current);
-            gsap.to(ctaRef.current, { scale: 1, backgroundColor: "transparent", color: "#FFD700", duration: 0.5 });
+    // Gate 1: any user gesture
+    useEffect(() => {
+        const unlock = () => {
+            if (gestureRef.current) return;
+            gestureRef.current = true;
+            if (inViewRef.current) startRelay();
         };
+        window.addEventListener("scroll", unlock, { once: true, passive: true });
+        window.addEventListener("touchstart", unlock, { once: true, passive: true });
+        window.addEventListener("click", unlock, { once: true });
+        return () => {
+            window.removeEventListener("scroll", unlock);
+            window.removeEventListener("touchstart", unlock);
+            window.removeEventListener("click", unlock);
+        };
+    }, [startRelay]);
 
-        audio.play().catch((err) => {
-            console.error("Audio playback blocked. Check file /assets/voices/ben-audit.mp3", err);
-            setAudioPlaying(false);
-            ctx.revert();
-        });
-    };
+    // Gate 2: IntersectionObserver
+    useEffect(() => {
+        const obs = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting && !inViewRef.current) {
+                    inViewRef.current = true;
+                    if (gestureRef.current) startRelay();
+                }
+            },
+            { threshold: 0.05 }
+        );
+        if (containerRef.current) obs.observe(containerRef.current);
+        return () => obs.disconnect();
+    }, [startRelay]);
 
-    const frictionItems = [
-        { label: "80+ Voicemails", desc: "Revenue vanishing into thin air." },
-        { label: "3-Hour Lag", desc: "Leads die while you're busy." },
-        { label: "Competitor Wins", desc: "They close because they're faster." },
-        { label: "$12,400+ Payroll", desc: "High tax for low output." },
-    ];
-
-    const flowItems = [
-        { label: "100% Capture", desc: "Ben answers in <1s. Every time." },
-        { label: "8s Textback", desc: "Instant, autonomous engagement." },
-        { label: "Total Dominance", desc: "Ben qualifies and books for you." },
-        { label: "$1,497 Total", desc: "96% less cost. 10x more output." },
-    ];
+    const cur = RELAY[activeIdx];
 
     return (
         <section
-            ref={sectionRef}
-            className="ben-transformation-section"
+            ref={containerRef}
             style={{
                 position: "relative",
-                padding: "80px 24px",
+                padding: "80px 24px 100px",
                 fontFamily: "var(--font-inter)",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                perspective: "1200px",
+                textAlign: "center",
+                overflow: "visible",
                 width: "100%",
-                maxWidth: "100%",
-                overflowX: "hidden",
             }}
         >
-            {/* Ambient Background Grid for Neuro Vibe */}
+            {/* Ambient gold-dot grid */}
             <div style={{
                 position: "absolute", inset: 0,
+                backgroundImage: "radial-gradient(circle, rgba(255,215,0,0.04) 1px, transparent 1px)",
                 backgroundSize: "60px 60px",
-                backgroundImage: "radial-gradient(circle, rgba(255,215,0,0.05) 1px, transparent 1px)",
-                opacity: 0.6,
-                zIndex: 1, pointerEvents: "none"
+                pointerEvents: "none", zIndex: 0,
             }} />
 
-            {/* Header Content */}
-            <div style={{ textAlign: "center", marginBottom: 64, position: "relative", zIndex: 10, maxWidth: 900 }}>
+            {/* Section header */}
+            <div style={{ position: "relative", zIndex: 10, marginBottom: 56 }}>
                 <div style={{
-                    display: "inline-flex", alignItems: "center", gap: 12,
-                    background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.1)",
-                    padding: "8px 24px", borderRadius: 100, marginBottom: 24,
-                    backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)",
+                    display: "inline-flex", alignItems: "center", gap: 10,
+                    background: "rgba(0,255,65,0.07)", border: "1px solid rgba(0,255,65,0.25)",
+                    borderRadius: 30, padding: "5px 18px", marginBottom: 20,
+                    fontSize: 10, fontWeight: 800, color: "#00ff41",
+                    letterSpacing: "0.14em", textTransform: "uppercase",
                 }}>
-                    <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#FFD700", boxShadow: "0 0 16px #FFD700" }} />
-                    <span style={{ color: "rgba(255,255,255,0.8)", fontSize: 11, fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase" }}>
-                        The Ben Revenue Audit (Master Module)
-                    </span>
+                    <span style={{
+                        width: 7, height: 7, borderRadius: "50%",
+                        background: "#00ff41", boxShadow: "0 0 8px #00ff41",
+                        animation: "ts-blink 1.4s ease-in-out infinite",
+                        display: "inline-block",
+                    }} />
+                    {hasStarted ? `${cur.name} is Speaking` : "11 AI Voices · Neural Relay · Auto-Play"}
                 </div>
                 <h2 style={{
-                    fontSize: "clamp(36px, 5.5vw, 64px)", fontWeight: 900, lineHeight: 1.05,
-                    margin: "0 0 24px",
+                    fontSize: "clamp(28px, 4vw, 52px)", fontWeight: 900,
+                    letterSpacing: "-0.02em", lineHeight: 1.1, margin: "0 0 16px",
                     background: "linear-gradient(135deg, #fff 40%, rgba(255,255,255,0.6) 100%)",
                     WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
-                    letterSpacing: "-0.02em",
                 }}>
-                    Ben is Not a Chatbot.<br className="md:hidden" />
-                    <span style={{ color: "#FFD700", WebkitTextFillColor: "#FFD700" }}> He is Your New Top Producer.</span>
+                    The World&apos;s First <span style={{ color: cur.color, WebkitTextFillColor: cur.color, transition: "color 0.5s" }}>Autonomous Neuro-Workforce.</span>
                 </h2>
-                <p style={{
-                    fontSize: "clamp(18px, 2.5vw, 24px)", color: "rgba(255,255,255,0.6)",
-                    maxWidth: 700, margin: "0 auto", lineHeight: 1.5, fontWeight: 400,
-                }}>
-                    Stop the <strong style={{ color: "#ef4444" }}>$600/Day Hemorrhage. </strong>
-                    <br className="hidden md:block" />Start the <strong style={{ color: "#fff", fontWeight: 700 }}>Bio-Logical Flow.</strong>
+                <p style={{ fontSize: 16, color: "rgba(255,255,255,0.5)", maxWidth: 560, margin: "0 auto", lineHeight: 1.6 }}>
+                    Scroll down and listen. Our 11 AI agents introduce themselves — each one engineered to handle a different part of your revenue pipeline.
                 </p>
             </div>
 
-            {/* The Sphere Visualizer */}
-            <div style={{ position: "relative", zIndex: 10, marginBottom: 64 }}>
+            {/* THE ORB — center piece */}
+            <div style={{ position: "relative", zIndex: 10, display: "inline-block", marginBottom: 56 }}>
+
+                {/* Orbit dots ring */}
+                <OrbitRing activeIdx={activeIdx} />
+
+                {/* Spinning dashed ring */}
+                <div style={{
+                    position: "absolute",
+                    top: -50, left: -50, right: -50, bottom: -50,
+                    border: `1px dashed ${cur.color}44`,
+                    borderRadius: "50%",
+                    animation: "ts-spin 18s linear infinite",
+                    transition: "border-color 0.5s",
+                    pointerEvents: "none",
+                }} />
+
+                {/* The main Orb */}
                 <div
-                    ref={visualizerRef}
-                    className="ben-visualizer"
+                    ref={orbRef}
                     style={{
-                        width: 250,
-                        height: 250,
+                        width: 240,
+                        height: 240,
                         borderRadius: "50%",
-                        background: "radial-gradient(circle, rgba(255,215,0,0.15) 0%, transparent 70%)",
-                        border: "1px solid rgba(255, 215, 0, 0.5)",
+                        background: `radial-gradient(circle at 35% 35%, ${cur.color}22 0%, transparent 70%)`,
+                        border: `1.5px solid ${cur.color}66`,
+                        boxShadow: `0 0 40px ${cur.color}44, 0 0 80px ${cur.color}22, inset 0 0 20px ${cur.color}11`,
                         display: "flex",
+                        flexDirection: "column",
                         alignItems: "center",
                         justifyContent: "center",
                         margin: "0 auto",
-                        cursor: "pointer",
                         position: "relative",
-                        boxShadow: "0 0 40px rgba(255,215,0,0.2), inset 0 0 20px rgba(255,215,0,0.1)",
-                        transition: "all 0.3s ease",
+                        transition: "background 0.5s, border-color 0.5s",
+                        cursor: "default",
+                        padding: "20px",
                     }}
-                    onClick={handleActivateBen}
                 >
-                    <div style={{
-                        position: "absolute", top: -20, right: -20, bottom: -20, left: -20,
-                        border: "1px dashed rgba(255,215,0,0.3)", borderRadius: "50%",
-                        animation: "spin 20s linear infinite", pointerEvents: "none"
-                    }} />
-
-                    <div style={{
-                        textAlign: "center", zIndex: 2
-                    }}>
-                        {!audioPlaying ? (
-                            <>
-                                <div style={{ fontSize: 40, marginBottom: 8, animation: "bounce 2s ease infinite" }}>🎙️</div>
-                                <div style={{ fontSize: 13, fontWeight: 800, color: "#FFD700", letterSpacing: "0.1em", textTransform: "uppercase" }}>
-                                    Activate Ben
-                                </div>
-                                <div style={{ fontSize: 9, fontWeight: 600, color: "rgba(255,215,0,0.6)", marginTop: 6, letterSpacing: "0.05em" }}>TAP TO START</div>
-                            </>
-                        ) : (
-                            <>
-                                <div style={{ fontSize: 40, marginBottom: 8 }}>🛑</div>
-                                <div style={{ fontSize: 13, fontWeight: 800, color: "#ef4444", letterSpacing: "0.1em", textTransform: "uppercase" }}>
-                                    Deactivate
-                                </div>
-                            </>
-                        )}
-                    </div>
+                    {hasStarted ? (
+                        <>
+                            {/* Agent name */}
+                            <div style={{
+                                fontSize: 22, fontWeight: 900,
+                                color: cur.color,
+                                textShadow: `0 0 20px ${cur.color}`,
+                                letterSpacing: "-0.02em",
+                                marginBottom: 6,
+                                transition: "color 0.5s",
+                            }}>
+                                {cur.name}
+                            </div>
+                            {/* Live speaking indicator */}
+                            <div style={{
+                                display: "flex", gap: 3, alignItems: "flex-end",
+                                height: 18, marginBottom: 8,
+                            }}>
+                                {[1, 2, 3, 4, 3, 2].map((h, i) => (
+                                    <div key={i} style={{
+                                        width: 3,
+                                        height: h * 4,
+                                        borderRadius: 2,
+                                        background: cur.color,
+                                        animation: `ts-bar 0.${6 + i}s ease-in-out infinite alternate`,
+                                        boxShadow: `0 0 6px ${cur.color}`,
+                                    }} />
+                                ))}
+                            </div>
+                            <div style={{
+                                fontSize: 9, fontWeight: 700, color: `${cur.color}cc`,
+                                letterSpacing: "0.12em", textTransform: "uppercase",
+                            }}>
+                                SPEAKING NOW
+                            </div>
+                        </>
+                    ) : (
+                        <>
+                            <div style={{ fontSize: 36, marginBottom: 8 }}>🧠</div>
+                            <div style={{ fontSize: 11, fontWeight: 800, color: "rgba(255,255,255,0.4)", letterSpacing: "0.1em", textTransform: "uppercase" }}>
+                                SCROLL TO HEAR
+                            </div>
+                        </>
+                    )}
                 </div>
             </div>
 
-            {/* GSAP Transformation Container */}
+            {/* LIVE SCRIPT DISPLAY — shows what the current agent is saying */}
             <div style={{
-                maxWidth: 1200, width: "100%", margin: "0 auto", position: "relative", zIndex: 10,
-                display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))", gap: 32,
-                transformStyle: "preserve-3d",
+                maxWidth: 680, margin: "0 auto 56px",
+                position: "relative", zIndex: 10,
+                minHeight: 100,
             }}>
-
-                {/* ── THE FRICTION SIDE ── */}
-                <div ref={frictionRef} className="human-friction-side" style={{
-                    background: "rgba(20, 15, 15, 0.4)",
-                    backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)",
-                    borderRadius: 32,
-                    border: "1px solid rgba(239, 68, 68, 0.15)",
-                    padding: "48px 40px",
-                    position: "relative",
-                    overflow: "hidden",
-                    transformOrigin: "right center",
-                }}>
-                    <div style={{ position: "absolute", inset: 0, background: "linear-gradient(225deg, transparent 50%, rgba(0,0,0,0.6) 100%)", pointerEvents: "none" }} />
-                    <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: "linear-gradient(90deg, #ef4444, transparent)" }} />
-
-                    <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 40, position: "relative", zIndex: 2 }}>
-                        <div style={{ width: 44, height: 44, borderRadius: 12, background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.2)", display: "flex", alignItems: "center", justifyContent: "center", color: "#ef4444", fontSize: 20 }}>
-                            ✗
+                {hasStarted ? (
+                    <div style={{
+                        background: `rgba(0,0,0,0.35)`,
+                        border: `1px solid ${cur.color}33`,
+                        borderRadius: 20,
+                        padding: "24px 32px",
+                        backdropFilter: "blur(12px)",
+                        transition: "border-color 0.5s",
+                    }}>
+                        <div style={{
+                            fontSize: 11, fontWeight: 800, color: cur.color,
+                            letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 12,
+                            transition: "color 0.5s",
+                        }}>
+                            🎙 {cur.name} says:
                         </div>
-                        <div>
-                            <div style={{ fontSize: 11, color: "rgba(239,68,68,0.6)", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 4 }}>The Antiquated Way</div>
-                            <div style={{ fontSize: 22, fontWeight: 800, color: "#fff", letterSpacing: "-0.02em" }}>Manual Labor</div>
-                        </div>
+                        <p style={{
+                            fontSize: 15, color: "rgba(255,255,255,0.85)",
+                            lineHeight: 1.75, margin: 0, fontStyle: "italic",
+                        }}>
+                            &ldquo;{cur.script}&rdquo;
+                        </p>
                     </div>
-
-                    <div style={{ display: "flex", flexDirection: "column", gap: 24, position: "relative", zIndex: 2 }}>
-                        {frictionItems.map((item, i) => (
-                            <div key={i} style={{ display: "flex", gap: 16, alignItems: "flex-start" }}>
-                                <div style={{ width: 2, height: 40, background: "rgba(239,68,68,0.3)", borderRadius: 2, marginTop: 4 }} />
-                                <div>
-                                    <div style={{ color: "#ef4444", fontSize: 18, fontWeight: 800, marginBottom: 6 }}>{item.label}</div>
-                                    <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 15, lineHeight: 1.5 }}>{item.desc}</div>
-                                </div>
-                            </div>
-                        ))}
+                ) : (
+                    <div style={{
+                        background: "rgba(255,255,255,0.02)",
+                        border: "1px solid rgba(255,255,255,0.06)",
+                        borderRadius: 20,
+                        padding: "24px 32px",
+                    }}>
+                        <p style={{ fontSize: 14, color: "rgba(255,255,255,0.35)", margin: 0, lineHeight: 1.6 }}>
+                            The agent scripts will appear here as each one speaks...
+                        </p>
                     </div>
-                </div>
-
-                {/* ── THE FLOW SIDE ── */}
-                <div ref={flowRef} className="ben-flow-side" style={{
-                    background: "rgba(20, 18, 10, 0.75)",
-                    backdropFilter: "blur(40px)", WebkitBackdropFilter: "blur(40px)",
-                    borderRadius: 32,
-                    border: "1px solid rgba(255, 215, 0, 0.4)",
-                    padding: "48px 40px",
-                    position: "relative",
-                    overflow: "hidden",
-                    transformOrigin: "left center",
-                    boxShadow: "0 20px 80px rgba(255, 215, 0, 0)",
-                }}>
-                    <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, transparent 40%, rgba(255,215,0,0.05) 100%)", pointerEvents: "none" }} />
-                    <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: "linear-gradient(90deg, #FFD700, #F59E0B)" }} />
-
-                    <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 40, position: "relative", zIndex: 2 }}>
-                        <div style={{ width: 44, height: 44, borderRadius: 12, background: "rgba(255,215,0,0.15)", border: "1px solid rgba(255,215,0,0.4)", display: "flex", alignItems: "center", justifyContent: "center", color: "#FFD700", fontSize: 20, boxShadow: "0 0 20px rgba(255,215,0,0.2)" }}>
-                            ✓
-                        </div>
-                        <div>
-                            <div style={{ fontSize: 11, color: "#FFD700", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 4 }}>The Ben Advantage</div>
-                            <div style={{ fontSize: 22, fontWeight: 800, color: "#fff", textShadow: "0 0 30px rgba(255,215,0,0.4)", letterSpacing: "-0.02em" }}>Autonomous Growth</div>
-                        </div>
-                    </div>
-
-                    <div style={{ display: "flex", flexDirection: "column", gap: 24, position: "relative", zIndex: 2 }}>
-                        {flowItems.map((item, i) => (
-                            <div key={i} style={{ display: "flex", gap: 16, alignItems: "flex-start" }}>
-                                <div style={{ position: "relative", width: 2, height: 40, background: "rgba(255,215,0,0.2)", borderRadius: 2, marginTop: 4 }}>
-                                    <div style={{ position: "absolute", top: 0, left: -2, width: 6, height: 16, background: "#FFD700", borderRadius: 4, boxShadow: "0 0 12px #FFD700" }} />
-                                </div>
-                                <div>
-                                    <div style={{ color: "#FFD700", fontSize: 18, fontWeight: 800, marginBottom: 6 }}>{item.label}</div>
-                                    <div style={{ color: "rgba(255,255,255,0.75)", fontSize: 15, lineHeight: 1.5 }}>{item.desc}</div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
+                )}
             </div>
 
-            <div style={{ marginTop: 64, position: "relative", zIndex: 10, textAlign: "center" }}>
+            {/* Agent name scrollbar — progress through all 11 */}
+            <div style={{
+                maxWidth: 700, margin: "0 auto 40px",
+                display: "flex", gap: 6, justifyContent: "center",
+                flexWrap: "wrap",
+                position: "relative", zIndex: 10,
+            }}>
+                {RELAY.map((agent, i) => (
+                    <div key={agent.name} style={{
+                        fontSize: 9, fontWeight: 800,
+                        color: i === activeIdx ? agent.color : "rgba(255,255,255,0.25)",
+                        letterSpacing: "0.1em",
+                        textTransform: "uppercase",
+                        padding: "4px 10px",
+                        border: `1px solid ${i === activeIdx ? agent.color + "66" : "rgba(255,255,255,0.08)"}`,
+                        borderRadius: 20,
+                        background: i === activeIdx ? `${agent.color}11` : "transparent",
+                        transition: "all 0.5s ease",
+                        boxShadow: i === activeIdx ? `0 0 10px ${agent.color}44` : "none",
+                    }}>
+                        {agent.name}
+                    </div>
+                ))}
+            </div>
+
+            {/* CTA */}
+            <div style={{ position: "relative", zIndex: 10 }}>
                 <button
-                    ref={ctaRef}
-                    className="activate-ben-btn cta-button"
-                    onClick={() => {
-                        window.scrollTo({ top: 0, behavior: "smooth" });
-                    }}
+                    onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
                     style={{
-                        padding: "20px 48px",
+                        padding: "18px 44px",
                         borderRadius: 100,
                         background: "transparent",
-                        border: "2px solid #FFD700",
-                        color: "#FFD700",
-                        fontSize: 16,
+                        border: "2px solid #00ff41",
+                        color: "#00ff41",
+                        fontSize: 14,
                         fontWeight: 800,
                         letterSpacing: "0.1em",
                         textTransform: "uppercase",
                         cursor: "pointer",
                         transition: "all 0.3s ease",
+                        fontFamily: "inherit",
                     }}
                 >
-                    Ready to Stop the Leak?
+                    Talk to Jenny — Free Revenue Audit →
                 </button>
             </div>
 
             <style>{`
-                @keyframes spin {
-                    from { transform: rotate(0deg); }
-                    to { transform: rotate(360deg); }
-                }
-                @keyframes bounce {
-                    from { height: 10px; }
-                    to { height: 32px; }
-                }
+                @keyframes ts-spin  { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+                @keyframes ts-blink { 0%,100% { opacity:1 } 50% { opacity:0.35 } }
+                @keyframes ts-bar   { from { transform: scaleY(0.4); opacity:0.6; } to { transform: scaleY(1); opacity:1; } }
             `}</style>
-
         </section>
     );
 }
