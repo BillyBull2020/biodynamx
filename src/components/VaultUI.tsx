@@ -1032,7 +1032,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
                 {/* 9-Card Grid */}
                 <div style={{
                     display: "grid",
-                    gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+                    gridTemplateColumns: "repeat(auto-fill, minmax(min(280px, 100%), 1fr))",
                     gap: 20,
                     maxWidth: 1100,
                     margin: "0 auto",

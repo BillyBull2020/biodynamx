@@ -379,26 +379,30 @@ export default function OrbitEcosystem() {
                 ))}
             </div>
 
-            {/* "Tap to activate" prompt — only shown before first click */}
+            {/* "Tap to activate" prompt — only shown before first click on mobile */}
             {showPrompt && !hasStarted && (
-                <div style={{
-                    position: "absolute",
-                    bottom: -20,
-                    left: "50%",
-                    transform: "translateX(-50%)",
-                    background: "rgba(0,0,0,0.6)",
-                    border: "1px solid rgba(0,255,65,0.4)",
-                    borderRadius: 40,
-                    padding: "10px 24px",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 10,
-                    backdropFilter: "blur(12px)",
-                    animation: "oe-prompt-pulse 2s ease-in-out infinite",
-                    cursor: "pointer",
-                    zIndex: 100,
-                    whiteSpace: "nowrap",
-                }}>
+                <button
+                    onClick={() => { startRelay(); }}
+                    style={{
+                        position: "absolute",
+                        bottom: -20,
+                        left: "50%",
+                        transform: "translateX(-50%)",
+                        background: "rgba(0,0,0,0.6)",
+                        border: "1px solid rgba(0,255,65,0.4)",
+                        borderRadius: 40,
+                        padding: "10px 24px",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 10,
+                        backdropFilter: "blur(12px)",
+                        animation: "oe-prompt-pulse 2s ease-in-out infinite",
+                        cursor: "pointer",
+                        zIndex: 100,
+                        whiteSpace: "nowrap",
+                        outline: "none",
+                    }}
+                >
                     <span style={{ fontSize: 16 }}>🔊</span>
                     <span style={{
                         fontSize: 11,
@@ -407,12 +411,12 @@ export default function OrbitEcosystem() {
                         letterSpacing: "0.12em",
                         textTransform: "uppercase",
                     }}>
-                        Tap anywhere to hear our team
+                        Tap to hear our team
                     </span>
-                </div>
+                </button>
             )}
 
-            {/* Live script display */}
+            {/* Live script display — outside the viewport div so it doesn't overlap the orb */}
             {hasStarted && activeSvc && (
                 <div style={{
                     marginTop: 40,

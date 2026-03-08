@@ -284,11 +284,12 @@ export default function AdvantageVault() {
                 ref={gridRef}
                 style={{
                     display: "grid",
-                    gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
+                    gridTemplateColumns: "repeat(auto-fill, minmax(min(220px, 45vw), 1fr))",
                     gap: 16,
-                    padding: "0 clamp(16px,4vw,60px)",
+                    padding: "0 clamp(12px,4vw,60px)",
                     maxWidth: 1300,
                     margin: "0 auto",
+                    WebkitTransform: "translateZ(0)",  /* iOS Safari 3D fix */
                 }}
             >
                 {CARDS.map((card, i) => (
@@ -361,6 +362,17 @@ export default function AdvantageVault() {
                     0%, 100% { opacity: 1; }
                     50% { opacity: 0.3; }
                 }
+                /* Mobile: show TAP instead of HOVER */
+                @media (hover: none) {
+                    .av-flip-hint::after { content: 'TAP TO FLIP →'; }
+                    .av-flip-hint { font-size: 0; }
+                    .av-flip-hint::after {
+                        font-size: 9px;
+                        font-weight: 700;
+                        color: rgba(255,215,0,0.3);
+                        letter-spacing: 0.08em;
+                    }
+                }
             `}</style>
         </section>
     );
@@ -425,7 +437,7 @@ function FlipCardControlled({ card, index, visible, forceFlipped }: {
                         <div style={{ fontSize: 13, fontWeight: 700, color: "#ff8080", lineHeight: 1.4, marginBottom: 8 }}>
                             ✗ {card.pain}
                         </div>
-                        <div style={{ fontSize: 9, fontWeight: 700, color: "rgba(255,255,255,0.13)", letterSpacing: "0.08em" }}>
+                        <div style={{ fontSize: 9, fontWeight: 700, color: "rgba(255,255,255,0.13)", letterSpacing: "0.08em" }} className="av-flip-hint">
                             HOVER TO REVEAL →
                         </div>
                     </div>
