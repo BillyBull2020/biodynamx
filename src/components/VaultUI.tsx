@@ -19,7 +19,7 @@ import OrbitEcosystem from "./OrbitEcosystem";
 import NeuralOrb from "./NeuralOrb";
 import JennySpline from "./JennySpline";
 import GlitchOverlay from "./GlitchOverlay";
-import TransformationSection from "./TransformationSection";
+
 import AgentCarousel from "./AgentCarousel";
 import { VisualJenny } from "@/lib/visual-jenny";
 import { VisualBridge, type VisualCommand } from "@/lib/visual-bridge";
@@ -953,8 +953,24 @@ export default function VaultUI({ apiKey }: VaultProps) {
             {/* BELOW THE FOLD                                            */}
             {/* ═══════════════════════════════════════════════════════════ */}
 
-            {/* ── The Neural Orb — 11-Agent Voice Relay ── */}
-            <TransformationSection />
+            {/* ── 3D Neural Orbit — 11-Agent Voice Relay (right under hero) ── */}
+            <section className="section-container orbit-section" style={{
+                background: "linear-gradient(180deg, rgba(0,255,65,0.01) 0%, transparent 50%, rgba(59,130,246,0.01) 100%)",
+                paddingTop: 80,
+                paddingBottom: 80,
+                overflow: "visible",
+            }}>
+                <div style={{ maxWidth: 1000, margin: "0 auto", textAlign: "center" }}>
+                    <div className="section-label" style={{ color: "#3b82f6" }}>Meet the Elite 11</div>
+                    <h2 className="section-title">
+                        The World&apos;s First <span style={{ color: "#00ff41" }}>Autonomous Neuro-Workforce.</span>
+                    </h2>
+                    <p className="section-desc" style={{ maxWidth: 600, margin: "0 auto 40px" }}>
+                        Scroll down and listen as each agent introduces themselves. Every voice, every name, every role — engineered to close.
+                    </p>
+                    <OrbitEcosystem />
+                </div>
+            </section>
 
             {/* ── Elite 11 Workforce — Agent Showcase (Carousel) ── */}
             <section className="section-container" style={{ textAlign: "center", paddingTop: 80, paddingBottom: 80 }}>
@@ -1269,37 +1285,6 @@ export default function VaultUI({ apiKey }: VaultProps) {
                 </div>
             </section>
 
-            {/* ── 3D Service Ecosystem — WOW factor ────────── */}
-            {
-                !isActive && (
-                    <section className="section-container orbit-section" style={{
-                        background: "linear-gradient(180deg, rgba(0,255,65,0.01) 0%, transparent 50%, rgba(59,130,246,0.01) 100%)",
-                        paddingTop: 80,
-                        paddingBottom: 80,
-                        overflow: "visible",
-                    }}>
-                        <div style={{ maxWidth: 1000, margin: "0 auto", textAlign: "center" }}>
-                            <div className="section-label" style={{ color: "#3b82f6" }}>Full-Stack AI Infrastructure</div>
-                            <h2 className="section-title">
-                                Not just agents. <span style={{ color: "#00ff41" }}>An entire AI workforce.</span>
-                            </h2>
-                            <p className="section-desc" style={{ maxWidth: 600, margin: "0 auto 40px" }}>
-                                We don&apos;t sell software. We build the AI engine behind your business —
-                                voice agents, custom software, video production, SEO domination, reputation management,
-                                and AI employees that work 24/7. Everything from A to Z, under one roof.
-                            </p>
-                            <OrbitEcosystem />
-                            <div className="premium-callout-badge">
-                                <span className="badge-glow" />
-                                <span className="badge-icon">🧠</span>
-                                <span className="badge-text">
-                                    We build custom software. We&apos;re not just another AI vendor.
-                                </span>
-                            </div>
-                        </div>
-                    </section>
-                )
-            }
 
             <section id="how-it-works" ref={howItWorksRef} aria-label="The BioDynamX Diagnostic Framework" className="section-container" style={{
                 opacity: howItWorksVisible ? 1 : 0,
