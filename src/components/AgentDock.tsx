@@ -50,7 +50,6 @@ const SECTION_MESSAGES: Record<string, string> = {
 
 export default function AgentDock() {
     const [visible, setVisible] = useState(false);
-    const [expanded, setExpanded] = useState(false);
     const [activeNodeIdx, setActiveNodeIdx] = useState<number>(10); // Ben by default
     const [statusText, setStatusText] = useState("Your AI workforce is ready.");
     const [neuralCtx, setNeuralCtx] = useState(NeuralMemory.get());
@@ -72,18 +71,63 @@ export default function AgentDock() {
         return () => window.removeEventListener("resize", check);
     }, []);
 
-    // Show dock after scrolling past hero (~100px)
+    // ── bdx:swarm-card-flip — AdvantageVault agent auto-flip event ──
+    // When a card is auto-flipped by the Ironclaw Swarm, this highlights
+    // the relevant agent node and updates the dock status text.
+    useEffect(() => {
+        const handler = (e: Event) => {
+            const { agentName, agentTask } = (e as CustomEvent).detail as {
+                agentName: string; agentTask: string; cardTitle: string; cardIndex: number;
+            };
+
+            // Update status text in the dock
+            setStatusText(`${agentName} is ${agentTask}...`);
+
+            // Highlight the matching agent node
+            const agentIdx = DOCK_AGENTS.findIndex(a => a.name === agentName);
+            if (agentIdx >= 0) {
+                setActiveNodeIdx(agentIdx);
+                const nodeEl = nodeRefs.current[agentIdx];
+                const agentColor = DOCK_AGENTS[agentIdx].color;
+                if (nodeEl) {
+                    gsap.to(nodeEl, {
+                        backgroundColor: `${agentColor}33`,
+                        boxShadow: `0 0 18px ${agentColor}60, 0 0 35px ${agentColor}25`,
+                        borderColor: agentColor,
+                        duration: 0.5,
+                        ease: "power2.out",
+                        onComplete: () => {
+                            gsap.to(nodeEl, {
+                                backgroundColor: "rgba(255,255,255,0.04)",
+                                boxShadow: `0 0 14px ${agentColor}40`,
+                                borderColor: `${agentColor}60`,
+                                duration: 3,
+                                ease: "power2.out",
+                            });
+                        },
+                    });
+                }
+            }
+        };
+
+        window.addEventListener("bdx:swarm-card-flip", handler);
+        return () => window.removeEventListener("bdx:swarm-card-flip", handler);
+    }, []);
+
+    // Show dock after scrolling past hero (~100px) — desktop only
+    // Mobile: always visible (handled via CSS opacity: 1)
     useEffect(() => {
         const onScroll = () => {
             if (window.scrollY > 120 && !isMobileRef.current) {
                 setVisible(true);
-            } else {
+            } else if (!isMobileRef.current) {
                 setVisible(false);
             }
         };
         window.addEventListener("scroll", onScroll, { passive: true });
         return () => window.removeEventListener("scroll", onScroll);
     }, []);
+
 
     // GSAP fade in/out dock
     useEffect(() => {
@@ -273,9 +317,8 @@ export default function AgentDock() {
                     pointerEvents: "none",
                     boxShadow: "0 8px 40px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.04)",
                 }}
-                onMouseEnter={() => setExpanded(true)}
-                onMouseLeave={() => setExpanded(false)}
             >
+
                 {/* Desktop header — hidden on mobile via CSS */}
                 <div className="bdx-node-row" style={{ marginBottom: 4 }}>
                     <div style={{

@@ -31,6 +31,7 @@ import { NeuralMemory } from "@/lib/neural-memory";
 import { triggerFullHandoff } from "@/lib/neural-audio";
 import { VisualJenny } from "@/lib/visual-jenny";
 import { VisualBridge, type VisualCommand } from "@/lib/visual-bridge";
+import { getKeywordEngine } from "@/lib/keyword-trigger-engine";
 import { initGSAPAnimations } from "@/lib/gsap-animations";
 import IronClawVisualPanel from "./IronClawVisualPanel";
 import "./VaultUI.css";
@@ -572,7 +573,27 @@ export default function VaultUI({ apiKey }: VaultProps) {
                     setShowLeadModal(true);
                 }
             },
-            onTranscript: () => { },
+            onTranscript: (agent: string, text: string) => {
+                // ★ JENNY VISUAL DUAL-CODING ENGINE — activated
+                // Every word the agent speaks is now processed in real-time:
+                //   1. KeywordEngine scans for scene triggers (revenue, SEO, checkout, etc.)
+                //   2. VisualBridge emits agent_speech event → Visual Jenny's Gemini session
+                // Visual scene transitions fire within ~400ms of keyword match.
+                if (agent && text) {
+                    // Feed into Keyword Trigger Engine for sub-400ms scene transitions
+                    getKeywordEngine().processText(text);
+
+                    // Emit agent_speech event → Visual Jenny picks up and decides visuals
+                    VisualBridge.emitConversationEvent({
+                        type: "agent_speech",
+                        data: { text, agentName: agent },
+                        timestamp: Date.now(),
+                        sessionId: NeuralMemory.get().sessionStage ?? "session",
+                        agentName: agent,
+                    });
+                }
+            },
+
             onError: (error) => { setErrorText(error); },
             onAnalyserReady: (node) => { setAnalyser(node); },
             // ★ IronClaw Visual Intelligence callbacks
@@ -611,6 +632,16 @@ export default function VaultUI({ apiKey }: VaultProps) {
         const team = createTeam();
         teamRef.current = team;
         team.initialize();
+
+        // ★ Signal Visual Jenny that the session has started
+        // This boots the keyword engine and clears previous state
+        getKeywordEngine().reset();
+        VisualBridge.emitConversationEvent({
+            type: "session_start",
+            data: { agentName: "Jenny" },
+            timestamp: Date.now(),
+            sessionId: "vault-".concat(Date.now().toString(36)),
+        });
         // NOTE: VisualJenny is now started inside TeamOrchestrator.bootAgent()
         // Do NOT create a second instance here — that was the bug causing no visuals.
     }, [apiKey, createTeam]);
