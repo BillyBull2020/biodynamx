@@ -52,6 +52,7 @@ export default function HeroMorphGSAP({
     return (
         <section
             ref={sectionRef}
+            aria-label="BioDynamX Hero — Web 4.0 AI Platform"
             style={{
                 width: "100%",
                 display: "flex",
@@ -132,6 +133,7 @@ export default function HeroMorphGSAP({
                             ref={ctaRef}
                             onClick={onStart}
                             id="hero-primary-cta"
+                            aria-label="Start your free Neural Revenue Audit"
                             style={{
                                 background: "#00ff41",
                                 color: "#000",
@@ -154,6 +156,7 @@ export default function HeroMorphGSAP({
                         <button
                             onClick={onStart}
                             id="hero-secondary-cta"
+                            aria-label="Learn more about the Elite 11 AI workforce"
                             style={{
                                 background: "rgba(255,255,255,0.05)",
                                 color: "rgba(255,255,255,0.85)",
@@ -199,7 +202,7 @@ export default function HeroMorphGSAP({
                         {/* Robot — bottom layer */}
                         <img
                             src="/assets/hero_robot.png"
-                            alt="BioDynamX AI — Autonomous Intelligence"
+                            alt="BioDynamX autonomous AI robot morphing into human — Web 4.0 human-AI symbiosis"
                             style={{
                                 position: "absolute", top: 0, left: 0,
                                 width: "100%", height: "100%",
@@ -222,7 +225,7 @@ export default function HeroMorphGSAP({
                         >
                             <img
                                 src="/assets/hero_man.png"
-                                alt="Billy de la Torres — BioDynamX Founder"
+                                alt="Billy De La Taurus — Founder and CEO of BioDynamX Engineering Group"
                                 style={{
                                     position: "absolute", top: 0, left: 0,
                                     width: "100%", height: "100%",
