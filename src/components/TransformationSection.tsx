@@ -107,6 +107,16 @@ export default function TransformationSection() {
         const ctx = gsap.context(() => {
             const benTalkTL = gsap.timeline();
 
+            // IMMEDIATE FEEDBACK (0.0s) -> Flash visualizer so user knows it started
+            benTalkTL.to(visualizerRef.current, {
+                boxShadow: "0 0 80px #FFD700, inset 0 0 30px #FFD700",
+                scale: 1.05,
+                duration: 0.3,
+                yoyo: true,
+                repeat: 3,
+                ease: "power2.out"
+            }, 0.0);
+
             // Simulate the timeline of the speech based on expected audio length
             // AT ~4s: "80 leads rot in voicemail" -> Pulse red warning on friction side
             benTalkTL.to(frictionRef.current, {
@@ -267,10 +277,11 @@ export default function TransformationSection() {
                     }}>
                         {!audioPlaying ? (
                             <>
-                                <div style={{ fontSize: 40, marginBottom: 8 }}>🎙️</div>
+                                <div style={{ fontSize: 40, marginBottom: 8, animation: "bounce 2s ease infinite" }}>🎙️</div>
                                 <div style={{ fontSize: 13, fontWeight: 800, color: "#FFD700", letterSpacing: "0.1em", textTransform: "uppercase" }}>
                                     Activate Ben
                                 </div>
+                                <div style={{ fontSize: 9, fontWeight: 600, color: "rgba(255,215,0,0.6)", marginTop: 6, letterSpacing: "0.05em" }}>TAP TO START</div>
                             </>
                         ) : (
                             <>
