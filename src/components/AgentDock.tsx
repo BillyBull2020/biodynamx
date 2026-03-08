@@ -1,25 +1,25 @@
 "use client";
 
 /**
- * AgentDock — BioDynamX Persistent Agent Dock · Web 4.0
+ * AgentDock — BioDynamX Persistent Agent Dock · Web 4.1
  * ───────────────────────────────────────────────────────
- * A fixed glassmorphic sidebar that "follows" the user down the page.
- * Appears after scrolling past the hero, fades in softly.
+ * Desktop:  Fixed glassmorphic right sidebar (vertical)
+ * Mobile:   Horizontal thumb-zone pill fixed to bottom of screen
  *
- * Behavior:
- *  - 11 agent "neural nodes" shown as mini avatar circles
- *  - Background task rotation via GSAP warm-gold breathing pulse
- *  - "Digital Concierge" language — no technical jargon
- *  - Collapses to 60px on idle; expands to 240px on hover
- *  - Syncs with NeuralMemory — highlights agent talked to
- *  - Hidden on mobile (<= 760px) to avoid overlap
- *  - Section-aware: updates status when user scrolls into pricing, etc.
+ * Features:
+ *  - 11 neural nodes with GSAP gold breathing pulse
+ *  - Section-aware contextual status text
+ *  - NeuralMemory integration — highlights last spoken-to agent
+ *  - Mobile haptic feedback on agent node tap
+ *  - Desktop: collapses 58px → 238px on hover
+ *  - Mobile: horizontal scrollable strip, 60px tall, bottom-center
  */
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { NeuralMemory } from "@/lib/neural-memory";
+import { hapticAgentWake } from "@/lib/haptic";
 
 // ── Mini agent data (subset of full data, just what the dock needs) ──
 const DOCK_AGENTS = [
@@ -187,11 +187,18 @@ export default function AgentDock() {
 
     const lastTalkedName = neuralCtx.lastTalkedTo;
 
+    // ── Render ──────────────────────────────────────────────────────────
     return (
         <>
+            {/* ───────────────────────────────────────────────────────────
+                DESKTOP STYLE — vertical right sidebar
+                MOBILE STYLE  — horizontal bottom thumb-zone pill
+            ─────────────────────────────────────────────────────────── */}
             <style>{`
-                @media (max-width: 760px) { .bdx-agent-dock { display: none !important; } }
-                .bdx-agent-dock { transition: width 0.35s cubic-bezier(0.4,0,0.2,1), padding 0.35s cubic-bezier(0.4,0,0.2,1); }
+                /* Desktop: vertical sidebar */
+                .bdx-agent-dock {
+                    transition: width 0.35s cubic-bezier(0.4,0,0.2,1), padding 0.35s cubic-bezier(0.4,0,0.2,1);
+                }
                 .bdx-agent-dock:hover { width: 238px !important; padding: 16px 14px !important; align-items: flex-start !important; }
                 .bdx-dock-label { opacity: 0; transform: translateX(-6px); transition: opacity 0.25s ease, transform 0.25s ease; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 140px; }
                 .bdx-agent-dock:hover .bdx-dock-label { opacity: 1; transform: none; }
@@ -200,6 +207,44 @@ export default function AgentDock() {
                 .bdx-dock-header-text { display: none; }
                 .bdx-agent-dock:hover .bdx-dock-header-text { display: block; }
                 .bdx-node-row { display: flex; align-items: center; gap: 10px; width: 100%; }
+
+                /* Mobile: horizontal bottom bar */
+                @media (max-width: 760px) {
+                    .bdx-agent-dock {
+                        position: fixed !important;
+                        bottom: 16px !important;
+                        top: auto !important;
+                        right: auto !important;
+                        left: 50% !important;
+                        transform: translateX(-50%) !important;
+                        width: min(92vw, 380px) !important;
+                        height: 62px !important;
+                        flex-direction: row !important;
+                        padding: 10px 14px !important;
+                        border-radius: 50px !important;
+                        gap: 6px !important;
+                        align-items: center !important;
+                        overflow-x: auto !important;
+                        overflow-y: clip !important;
+                        -webkit-overflow-scrolling: touch;
+                        scrollbar-width: none;
+                        opacity: 1 !important;
+                        pointer-events: auto !important;
+                    }
+                    .bdx-agent-dock::-webkit-scrollbar { display: none; }
+                    .bdx-agent-dock:hover { width: min(92vw, 380px) !important; }
+                    .bdx-dock-label { display: none !important; }
+                    .bdx-dock-status { display: none !important; }
+                    .bdx-dock-header-text { display: none !important; }
+                    .bdx-node-row { flex-direction: column !important; align-items: center !important; min-width: 44px; gap: 2px !important; }
+                    .bdx-mobile-name {
+                        font-size: 7px !important;
+                        color: rgba(255,255,255,0.45);
+                        text-align: center;
+                        white-space: nowrap;
+                        display: block !important;
+                    }
+                }
             `}</style>
 
             <div
@@ -213,7 +258,7 @@ export default function AgentDock() {
                     top: "50%",
                     transform: "translateY(-50%)",
                     width: 58,
-                    background: "rgba(4, 4, 18, 0.82)",
+                    background: "rgba(4, 4, 18, 0.86)",
                     backdropFilter: "blur(22px)",
                     WebkitBackdropFilter: "blur(22px)",
                     border: "1px solid rgba(255, 215, 0, 0.18)",
@@ -231,7 +276,7 @@ export default function AgentDock() {
                 onMouseEnter={() => setExpanded(true)}
                 onMouseLeave={() => setExpanded(false)}
             >
-                {/* Header */}
+                {/* Desktop header — hidden on mobile via CSS */}
                 <div className="bdx-node-row" style={{ marginBottom: 4 }}>
                     <div style={{
                         width: 10, height: 10, borderRadius: "50%",
@@ -248,14 +293,15 @@ export default function AgentDock() {
                     </span>
                 </div>
 
-                {/* Thin divider */}
-                <div style={{
+                {/* Thin divider — desktop only */}
+                <div className="bdx-dock-status" style={{
                     width: "100%", height: 1,
                     background: "linear-gradient(90deg, transparent, rgba(255,215,0,0.2), transparent)",
                     marginBottom: 2,
+                    display: "block",
                 }} />
 
-                {/* Agent Nodes */}
+                {/* Agent Nodes — shared desktop + mobile */}
                 {DOCK_AGENTS.map((agent, i) => {
                     const isWorking = i === activeNodeIdx;
                     const isTalked = agent.name === lastTalkedName;
@@ -264,6 +310,8 @@ export default function AgentDock() {
                             key={agent.name}
                             className="bdx-node-row"
                             title={agent.name}
+                            onClick={() => hapticAgentWake()}
+                            style={{ cursor: "pointer" }}
                         >
                             {/* Avatar node */}
                             <div
@@ -289,7 +337,7 @@ export default function AgentDock() {
                                 />
                             </div>
 
-                            {/* Expanded: name + working label */}
+                            {/* Desktop: name + working label */}
                             <div className="bdx-dock-label" style={{ flex: 1 }}>
                                 <div style={{
                                     fontSize: 11, fontWeight: 700,
@@ -320,18 +368,16 @@ export default function AgentDock() {
                                     </div>
                                 )}
                             </div>
+
+                            {/* Mobile: agent name below avatar */}
+                            <span className="bdx-mobile-name" style={{ display: "none" }}>
+                                {agent.name}
+                            </span>
                         </div>
                     );
                 })}
 
-                {/* Bottom divider */}
-                <div style={{
-                    width: "100%", height: 1,
-                    background: "linear-gradient(90deg, transparent, rgba(255,215,0,0.15), transparent)",
-                    marginTop: 2,
-                }} />
-
-                {/* Status line — only shown expanded */}
+                {/* Bottom status — desktop only on expand */}
                 <div className="bdx-dock-status" style={{ width: "100%" }}>
                     <p style={{
                         fontSize: 9,

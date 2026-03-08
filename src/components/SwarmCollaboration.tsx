@@ -20,6 +20,7 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { NeuralMemory } from "@/lib/neural-memory";
 import { triggerCollabPing } from "@/lib/neural-audio";
+import { hapticCollabPing } from "@/lib/haptic";
 
 interface CollabEntry {
     id: number;
@@ -89,6 +90,7 @@ export default function SwarmCollaboration() {
 
                 setEntries(prev => [entry, ...prev].slice(0, 6)); // keep last 6
                 triggerCollabPing();
+                hapticCollabPing(); // subtle 8ms tap on mobile
                 setCollapsed(false); // pop open when a pin fires
 
                 // Auto-scroll log to top
@@ -106,6 +108,7 @@ export default function SwarmCollaboration() {
             _collabId++;
             setEntries([{ id: _collabId, ...item, ts: Date.now() }]);
             triggerCollabPing();
+            hapticCollabPing();
             schedule();
         }, 8_000);
 

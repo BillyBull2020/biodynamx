@@ -24,6 +24,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { triggerFullHandoff, triggerNeuralPing } from "@/lib/neural-audio";
+import { hapticAgentWake, hapticSwipe } from "@/lib/haptic";
 
 // ─── AGENT DATA ──────────────────────────────────────────────────────────────
 
@@ -621,6 +622,8 @@ export default function AgentCarousel({ onTalkTo }: Props) {
         setDashboardVisible(true);
         // ★ Neural Audio: spatial whoosh → neural ping (Web 4.0 handoff signal)
         triggerFullHandoff();
+        // ★ Haptic: strong agent-wake burst on mobile
+        hapticAgentWake();
         // Dispatch orb flash event with agent color
         window.dispatchEvent(new CustomEvent("biodynamx:orb-flash", { detail: { color: agent.color } }));
         window.dispatchEvent(new Event("biodynamx:stop-relay"));
@@ -690,8 +693,13 @@ export default function AgentCarousel({ onTalkTo }: Props) {
                 onTouchStart={e => { touchStartX.current = e.touches[0].clientX; }}
                 onTouchEnd={e => {
                     const diff = touchStartX.current - e.changedTouches[0].clientX;
-                    if (Math.abs(diff) > 44) diff > 0 ? next() : prev();
+                    if (Math.abs(diff) > 44) {
+                        if (diff > 0) { next(); } else { prev(); }
+                        hapticSwipe(); // ★ Tactile swipe tick on mobile
+                    }
                 }}
+
+
             >
                 {/* ── LIVE TICKER ─────────────────────────────────────────── */}
                 <LiveTicker />

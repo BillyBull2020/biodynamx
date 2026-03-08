@@ -15,6 +15,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { triggerClosingPing, triggerVaultOpen } from "@/lib/neural-audio";
+import { hapticClosingReady, hapticVaultOpen } from "@/lib/haptic";
 
 const CLOSE_AGENTS = [
     { name: "Milton", image: "/agents/milton.png", color: "#4c1d95", action: "Ops cleared. 24hr deployment ready." },
@@ -67,6 +68,7 @@ export default function OneCallClose() {
             setTimeout(() => {
                 setReadyCount(r => r + 1);
                 triggerClosingPing();
+                hapticClosingReady(); // tactile validation — each agent ready burst
             }, i * 220); // 220ms between each — rapid-fire energy
         });
 
@@ -74,6 +76,7 @@ export default function OneCallClose() {
         setTimeout(() => {
             setStripeReady(true);
             triggerVaultOpen();
+            hapticVaultOpen(); // strong celebration haptic when all agents ready
         }, CLOSE_AGENTS.length * 220 + 400);
 
     }, [visible]);
