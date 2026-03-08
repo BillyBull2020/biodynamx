@@ -107,17 +107,19 @@ function animateAgentCards() {
         once: true,
     });
 
-    // Subtle continuous float for each card
-    cards.forEach((card, i) => {
-        gsap.to(card, {
-            y: `${(i % 2 === 0 ? -6 : 6)}`,
-            duration: 3 + (i % 3) * 0.4,
-            ease: "sine.inOut",
-            repeat: -1,
-            yoyo: true,
-            delay: i * 0.15,
+    // Subtle continuous float — desktop only (mobile can't handle infinite tweens during scroll)
+    if (window.innerWidth > 768) {
+        cards.forEach((card, i) => {
+            gsap.to(card, {
+                y: `${(i % 2 === 0 ? -6 : 6)}`,
+                duration: 3 + (i % 3) * 0.4,
+                ease: "sine.inOut",
+                repeat: -1,
+                yoyo: true,
+                delay: i * 0.15,
+            });
         });
-    });
+    }
 
     return st;
 }
@@ -358,14 +360,20 @@ function animateOrbitSection() {
 export function initGSAPAnimations(): () => void {
     if (typeof window === "undefined") return () => { };
 
+    const isMobile = window.innerWidth <= 768;
     const all: (ScrollTrigger | ScrollTrigger[] | gsap.core.Timeline | null | undefined)[] = [];
 
     all.push(animateHero());
     all.push(...animateSectionTitles());
     all.push(animateAgentCards());
     all.push(animateStats());
-    all.push(...(animateHowItWorks() ?? []));
-    all.push(animateBeforeAfter());
+
+    // Skip heavy left/right alternating reveals on mobile — just fade in instead
+    if (!isMobile) {
+        all.push(...(animateHowItWorks() ?? []));
+        all.push(animateBeforeAfter());
+    }
+
     all.push(animateNeuroCards());
     all.push(animateTestimonials());
     animateOrbitSection();

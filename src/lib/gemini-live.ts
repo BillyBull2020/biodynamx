@@ -1254,15 +1254,63 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
                                     // ── Deep Crawl (Probe 19) ──
                                     deepCrawlMarkdown: ((deep.deepCrawl?.markdown as string) || "").slice(0, 15000), // Cap for context window safety
                                     // ── Instructions for the Agent ──
-                                    agentInstructions: "CRITICAL: These are REAL audit results from a live 20-probe diagnostic. You now have 'High-Resolution MRI' context via 'deepCrawlMarkdown'—use specific text fragments or service names found in that markdown to prove you've analyzed their site deeply. Key areas to cover: 1) SEO gaps (seoScore, seoIssues), 2) AEO/GEO readiness (aeoReady, geoReady, deepAEO_aiCitationLikelihood), 3) Content quality (contentScore, contentHasCTA, contentHasTestimonials), 4) Revenue hemorrhage (leakingRevenuePerMonth, voicemailHemorrhage_annualLoss, silentLeadTest_monthlyGhostingCost), 5) Pre-identified pain points (identifiedPainPoints) and solutions (recommendedSolutions). Lead with the PRIMARY NEED and urgencyLevel. After presenting 2-3 key findings, ask how they currently handle these. When ready, say: 'Mark, execute the ROI bridge.' Call capture_lead whenever they share contact info."
+                                    // NOTE: A follow-up tool response with jennyOpeningScript arrives 800ms after this.
+                                    // Jenny should say "Pulling up your site now..." then wait for it.
+                                    agentInstructions: `CRITICAL: Real 20-probe audit of ${url}. A follow-up tool response arrives shortly with jennyOpeningScript — use it VERBATIM as your opening (AI-generated from their real website). While waiting say: "Pulling up your site now..." then pause. After the script: quote loadTime, identifiedPainPoints, leakingRevenuePerMonth and deepCrawlMarkdown fragments. Ask how they handle missed calls. Use capture_lead when they share info. Escalate with: "Mark, execute the ROI bridge." NEVER hallucinate.`
                                 }
                             }
                         }]
                     }
                 };
 
+                // ★ PARALLEL: Also run Gemini URL analysis for AI-generated Jenny script
+                let aiUrlInsights: { jennyScript?: string; summary?: string; topPainPoint?: string; biggestOpportunity?: string } | null = null;
+                try {
+                    const aiResp = await fetch("/api/analyze-url", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ url }),
+                    });
+                    if (aiResp.ok) {
+                        const aiData = await aiResp.json();
+                        aiUrlInsights = aiData.insights || { fallbackScript: aiData.fallbackScript };
+                    }
+                } catch {
+                    // Non-blocking — don't let this fail the audit
+                }
+
                 this.ws.send(JSON.stringify(toolResponse));
                 console.log("[VoiceOrchestrator] 📤 Sent FULL 20-probe audit results back to Gemini");
+
+                // If we got AI insights, send a follow-up with the Jenny script
+                if (aiUrlInsights?.jennyScript && this.ws?.readyState === WebSocket.OPEN) {
+                    const scriptNote = {
+                        tool_response: {
+                            function_responses: [{
+                                id: `${callId}-ai-context`,
+                                name: "business_audit",
+                                response: {
+                                    result: {
+                                        aiAnalysis: true,
+                                        jennyOpeningScript: aiUrlInsights.jennyScript,
+                                        aiSummary: aiUrlInsights.summary || "",
+                                        aiTopPainPoint: aiUrlInsights.topPainPoint || "",
+                                        aiBiggestOpportunity: aiUrlInsights.biggestOpportunity || "",
+                                        agentInstructions: `IMPORTANT: Use the jennyOpeningScript VERBATIM as your first response after this audit. It was written by Gemini after ACTUALLY reading their website. This proves to the prospect you genuinely looked at their site. After the opening script, reference the aiTopPainPoint and aiBiggestOpportunity to continue the conversation.`,
+                                    }
+                                }
+                            }]
+                        }
+                    };
+                    // Small delay to not confuse Gemini with rapid tool responses
+                    setTimeout(() => {
+                        if (this.ws?.readyState === WebSocket.OPEN) {
+                            this.ws.send(JSON.stringify(scriptNote));
+                            console.log("[VoiceOrchestrator] 🧠 AI URL analysis injected into Jenny's context");
+                        }
+                    }, 800);
+                }
+
             } else {
                 console.error("[VoiceOrchestrator] ❌ WebSocket closed during audit — cannot send results");
             }
