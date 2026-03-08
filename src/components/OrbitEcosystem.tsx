@@ -1,101 +1,102 @@
 "use client";
 
 // ═══════════════════════════════════════════════════════════════════
-// BIODYNAMX — IMMERSIVE 3D ORBITING ECOSYSTEM v3
-// 11-Agent auto-relay: faces orbit the core, voices speak in sequence
-// starting with Milton. Auto-starts on scroll-into-view + user gesture.
+// BIODYNAMX — IMMERSIVE 3D ORBITING ECOSYSTEM v4
+// • Voice synced to frontmost face (not a drifting timer)
+// • audio.onended advances to next agent — no cutoff
+// • Click/touchstart unlock audio (scroll does NOT unlock AudioContext)
+// • Orbit slows while agent speaks, resumes between agents
+// • Global event 'biodynamx:stop-relay' mutes when live chat starts
 // ═══════════════════════════════════════════════════════════════════
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import Image from "next/image";
 import "./OrbitEcosystem.css";
 
-// ── 11-AGENT RELAY — matches SERVICES order exactly ─────────────────
+// ── 11-AGENT RELAY — ordered so they naturally come to front in sequence
 const SERVICES = [
     {
         image: "/agents/milton.png",
         label: "MILTON: Conversational AI",
         color: "#7c3aed",
         voice: "milton",
-        script: "Imagine if your team never sleeps, never quits, and never misses a close.",
+        script: "Imagine if your team never sleeps, never quits, and never misses a close. A workforce that identifies pain and handles objections in real time.",
     },
     {
         image: "/agents/ben.png",
         label: "BEN: Revenue Audit",
         color: "#fbbf24",
         voice: "ben",
-        script: "Welcome to BioDynamX Engineering Group — the world's first neurobiology-powered AI.",
+        script: "Welcome to BioDynamX Engineering Group — the world's first neurobiology-powered AI, built specifically for the transition to Web 4.0.",
     },
     {
         image: "/agents/hunter.png",
         label: "CHASE: Lead Prospecting",
         color: "#ef4444",
         voice: "chase",
-        script: "We deploy voice AI using neuro-sales frameworks to trigger the Old Brain.",
+        script: "We deploy voice AI systems using proven neuro-sales frameworks to trigger the Old Brain and drive immediate decision-making.",
     },
     {
         image: "/agents/nova.png",
         label: "IRIS: AI Visibility & Content",
         color: "#f97316",
         voice: "iris",
-        script: "From building your website to dominating AEO and GEO — we handle it all.",
+        script: "From building your high-conversion website to dominating AEO and GEO — we ensure your brand is the top recommendation on AI search engines.",
     },
     {
         image: "/agents/alex.png",
         label: "ALEX: Support Lead",
         color: "#34d399",
         voice: "alex",
-        script: "Whether on ChatGPT, Perplexity, or Gemini — we make sure you are indexed.",
+        script: "Whether it is ChatGPT, Perplexity, or Gemini — we make sure you are indexed and visible where the future of search is actually happening.",
     },
     {
         image: "/agents/mark.png",
         label: "MARK: Revenue Closer",
         color: "#3b82f6",
         voice: "mark",
-        script: "Scale your revenue without the overhead, the drama, or the high tax of extra employees.",
+        script: "This is how you scale your revenue without the overhead, the drama, or the high tax of additional employees. We handle the friction.",
     },
     {
         image: "/agents/meghan.png",
         label: "MEGHAN: AI Receptionist",
         color: "#a78bfa",
         voice: "megan",
-        script: "We want to prove the math. Our growth strategist Jenny is standing by.",
+        script: "We don't expect you to take our word for it. We want to prove the math. Our growth strategist Jenny is standing by right now.",
     },
     {
         image: "/agents/brock.png",
         label: "BROCK: Security & ROI",
         color: "#06b6d4",
         voice: "brock",
-        script: "Jenny is armed with our Neuro-Audit tool to find exactly where your revenue leaks.",
+        script: "Jenny is armed with our proprietary Neuro-Audit tool to find exactly where your revenue is leaking and how our system plugs that hole forever.",
     },
     {
         image: "/agents/vicki.png",
         label: "VICKI: Empathy & Care",
         color: "#10b981",
         voice: "vicki",
-        script: "Stop the $600-a-day hemorrhage. Find the Talk to Jenny button on this page.",
+        script: "Stop the six-hundred-dollar-a-day hemorrhage. Look for the Talk to Jenny button on this page to start your free, zero-risk Neural Revenue Audit.",
     },
     {
         image: "/agents/jules.png",
         label: "JULES: Strategy & Architecture",
         color: "#60a5fa",
         voice: "jules",
-        script: "Step past antiquated chatbots into the new gold standard of autonomous growth.",
+        script: "It is time to move past antiquated chatbots and step into the new gold standard of autonomous business growth. Jenny is ready when you are.",
     },
     {
         image: "/agents/jenny.png",
         label: "JENNY: Lead Discovery",
         color: "#00ff41",
         voice: "jenny",
-        script: "I'm right here. Click the button — let's look at your numbers together.",
+        script: "I am right here. Click the button to start your audit — let us look at your numbers together. It is time to scale your revenue, and then some.",
     },
 ];
 
-const SEGMENT_MS = 6000;   // ms per agent while speaking (orbit slows)
-const ORBIT_SPEED_NORMAL = 0.008;  // radians/frame normal
-const ORBIT_SPEED_SLOW = 0.002;  // radians/frame when agent is speaking
+const ORBIT_NORMAL = 0.006;
+const ORBIT_SLOW = 0.0008; // near-stop while speaking
 
-// Reduced stardust for performance
 const STARS = Array.from({ length: 20 }, (_, i) => ({
     angle: (360 / 20) * i,
     radius: 140 + (i % 4) * 55,
@@ -110,18 +111,23 @@ export default function OrbitEcosystem() {
     const nodeRefs = useRef<(HTMLDivElement | null)[]>([]);
     const tiltRef = useRef({ x: 0, y: 0, targetX: 0, targetY: 0 });
     const angleRef = useRef(0);
-    const [isVisible, setIsVisible] = useState(false);
     const rafRef = useRef<number>(0);
     const radiusRef = useRef(240);
     const isInViewRef = useRef(false);
+    const orbitSpeedRef = useRef(ORBIT_NORMAL);
 
-    // Audio relay state
-    const [activeIdx, setActiveIdx] = useState<number>(-1);
-    const [hasStarted, setHasStarted] = useState(false);
+    // Audio relay
     const audioRef = useRef<HTMLAudioElement | null>(null);
-    const gestureRef = useRef(false);
+    const relayIdxRef = useRef(0);          // which agent plays next
+    const isSpeakingRef = useRef(false);      // guard against double-trigger
     const startedRef = useRef(false);
-    const orbitSpeedRef = useRef(ORBIT_SPEED_NORMAL);
+    const gestureRef = useRef(false);
+    const stopSignalRef = useRef(false);
+
+    const [isVisible, setIsVisible] = useState(false);
+    const [hasStarted, setHasStarted] = useState(false);
+    const [activeIdx, setActiveIdx] = useState(-1);
+    const [showPrompt, setShowPrompt] = useState(false); // "Tap to hear"
 
     // Responsive orbit radius
     useEffect(() => {
@@ -137,19 +143,122 @@ export default function OrbitEcosystem() {
         return () => window.removeEventListener("resize", update);
     }, []);
 
-    // Animation loop — pauses when off-screen
+    // ── PLAY one agent — stored in ref so it can call itself recursively ──
+    const playAgentRef = useRef<(idx: number) => void>(() => { });
+
+    const playAgent = useCallback((idx: number) => {
+        playAgentRef.current(idx);
+    }, []);
+
+    useEffect(() => {
+        playAgentRef.current = (idx: number) => {
+            if (stopSignalRef.current) return;
+            const svc = SERVICES[idx];
+            setActiveIdx(idx);
+            isSpeakingRef.current = true;
+            orbitSpeedRef.current = ORBIT_SLOW;
+
+            if (audioRef.current) {
+                audioRef.current.onended = null;
+                audioRef.current.pause();
+                audioRef.current.currentTime = 0;
+            }
+
+            const audio = new Audio(`/assets/voices/${svc.voice}.mp3`);
+            audio.preload = "auto";
+            audioRef.current = audio;
+
+            audio.onended = () => {
+                isSpeakingRef.current = false;
+                orbitSpeedRef.current = ORBIT_NORMAL;
+                if (stopSignalRef.current) return;
+                const next = (idx + 1) % SERVICES.length;
+                relayIdxRef.current = next;
+                // ~1.5s of normal-speed orbit travel before next agent speaks
+                setTimeout(() => {
+                    if (!stopSignalRef.current) playAgentRef.current(next);
+                }, 1500);
+            };
+
+            audio.play().catch(() => {
+                isSpeakingRef.current = false;
+                orbitSpeedRef.current = ORBIT_NORMAL;
+            });
+        };
+    });
+
+    // ── START the relay (Milton first) ──────────────────────────────
+    const startRelay = useCallback(() => {
+        if (startedRef.current) return;
+        startedRef.current = true;
+        stopSignalRef.current = false;
+        setHasStarted(true);
+        setShowPrompt(false);
+        relayIdxRef.current = 0;
+        playAgent(0);
+    }, [playAgent]);
+
+    // ── STOP relay (fired when live chat starts) ─────────────────────
+    const stopRelay = useCallback(() => {
+        stopSignalRef.current = true;
+        if (audioRef.current) {
+            audioRef.current.onended = null;
+            audioRef.current.pause();
+        }
+        isSpeakingRef.current = false;
+        orbitSpeedRef.current = ORBIT_NORMAL;
+        setActiveIdx(-1);
+    }, []);
+
+    // Listen for stop signal from other parts of the page
+    useEffect(() => {
+        const handler = () => stopRelay();
+        window.addEventListener("biodynamx:stop-relay", handler);
+        return () => window.removeEventListener("biodynamx:stop-relay", handler);
+    }, [stopRelay]);
+
+    // Gate 1: ONLY click / touchstart unlock audio — scroll does NOT
+    useEffect(() => {
+        const unlock = () => {
+            if (gestureRef.current) return;
+            gestureRef.current = true;
+            setShowPrompt(false);
+            if (isInViewRef.current) startRelay();
+        };
+        window.addEventListener("click", unlock, { once: true });
+        window.addEventListener("touchstart", unlock, { once: true, passive: true });
+        return () => {
+            window.removeEventListener("click", unlock);
+            window.removeEventListener("touchstart", unlock);
+        };
+    }, [startRelay]);
+
+    // Gate 2: IntersectionObserver — show prompt when visible, start when both gates open
+    useEffect(() => {
+        const obs = new IntersectionObserver(([entry]) => {
+            isInViewRef.current = entry.isIntersecting;
+            if (entry.isIntersecting) {
+                setIsVisible(true);
+                if (!gestureRef.current) setShowPrompt(true); // not yet clicked
+                if (gestureRef.current) startRelay();
+            } else {
+                setShowPrompt(false);
+            }
+        }, { threshold: 0.1 });
+        if (containerRef.current) obs.observe(containerRef.current);
+        return () => obs.disconnect();
+    }, [startRelay]);
+
+    // ── ANIMATION LOOP ────────────────────────────────────────────────
     useEffect(() => {
         let running = true;
         function tick() {
             if (!running) return;
-            if (!isInViewRef.current) {
-                rafRef.current = requestAnimationFrame(tick);
-                return;
-            }
+            if (!isInViewRef.current) { rafRef.current = requestAnimationFrame(tick); return; }
+
             const t = tiltRef.current;
             t.x += (t.targetX - t.x) * 0.05;
             t.y += (t.targetY - t.y) * 0.05;
-
             angleRef.current += orbitSpeedRef.current;
 
             const container = containerRef.current;
@@ -182,113 +291,31 @@ export default function OrbitEcosystem() {
 
     // Mouse tilt — scoped to container
     useEffect(() => {
-        const container = containerRef.current;
-        if (!container) return;
-        const handleMove = (e: MouseEvent) => {
-            const rect = container.getBoundingClientRect();
-            const cx = rect.left + rect.width / 2;
-            const cy = rect.top + rect.height / 2;
-            tiltRef.current.targetX = -((e.clientY - cy) / rect.height) * 10;
-            tiltRef.current.targetY = ((e.clientX - cx) / rect.width) * 10;
+        const el = containerRef.current;
+        if (!el) return;
+        const onMove = (e: MouseEvent) => {
+            const r = el.getBoundingClientRect();
+            tiltRef.current.targetX = -((e.clientY - r.top - r.height / 2) / r.height) * 10;
+            tiltRef.current.targetY = ((e.clientX - r.left - r.width / 2) / r.width) * 10;
         };
-        const handleLeave = () => { tiltRef.current.targetX = 0; tiltRef.current.targetY = 0; };
-        container.addEventListener("mousemove", handleMove);
-        container.addEventListener("mouseleave", handleLeave);
-        return () => {
-            container.removeEventListener("mousemove", handleMove);
-            container.removeEventListener("mouseleave", handleLeave);
-        };
+        const onLeave = () => { tiltRef.current.targetX = 0; tiltRef.current.targetY = 0; };
+        el.addEventListener("mousemove", onMove);
+        el.addEventListener("mouseleave", onLeave);
+        return () => { el.removeEventListener("mousemove", onMove); el.removeEventListener("mouseleave", onLeave); };
     }, []);
-
-    // Play one agent, slow the orbit, then advance
-    const playAgent = useCallback((idx: number) => {
-        const svc = SERVICES[idx];
-        setActiveIdx(idx);
-        orbitSpeedRef.current = ORBIT_SPEED_SLOW;
-
-        // Stop previous
-        if (audioRef.current) {
-            audioRef.current.pause();
-            audioRef.current.currentTime = 0;
-            audioRef.current.src = "";
-        }
-        const audio = new Audio(`/assets/voices/${svc.voice}.mp3`);
-        audio.load();
-        audioRef.current = audio;
-        audio.play().catch(() => { });
-    }, []);
-
-    const startRelay = useCallback(() => {
-        if (startedRef.current) return;
-        startedRef.current = true;
-        setHasStarted(true);
-
-        let idx = 0;
-        playAgent(0);
-
-        const timer = setInterval(() => {
-            orbitSpeedRef.current = ORBIT_SPEED_NORMAL;
-            idx = (idx + 1) % SERVICES.length;
-            setTimeout(() => playAgent(idx), 400); // brief pause between agents
-        }, SEGMENT_MS);
-
-        return () => clearInterval(timer);
-    }, [playAgent]);
-
-    // Gate 1: any user gesture
-    useEffect(() => {
-        const unlock = () => {
-            if (gestureRef.current) return;
-            gestureRef.current = true;
-            if (isInViewRef.current) startRelay();
-        };
-        window.addEventListener("scroll", unlock, { once: true, passive: true });
-        window.addEventListener("touchstart", unlock, { once: true, passive: true });
-        window.addEventListener("click", unlock, { once: true });
-        return () => {
-            window.removeEventListener("scroll", unlock);
-            window.removeEventListener("touchstart", unlock);
-            window.removeEventListener("click", unlock);
-        };
-    }, [startRelay]);
-
-    // Gate 2 + Visibility: IntersectionObserver
-    useEffect(() => {
-        const container = containerRef.current;
-        if (!container) return;
-        const obs = new IntersectionObserver(
-            ([entry]) => {
-                isInViewRef.current = entry.isIntersecting;
-                if (entry.isIntersecting) {
-                    setIsVisible(true);
-                    if (gestureRef.current) startRelay();
-                }
-            },
-            { threshold: 0.1 }
-        );
-        obs.observe(container);
-        return () => obs.disconnect();
-    }, [startRelay]);
 
     const activeSvc = activeIdx >= 0 ? SERVICES[activeIdx] : null;
 
     return (
-        <div
-            ref={containerRef}
-            className={`orbit3d-viewport ${isVisible ? "visible" : ""}`}
-        >
-            {/* Ambient glow */}
+        <div ref={containerRef} className={`orbit3d-viewport ${isVisible ? "visible" : ""}`}>
             <div className="orbit3d-ambient" />
 
-            {/* 3D Scene */}
             <div className="orbit3d-scene">
-
-                {/* Orbital track ellipses */}
                 <div className="orbit3d-track orbit3d-track-1" />
                 <div className="orbit3d-track orbit3d-track-2" />
                 <div className="orbit3d-track orbit3d-track-3" />
 
-                {/* Central Plasma Core */}
+                {/* Central Core */}
                 <div className="orbit3d-core">
                     <div className="core3d-plasma" />
                     <div className="core3d-plasma core3d-plasma-2" />
@@ -300,7 +327,9 @@ export default function OrbitEcosystem() {
                     <div className="core3d-face">
                         <span className="core3d-icon">⚡</span>
                         <span className="core3d-title">BioDynamX</span>
-                        <span className="core3d-subtitle">AI Platform</span>
+                        <span className="core3d-subtitle">
+                            {activeSvc ? activeSvc.label.split(":")[0] : "AI Platform"}
+                        </span>
                     </div>
                 </div>
 
@@ -311,26 +340,25 @@ export default function OrbitEcosystem() {
                         <div
                             key={svc.label}
                             ref={el => { nodeRefs.current[i] = el; }}
-                            className={`orbit3d-node${isActive ? " orbit3d-node--active" : ""}`}
+                            className="orbit3d-node"
                             style={{
-                                "--node-color": isActive ? svc.color : svc.color,
+                                "--node-color": svc.color,
                                 outline: isActive ? `3px solid ${svc.color}` : "none",
-                                boxShadow: isActive ? `0 0 24px ${svc.color}99, 0 0 48px ${svc.color}44` : "none",
-                                transition: "outline 0.4s, box-shadow 0.4s",
+                                boxShadow: isActive ? `0 0 28px ${svc.color}bb, 0 0 56px ${svc.color}44` : "none",
                                 borderRadius: "50%",
+                                transition: "outline 0.4s, box-shadow 0.4s",
                             } as React.CSSProperties}
                         >
                             <div className="node3d-icon" style={{ overflow: "hidden", position: "relative" }}>
-                                <Image
-                                    src={svc.image}
-                                    alt={svc.label}
-                                    fill
-                                    style={{ objectFit: "cover" }}
-                                />
+                                <Image src={svc.image} alt={svc.label} fill style={{ objectFit: "cover" }} />
                             </div>
                             <span
                                 className="node3d-label"
-                                style={isActive ? { color: svc.color, fontWeight: 900, textShadow: `0 0 10px ${svc.color}` } : {}}
+                                style={isActive ? {
+                                    color: svc.color,
+                                    fontWeight: 900,
+                                    textShadow: `0 0 12px ${svc.color}`,
+                                } : {}}
                             >
                                 {svc.label}
                             </span>
@@ -338,63 +366,84 @@ export default function OrbitEcosystem() {
                     );
                 })}
 
-                {/* Stardust particles */}
+                {/* Stardust */}
                 {STARS.map((star, i) => (
-                    <div
-                        key={`star-${i}`}
-                        className="orbit3d-star"
-                        style={{
-                            "--star-angle": `${star.angle}deg`,
-                            "--star-radius": `${star.radius}px`,
-                            "--star-size": `${star.size}px`,
-                            "--star-delay": `${star.delay}s`,
-                            "--star-dur": `${star.dur}s`,
-                            "--star-opacity": `${star.opacity}`,
-                        } as React.CSSProperties}
-                    />
+                    <div key={`s${i}`} className="orbit3d-star" style={{
+                        "--star-angle": `${star.angle}deg`,
+                        "--star-radius": `${star.radius}px`,
+                        "--star-size": `${star.size}px`,
+                        "--star-delay": `${star.delay}s`,
+                        "--star-dur": `${star.dur}s`,
+                        "--star-opacity": `${star.opacity}`,
+                    } as React.CSSProperties} />
                 ))}
             </div>
 
-            {/* Live script display — below the orbit */}
+            {/* "Tap to activate" prompt — only shown before first click */}
+            {showPrompt && !hasStarted && (
+                <div style={{
+                    position: "absolute",
+                    bottom: -20,
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    background: "rgba(0,0,0,0.6)",
+                    border: "1px solid rgba(0,255,65,0.4)",
+                    borderRadius: 40,
+                    padding: "10px 24px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 10,
+                    backdropFilter: "blur(12px)",
+                    animation: "oe-prompt-pulse 2s ease-in-out infinite",
+                    cursor: "pointer",
+                    zIndex: 100,
+                    whiteSpace: "nowrap",
+                }}>
+                    <span style={{ fontSize: 16 }}>🔊</span>
+                    <span style={{
+                        fontSize: 11,
+                        fontWeight: 800,
+                        color: "#00ff41",
+                        letterSpacing: "0.12em",
+                        textTransform: "uppercase",
+                    }}>
+                        Tap anywhere to hear our team
+                    </span>
+                </div>
+            )}
+
+            {/* Live script display */}
             {hasStarted && activeSvc && (
-                <div
-                    style={{
-                        marginTop: 32,
-                        maxWidth: 600,
-                        marginLeft: "auto",
-                        marginRight: "auto",
-                        padding: "20px 28px",
-                        background: "rgba(0,0,0,0.4)",
-                        border: `1px solid ${activeSvc.color}44`,
-                        borderRadius: 16,
-                        backdropFilter: "blur(12px)",
-                        transition: "border-color 0.5s",
-                        textAlign: "center",
-                    }}
-                >
-                    <div
-                        style={{
-                            fontSize: 10,
-                            fontWeight: 800,
-                            letterSpacing: "0.14em",
-                            textTransform: "uppercase",
-                            color: activeSvc.color,
-                            marginBottom: 10,
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            gap: 8,
-                        }}
-                    >
-                        {/* Live bars */}
+                <div style={{
+                    marginTop: 40,
+                    maxWidth: 620,
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                    padding: "20px 28px",
+                    background: "rgba(0,0,0,0.45)",
+                    border: `1px solid ${activeSvc.color}44`,
+                    borderRadius: 16,
+                    backdropFilter: "blur(12px)",
+                    textAlign: "center",
+                    transition: "border-color 0.5s",
+                }}>
+                    <div style={{
+                        fontSize: 10,
+                        fontWeight: 800,
+                        letterSpacing: "0.14em",
+                        textTransform: "uppercase",
+                        color: activeSvc.color,
+                        marginBottom: 10,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: 8,
+                    }}>
                         <span style={{ display: "flex", gap: 2, alignItems: "flex-end", height: 12 }}>
                             {[1, 2, 3, 2, 1].map((h, j) => (
                                 <span key={j} style={{
-                                    display: "inline-block",
-                                    width: 3,
-                                    height: h * 4,
-                                    background: activeSvc.color,
-                                    borderRadius: 2,
+                                    display: "inline-block", width: 3, height: h * 4,
+                                    background: activeSvc.color, borderRadius: 2,
                                     animation: `oe-bar 0.${6 + j}s ease-in-out infinite alternate`,
                                 }} />
                             ))}
@@ -402,11 +451,8 @@ export default function OrbitEcosystem() {
                         {activeSvc.label.split(":")[0]} is speaking
                     </div>
                     <p style={{
-                        fontSize: 15,
-                        color: "rgba(255,255,255,0.88)",
-                        lineHeight: 1.7,
-                        margin: 0,
-                        fontStyle: "italic",
+                        fontSize: 15, color: "rgba(255,255,255,0.9)",
+                        lineHeight: 1.75, margin: 0, fontStyle: "italic",
                         fontFamily: "var(--font-inter, sans-serif)",
                     }}>
                         &ldquo;{activeSvc.script}&rdquo;
@@ -414,24 +460,9 @@ export default function OrbitEcosystem() {
                 </div>
             )}
 
-            {!hasStarted && (
-                <div style={{
-                    marginTop: 24,
-                    fontSize: 11,
-                    color: "rgba(255,255,255,0.3)",
-                    letterSpacing: "0.1em",
-                    textTransform: "uppercase",
-                    textAlign: "center",
-                }}>
-                    Scroll to hear the team
-                </div>
-            )}
-
             <style>{`
-                @keyframes oe-bar {
-                    from { transform: scaleY(0.4); opacity: 0.6; }
-                    to   { transform: scaleY(1);   opacity: 1;   }
-                }
+                @keyframes oe-bar          { from { transform:scaleY(0.4); opacity:.6; } to { transform:scaleY(1); opacity:1; } }
+                @keyframes oe-prompt-pulse { 0%,100%{opacity:.7; transform:translateX(-50%) scale(1)} 50%{opacity:1; transform:translateX(-50%) scale(1.04)} }
             `}</style>
         </div>
     );

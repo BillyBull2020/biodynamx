@@ -747,7 +747,7 @@ export default function AgentCarousel({ onTalkTo }: Props) {
                                             {/* TALK TO button */}
                                             <button
                                                 className={isActive ? "bdx-cta-active" : ""}
-                                                onClick={e => { e.stopPropagation(); if (isActive) onTalkTo(a.id); }}
+                                                onClick={e => { e.stopPropagation(); if (isActive) { window.dispatchEvent(new Event("biodynamx:stop-relay")); onTalkTo(a.id); } }}
                                                 style={{
                                                     width: "100%", padding: "14px 20px",
                                                     background: isActive
