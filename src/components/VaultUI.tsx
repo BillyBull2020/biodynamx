@@ -727,7 +727,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
                             {[
                                 { label: t.navPricing, href: "/pricing" },
                                 { label: t.navFreeAudit, href: "/audit" },
-                                { label: "Security", href: "#security" },
+                                { label: "Security", href: "/security" },
                                 { label: "Blog", href: "/blog" },
                                 { label: "About", href: "/about" },
                                 { label: "Glossary", href: "/glossary" },
@@ -1202,10 +1202,10 @@ export default function VaultUI({ apiKey }: VaultProps) {
                                     fontSize: 28, fontWeight: 800, color: "#fff",
                                     letterSpacing: "-0.03em", marginBottom: 2,
                                 }}>
-                                    <span style={{ fontSize: 16, textDecoration: "line-through", color: "rgba(255,255,255,0.3)", marginRight: 8 }}>$2,500</span>
-                                    $1,250<span style={{ fontSize: 14, fontWeight: 500, color: "rgba(255,255,255,0.4)" }}>/mo</span>
+                                    <span style={{ fontSize: 16, textDecoration: "line-through", color: "rgba(255,255,255,0.3)", marginRight: 8 }}>$2,497</span>
+                                    $1,497<span style={{ fontSize: 14, fontWeight: 500, color: "rgba(255,255,255,0.4)" }}>/mo</span>
                                 </div>
-                                <div style={{ fontSize: 10, fontWeight: 700, color: "#00ff41", marginBottom: 8 }}>50% OFF · FIRST 90 DAYS</div>
+                                <div style={{ fontSize: 10, fontWeight: 700, color: "#ff6b6b", marginBottom: 8 }}>⚠️ LOCK THIS PRICE — Increases to $2,497/mo after 90 days</div>
                                 <p style={{
                                     fontSize: 13, color: "rgba(255,255,255,0.5)",
                                     lineHeight: 1.6, margin: 0,
@@ -1821,11 +1821,11 @@ export default function VaultUI({ apiKey }: VaultProps) {
                         <div className="popular-badge">ELITE ACCESS</div>
                         <div style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", marginBottom: 12 }}>BioDynamX Growth Engine — Done-For-You</div>
                         <div className="price-container">
-                            <span className="price-anchor">$2,500</span>
-                            <span className="price-main">$1,250</span>
+                            <span className="price-anchor">$2,497</span>
+                            <span className="price-main">$1,497</span>
                             <span className="price-suffix">/mo</span>
                         </div>
-                        <div style={{ fontSize: 11, fontWeight: 700, color: "#00ff41", marginTop: 8 }}>50% OFF · FIRST 90 DAYS</div>
+                        <div style={{ fontSize: 11, fontWeight: 700, color: "#ff6b6b", marginTop: 8 }}>⚠️ Price increases to $2,497/mo after 90 days</div>
                         <p style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", marginTop: 12 }}>
                             One flat fee. All 11 agents included. We do the work. Unlimited potential.
                         </p>
