@@ -3,11 +3,11 @@ import Link from "next/link";
 
 const NAV_LINKS = [
     { label: "Pricing", href: "/pricing" },
+    { label: "Signal", href: "/signal", highlight: true },
     { label: "Free Audit", href: "/audit" },
     { label: "Security", href: "/security" },
     { label: "Blog", href: "/blog" },
     { label: "About", href: "/about" },
-    { label: "Glossary", href: "/glossary" },
 ];
 
 export function SiteNav() {
@@ -36,10 +36,32 @@ export function SiteNav() {
             <div style={{ display: "flex", gap: 20, alignItems: "center" }}>
                 <div className="site-nav-links" style={{ display: "flex", gap: 20 }}>
                     {NAV_LINKS.map(link => (
-                        <Link key={link.label} href={link.href} style={{
-                            fontSize: 13, fontWeight: 600, color: "rgba(255,255,255,0.7)",
-                            textDecoration: "none", transition: "color 0.2s",
-                        }}>{link.label}</Link>
+                        link.highlight ? (
+                            <Link key={link.label} href={link.href} style={{
+                                fontSize: 12, fontWeight: 800,
+                                color: "#FFD700",
+                                textDecoration: "none", transition: "color 0.2s",
+                                display: "flex", alignItems: "center", gap: 5,
+                                background: "rgba(255,215,0,0.07)",
+                                border: "1px solid rgba(255,215,0,0.25)",
+                                borderRadius: 20, padding: "4px 12px",
+                                letterSpacing: "0.04em",
+                            }}>
+                                <span style={{
+                                    width: 5, height: 5, background: "#FFD700",
+                                    borderRadius: "50%", display: "inline-block",
+                                    boxShadow: "0 0 6px #FFD700",
+                                    animation: "nav-signal-blink 1.4s ease-in-out infinite",
+                                }} />
+                                {link.label}
+                                <style>{`@keyframes nav-signal-blink{0%,100%{opacity:1}50%{opacity:.3}}`}</style>
+                            </Link>
+                        ) : (
+                            <Link key={link.label} href={link.href} style={{
+                                fontSize: 13, fontWeight: 600, color: "rgba(255,255,255,0.7)",
+                                textDecoration: "none", transition: "color 0.2s",
+                            }}>{link.label}</Link>
+                        )
                     ))}
                 </div>
                 <Link href="/" style={{
