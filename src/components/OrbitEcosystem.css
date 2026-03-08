@@ -560,3 +560,28 @@
         transform: scale(1) translateY(0);
     }
 }
+/* ── Node image & label — moved from inline styles ─── */
+.node3d-icon {
+  overflow: hidden;
+  position: relative;
+}
+
+.orbit3d-node-img {
+  object-fit: cover;
+}
+
+.orbit3d-node--active {
+  outline: 3px solid var(--node-color, #fff);
+  box-shadow: 0 0 28px var(--node-color, #fff), 0 0 56px var(--node-color, #fff);
+  border-radius: 50%;
+  transition: outline 0.4s, box-shadow 0.4s;
+}
+
+.orbit3d-node {
+  border-radius: 50%;
+  transition: outline 0.4s, box-shadow 0.4s;
+}
+
+.node3d-label--active {
+  font-weight: 900;
+}

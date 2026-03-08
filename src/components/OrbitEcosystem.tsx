@@ -340,25 +340,17 @@ export default function OrbitEcosystem() {
                         <div
                             key={svc.label}
                             ref={el => { nodeRefs.current[i] = el; }}
-                            className="orbit3d-node"
-                            style={{
-                                "--node-color": svc.color,
-                                outline: isActive ? `3px solid ${svc.color}` : "none",
-                                boxShadow: isActive ? `0 0 28px ${svc.color}bb, 0 0 56px ${svc.color}44` : "none",
-                                borderRadius: "50%",
-                                transition: "outline 0.4s, box-shadow 0.4s",
-                            } as React.CSSProperties}
+                            className={`orbit3d-node${isActive ? " orbit3d-node--active" : ""}`}
+                            // eslint-disable-next-line react/forbid-dom-props
+                            style={{ "--node-color": svc.color } as React.CSSProperties}
                         >
                             <div className="node3d-icon" style={{ overflow: "hidden", position: "relative" }}>
                                 <Image src={svc.image} alt={svc.label} fill style={{ objectFit: "cover" }} />
                             </div>
                             <span
-                                className="node3d-label"
-                                style={isActive ? {
-                                    color: svc.color,
-                                    fontWeight: 900,
-                                    textShadow: `0 0 12px ${svc.color}`,
-                                } : {}}
+                                className={`node3d-label${isActive ? " node3d-label--active" : ""}`}
+                                // eslint-disable-next-line react/forbid-dom-props
+                                style={isActive ? { color: svc.color, textShadow: `0 0 12px ${svc.color}` } : {}}
                             >
                                 {svc.label}
                             </span>
@@ -368,6 +360,7 @@ export default function OrbitEcosystem() {
 
                 {/* Stardust */}
                 {STARS.map((star, i) => (
+                    // eslint-disable-next-line react/forbid-dom-props
                     <div key={`s${i}`} className="orbit3d-star" style={{
                         "--star-angle": `${star.angle}deg`,
                         "--star-radius": `${star.radius}px`,
