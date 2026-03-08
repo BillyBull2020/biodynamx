@@ -972,6 +972,72 @@ export default function VaultUI({ apiKey }: VaultProps) {
                 </div>
             </section>
 
+            {/* ── The Platform — Bridge section between Orbit and Carousel ── */}
+            <section className="section-container" style={{
+                textAlign: "center",
+                paddingTop: 100,
+                paddingBottom: 60,
+                position: "relative",
+                overflow: "hidden",
+            }}>
+                {/* Subtle background glow */}
+                <div style={{
+                    position: "absolute", inset: 0,
+                    background: "radial-gradient(ellipse 60% 40% at 50% 50%, rgba(59,130,246,0.06) 0%, transparent 70%)",
+                    pointerEvents: "none",
+                }} />
+
+                {/* Top accent rule */}
+                <div style={{
+                    width: 120, height: 2, margin: "0 auto 40px",
+                    background: "linear-gradient(90deg, transparent, #3b82f6 30%, #00ff41 70%, transparent)",
+                    borderRadius: 2,
+                }} />
+
+                <div style={{ maxWidth: 820, margin: "0 auto", position: "relative" }}>
+                    {/* Eyebrow badge */}
+                    <div style={{
+                        display: "inline-flex", alignItems: "center", gap: 8,
+                        background: "rgba(59,130,246,0.08)",
+                        border: "1px solid rgba(59,130,246,0.25)",
+                        borderRadius: 30, padding: "6px 18px", marginBottom: 24,
+                        fontSize: 10, fontWeight: 800, color: "#60a5fa",
+                        letterSpacing: "0.16em", textTransform: "uppercase",
+                        backdropFilter: "blur(8px)",
+                    }}>
+                        <span style={{
+                            width: 6, height: 6, borderRadius: "50%",
+                            background: "#3b82f6", display: "inline-block",
+                            boxShadow: "0 0 8px #3b82f6",
+                        }} />
+                        The Platform
+                    </div>
+
+                    {/* Overline */}
+                    <div className="section-label" style={{ color: "#3b82f6", marginBottom: 16 }}>
+                        NEUROSCIENCE-POWERED
+                    </div>
+
+                    {/* H2 */}
+                    <h2 className="section-title" style={{ marginBottom: 24 }}>
+                        One Platform.{" "}
+                        <span className="animated-gradient-text">Every Growth Lever.</span>
+                    </h2>
+
+                    {/* Body */}
+                    <p className="section-desc" style={{ maxWidth: 660, margin: "0 auto 0" }}>
+                        We don&apos;t just answer calls. We build, automate, and dominate every channel
+                        your customers use to find you — powered by the neurobiology of decision-making.
+                    </p>
+                </div>
+
+                {/* Bottom accent rule */}
+                <div style={{
+                    width: 80, height: 1, margin: "48px auto 0",
+                    background: "linear-gradient(90deg, transparent, rgba(59,130,246,0.4), transparent)",
+                }} />
+            </section>
+
             {/* ── Elite 11 Workforce — Agent Showcase (Carousel) ── */}
             <section className="section-container" style={{ textAlign: "center", paddingTop: 80, paddingBottom: 80 }}>
                 <div style={{ maxWidth: 1000, margin: "0 auto" }}>
