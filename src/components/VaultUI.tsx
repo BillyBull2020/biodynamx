@@ -19,9 +19,7 @@ import OrbitEcosystem from "./OrbitEcosystem";
 import NeuralOrb from "./NeuralOrb";
 import JennySpline from "./JennySpline";
 import GlitchOverlay from "./GlitchOverlay";
-import dynamic from "next/dynamic";
-
-const HeroMorph = dynamic(() => import("./HeroMorph"), { ssr: false });
+import HeroMorphGSAP from "./HeroMorphGSAP";
 
 import AgentCarousel from "./AgentCarousel";
 import AdvantageVault from "./AdvantageVault";
@@ -792,61 +790,18 @@ export default function VaultUI({ apiKey }: VaultProps) {
                 minHeight: isActive ? "calc(100vh - 60px)" : "90vh",
                 display: "flex", flexDirection: "column", justifyContent: "center", position: "relative"
             }}>
-                {/* ── STANDBY: Full-Viewport Morph Hero ────────────────── */}
+                {/* ── STANDBY: GSAP Morph Hero V4.1 ───────────────────── */}
                 {!isActive && (
-                    <div style={{
-                        position: "relative",
-                        width: "100%",
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        animation: "fadeUp 0.8s ease-out",
-                    }}>
-
-                        {/* TOP: badge + headline */}
-                        <div style={{ textAlign: "center", zIndex: 10, position: "relative", paddingTop: "clamp(8px,2vh,32px)", pointerEvents: "none" }}>
-                            <div className="hero-premium-badge" style={{ justifyContent: "center" }}>
-                                <span className="badge-glow" />
-                                <span className="badge-text">{t.heroBadge}</span>
-                            </div>
-                            <h1 data-speakable="true" className="hero-headline animated-gradient-text" style={{ fontSize: "clamp(26px, 4.2vw, 60px)", fontWeight: 900, lineHeight: 1.05, marginBottom: 0, marginTop: 16, textAlign: "center", maxWidth: "min(900px, 88vw)" }}>
-                                {t.heroHeadline}
-                            </h1>
-                        </div>
-
-                        {/* CENTRE: WebGL robot → man morph */}
-                        <div style={{ width: "100%", height: "clamp(340px, 62vh, 720px)", position: "relative", zIndex: 5 }}>
-                            <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 50% 60%, rgba(0,200,255,0.06) 0%, rgba(255,215,0,0.04) 40%, transparent 70%)", pointerEvents: "none", zIndex: 0 }} />
-                            <HeroMorph />
-                        </div>
-
-                        {/* Caption line */}
-                        <div style={{ textAlign: "center", position: "relative", zIndex: 10, marginTop: -8, marginBottom: 12, display: "flex", alignItems: "center", gap: 12, pointerEvents: "none" }}>
-                            <div style={{ width: 32, height: 1, background: "linear-gradient(to right, transparent, rgba(0,200,255,0.5))" }} />
-                            <span style={{ fontSize: 10, fontWeight: 800, letterSpacing: "0.2em", color: "rgba(0,200,255,0.6)", textTransform: "uppercase" }}>AI × Human Intelligence</span>
-                            <div style={{ width: 32, height: 1, background: "linear-gradient(to left, transparent, rgba(255,215,0,0.5))" }} />
-                        </div>
-
-                        {/* BOTTOM: subheadline + hook + CTAs */}
-                        <div style={{ textAlign: "center", zIndex: 10, position: "relative", padding: "0 clamp(16px,4vw,48px) clamp(16px,3vh,40px)", width: "100%", maxWidth: 760 }}>
-                            <p data-speakable="true" className="hero-subheadline" style={{ fontSize: "clamp(13px, 1.4vw, 17px)", color: "rgba(255,255,255,0.7)", lineHeight: 1.65, margin: "0 auto 20px", maxWidth: 660 }}>
-                                {t.heroLossAversion}
-                            </p>
-                            <div style={{ padding: "16px 24px", background: "linear-gradient(135deg, rgba(0,255,65,0.06), rgba(59,130,246,0.06))", border: "1px solid rgba(0,255,65,0.2)", borderRadius: 16, maxWidth: 600, margin: "0 auto 28px", backdropFilter: "blur(8px)" }}>
-                                <p data-speakable="true" style={{ fontSize: 13, fontWeight: 600, color: "rgba(255,255,255,0.88)", margin: 0, lineHeight: 1.6 }}>{t.heroHook}</p>
-                            </div>
-                            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 14 }}>
-                                <div style={{ position: "relative", width: "100%", maxWidth: 420 }}>
-                                    <div style={{ position: "absolute", inset: -10, borderRadius: 24, background: "radial-gradient(ellipse, rgba(0,255,65,0.18) 0%, transparent 70%)", animation: "breathe 3s ease-in-out infinite", pointerEvents: "none" }} />
-                                    <button onClick={handleStart} className="primary-btn-green hover-lift" style={{ width: "100%", padding: "20px 32px", fontSize: 18 }}>{t.buttonTalkExperts}</button>
-                                </div>
-                                <button onClick={handleStart} className="button-premium-secondary hover-lift" style={{ fontSize: 15 }}>{t.buttonSecondary}</button>
-                            </div>
-                            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", marginTop: 20, background: "rgba(255,255,255,0.03)", padding: "7px 18px", borderRadius: 100, border: "1px solid rgba(255,255,255,0.06)", fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.6)" }}>
-                                {t.onboardingSpots}
-                            </div>
-                        </div>
-                    </div>
+                    <HeroMorphGSAP
+                        onStart={handleStart}
+                        headline={t.heroHeadline}
+                        subheadline={t.heroLossAversion}
+                        hookText={t.heroHook}
+                        badge={t.heroBadge}
+                        primaryBtn={t.buttonTalkExperts}
+                        secondaryBtn={t.buttonSecondary}
+                        spotsText={t.onboardingSpots}
+                    />
                 )}
                 {/* ACTIVE UI */}
                 {isActive && (
