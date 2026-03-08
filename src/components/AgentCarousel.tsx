@@ -333,70 +333,94 @@ export default function AgentCarousel({ onTalkTo }: Props) {
     const lastIndexPlayedRef = useRef(-1);
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const containerRef = useRef<HTMLDivElement>(null);
+    const gestureUnlockedRef = useRef(false);
+    const inViewRef = useRef(false);
+    const startedRef = useRef(false);
 
-    // Intersection Observer to detect scroll down to carousel
+    // Preload first agent audio on mount for instant playback
+    useEffect(() => {
+        const preload = new Audio(`/assets/voices/milton.mp3`);
+        preload.preload = 'auto';
+        preload.load();
+    }, []);
+
+    // Core function: fire Milton as soon as BOTH gesture + inView are true
+    const tryStart = useCallback(() => {
+        if (startedRef.current) return;
+        if (!gestureUnlockedRef.current || !inViewRef.current) return;
+        startedRef.current = true;
+        setHasStarted(true);
+        setIsAutoTurning(true);
+
+        const audio = new Audio(`/assets/voices/milton.mp3`);
+        audio.load();
+        audioRef.current = audio;
+        audio.play().then(() => {
+            lastIndexPlayedRef.current = 0;
+        }).catch(err => console.warn('Milton autoplay blocked:', err));
+    }, []);
+
+    // Gate 1: unlock on ANY user gesture (scroll, touch, click)
+    useEffect(() => {
+        const unlock = () => {
+            if (gestureUnlockedRef.current) return;
+            gestureUnlockedRef.current = true;
+            tryStart();
+        };
+        window.addEventListener('scroll', unlock, { once: true, passive: true });
+        window.addEventListener('touchstart', unlock, { once: true, passive: true });
+        window.addEventListener('click', unlock, { once: true });
+        return () => {
+            window.removeEventListener('scroll', unlock);
+            window.removeEventListener('touchstart', unlock);
+            window.removeEventListener('click', unlock);
+        };
+    }, [tryStart]);
+
+    // Gate 2: IntersectionObserver — fires when carousel enters viewport
     useEffect(() => {
         const observer = new IntersectionObserver(
             ([entry]) => {
-                if (entry.isIntersecting && !hasStarted) {
-                    setHasStarted(true);
-                    setIsAutoTurning(true);
-
-                    // Force playback trigger immediately
-                    const curAgent = AGENTS[0];
-                    let fileName = curAgent.name.toLowerCase();
-                    if (fileName === "megan") fileName = "megan";
-                    const url = `/assets/voices/${fileName}.mp3`;
-
-                    const audio = new Audio(url);
-                    audioRef.current = audio;
-                    audio.play().catch(err => console.log("Init play blocked:", err));
-                    lastIndexPlayedRef.current = 0;
+                if (entry.isIntersecting && !inViewRef.current) {
+                    inViewRef.current = true;
+                    tryStart();
                 }
             },
-            { threshold: 0.25 }
+            { threshold: 0.05 }
         );
         if (containerRef.current) observer.observe(containerRef.current);
         return () => observer.disconnect();
-    }, [hasStarted]);
+    }, [tryStart]);
 
     // Auto-turn logic
     useEffect(() => {
         if (!isAutoTurning) return;
         const timer = setInterval(() => {
             next();
-        }, 5000); // 5 seconds per agent to allow 2-3s audio + transition spacing
+        }, 5500); // ~5.5s per agent — matches 4-6s script segments
         return () => clearInterval(timer);
     }, [isAutoTurning, next]);
 
-    // Audio Sync logic
+    // Audio Sync — plays each agent's voice as carousel advances
     useEffect(() => {
-        // Double check not to play before scroll activation
         if (!hasStarted) return;
+        if (active === lastIndexPlayedRef.current) return;
 
-        if (active !== lastIndexPlayedRef.current) {
-            lastIndexPlayedRef.current = active;
-            const curAgent = AGENTS[active];
-            let fileName = curAgent.name.toLowerCase();
+        lastIndexPlayedRef.current = active;
+        const curAgent = AGENTS[active];
+        let fileName = curAgent.name.toLowerCase();
+        if (fileName === 'meghan') fileName = 'megan';
 
-            // Standardize name mapping just in case of typos in data (e.g. Meghan -> megan)
-            if (fileName === "meghan") fileName = "megan";
-
-            const url = `/assets/voices/${fileName}.mp3`;
-
-            if (audioRef.current) {
-                audioRef.current.pause();
-                audioRef.current.src = "";
-            }
-
-            const audio = new Audio(url);
-            audioRef.current = audio;
-
-            audio.play().catch(err => {
-                console.log(`Audio autoplay prevented for ${curAgent.name}. User must interact with document first.`, err);
-            });
-            console.log(`Neural Audio Sample: ${curAgent.name} is speaking.`);
+        if (audioRef.current) {
+            audioRef.current.pause();
+            audioRef.current.currentTime = 0;
+            audioRef.current.src = '';
         }
+
+        const audio = new Audio(`/assets/voices/${fileName}.mp3`);
+        audio.load();
+        audioRef.current = audio;
+        audio.play().catch(err => console.warn(`${curAgent.name} audio blocked:`, err));
     }, [active, hasStarted]);
 
     // GSAP: entrance pop + mouse-tilt on active card
