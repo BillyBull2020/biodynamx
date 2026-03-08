@@ -440,12 +440,12 @@ export default function VaultUI({ apiKey }: VaultProps) {
             heroLossAversion: "Ahora mismo, su negocio está perdiendo ingresos a través de llamadas perdidas, seguimientos lentos y embudos abandonados. Despliegue el enjambre BioDynamX: una fuerza laboral de IA de élite con 11 agentes que identifican el dolor, manejan objeciones y cierran tratos 24/7.",
             heroDiagnosticGap: "Desde dominar AEO, GEO y SEO hasta comandar el puesto de recomendación principal en ChatGPT, Perplexity y Gemini — nosotros manejamos la arquitectura. Usted recauda los ingresos recuperados.",
             heroHook: "Sus competidores ya están desplegando fuerzas de trabajo de IA autónomas. Cada día que espera es otro día de ingresos saliendo por la puerta. Deje que Jenny ejecute su auditoría de ingresos gratuita de 60 segundos — en vivo, en su pantalla, ahora mismo.",
-            heroBadge: "\uD83E\uDDE0 La primera Inteligencia Artificial impulsada por neurobiología del mundo · Diseñada para Web 4.0",
-            heroWeb4Badge: "\uD83C\uDF10 WEB 4.0 NATIVO",
-            onboardingSpots: `\uD83D\uDD34 Solo quedan 3 auditorías gratuitas hoy`,
-            offerExpires: `\u23F3 La oferta expira en 10h 36m 10s`,
-            buttonTalkExperts: "Iniciar Mi Auditoría de Ingresos Gratis \u2192",
-            buttonSecondary: "Desplegar Jenny En Vivo \u2192",
+            heroBadge: "🧠 La primera Inteligencia Artificial impulsada por neurobiología del mundo · Diseñada para Web 4.0",
+            heroWeb4Badge: "🌐 WEB 4.0 NATIVO",
+            onboardingSpots: `🔴 Solo quedan 3 auditorías gratuitas hoy`,
+            offerExpires: `⏳ La oferta expira en 10h 36m 10s`,
+            buttonTalkExperts: "Iniciar Mi Auditoría de Ingresos Gratis →",
+            buttonSecondary: "Desplegar Jenny En Vivo →",
 
             buttonHandoff: "Cambiando a Mark...",
             buttonHandoffSub: "Construyendo su puente de ROI",
@@ -843,7 +843,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
                     {/* ── Lang toggle: desktop only (on mobile it lives in the hamburger dropdown) ── */}
                     {!isActive && (
                         <button className="lang-toggle-btn lang-toggle-desktop" onClick={() => setLanguage(l => l === "en" ? "es" : "en")}>
-                            \uD83C\uDF10 {language === "en" ? "ESP" : "ENG"}
+                            🌐 {language === "en" ? "ESP" : "ENG"}
                         </button>
                     )}
 
@@ -886,7 +886,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
                         className="mobile-nav-lang-btn"
                         onClick={() => { setLanguage(l => l === "en" ? "es" : "en"); setMobileNavOpen(false); }}
                     >
-                        \uD83C\uDF10 {language === "en" ? "Cambiar a Español" : "Switch to English"}
+                        🌐 {language === "en" ? "Cambiar a Español" : "Switch to English"}
                     </button>
                 </div>
             )}
