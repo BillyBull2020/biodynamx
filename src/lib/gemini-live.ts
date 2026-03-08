@@ -457,7 +457,70 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
                                                 name: { type: "STRING", description: "Prospect's name for personalization" }
                                             }
                                         }
-                                    }
+                                    },
+
+                                    // ────────────────────────────────────────────────────────────
+
+                                    // ★ BIO-LOGICAL FUNCTION CALLING SCHEMA — 3 Agentic Tools
+                                    // These give the Ironclaw Swarm deterministic control over
+                                    // UI state: visuals, swarm memory, and Stripe checkout.
+                                    // ────────────────────────────────────────────────────────────
+
+                                    {
+                                        name: "trigger_visual_asset",
+                                        description: "Triggers the frontend UI to display a high-contrast visual asset on the Orb to support the current conversational context. Use this immediately when discussing a new advantage or a specific business pain point. This is the Dual-Coding engine — every voice claim needs a visual to bypass the skeptical neocortex.",
+                                        parameters: {
+                                            type: "OBJECT",
+                                            properties: {
+                                                context_tag: {
+                                                    type: "STRING",
+                                                    description: "The exact tag for the visual. Examples: 'WEB4_INTERFACE', 'ROI_GUARANTEE', 'MISSED_CALL_LEAK', 'SPEED_ADVANTAGE', 'SECURITY_SHIELD', 'REVENUE_RECOVERY', 'FINAL_ROI_LOCK'"
+                                                },
+                                                agent_name: {
+                                                    type: "STRING",
+                                                    description: "The name of the agent currently speaking — used to color-code the UI overlay."
+                                                }
+                                            },
+                                            required: ["context_tag", "agent_name"]
+                                        }
+                                    },
+                                    {
+                                        name: "update_swarm_memory",
+                                        description: "Writes the user's revealed business pain points and objections to the shared Ironclaw memory so ALL other 11 agents instantly know the context when the user switches agents. Call this whenever the user admits a pain point, states an objection, or reveals identifying business data.",
+                                        parameters: {
+                                            type: "OBJECT",
+                                            properties: {
+                                                identified_leaks: {
+                                                    type: "ARRAY",
+                                                    items: { type: "STRING" },
+                                                    description: "Revenue leaks the user admitted (e.g., 'no follow-up system', 'slow response time', 'missed calls')"
+                                                },
+                                                current_objection: {
+                                                    type: "STRING",
+                                                    description: "The primary hesitation (e.g., 'price concern', 'implementation timeline', 'needs spouse approval')"
+                                                }
+                                            },
+                                            required: ["identified_leaks"]
+                                        }
+                                    },
+                                    {
+                                        name: "execute_stripe_handoff",
+                                        description: "Triggers the secure Stripe checkout UI to slide up on the user's screen. Execute this ONLY after the 5X ROI guarantee has been established and the user verbally agrees to proceed. Do NOT ask this before a clear verbal buy signal. Say 'Generating your secure access now' before calling this.",
+                                        parameters: {
+                                            type: "OBJECT",
+                                            properties: {
+                                                package_tier: {
+                                                    type: "STRING",
+                                                    description: "Package being sold. Default: 'BIODYNAMX_90_DAY_VAULT'. VIP: 'BIODYNAMX_VIP_12MO'"
+                                                },
+                                                bonus_applied: {
+                                                    type: "BOOLEAN",
+                                                    description: "Set true if Recovery Protocol was triggered and 12-month VIP bonus was offered to this prospect."
+                                                }
+                                            },
+                                            required: ["package_tier", "bonus_applied"]
+                                        }
+                                    },
 
                                 ]
                             },
@@ -476,6 +539,8 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
                     reject(err);
                 }
             };
+
+
 
             this.ws.onmessage = async (event) => {
                 try {
@@ -899,9 +964,103 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
                                 }]
                             }
                         }));
+                    } else if (fc.name === "trigger_visual_asset") {
+                        // ★ Deterministic visual trigger — maps context_tag to generate_visual phase
+                        const args = fc.args as Record<string, string>;
+                        const tagToPhase: Record<string, "reptilian" | "limbic" | "neocortex" | "close"> = {
+                            "MISSED_CALL_LEAK": "reptilian",
+                            "SPEED_ADVANTAGE": "reptilian",
+                            "REVENUE_RECOVERY": "limbic",
+                            "WEB4_INTERFACE": "limbic",
+                            "ROI_GUARANTEE": "neocortex",
+                            "FINAL_ROI_LOCK": "close",
+                            "SECURITY_SHIELD": "neocortex",
+                        };
+                        const phase = tagToPhase[args.context_tag] || "limbic";
+                        console.log(`[VoiceOrchestrator] 🎯 trigger_visual_asset: ${args.context_tag} → ${phase} (agent: ${args.agent_name})`);
+                        this.dispatchNeuroVisual({
+                            conversationPhase: phase,
+                            topic: args.context_tag.toLowerCase().replace(/_/g, " "),
+                            reason: `trigger_visual_asset: ${args.context_tag} by ${args.agent_name}`,
+                        });
+                        // Fire visual bridge event for IronClawVisualPanel
+                        VisualBridge.emitConversationEvent({
+                            type: "topic_change",
+                            sessionId: this.sessionId,
+                            data: { topic: args.context_tag, agentName: args.agent_name, brainLayer: phase },
+                            timestamp: Date.now(),
+                            agentName: args.agent_name,
+                        });
+
+                        this.ws?.send(JSON.stringify({
+                            tool_response: {
+                                function_responses: [{
+                                    id: callId,
+                                    name: "trigger_visual_asset",
+                                    response: { output: `Visual asset '${args.context_tag}' loaded on screen. Dual-coding active.` }
+                                }]
+                            }
+                        }));
+
+                    } else if (fc.name === "update_swarm_memory") {
+                        // ★ A2A atomic context write — no Supabase race condition possible
+                        // (in-memory singleton is single-writer by design)
+                        const leaks_args = fc.args as Record<string, unknown>;
+                        const leaks = (leaks_args.identified_leaks as string[]) || [];
+                        const objection = (leaks_args.current_objection as string) || "";
+                        console.log(`[VoiceOrchestrator] \uD83E\uDDE0 update_swarm_memory: ${leaks.length} leaks, objection: "${objection}"`);
+                        const swarmAgentName = this.customAgents?.[0]?.name || "Jenny";
+                        const swarmWs = this.ws;
+                        void (async () => {
+                            const { A2AContext } = await import("./a2a-context");
+                            A2AContext.update({
+                                painPoints: [...(A2AContext.get().painPoints || []), ...leaks],
+                                currentObjection: objection || A2AContext.get().currentObjection,
+                            });
+                            window.dispatchEvent(new CustomEvent("bdx:swarm-memory-update", {
+                                detail: { leaks, objection, agentName: swarmAgentName }
+                            }));
+                            swarmWs?.send(JSON.stringify({
+                                tool_response: {
+                                    function_responses: [{
+                                        id: callId,
+                                        name: "update_swarm_memory",
+                                        response: { output: `Swarm memory updated. ${leaks.length} pain point${leaks.length !== 1 ? "s" : ""} logged. All agents briefed.` }
+                                    }]
+                                }
+                            }));
+                        })();
+
+                    } else if (fc.name === "execute_stripe_handoff") {
+                        // ★ Deterministic One-Call Close — slides Stripe UI onto screen
+                        const stripe_args = fc.args as Record<string, unknown>;
+                        const packageTier = (stripe_args.package_tier as string) || "BIODYNAMX_90_DAY_VAULT";
+                        const bonusApplied = Boolean(stripe_args.bonus_applied);
+                        console.log(`[VoiceOrchestrator] \uD83D\uDCB3 execute_stripe_handoff: tier=${packageTier} bonus=${bonusApplied}`);
+                        const stripeWs = this.ws;
+                        void (async () => {
+                            const { A2AContext: A2ACtx } = await import("./a2a-context");
+                            A2ACtx.update({ buyingSignal: "hot", currentPhase: "close" });
+                            window.dispatchEvent(new CustomEvent("bdx:one-call-close", {
+                                detail: { packageTier, bonusApplied, source: "agent_function_call" }
+                            }));
+                            if (bonusApplied) {
+                                sessionStorage.setItem("bdx_vip_bonus_active", "1");
+                            }
+                            stripeWs?.send(JSON.stringify({
+                                tool_response: {
+                                    function_responses: [{
+                                        id: callId,
+                                        name: "execute_stripe_handoff",
+                                        response: { output: `Checkout active. Package: ${packageTier}. Bonus: ${bonusApplied ? "VIP 12-month" : "standard"}. User's screen updated.` }
+                                    }]
+                                }
+                            }));
+                        })();
+
                     }
 
-                    // Record tool call for observability
+
                     recordToolCall(this.sessionId, fc.name as string, Date.now() - toolStartTime, true);
                     // 📝 Record tool call in transcript
                     recordToolCallInTranscript(

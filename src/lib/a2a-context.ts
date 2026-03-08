@@ -39,6 +39,7 @@ export interface A2AContext {
     budgetSignal: "unknown" | "low" | "medium" | "high";
     buyingSignal: "unknown" | "cold" | "warm" | "hot";
     currentPhase: string;          // Challenger phase (warmer → close)
+    currentObjection: string;      // Active hesitation (price, timeline, etc.)
 
     // Audit data (captured by tools)
     auditUrl: string | null;
@@ -79,6 +80,7 @@ function makeBlankContext(): A2AContext {
         budgetSignal: "unknown",
         buyingSignal: "unknown",
         currentPhase: "discovery",
+        currentObjection: "",
         auditUrl: null,
         auditResults: null,
         roiEstimate: null,
