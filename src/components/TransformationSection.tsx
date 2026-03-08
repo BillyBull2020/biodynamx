@@ -72,37 +72,21 @@ export default function TransformationSection() {
         return () => ctx.revert();
     }, []);
 
+    const audioRef = useRef<HTMLAudioElement | null>(null);
+
     const handleActivateBen = () => {
         if (audioPlaying) return;
         setAudioPlaying(true);
 
-        const script = "I just saw the same math you’re looking at. $12,400 a month for a human team that sleeps, gets sick, and lets 80 leads a month rot in voicemail? That’s not a payroll; that’s a hemorrhage. I’m Ben. I don't sleep, I don't have 'bad days,' and I answer every single one of those missed calls in under a second. While your competitors are waiting for their coffee to kick in, I’ve already qualified your lead, booked the appointment, and sent the follow-up. You’re not just saving 96% on costs—you’re buying back the revenue you’re currently leaving on the table. Ready to stop the leak?";
+        const url = "/assets/voices/ben-audit.mp3";
+        const audio = new Audio(url);
+        audioRef.current = audio;
 
-        // Fallback or explicit synthetic voice activation
-        const utterance = new SpeechSynthesisUtterance(script);
-        utterance.rate = 1.05;
-        utterance.pitch = 0.95;
-        // Try to pick a male English synthetic voice
-        const voices = window.speechSynthesis.getVoices();
-        const benVoice = voices.find(v => v.lang.includes("en") && (v.name.includes("Male") || v.name.includes("Daniel") || v.name.includes("Alex") || v.name.includes("US")));
-        if (benVoice) utterance.voice = benVoice;
-
-        utterance.onend = () => {
-            setAudioPlaying(false);
-            gsap.killTweensOf(frictionRef.current);
-            gsap.to(frictionRef.current, { backgroundColor: "rgba(20, 15, 15, 0.4)", duration: 0.5 });
-            gsap.killTweensOf(visualizerRef.current);
-            gsap.to(visualizerRef.current, { scale: 1, boxShadow: "none", duration: 1 });
-            gsap.killTweensOf(ctaRef.current);
-            gsap.to(ctaRef.current, { scale: 1, backgroundColor: "transparent", color: "#FFD700", duration: 0.5 });
-        };
-
-        window.speechSynthesis.speak(utterance);
-
+        // Visual Sync GSAP Context
         const ctx = gsap.context(() => {
             const benTalkTL = gsap.timeline();
 
-            // Simulate the timeline of the speech
+            // Simulate the timeline of the speech based on expected audio length
             // AT ~4s: "80 leads rot in voicemail" -> Pulse red warning on friction side
             benTalkTL.to(frictionRef.current, {
                 backgroundColor: "rgba(255,0,0,0.2)",
@@ -111,7 +95,7 @@ export default function TransformationSection() {
                 repeat: 3,
                 yoyo: true,
                 ease: "power1.inOut"
-            }, 5.0); // Rough timing estimate
+            }, 5.0);
 
             // AT ~12s: "Under a second" -> Gold flash on Ben's Visualizer
             benTalkTL.to(visualizerRef.current, {
@@ -135,10 +119,24 @@ export default function TransformationSection() {
 
         }, sectionRef);
 
-        utterance.onend = () => {
+        audio.onended = () => {
             setAudioPlaying(false);
             ctx.revert(); // clean up animation timeline
+
+            // Clean up visual state manually if needed
+            gsap.killTweensOf(frictionRef.current);
+            gsap.to(frictionRef.current, { backgroundColor: "rgba(20, 15, 15, 0.4)", duration: 0.5 });
+            gsap.killTweensOf(visualizerRef.current);
+            gsap.to(visualizerRef.current, { scale: 1, boxShadow: "none", duration: 1 });
+            gsap.killTweensOf(ctaRef.current);
+            gsap.to(ctaRef.current, { scale: 1, backgroundColor: "transparent", color: "#FFD700", duration: 0.5 });
         };
+
+        audio.play().catch((err) => {
+            console.error("Audio playback blocked. Check file /assets/voices/ben-audit.mp3", err);
+            setAudioPlaying(false);
+            ctx.revert();
+        });
     };
 
     const frictionItems = [
@@ -161,26 +159,10 @@ export default function TransformationSection() {
             className="ben-transformation-section"
             style={{
                 position: "relative",
-                padding: "160px 24px 120px",
-                backgroundImage: "url('/ben-visualizer-bg.png')",
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                backgroundAttachment: "fixed",
-                minHeight: "100vh",
-                overflow: "hidden",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                perspective: "1200px",
-                background: "#000",
-                color: "#fff",
+                padding: "80px 24px",
                 fontFamily: "var(--font-inter)",
             }}
         >
-            {/* Cinematic Overlays */}
-            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, #050508 0%, rgba(5,5,8,0.7) 20%, rgba(5,5,8,0.7) 80%, #050508 100%)", zIndex: 1 }} />
-            <div style={{ position: "absolute", inset: 0, background: "radial-gradient(circle at center, transparent 0%, rgba(5,5,8,0.95) 90%)", zIndex: 1 }} />
-
             {/* Ambient Background Grid for Neuro Vibe */}
             <div style={{
                 position: "absolute", inset: 0,
