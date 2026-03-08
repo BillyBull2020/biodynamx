@@ -9,6 +9,7 @@ import { VoiceOrchestrator, ConnectionStatus, IntentSignal } from "./gemini-live
 import { AgentClone, JENNY_LISTENER, MARK_ARCHITECT, AGENT_TEMPLATES, cloneAgent } from "@/clones/agent-factory";
 import { VisualJenny } from "./visual-jenny";
 import { VisualBridge } from "./visual-bridge";
+import { A2AContext } from "./a2a-context";
 
 // ─── Types ─────────────────────────────────────────────────────────
 
@@ -328,6 +329,17 @@ export class TeamOrchestrator {
     private async bootAgent(agent: AgentClone, retryCount = 0): Promise<void> {
         console.log(`[TeamOrchestrator] ★ Booting ${agent.name} (${agent.voice})... (Try ${retryCount + 1})`);
 
+        // ★ A2A: Record this agent as active in shared context
+        A2AContext.recordAgentActive(agent.name);
+
+        // ★ A2A: Inject shared briefing into the agent's system instruction
+        // This is what gives Mark knowledge of what Jenny already discovered.
+        const sharedBriefing = A2AContext.toAgentBriefing();
+        const enrichedAgent: AgentClone = {
+            ...agent,
+            instruction: `${agent.instruction}\n\n${sharedBriefing}`,
+        };
+
         const sharedCtx = this.orchestrator?.audioContext || null;
         const sharedStream = this.orchestrator?.sharedStream || (this.orchestrator as unknown as Record<string, MediaStream>)?.stream || null;
 
@@ -338,7 +350,7 @@ export class TeamOrchestrator {
 
         const orchestrator = new VoiceOrchestrator(
             this.apiKey,
-            [agent],
+            [enrichedAgent],  // ✅ ENRICHED with A2A context
             this.language,
             sharedCtx,
             sharedStream
@@ -358,6 +370,8 @@ export class TeamOrchestrator {
 
         orchestrator.onAuditRequested = (url) => {
             this.callbacks.onAuditRequested(url);
+            // ★ A2A: Capture audited URL
+            A2AContext.update({ auditUrl: url });
         };
 
         orchestrator.onStitchRequested = (prompt) => {
@@ -369,8 +383,19 @@ export class TeamOrchestrator {
             this.callbacks.onIntentDetected(intent);
             if (intent === "purchase") {
                 this.setPhase("checkout");
+                // ★ A2A: Upgrade buying signal on purchase intent
+                A2AContext.update({ buyingSignal: "hot", currentPhase: "close" });
             }
         };
+
+        // ★ A2A: Record transcript for cross-agent memory
+        orchestrator.onTranscriptUpdate = (entry) => {
+            const agentName = entry.agentName ?? entry.speaker ?? "agent";
+            const text = entry.content;
+            this.callbacks.onTranscript(agentName, text);
+            A2AContext.recordTranscript(agentName, text);
+        };
+
 
         // Handoff detection
         orchestrator.onHandoff = (from, to) => {
@@ -420,7 +445,7 @@ export class TeamOrchestrator {
                 type: "session_start",
                 data: { agentName: agent.name },
                 timestamp: Date.now(),
-                sessionId: `session_${Date.now()}`,
+                sessionId: A2AContext.get().sessionId,  // ★ Use A2A sessionId
                 agentName: agent.name,
             });
 
@@ -452,6 +477,14 @@ export class TeamOrchestrator {
         const outgoingAuditData = this.orchestrator?.lastAuditResult || null;
         const outgoingConversationNotes = this.orchestrator?.getConversationNotes() || "";
 
+        // ★ A2A: Update shared context with latest audit + conversation notes
+        if (outgoingAuditData) {
+            A2AContext.update({ auditResults: outgoingAuditData });
+        }
+        if (outgoingConversationNotes) {
+            A2AContext.update({ conversationSummary: outgoingConversationNotes });
+        }
+
         this.killCurrentAgent(true);
         this.setPhase("handoff");
         this.callbacks.onSpeakerChange("idle");
@@ -466,14 +499,17 @@ export class TeamOrchestrator {
             this.setPhase("glia_active");
         }
 
+        // ★ A2A: Use the unified briefing as the handoff context
+        // This is the core of Web 4.0 A2A coordination:
+        // The incoming agent already knows everything the outgoing agent discovered.
+        const a2aBriefing = A2AContext.toAgentBriefing();
+
         const agentWithContext: AgentClone = {
             ...targetAgent,
             instruction: targetAgent.instruction + `
-═══ HANDOFF CONTEXT ═══
-A colleague just completed a session.
-Conversation: ${outgoingConversationNotes || "Not captured."}
-Audit: ${outgoingAuditData ? JSON.stringify(outgoingAuditData) : "No audit."}
-Continuing same session. Do not re-introduce yourself.`
+═══ A2A HANDOFF BRIEF ═══
+${a2aBriefing}
+Audit raw: ${outgoingAuditData ? JSON.stringify(outgoingAuditData).slice(0, 400) : "None."}`,
         };
 
         await this.bootAgent(agentWithContext);
