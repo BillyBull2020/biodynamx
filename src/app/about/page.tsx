@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { SiteNav, SiteFooter } from "@/components/SiteNavFooter";
 import { useState, useEffect, useCallback } from "react";
 
 // ─── Scroll-Reveal Hook (React 19 safe) ─────────────────────────
@@ -238,48 +239,7 @@ export default function AboutPage() {
             `}</style>
 
             {/* ═══ Navigation (matches VaultUI) ═══ */}
-            <nav style={{
-                position: "sticky", top: 0, zIndex: 50,
-                display: "flex", justifyContent: "space-between", alignItems: "center",
-                padding: "16px 32px",
-                background: "rgba(10,10,10,0.96)",
-                backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)",
-                borderBottom: "1px solid rgba(255,255,255,0.05)",
-            }}>
-                <Link href="/" style={{
-                    textDecoration: "none", display: "flex", alignItems: "center", gap: 12,
-                }}>
-                    <div style={{
-                        width: 32, height: 32, borderRadius: 8,
-                        background: "linear-gradient(135deg, #00ff41, #00cc33)",
-                        display: "flex", alignItems: "center", justifyContent: "center",
-                        fontSize: 16, fontWeight: 900, color: "#000",
-                        boxShadow: "0 0 15px rgba(0,255,65,0.2)",
-                    }}>B</div>
-                    <div>
-                        <div style={{ fontSize: 16, fontWeight: 700, color: "#fff", letterSpacing: "-0.02em" }}>BioDynamX</div>
-                        <div style={{ fontSize: 11, color: "rgba(0,255,65,0.7)", letterSpacing: "0.1em", textTransform: "uppercase" as const, fontWeight: 700 }}>Engineering Group</div>
-                    </div>
-                </Link>
-                <div style={{ display: "flex", gap: 20, alignItems: "center" }}>
-                    {[
-                        { label: "Pricing", href: "/pricing" },
-                        { label: "Free Audit", href: "/audit" },
-                        { label: "Blog", href: "/blog" },
-                    ].map(link => (
-                        <Link key={link.label} href={link.href} className="about-nav-link">{link.label}</Link>
-                    ))}
-                    <Link href="/" style={{
-                        padding: "8px 20px",
-                        background: "linear-gradient(135deg, #00ff41, #00cc33)",
-                        border: "none", borderRadius: 8,
-                        color: "#000", fontSize: 12, fontWeight: 800,
-                        textDecoration: "none",
-                        boxShadow: "0 0 15px rgba(0,255,65,0.2)",
-                        transition: "all 0.3s",
-                    }}>Talk to Jenny</Link>
-                </div>
-            </nav>
+            <SiteNav />
 
             {/* ═══ HERO ═══ */}
             <section
@@ -752,31 +712,7 @@ export default function AboutPage() {
             </section>
 
             {/* ═══ FOOTER ═══ */}
-            <footer style={{
-                padding: "40px 24px", textAlign: "center",
-                borderTop: "1px solid rgba(255,255,255,0.05)",
-            }}>
-                <div style={{
-                    display: "flex", justifyContent: "center", gap: 24,
-                    flexWrap: "wrap", marginBottom: 20,
-                }}>
-                    {[
-                        { label: "Home", href: "/" },
-                        { label: "Pricing", href: "/pricing" },
-                        { label: "Free Audit", href: "/audit" },
-                        { label: "Blog", href: "/blog" },
-                        { label: "Security", href: "/security" },
-                    ].map(link => (
-                        <Link key={link.label} href={link.href} style={{
-                            fontSize: 13, fontWeight: 600, color: "rgba(255,255,255,0.4)",
-                            textDecoration: "none", transition: "color 0.2s",
-                        }}>{link.label}</Link>
-                    ))}
-                </div>
-                <div style={{ color: "rgba(255,255,255,0.25)", fontSize: 12 }}>
-                    © {new Date().getFullYear()} BioDynamX Engineering Group. The Neurobiology of Choice.
-                </div>
-            </footer>
+            <SiteFooter />
 
             {/* ═══ Responsive overrides ═══ */}
             <style>{`

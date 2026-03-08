@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { SiteNav, SiteFooter } from "@/components/SiteNavFooter";
 
 const TESTIMONIALS = [
     {
@@ -37,14 +38,7 @@ const TESTIMONIALS = [
 export default function TestimonialsPage() {
     return (
         <main style={{ minHeight: "100vh", background: "#050508", color: "#fff", fontFamily: "'Inter', system-ui, sans-serif" }}>
-            <nav style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 24px", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-                <Link href="/" style={{ textDecoration: "none", color: "#fff", fontWeight: 800, fontSize: 18 }}>BioDynamX</Link>
-                <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
-                    <Link href="/pricing" style={{ color: "rgba(255,255,255,0.6)", textDecoration: "none", fontSize: 14 }}>Pricing</Link>
-                    <Link href="/blog" style={{ color: "rgba(255,255,255,0.6)", textDecoration: "none", fontSize: 14 }}>Blog</Link>
-                    <Link href="/" style={{ background: "linear-gradient(135deg, #8b5cf6, #3b82f6)", color: "#fff", padding: "8px 16px", borderRadius: 8, textDecoration: "none", fontSize: 13, fontWeight: 600 }}>Talk to Jenny</Link>
-                </div>
-            </nav>
+            <SiteNav />
 
             <section style={{ textAlign: "center", padding: "60px 24px 20px" }}>
                 <div style={{ fontSize: 11, fontWeight: 700, color: "#ffa726", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 12 }}>Client Success Stories</div>
@@ -135,7 +129,7 @@ export default function TestimonialsPage() {
                 </div>
             </section>
 
-            <footer style={{ padding: "32px 24px", textAlign: "center", borderTop: "1px solid rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.3)", fontSize: 13 }}>© {new Date().getFullYear()} BioDynamX Engineering Group</footer>
+            <SiteFooter />
         </main>
     );
 }

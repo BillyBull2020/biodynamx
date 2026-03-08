@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { SiteNav, SiteFooter } from "@/components/SiteNavFooter";
 
 const ARTICLES = [
     {
@@ -93,21 +94,7 @@ export default function BlogIndex() {
             fontFamily: "'Inter', system-ui, sans-serif",
         }}>
             {/* Nav */}
-            <nav style={{
-                display: "flex", alignItems: "center", justifyContent: "space-between",
-                padding: "16px 24px", borderBottom: "1px solid rgba(255,255,255,0.06)",
-            }}>
-                <Link href="/" style={{ textDecoration: "none", color: "#fff", fontWeight: 800, fontSize: 18 }}>BioDynamX</Link>
-                <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
-                    <Link href="/about" style={{ color: "rgba(255,255,255,0.6)", textDecoration: "none", fontSize: 14 }}>About</Link>
-                    <Link href="/audit" style={{ color: "rgba(255,255,255,0.6)", textDecoration: "none", fontSize: 14 }}>Free Audit</Link>
-                    <Link href="/" style={{
-                        background: "linear-gradient(135deg, #8b5cf6, #3b82f6)",
-                        color: "#fff", padding: "8px 16px", borderRadius: 8,
-                        textDecoration: "none", fontSize: 13, fontWeight: 600,
-                    }}>Talk to Jenny</Link>
-                </div>
-            </nav>
+            <SiteNav />
 
             {/* Header */}
             <section style={{ textAlign: "center", padding: "60px 24px 40px" }}>
@@ -168,13 +155,7 @@ export default function BlogIndex() {
                 </div>
             </section>
 
-            <footer style={{
-                padding: "32px 24px", textAlign: "center",
-                borderTop: "1px solid rgba(255,255,255,0.06)",
-                color: "rgba(255,255,255,0.3)", fontSize: 13,
-            }}>
-                © {new Date().getFullYear()} BioDynamX Engineering Group
-            </footer>
+            <SiteFooter />
         </main>
     );
 }

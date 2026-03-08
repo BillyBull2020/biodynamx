@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { SiteNav, SiteFooter } from "@/components/SiteNavFooter";
 
 const SECURITY_PILLARS = [
     {
@@ -67,17 +68,7 @@ export default function SecurityPage() {
     return (
         <main style={{ minHeight: "100vh", background: "#050508", color: "#fff", fontFamily: "'Inter', system-ui, sans-serif" }}>
             {/* Nav */}
-            <nav style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 24px", borderBottom: "1px solid rgba(255,255,255,0.06)", position: "sticky", top: 0, background: "rgba(5,5,8,0.95)", backdropFilter: "blur(12px)", zIndex: 100 }}>
-                <Link href="/" style={{ textDecoration: "none", display: "flex", flexDirection: "column", gap: 1 }}>
-                    <span style={{ color: "#fff", fontWeight: 900, fontSize: 18, letterSpacing: "-0.02em" }}>BioDynamX</span>
-                    <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.14em", background: "linear-gradient(90deg,#00ff41,#3b82f6,#8b5cf6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>ENGINEERING GROUP</span>
-                </Link>
-                <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
-                    <Link href="/blog" style={{ color: "rgba(255,255,255,0.5)", textDecoration: "none", fontSize: 14 }}>Blog</Link>
-                    <Link href="/pricing" style={{ color: "rgba(255,255,255,0.5)", textDecoration: "none", fontSize: 14 }}>Pricing</Link>
-                    <Link href="/" style={{ background: "linear-gradient(135deg,#00ff41,#3b82f6)", color: "#000", padding: "8px 18px", borderRadius: 8, textDecoration: "none", fontSize: 13, fontWeight: 700 }}>Talk to Jenny — Free</Link>
-                </div>
-            </nav>
+            <SiteNav />
 
             {/* Hero */}
             <section style={{ maxWidth: 860, margin: "0 auto", padding: "80px 24px 60px", textAlign: "center" }}>
@@ -184,15 +175,7 @@ export default function SecurityPage() {
                 </p>
             </section>
 
-            <footer style={{ padding: "32px 24px", textAlign: "center", borderTop: "1px solid rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.3)", fontSize: 13 }}>
-                <div style={{ marginBottom: 8 }}>
-                    <Link href="/" style={{ color: "rgba(255,255,255,0.3)", textDecoration: "none", marginRight: 16 }}>Home</Link>
-                    <Link href="/pricing" style={{ color: "rgba(255,255,255,0.3)", textDecoration: "none", marginRight: 16 }}>Pricing</Link>
-                    <Link href="/blog" style={{ color: "rgba(255,255,255,0.3)", textDecoration: "none", marginRight: 16 }}>Blog</Link>
-                    <Link href="/about" style={{ color: "rgba(255,255,255,0.3)", textDecoration: "none" }}>About</Link>
-                </div>
-                © {new Date().getFullYear()} BioDynamX Engineering Group · biodynamx.com
-            </footer>
+            <SiteFooter />
         </main>
     );
 }
