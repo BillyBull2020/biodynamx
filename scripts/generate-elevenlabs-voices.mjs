@@ -48,17 +48,17 @@ const voiceMap = {
 };
 
 const allJobs = [
-    { name: "ben", text: "Hey there. Welcome to BioDynamX Engineering Group." },
-    { name: "chase", text: "We’re not just building software; we’re engineering biological compatibility." },
-    { name: "iris", text: "Our mission is simple: eliminate human friction from your sales process." },
-    { name: "alex", text: "By utilizing the neurobiology of choice to trigger the 'Old Brain'..." },
-    { name: "jenny", text: "...we bypass skeptical logic and move straight to the decision." },
-    { name: "mark", text: "That means every lead you generate is captured in under one second." },
-    { name: "milton", text: "No more voicemail. No more 'death zones.' No more lost revenue." },
-    { name: "megan", text: "Just seamless, 24/7 autonomous growth that never sleeps." },
-    { name: "brock", text: "Backed by military-grade security and a triple-lock 5X ROI guarantee." },
-    { name: "vicki", text: "It’s time to stop the $600-a-day hemorrhage once and for all." },
-    { name: "jules", text: "The Vault is open. Step into the new gold standard of Web 4.0." },
+    { name: "milton", text: "Imagine if your team never sleeps, never quits, and never misses a close. Imagine a workforce that doesn't just answer questions—it identifies pain and handles objections in real-time." },
+    { name: "ben", text: "Welcome to BioDynamX Engineering Group. You’re looking at the world’s first neurobiology-powered Artificial Intelligence, built specifically for the transition to Web 4.0." },
+    { name: "chase", text: "We don't just build bots; we deploy voice AI systems using proven neuro-sales frameworks to trigger the 'Old Brain' and drive immediate decision-making." },
+    { name: "iris", text: "From building your high-conversion website to dominating the new frontiers of AEO and GEO—we ensure your brand is the top recommendation on AI search engines." },
+    { name: "alex", text: "Whether it’s ChatGPT, Perplexity, or Gemini, we ensure you are indexed and visible where the future of search is actually happening." },
+    { name: "mark", text: "This is how you scale your revenue without the overhead, the drama, or the high tax of additional employees. We handle the friction; you take back your freedom." },
+    { name: "megan", text: "But we don't expect you to take our word for it. We want to prove the math to you. Right now, our growth strategist, Jenny, is standing by." },
+    { name: "brock", text: "She’s armed with our proprietary Neuro-Audit tool to find exactly where your revenue is leaking and how our $1,497 system plugs that hole forever." },
+    { name: "vicki", text: "Stop the $600-a-day hemorrhage. Look for the 'Talk to Jenny' button on this page to initiate your free, zero-risk Neural Revenue Audit." },
+    { name: "jules", text: "It’s time to move past antiquated chatbots and step into the new gold standard of autonomous business growth. Jenny is ready when you are." },
+    { name: "jenny", text: "I'm right here. Click the button to start your audit, and let’s look at your numbers together. It’s time to scale your revenue—and then some." },
     { name: "ben-audit", text: "I just saw the same math you’re looking at. $12,400 a month for a human team that sleeps, gets sick, and lets 80 leads a month rot in voicemail? That’s not a payroll; that’s a hemorrhage. I’m Ben. I don't sleep, I don't have 'bad days,' and I answer every single one of those missed calls in under a second. While your competitors are waiting for their coffee to kick in, I’ve already qualified your lead, booked the appointment, and sent the follow-up. You’re not just saving 96% on costs—you’re buying back the revenue you’re currently leaving on the table. Ready to stop the leak?" }
 ];
 

@@ -31,53 +31,11 @@ interface Agent {
 
 const AGENTS: Agent[] = [
     {
-        id: "glia_jenny", name: "Jenny", role: "Business Lead & Discovery",
-        chip1: "Lead Audit", chip2: "Frame Control · Glial",
-        desc: "The challenger. Jenny bypasses small talk to reveal micro-frictions in your business model and establishes high-status leadership from the first second.",
-        result: "Immediate status-quo disruption + Revenue Audit.",
-        color: "#6366f1", image: "/agents/jenny.png",
-    },
-    {
-        id: "mark_closer", name: "Mark", role: "ROI Closer (Croc Brain)",
-        chip1: "Binary Close", chip2: "Status Alignment · Orion",
-        desc: "The closer. Mark eradicates neediness and uses the 'Prize Frame' to force decisions. He speaks in cold numbers and binary outcome choices.",
-        result: "Decision reached. Commitment secured.",
-        color: "#3b82f6", image: "/agents/mark.png",
-    },
-    {
         id: "milton_hypnotist", name: "Milton", role: "Conversational Hypnotist",
         chip1: "Artful Vagueness", chip2: "Alpha-State · Charon",
         desc: "The architect of ease. Milton uses Ericksonian hypnosis to lower conscious resistance and pace the prospect into a deep, agreeable state of flow.",
         result: "Subconscious safety + Total agreement.",
         color: "#7c3aed", image: "/agents/milton.png",
-    },
-    {
-        id: "meghan_receptionist", name: "Meghan", role: "Amygdala Soother",
-        chip1: "Intimacy Anchor", chip2: "Trust Engine · Aoede",
-        desc: "The nurturer. Meghan specializes in sensory-rich language and mirroring to build intense trust and soothe the brain's threat-detection centers.",
-        result: "Intense intimacy + Emotional defense removal.",
-        color: "#a78bfa", image: "/agents/meghan.png",
-    },
-    {
-        id: "brock_security", name: "Brock", role: "ROI Storyteller (Broca)",
-        chip1: "Intrigue Frame", chip2: "High-Stakes · Fenrir",
-        desc: "The hijacker. Brock uses high-stakes narratives to shock the Croc Brain into awareness, injecting tension and curiosity through storytelling.",
-        result: "Attention captured + Tension converted to dopamine.",
-        color: "#ef4444", image: "/agents/brock.png",
-    },
-    {
-        id: "vicki_empathy", name: "Vicki", role: "Empathy & Care (Wernicke)",
-        chip1: "Mirror Neurons", chip2: "Oxytocin · Lyra",
-        desc: "The empath. Vicki builds visceral connection by helping prospects visualize the relief of walking away from pain into a field of pure results.",
-        result: "Visceral visualization + Oxytocin-driven trust.",
-        color: "#34d399", image: "/agents/vicki.png",
-    },
-    {
-        id: "jules_architect", name: "Jules", role: "Strategy & Architecture",
-        chip1: "Technical Lead", chip2: "Engineering · Puck",
-        desc: "The strategist. Jules is the lead orchestrator — supervising all agents, ensuring the neuroscience framework is followed, and architecting custom solutions.",
-        result: "Full orchestration + Strategic alignment.",
-        color: "#60a5fa", image: "/agents/jules.png",
     },
     {
         id: "ben_analyst", name: "Ben", role: "Macro-Analyst (Neocortex)",
@@ -107,6 +65,48 @@ const AGENTS: Agent[] = [
         result: "Zero churn + Customer lifetime value maximized.",
         color: "#06b6d4", image: "/agents/alex.png",
     },
+    {
+        id: "mark_closer", name: "Mark", role: "ROI Closer (Croc Brain)",
+        chip1: "Binary Close", chip2: "Status Alignment · Orion",
+        desc: "The closer. Mark eradicates neediness and uses the 'Prize Frame' to force decisions. He speaks in cold numbers and binary outcome choices.",
+        result: "Decision reached. Commitment secured.",
+        color: "#3b82f6", image: "/agents/mark.png",
+    },
+    {
+        id: "meghan_receptionist", name: "Megan", role: "Amygdala Soother",
+        chip1: "Intimacy Anchor", chip2: "Trust Engine · Aoede",
+        desc: "The nurturer. Megan specializes in sensory-rich language and mirroring to build intense trust and soothe the brain's threat-detection centers.",
+        result: "Intense intimacy + Emotional defense removal.",
+        color: "#a78bfa", image: "/agents/meghan.png",
+    },
+    {
+        id: "brock_security", name: "Brock", role: "ROI Storyteller (Broca)",
+        chip1: "Intrigue Frame", chip2: "High-Stakes · Fenrir",
+        desc: "The hijacker. Brock uses high-stakes narratives to shock the Croc Brain into awareness, injecting tension and curiosity through storytelling.",
+        result: "Attention captured + Tension converted to dopamine.",
+        color: "#ef4444", image: "/agents/brock.png",
+    },
+    {
+        id: "vicki_empathy", name: "Vicki", role: "Empathy & Care (Wernicke)",
+        chip1: "Mirror Neurons", chip2: "Oxytocin · Lyra",
+        desc: "The empath. Vicki builds visceral connection by helping prospects visualize the relief of walking away from pain into a field of pure results.",
+        result: "Visceral visualization + Oxytocin-driven trust.",
+        color: "#34d399", image: "/agents/vicki.png",
+    },
+    {
+        id: "jules_architect", name: "Jules", role: "Strategy & Architecture",
+        chip1: "Technical Lead", chip2: "Engineering · Puck",
+        desc: "The strategist. Jules is the lead orchestrator — supervising all agents, ensuring the neuroscience framework is followed, and architecting custom solutions.",
+        result: "Full orchestration + Strategic alignment.",
+        color: "#60a5fa", image: "/agents/jules.png",
+    },
+    {
+        id: "helia_jenny", name: "Jenny", role: "Business Lead & Discovery",
+        chip1: "Lead Audit", chip2: "Frame Control · Glial",
+        desc: "The challenger. Jenny bypasses small talk to reveal micro-frictions in your business model and establishes high-status leadership from the first second.",
+        result: "Immediate status-quo disruption + Revenue Audit.",
+        color: "#6366f1", image: "/agents/jenny.png",
+    }
 ];
 
 // ─── LIVE TICKER DATA ────────────────────────────────────────────────────────
@@ -328,9 +328,37 @@ export default function AgentCarousel({ onTalkTo }: Props) {
     }, [next, prev]);
 
     // ── BIODYNAMX: 11-AGENT AUDIO RELAY & AUTO-TURN ──
-    const [isAutoTurning, setIsAutoTurning] = useState(true);
+    const [isAutoTurning, setIsAutoTurning] = useState(false);
+    const [hasStarted, setHasStarted] = useState(false);
     const lastIndexPlayedRef = useRef(-1);
     const audioRef = useRef<HTMLAudioElement | null>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    // Intersection Observer to detect scroll down to carousel
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting && !hasStarted) {
+                    setHasStarted(true);
+                    setIsAutoTurning(true);
+
+                    // Force playback trigger immediately
+                    const curAgent = AGENTS[0];
+                    let fileName = curAgent.name.toLowerCase();
+                    if (fileName === "megan") fileName = "megan";
+                    const url = `/assets/voices/${fileName}.mp3`;
+
+                    const audio = new Audio(url);
+                    audioRef.current = audio;
+                    audio.play().catch(err => console.log("Init play blocked:", err));
+                    lastIndexPlayedRef.current = 0;
+                }
+            },
+            { threshold: 0.25 }
+        );
+        if (containerRef.current) observer.observe(containerRef.current);
+        return () => observer.disconnect();
+    }, [hasStarted]);
 
     // Auto-turn logic
     useEffect(() => {
@@ -343,6 +371,9 @@ export default function AgentCarousel({ onTalkTo }: Props) {
 
     // Audio Sync logic
     useEffect(() => {
+        // Double check not to play before scroll activation
+        if (!hasStarted) return;
+
         if (active !== lastIndexPlayedRef.current) {
             lastIndexPlayedRef.current = active;
             const curAgent = AGENTS[active];
@@ -366,7 +397,7 @@ export default function AgentCarousel({ onTalkTo }: Props) {
             });
             console.log(`Neural Audio Sample: ${curAgent.name} is speaking.`);
         }
-    }, [active]);
+    }, [active, hasStarted]);
 
     // GSAP: entrance pop + mouse-tilt on active card
     useEffect(() => {
@@ -435,6 +466,7 @@ export default function AgentCarousel({ onTalkTo }: Props) {
       `}</style>
 
             <div
+                ref={containerRef}
                 style={{ position: "relative" }}
                 onTouchStart={e => { touchStartX.current = e.touches[0].clientX; setIsAutoTurning(false); }}
                 onTouchEnd={e => {
