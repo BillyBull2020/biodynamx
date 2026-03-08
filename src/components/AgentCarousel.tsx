@@ -327,101 +327,10 @@ export default function AgentCarousel({ onTalkTo }: Props) {
         return () => window.removeEventListener("keydown", h);
     }, [next, prev]);
 
-    // ── BIODYNAMX: 11-AGENT AUDIO RELAY & AUTO-TURN ──
-    const [isAutoTurning, setIsAutoTurning] = useState(false);
-    const [hasStarted, setHasStarted] = useState(false);
-    const lastIndexPlayedRef = useRef(-1);
-    const audioRef = useRef<HTMLAudioElement | null>(null);
-    const containerRef = useRef<HTMLDivElement>(null);
-    const gestureUnlockedRef = useRef(false);
-    const inViewRef = useRef(false);
-    const startedRef = useRef(false);
+    // ── No prerecorded audio in AgentCarousel — live voice only ──
+    // The orbit (OrbitEcosystem) handles all pre-recorded relay audio.
+    // AgentCarousel is exclusively for live Vertex AI conversations.
 
-    // Preload first agent audio on mount for instant playback
-    useEffect(() => {
-        const preload = new Audio(`/assets/voices/milton.mp3`);
-        preload.preload = 'auto';
-        preload.load();
-    }, []);
-
-    // Core function: fire Milton as soon as BOTH gesture + inView are true
-    const tryStart = useCallback(() => {
-        if (startedRef.current) return;
-        if (!gestureUnlockedRef.current || !inViewRef.current) return;
-        startedRef.current = true;
-        setHasStarted(true);
-        setIsAutoTurning(true);
-
-        const audio = new Audio(`/assets/voices/milton.mp3`);
-        audio.load();
-        audioRef.current = audio;
-        audio.play().then(() => {
-            lastIndexPlayedRef.current = 0;
-        }).catch(err => console.warn('Milton autoplay blocked:', err));
-    }, []);
-
-    // Gate 1: unlock on ANY user gesture (scroll, touch, click)
-    useEffect(() => {
-        const unlock = () => {
-            if (gestureUnlockedRef.current) return;
-            gestureUnlockedRef.current = true;
-            tryStart();
-        };
-        window.addEventListener('scroll', unlock, { once: true, passive: true });
-        window.addEventListener('touchstart', unlock, { once: true, passive: true });
-        window.addEventListener('click', unlock, { once: true });
-        return () => {
-            window.removeEventListener('scroll', unlock);
-            window.removeEventListener('touchstart', unlock);
-            window.removeEventListener('click', unlock);
-        };
-    }, [tryStart]);
-
-    // Gate 2: IntersectionObserver — fires when carousel enters viewport
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting && !inViewRef.current) {
-                    inViewRef.current = true;
-                    tryStart();
-                }
-            },
-            { threshold: 0.05 }
-        );
-        if (containerRef.current) observer.observe(containerRef.current);
-        return () => observer.disconnect();
-    }, [tryStart]);
-
-    // Auto-turn logic
-    useEffect(() => {
-        if (!isAutoTurning) return;
-        const timer = setInterval(() => {
-            next();
-        }, 5500); // ~5.5s per agent — matches 4-6s script segments
-        return () => clearInterval(timer);
-    }, [isAutoTurning, next]);
-
-    // Audio Sync — plays each agent's voice as carousel advances
-    useEffect(() => {
-        if (!hasStarted) return;
-        if (active === lastIndexPlayedRef.current) return;
-
-        lastIndexPlayedRef.current = active;
-        const curAgent = AGENTS[active];
-        let fileName = curAgent.name.toLowerCase();
-        if (fileName === 'meghan') fileName = 'megan';
-
-        if (audioRef.current) {
-            audioRef.current.pause();
-            audioRef.current.currentTime = 0;
-            audioRef.current.src = '';
-        }
-
-        const audio = new Audio(`/assets/voices/${fileName}.mp3`);
-        audio.load();
-        audioRef.current = audio;
-        audio.play().catch(err => console.warn(`${curAgent.name} audio blocked:`, err));
-    }, [active, hasStarted]);
 
     // GSAP: entrance pop + mouse-tilt on active card
     useEffect(() => {
@@ -490,16 +399,12 @@ export default function AgentCarousel({ onTalkTo }: Props) {
       `}</style>
 
             <div
-                ref={containerRef}
                 style={{ position: "relative" }}
-                onTouchStart={e => { touchStartX.current = e.touches[0].clientX; setIsAutoTurning(false); }}
+                onTouchStart={e => { touchStartX.current = e.touches[0].clientX; }}
                 onTouchEnd={e => {
                     const diff = touchStartX.current - e.changedTouches[0].clientX;
                     if (Math.abs(diff) > 44) diff > 0 ? next() : prev();
-                    setIsAutoTurning(true);
                 }}
-                onMouseEnter={() => setIsAutoTurning(false)}
-                onMouseLeave={() => setIsAutoTurning(true)}
             >
                 {/* ── LIVE TICKER ─────────────────────────────────────────── */}
                 <LiveTicker />
