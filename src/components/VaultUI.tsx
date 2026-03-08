@@ -335,6 +335,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
 
     // ─── Language Support ───────────────────────────────────
     const [language, setLanguage] = useState<"en" | "es">("en");
+    const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
     // ─── Scroll Progress ─────────────────────────────────────
     const [scrollProgress, setScrollProgress] = useState(0);
@@ -794,7 +795,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
                 </div>
 
                 <div className="nav-actions">
-                    {/* Nav links — visible in standby, hidden on mobile (shown in mobile-nav-row) */}
+                    {/* Nav links — visible in standby, hidden on mobile (shown in mobile dropdown) */}
                     {!isActive && (
                         <div className="nav-links-desktop">
                             {[
@@ -839,15 +840,57 @@ export default function VaultUI({ apiKey }: VaultProps) {
                         </div>
                     )}
 
-                    {/* ── Lang toggle: ALWAYS visible, no media-query hiding ── */}
+                    {/* ── Lang toggle: desktop only (on mobile it lives in the hamburger dropdown) ── */}
                     {!isActive && (
-                        <button className="lang-toggle-btn" onClick={() => setLanguage(l => l === "en" ? "es" : "en")}>
-                            🌐 {language === "en" ? "ESP" : "ENG"}
+                        <button className="lang-toggle-btn lang-toggle-desktop" onClick={() => setLanguage(l => l === "en" ? "es" : "en")}>
+                            \uD83C\uDF10 {language === "en" ? "ESP" : "ENG"}
+                        </button>
+                    )}
+
+                    {/* ── Hamburger: mobile only ── */}
+                    {!isActive && (
+                        <button
+                            className="hamburger-btn"
+                            onClick={() => setMobileNavOpen(o => !o)}
+                            aria-label="Toggle navigation menu"
+                            aria-expanded={mobileNavOpen}
+                        >
+                            <span className={`hamburger-line${mobileNavOpen ? " open" : ""}`} />
+                            <span className={`hamburger-line${mobileNavOpen ? " open" : ""}`} />
+                            <span className={`hamburger-line${mobileNavOpen ? " open" : ""}`} />
                         </button>
                     )}
 
                 </div>
             </nav>
+
+            {/* ── Mobile Nav Dropdown ─────────────────────── */}
+            {mobileNavOpen && !isActive && (
+                <div className="mobile-nav-dropdown">
+                    {[
+                        { label: t.navPricing, href: "/pricing" },
+                        { label: t.navFreeAudit, href: "/audit" },
+                        { label: "Security", href: "/security" },
+                        { label: "Blog", href: "/blog" },
+                        { label: "About", href: "/about" },
+                        { label: "Glossary", href: "/glossary" },
+                    ].map((link) => (
+                        <a
+                            key={link.label}
+                            href={link.href}
+                            className="mobile-nav-link"
+                            onClick={() => setMobileNavOpen(false)}
+                        >{link.label}</a>
+                    ))}
+                    <button
+                        className="mobile-nav-lang-btn"
+                        onClick={() => { setLanguage(l => l === "en" ? "es" : "en"); setMobileNavOpen(false); }}
+                    >
+                        \uD83C\uDF10 {language === "en" ? "Cambiar a Español" : "Switch to English"}
+                    </button>
+                </div>
+            )}
+
 
             {/* ── Lead Capture Modal ─────────────────────────── */}
             <LeadCaptureModal

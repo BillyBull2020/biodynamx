@@ -161,6 +161,11 @@ html {
         display: none !important;
     }
 
+    /* Hide the desktop ESP button on mobile — it lives in the hamburger dropdown */
+    .lang-toggle-desktop {
+        display: none !important;
+    }
+
     /* Show the sticky Start Free row below the nav on mobile */
     .mobile-start-free-row {
         display: block;
@@ -181,6 +186,138 @@ html {
         overflow: hidden;
     }
 }
+
+/* ── Hamburger Button — mobile only ── */
+.hamburger-btn {
+    display: none;
+    /* hidden on desktop */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    cursor: pointer;
+    padding: 8px;
+    -webkit-tap-highlight-color: transparent;
+    transition: background 0.2s;
+}
+
+.hamburger-btn:hover,
+.hamburger-btn:active {
+    background: rgba(0, 255, 65, 0.08);
+    border-color: rgba(0, 255, 65, 0.25);
+}
+
+.hamburger-line {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 2px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Animate to X when open */
+.hamburger-line.open:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+
+.hamburger-line.open:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger-line.open:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+@media (max-width: 768px) {
+    .hamburger-btn {
+        display: flex;
+        /* show on mobile */
+    }
+}
+
+/* ── Mobile Nav Dropdown ── */
+.mobile-nav-dropdown {
+    display: none;
+    /* hidden on desktop even if rendered */
+    position: fixed;
+    top: 57px;
+    left: 0;
+    right: 0;
+    z-index: 9990;
+    background: rgba(5, 5, 8, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 12px 20px 20px;
+    animation: mobileNavSlide 0.25s ease-out;
+}
+
+@keyframes mobileNavSlide {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .mobile-nav-dropdown {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+}
+
+.mobile-nav-link {
+    display: block;
+    padding: 14px 16px;
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 12px;
+    transition: background 0.2s, color 0.2s;
+}
+
+.mobile-nav-link:hover,
+.mobile-nav-link:active {
+    background: rgba(0, 255, 65, 0.06);
+    color: #00ff41;
+}
+
+.mobile-nav-lang-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+    padding: 14px 16px;
+    margin-top: 4px;
+    background: rgba(0, 255, 65, 0.04);
+    border: 1px solid rgba(0, 255, 65, 0.12);
+    border-radius: 12px;
+    color: #00ff41;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.2s;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.mobile-nav-lang-btn:active {
+    background: rgba(0, 255, 65, 0.12);
+}
+
 
 /* ── Tool Stack (Pre-Purchase Reveal) ── */
 .tool-stack-list {
