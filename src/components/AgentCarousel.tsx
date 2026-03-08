@@ -327,6 +327,47 @@ export default function AgentCarousel({ onTalkTo }: Props) {
         return () => window.removeEventListener("keydown", h);
     }, [next, prev]);
 
+    // ── BIODYNAMX: 11-AGENT AUDIO RELAY & AUTO-TURN ──
+    const [isAutoTurning, setIsAutoTurning] = useState(true);
+    const lastIndexPlayedRef = useRef(-1);
+    const audioRef = useRef<HTMLAudioElement | null>(null);
+
+    // Auto-turn logic
+    useEffect(() => {
+        if (!isAutoTurning) return;
+        const timer = setInterval(() => {
+            next();
+        }, 5000); // 5 seconds per agent to allow 2-3s audio + transition spacing
+        return () => clearInterval(timer);
+    }, [isAutoTurning, next]);
+
+    // Audio Sync logic
+    useEffect(() => {
+        if (active !== lastIndexPlayedRef.current) {
+            lastIndexPlayedRef.current = active;
+            const curAgent = AGENTS[active];
+            let fileName = curAgent.name.toLowerCase();
+
+            // Standardize name mapping just in case of typos in data (e.g. Meghan -> megan)
+            if (fileName === "meghan") fileName = "megan";
+
+            const url = `/assets/voices/${fileName}.mp3`;
+
+            if (audioRef.current) {
+                audioRef.current.pause();
+                audioRef.current.src = "";
+            }
+
+            const audio = new Audio(url);
+            audioRef.current = audio;
+
+            audio.play().catch(err => {
+                console.log(`Audio autoplay prevented for ${curAgent.name}. User must interact with document first.`, err);
+            });
+            console.log(`Neural Audio Sample: ${curAgent.name} is speaking.`);
+        }
+    }, [active]);
+
     // GSAP: entrance pop + mouse-tilt on active card
     useEffect(() => {
         const el = activeInnerRef.current;
@@ -395,11 +436,14 @@ export default function AgentCarousel({ onTalkTo }: Props) {
 
             <div
                 style={{ position: "relative" }}
-                onTouchStart={e => { touchStartX.current = e.touches[0].clientX; }}
+                onTouchStart={e => { touchStartX.current = e.touches[0].clientX; setIsAutoTurning(false); }}
                 onTouchEnd={e => {
                     const diff = touchStartX.current - e.changedTouches[0].clientX;
                     if (Math.abs(diff) > 44) diff > 0 ? next() : prev();
+                    setIsAutoTurning(true);
                 }}
+                onMouseEnter={() => setIsAutoTurning(false)}
+                onMouseLeave={() => setIsAutoTurning(true)}
             >
                 {/* ── LIVE TICKER ─────────────────────────────────────────── */}
                 <LiveTicker />
