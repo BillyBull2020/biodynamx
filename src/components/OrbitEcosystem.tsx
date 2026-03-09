@@ -30,14 +30,16 @@ const SERVICES = [
         script: "I am Nova, and I have to tell you — the conversions we\'re delivering for our clients right now are WILD. I analyze your entire funnel and deploy precision neuro-triggers that flip cold prospects into paying clients. This is the future, and it\'s happening today!",
     },
     {
-        image: "/agents/isabel.png",
+        id: "iris_visibility", name: "Isabel",
+        image: "/agents/iris.png",
         label: "ISABEL: AI Visibility & Content",
         color: "#8b5cf6",
         voice: "isabel",
         script: "Listen — if ChatGPT, Gemini, and Perplexity can\'t find you, you don\'t exist. I\'m Isabel, and I make sure your brand is the first recommendation across every AI search engine on the planet. That is a game-changer for your business!",
     },
     {
-        image: "/agents/maya.png",
+        id: "megan_soother", name: "Maya",
+        image: "/agents/meghan.png",
         label: "MAYA: AI Receptionist & Trust",
         color: "#a78bfa",
         voice: "maya",
@@ -65,7 +67,8 @@ const SERVICES = [
         script: "I\'m Zara — and I HUNT leads. I find your competitors\' weaknesses, identify the gaps in the market, and activate pipelines that your competitors don\'t even know exist yet. The opportunity out there right now is absolutely massive!",
     },
     {
-        image: "/agents/abby.png",
+        id: "ava_growth", name: "Abby",
+        image: "/agents/ava.png",
         label: "ABBY: Content & Growth",
         color: "#f59e0b",
         voice: "abby",
