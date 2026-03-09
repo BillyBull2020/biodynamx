@@ -674,33 +674,35 @@ export default function AgentCarousel({ onTalkTo }: Props) {
           transform:translateY(-2px);
         }
         .bdx-swarm-flash { animation: bdx-swarm-pulse 0.6s ease forwards; }
-        /* ── Mobile: tighter cards, smaller dash, no overlap ── */
+        /* ── Mobile: single card, stacked layout, no overlap ── */
         @media (max-width: 600px) {
           .bdx-carousel-stage {
-            overflow: hidden !important;
-            height: 420px !important;
-            perspective: 900px !important;
-          }
-          /* Shrink cards so they don't overlap */
-          .bdx-carousel-stage > div {
-            width: min(260px, 72vw) !important;
+            overflow: visible !important;
+            height: auto !important;
+            min-height: 200px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            perspective: none !important;
           }
           .bdx-arrow { display: none !important; }
-          /* Neural dash: bottom-pinned, glass, max 35vh */
+          /* Neural dash: stacked below card, not overlaid */
           .bdx-neural-dash {
-            position: absolute !important;
-            right: 2vw !important;
-            left: 2vw !important;
-            bottom: 0 !important;
+            position: relative !important;
+            right: auto !important;
+            left: auto !important;
             top: auto !important;
-            width: 96vw !important;
-            max-height: 35vh !important;
+            bottom: auto !important;
+            width: 92vw !important;
+            max-width: 360px !important;
+            max-height: 30vh !important;
             overflow-y: auto !important;
+            margin: 12px auto 0 !important;
             background: rgba(5, 5, 10, 0.85) !important;
-            backdrop-filter: blur(14px) !important;
             -webkit-backdrop-filter: blur(14px) !important;
-            border-radius: 20px 20px 0 0 !important;
-            z-index: 600 !important;
+            backdrop-filter: blur(14px) !important;
+            border-radius: 20px !important;
+            z-index: 10 !important;
           }
         }
       `}</style>
@@ -802,8 +804,12 @@ export default function AgentCarousel({ onTalkTo }: Props) {
                             const isActive = absOff === 0;
                             const isInDash = dashboardAgent?.id === a.id && dashboardVisible;
                             const isMobile = typeof window !== "undefined" && window.innerWidth <= 600;
-                            const translateX = offset * (isMobile ? 140 : 240);
-                            const rotateY = -offset * (isMobile ? 18 : 26);
+
+                            // MOBILE: only show active card, hide all others
+                            if (isMobile && !isActive) return null;
+
+                            const translateX = isMobile ? 0 : offset * 240;
+                            const rotateY = isMobile ? 0 : -offset * 26;
                             const scale = isActive ? 1 : Math.max(0.5, 0.8 - (absOff - 1) * 0.16);
                             const opacity = isActive ? 1 : Math.max(0.1, 0.62 - (absOff - 1) * 0.22);
                             const zIndex = 40 - absOff * 10;
@@ -816,7 +822,9 @@ export default function AgentCarousel({ onTalkTo }: Props) {
                                     onClick={() => !isActive && go(i)}
                                     className={isGlowing && !isActive ? "bdx-swarm-flash" : ""}
                                     style={{
-                                        position: "absolute", width: isMobile ? "min(280px, 78vw)" : "min(392px, 88vw)",
+                                        position: isMobile ? "relative" : "absolute",
+                                        width: isMobile ? "min(300px, 85vw)" : "min(392px, 88vw)",
+                                        margin: isMobile ? "0 auto" : undefined,
                                         transform: `translateX(${translateX}px) rotateY(${rotateY}deg) scale(${scale})`,
                                         transformOrigin: "center center",
                                         opacity: isInDash ? 0.5 : opacity,
