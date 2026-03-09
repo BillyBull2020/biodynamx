@@ -49,21 +49,21 @@ export const NOVA_VOICE: VoiceProfile = {
     personality: "Bright, analytical, decisive. Turns hesitation into commitment.",
 };
 
-// ── 3. IRIS — AI Visibility, SEO/GEO/AEO (Female · Despina) ───────────────
+// ── 3. ISABEL — AI Visibility, SEO/GEO/AEO (Female · Aoede) ───────────────
 export const IRIS_VOICE: VoiceProfile = {
-    agentName: "Iris",
+    agentName: "Isabel",
     role: "AI Visibility & Content",
-    voiceName: "Despina",
+    voiceName: "Aoede",
     fallbackVoice: "Albeaba",
     color: "#8b5cf6",
     personality: "Crisp, fast-paced, excited about search domination.",
 };
 
-// ── 4. MEGAN — Amygdala Soother (Female · Sulafat) ────────────────────────
+// ── 4. MAYA — Amygdala Soother (Female · Charon) ────────────────────────
 export const MEGHAN_VOICE: VoiceProfile = {
-    agentName: "Megan",
+    agentName: "Maya",
     role: "AI Receptionist & Trust Builder",
-    voiceName: "Sulafat",
+    voiceName: "Charon",
     fallbackVoice: "Kore",
     color: "#a78bfa",
     personality: "Warm, expressive, instantly disarming. Builds trust in seconds.",
@@ -99,11 +99,11 @@ export const ZARA_VOICE: VoiceProfile = {
     personality: "Relentless hunter. Pursues opportunity without hesitation.",
 };
 
-// ── 8. AVA — Content & Growth (Female · Albeaba) ─────────────────────────
+// ── 8. ABBY — Content & Growth (Female · Puck) ─────────────────────────
 export const AVA_VOICE: VoiceProfile = {
-    agentName: "Ava",
+    agentName: "Abby",
     role: "Content & Growth Strategy",
-    voiceName: "Albeaba",
+    voiceName: "Puck",
     fallbackVoice: "Algieba",
     color: "#f59e0b",
     personality: "Enthusiastic, dynamic. Makes brands impossible to ignore.",
@@ -143,13 +143,12 @@ export const BEN_VOICE: VoiceProfile = {
 export const VOICE_PROFILES = {
     jenny: JENNY_VOICE,
     nova: NOVA_VOICE,
-    iris: IRIS_VOICE,
-    meghan: MEGHAN_VOICE,
-    megan: MEGHAN_VOICE,
+    isabel: IRIS_VOICE,
+    maya: MEGHAN_VOICE,
     vicki: VICKI_VOICE,
     alex: ALEX_VOICE,
     zara: ZARA_VOICE,
-    ava: AVA_VOICE,
+    abby: AVA_VOICE,
     titan: TITAN_VOICE,
     jules: JULES_VOICE,
     ben: BEN_VOICE,

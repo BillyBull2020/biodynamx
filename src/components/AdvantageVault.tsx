@@ -15,7 +15,7 @@ const CARDS = [
     { icon: "🌐", title: "Availability", gain: "Universal (24/7/365)", description: "Always on, always closing. 168 hours of uptime every week." },
     { icon: "🎵", title: "Latency", gain: "Live Flash Native Audio", description: "Deep continuous streams rather than text-to-speech halting." },
     { icon: "📍", title: "Local SEO", gain: "Free AI GMB Optimization", description: "Hyper-localized ranking strategies outperforming manual SEO." },
-    { icon: "📱", title: "Social Media", gain: "24/7 AI Social Admin (Iris)", description: "An AI manager optimizing your digital social touchpoints hourly." },
+    { icon: "📱", title: "Social Media", gain: "24/7 AI Social Admin (Isabel)", description: "An AI manager optimizing your digital social touchpoints hourly." },
     { icon: "🔍", title: "AI Visibility", gain: "GEO/AEO Indexing Ready", description: "Primed for Answer Engine Optimization and Generative Search." },
     { icon: "⭐", title: "Reviews", gain: "AI List Reactivation", description: "Mining your past network to awaken dormant revenue." },
     { icon: "📲", title: "Inbound", gain: "Instant AI Textback/Callback", description: "Instant capture mechanisms eradicating the 'missed call' bleed." },
@@ -41,8 +41,8 @@ export default function AdvantageVault() {
     return (
         <section className="web4-spline-section">
             <div className="spline-background">
-                {/* @ts-expect-error spline-viewer is a custom web component without typings */}
-                <spline-viewer url="https://prod.spline.design/Q7YGyUkD9T7R/scene.splinecode" loading-anim-type="spinner-small-dark"></spline-viewer>
+                {/* 3D background temporarily disabled due to Spline Edge Network 403 errors */}
+                {/* <spline-viewer url="https://prod.spline.design/Q7YGyUkD9T7R/scene.splinecode" loading-anim-type="spinner-small-dark"></spline-viewer> */}
             </div>
 
             <div className="advantage-scroll-track">

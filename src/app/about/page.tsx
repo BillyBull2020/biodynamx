@@ -89,11 +89,11 @@ const AGENTS = [
         color: "#4c1d95", image: "/agents/milton.png",
     },
     {
-        id: "meghan", name: "Meghan", role: "Amygdala Soother & Receptionist",
+        id: "maya", name: "Maya", role: "Amygdala Soother & Receptionist",
         brain: "Amygdala Science", voice: "Aoede",
         desc: "The nurturer. Specializes in sensory-rich language and mirroring to build intense trust and soothe the brain's threat-detection centers.",
         result: "Intimacy + Emotional defense removal",
-        color: "#a78bfa", image: "/agents/meghan.png",
+        color: "#a78bfa", image: "/agents/maya.png",
     },
     {
         id: "brock", name: "Brock", role: "Security & ROI (Broca's Area)",
@@ -131,7 +131,7 @@ const AGENTS = [
         color: "#f97316", image: "/agents/hunter.png",
     },
     {
-        id: "iris", name: "Iris", role: "AI Visibility & Content (GEO/AEO)",
+        id: "isabel", name: "Isabel", role: "AI Visibility & Content (GEO/AEO)",
         brain: "Visual Cortex", voice: "Leda",
         desc: "The eye. Controls what the brain can SEE — making businesses visible to ChatGPT, Gemini, Perplexity, and voice assistants through GEO, AEO, and content.",
         result: "AI visibility + Search dominance",

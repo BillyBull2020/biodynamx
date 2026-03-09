@@ -70,7 +70,7 @@ const CLUSTERS = [
         border: "rgba(245,158,11,0.3)",
         bg: "rgba(245,158,11,0.06)",
         points: [
-            { icon: "📱", label: "Social Media", comp: "Expensive Agencies", us: "24/7 AI Social Admin (Iris)" },
+            { icon: "📱", label: "Social Media", comp: "Expensive Agencies", us: "24/7 AI Social Admin (Isabel)" },
             { icon: "📍", label: "Local SEO", comp: "Manual Updates", us: "Free AI GMB Optimization" },
             { icon: "🔍", label: "AI Visibility", comp: "Zero Presence", us: "GEO/AEO Indexing Ready" },
             { icon: "⭐", label: "Reviews", comp: "Forgotten Customers", us: "AI List Reactivation" },

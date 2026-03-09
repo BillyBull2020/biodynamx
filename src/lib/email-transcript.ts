@@ -222,7 +222,7 @@ function escapeHtml(text: string): string {
         .replace(/\[Vicki\]/g, '<span class="agent">[Vicki]</span>')
         .replace(/\[Jules\]/g, '<span class="agent">[Jules]</span>')
         .replace(/\[Ben\]/g, '<span class="agent">[Ben]</span>')
-        .replace(/\[Meghan\]/g, '<span class="agent">[Meghan]</span>')
+        .replace(/\[Maya\]/g, '<span class="agent">[Maya]</span>')
         .replace(/\[Prospect\]/g, '<span class="prospect">[Prospect]</span>')
         .replace(/\[System\]/g, '<span class="system">[System]</span>');
 }

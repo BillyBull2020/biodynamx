@@ -22,11 +22,11 @@ interface Ping {
 }
 
 const PING_POOL = [
-    { agent: "Iris", image: "/agents/iris.png", color: "#8b5cf6", message: "Found 3 ways to grow your visibility online." },
+    { agent: "Isabel", image: "/agents/isabel.png", color: "#8b5cf6", message: "Found 3 ways to grow your visibility online." },
     { agent: "Ben", image: "/agents/ben.png", color: "#fbbf24", message: "Your revenue opportunity estimate is ready." },
     { agent: "Zara", image: "/agents/zara.png", color: "#f97316", message: "Spotted a gap your competitors are missing." },
     { agent: "Nova", image: "/agents/nova_v2.png", color: "#ec4899", message: "Identified a conversion boost for your next step." },
-    { agent: "Ava", image: "/agents/ava.png", color: "#f59e0b", message: "Drafted an authority content angle for your brand." },
+    { agent: "Abby", image: "/agents/abby.png", color: "#f59e0b", message: "Drafted an authority content angle for your brand." },
     { agent: "Alex", image: "/agents/alex.png", color: "#06b6d4", message: "Confirmed: zero client experience gaps detected." },
     { agent: "Vicki", image: "/agents/vicki.png", color: "#34d399", message: "Your trust-building profile is looking strong." },
     { agent: "Jules", image: "/agents/jules.png", color: "#60a5fa", message: "Custom AI architecture outline saved for your session." },

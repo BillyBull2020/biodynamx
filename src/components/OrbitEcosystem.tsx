@@ -30,18 +30,18 @@ const SERVICES = [
         script: "I am Nova, and I have to tell you — the conversions we\'re delivering for our clients right now are WILD. I analyze your entire funnel and deploy precision neuro-triggers that flip cold prospects into paying clients. This is the future, and it\'s happening today!",
     },
     {
-        image: "/agents/iris.png",
-        label: "IRIS: AI Visibility & Content",
+        image: "/agents/isabel.png",
+        label: "ISABEL: AI Visibility & Content",
         color: "#8b5cf6",
-        voice: "iris",
-        script: "Listen — if ChatGPT, Gemini, and Perplexity can\'t find you, you don\'t exist. I\'m Iris, and I make sure your brand is the first recommendation across every AI search engine on the planet. That is a game-changer for your business!",
+        voice: "isabel",
+        script: "Listen — if ChatGPT, Gemini, and Perplexity can\'t find you, you don\'t exist. I\'m Isabel, and I make sure your brand is the first recommendation across every AI search engine on the planet. That is a game-changer for your business!",
     },
     {
-        image: "/agents/meghan.png",
-        label: "MEGAN: AI Receptionist & Trust",
+        image: "/agents/maya.png",
+        label: "MAYA: AI Receptionist & Trust",
         color: "#a78bfa",
-        voice: "megan",
-        script: "Hi, I\'m Megan! Every call answered, every lead captured, every message replied to in under 60 seconds. The moment a prospect feels heard and understood — that\'s the moment they become a client. I make that happen all day, every day!",
+        voice: "maya",
+        script: "Hi, I\'m Maya! Every call answered, every lead captured, every message replied to in under 60 seconds. The moment a prospect feels heard and understood — that\'s the moment they become a client. I make that happen all day, every day!",
     },
     {
         image: "/agents/vicki.png",
@@ -65,11 +65,11 @@ const SERVICES = [
         script: "I\'m Zara — and I HUNT leads. I find your competitors\' weaknesses, identify the gaps in the market, and activate pipelines that your competitors don\'t even know exist yet. The opportunity out there right now is absolutely massive!",
     },
     {
-        image: "/agents/ava.png",
-        label: "AVA: Content & Growth",
+        image: "/agents/abby.png",
+        label: "ABBY: Content & Growth",
         color: "#f59e0b",
-        voice: "ava",
-        script: "Oh, this is so exciting! I\'m Ava, and I build the kind of brand authority that makes the competition completely irrelevant. We\'re talking AI search domination, social authority, email that actually converts — all working together at the same time!",
+        voice: "abby",
+        script: "Oh, this is so exciting! I\'m Abby, and I build the kind of brand authority that makes the competition completely irrelevant. We\'re talking AI search domination, social authority, email that actually converts — all working together at the same time!",
     },
     {
         image: "/agents/titan.png",
@@ -91,13 +91,6 @@ const SERVICES = [
         color: "#fbbf24",
         voice: "ben",
         script: "Ben. Let me give you the numbers. The average BioDynamX client captures an additional 18 thousand dollars per month in previously lost revenue within 90 days. That is not a projection. That is the documented result. The ROI is undeniable.",
-    },
-    {
-        image: "/agents/jenny.png",
-        label: "JENNY: Your Next Step",
-        color: "#6366f1",
-        voice: "jenny_outro",
-        script: "It's Jenny again! I hope you're as pumped as we are. The entire team is standing by to build this for you. Click the button below to get started, and let's go!",
     },
 ];
 
@@ -280,7 +273,17 @@ export default function OrbitEcosystem() {
             const t = tiltRef.current;
             t.x += (t.targetX - t.x) * 0.05;
             t.y += (t.targetY - t.y) * 0.05;
-            angleRef.current += orbitSpeedRef.current;
+            const count = SERVICES.length;
+
+            if (activeIdx >= 0) {
+                const targetA = Math.PI / 2 - (activeIdx / count) * Math.PI * 2;
+                let diff = (targetA - angleRef.current) % (Math.PI * 2);
+                if (diff > Math.PI) diff -= Math.PI * 2;
+                if (diff <= -Math.PI) diff += Math.PI * 2;
+                angleRef.current += diff * 0.05;
+            } else {
+                angleRef.current += orbitSpeedRef.current;
+            }
 
             const container = containerRef.current;
             if (container) {
@@ -289,7 +292,6 @@ export default function OrbitEcosystem() {
             }
 
             const R = radiusRef.current;
-            const count = SERVICES.length;
 
             for (let i = 0; i < count; i++) {
                 const el = nodeRefs.current[i];

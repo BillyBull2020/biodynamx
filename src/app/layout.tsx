@@ -391,7 +391,7 @@ export default function RootLayout({
       worstRating: "1",
     },
     featureList: [
-      "Elite 11 Autonomous AI Workforce (Jenny, Nova, Iris, Megan, Vicki, Alex, Zara, Ava, Titan, Jules, Ben)",
+      "Elite 11 Autonomous AI Workforce (Jenny, Nova, Isabel, Maya, Vicki, Alex, Zara, Abby, Titan, Jules, Ben)",
       "Real-time Revenue Leak Diagnosis",
       "Automated ROI Calculations",
       "AI-Powered Lead Nurture Systems",

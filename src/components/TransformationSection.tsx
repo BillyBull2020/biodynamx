@@ -21,9 +21,9 @@ const RELAY = [
         file: "chase",
     },
     {
-        name: "Iris", color: "#8b5cf6",
+        name: "Isabel", color: "#8b5cf6",
         script: "From building your high-conversion website to dominating AEO and GEO—we ensure your brand is the top recommendation on AI search engines.",
-        file: "iris",
+        file: "isabel",
     },
     {
         name: "Alex", color: "#06b6d4",
@@ -36,9 +36,9 @@ const RELAY = [
         file: "mark",
     },
     {
-        name: "Megan", color: "#a78bfa",
+        name: "Maya", color: "#a78bfa",
         script: "But we don't expect you to take our word for it. We want to prove the math to you. Right now, our growth strategist Jenny is standing by.",
-        file: "megan",
+        file: "maya",
     },
     {
         name: "Brock", color: "#ef4444",

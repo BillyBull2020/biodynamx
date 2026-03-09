@@ -1,7 +1,29 @@
 "use client";
 
-import { useRef, useEffect, useState, Suspense } from 'react';
+import { useRef, useEffect, useState, Suspense, Component, ReactNode, ErrorInfo } from 'react';
 import dynamic from 'next/dynamic';
+
+class SplineErrorBoundary extends Component<{ children: ReactNode, fallback: ReactNode }, { hasError: boolean }> {
+    constructor(props: { children: ReactNode, fallback: ReactNode }) {
+        super(props);
+        this.state = { hasError: false };
+    }
+
+    static getDerivedStateFromError(_: Error) {
+        return { hasError: true };
+    }
+
+    componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+        console.error("[Spline Error]:", error, errorInfo);
+    }
+
+    render() {
+        if (this.state.hasError) {
+            return <>{this.props.fallback}</>;
+        }
+        return this.props.children;
+    }
+}
 
 // Lazy-load Spline with SSR disabled — prevents crash if module fails
 const Spline = dynamic(() => import('@splinetool/react-spline'), {
@@ -160,14 +182,20 @@ export default function JennySpline({ amplitude, isActive, isSpeaking, agentName
                 </div>
             )}
 
-            <Suspense fallback={null}>
-                <Spline
-                    scene="https://prod.spline.design/6Wq1Q7YAnWfEL7uH/scene.splinecode"
-                    onLoad={onLoad}
-                    onError={onError}
-                    style={{ width: '100%', height: '100%', pointerEvents: 'none' }}
-                />
-            </Suspense>
+            <SplineErrorBoundary fallback={
+                <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", color: "rgba(0,255,65,0.4)", fontSize: 10, letterSpacing: "0.2em" }}>
+                    [ 3D MESH OFFLINE ]
+                </div>
+            }>
+                <Suspense fallback={null}>
+                    <Spline
+                        scene="https://prod.spline.design/6Wq1Q7YAnWfEL7uH/scene.splinecode"
+                        onLoad={onLoad}
+                        onError={onError}
+                        style={{ width: '100%', height: '100%', pointerEvents: 'none' }}
+                    />
+                </Suspense>
+            </SplineErrorBoundary>
 
             {/* Conditional Speaking Glow */}
             {isSpeaking && (

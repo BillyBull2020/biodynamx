@@ -19,13 +19,13 @@ if (typeof window !== "undefined") {
 const AGENTS = [
     { name: "Jenny", role: "Discovery & Lead Audit", color: "#6366f1", icon: "🧠", voice: "Kore", brain: "Glial Network" },
     { name: "Mark", role: "ROI Closer", color: "#3b82f6", icon: "📈", voice: "Orion", brain: "Croc Brain" },
-    { name: "Meghan", role: "Inbound Receptionist", color: "#a78bfa", icon: "💜", voice: "Aoede", brain: "Amygdala" },
+    { name: "Maya", role: "Inbound Receptionist", color: "#a78bfa", icon: "💜", voice: "Aoede", brain: "Amygdala" },
     { name: "Milton", role: "Conversational Hypnotist", color: "#7c3aed", icon: "🌀", voice: "Charon", brain: "Broca Region" },
     { name: "Brock", role: "Security & ROI Specialist", color: "#ef4444", icon: "🛡️", voice: "Charon", brain: "Broca Region" },
     { name: "Vicki", role: "Empathy & Care", color: "#34d399", icon: "💚", voice: "Aoede", brain: "Wernicke Area" },
     { name: "Ben", role: "GMB & Local SEO", color: "#fbbf24", icon: "📍", voice: "Charon", brain: "Neocortex" },
     { name: "Chase", role: "Lead Hunter (SPIN)", color: "#f97316", icon: "🎯", voice: "Enceladus", brain: "Hypothalamus" },
-    { name: "Iris", role: "GEO/AEO Visibility", color: "#8b5cf6", icon: "👁️", voice: "Leda", brain: "Iris Network" },
+    { name: "Isabel", role: "GEO/AEO Visibility", color: "#8b5cf6", icon: "👁️", voice: "Leda", brain: "Isabel Network" },
     { name: "Jules", role: "Technical Architect", color: "#06b6d4", icon: "⚙️", voice: "Puck", brain: "Neocortex" },
     { name: "Alex", role: "Support & Retention", color: "#22c55e", icon: "🤝", voice: "Aoede", brain: "Hippocampus" },
 ];

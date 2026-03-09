@@ -487,13 +487,13 @@ export default function VaultUI({ apiKey }: VaultProps) {
             toolStackTitle: "The BioDynamX Elite 11 AI Agents",
             toolStack: [
                 "☎️ MILTON: Conversational Hypnotist",
-                "🧠 MEGHAN: Intimacy & Receptionist",
+                "🧠 MAYA: Intimacy & Receptionist",
                 "🏗️ BROCK: Security & ROI Architect",
                 "🛠️ VICKI: Empathy & Care Specialist",
                 "🛡️ MARK: Revenue Architect & Closer",
                 "🎯 JENNY: Lead Discovery Agent",
                 "🏃 CHASE: Lead Prospecting Hunter",
-                "👁️ IRIS: AI Visibility & Content",
+                "👁️ ISABEL: AI Visibility & Content",
                 "📍 RYAN: GMB & Ops Specialist",
                 "🤝 ALEX: Support & Retention",
                 "🎨 JULES: Strategy & Architecture"
@@ -551,13 +551,13 @@ export default function VaultUI({ apiKey }: VaultProps) {
             spanishButton: "Hablar ahora",
             toolStackTitle: "Los Agentes Elite 11 de BioDynamX",
             toolStack: [
-                "☎️ MEGHAN: Recepcionista IA 24/7",
+                "☎️ MAYA: Recepcionista IA 24/7",
                 "🧠 JENNY: Descubrimiento Guiado por Cerebro",
                 "🏗️ MARK: Arquitecto de Ingresos",
                 "📍 RYAN: Operaciones y GMB Local",
                 "🤝 ALEX: Líder de Soporte al Cliente",
                 "🏃 CHASE: Agente de Prospección",
-                "👁️ IRIS: Contenido y Visibilidad IA",
+                "👁️ ISABEL: Contenido y Visibilidad IA",
                 "🛡️ BROCK: Seguridad y ROI"
             ],
         }
@@ -871,7 +871,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
                                 { name: "Mark", img: "/agents/jenny.png", color: "#3b82f6" }, /* Temporary fallback img */
                                 { name: "Nova", img: "/agents/nova_v2.png", color: "#ec4899" },
                                 { name: "Titan", img: "/agents/titan.png", color: "#3b82f6" },
-                                { name: "Iris", img: "/agents/iris.png", color: "#8b5cf6" },
+                                { name: "Isabel", img: "/agents/isabel.png", color: "#8b5cf6" },
                             ].map(a => (
                                 <div key={a.name} style={{
                                     width: 48, height: 48, borderRadius: "50%", border: `2px solid ${a.name === agentName || a.name === "Jenny" && agentName === "Glia" ? a.color : "rgba(255,255,255,0.1)"}`,
@@ -1086,7 +1086,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
                         display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
                         flex: 1, padding: "40px 20px", position: "relative", width: "100%", maxWidth: 860, margin: "0 auto",
                     }}>
-                        <div style={{ position: "relative", width: 340, height: 340, marginBottom: 20 }}>
+                        <div style={{ position: "fixed", top: 0, left: 0, right: 0, height: "70vh", zIndex: -1, pointerEvents: "none", display: "flex", alignItems: "center", justifyContent: "center" }}>
                             {/* Jenny gets the premium 3D Spline experience */}
                             {agentName === "Jenny" ? (
                                 <JennySpline

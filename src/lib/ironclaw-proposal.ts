@@ -45,7 +45,7 @@ function recommendPackage(session: IronclawSession): {
             name: "Growth AI Agent Suite",
             price: "$997/mo",
             keyFeatures: [
-                "Jenny (sales) + Meghan (receptionist) + Nova (content)",
+                "Jenny (sales) + Maya (receptionist) + Nova (content)",
                 "GMB setup & first month optimization",
                 "Lead capture + follow-up automation",
                 "Weekly social media posts",

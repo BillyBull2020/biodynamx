@@ -16,13 +16,13 @@ import { A2AContext } from "./a2a-context";
 export type TeamPhase =
     | "standby"        // Vault idle, waiting for Initialize
     | "milton_active"   // Milton (Hypnotist)
-    | "meghan_active"   // Meghan (Receptionist)
+    | "meghan_active"   // Maya (Receptionist)
     | "brock_active"    // Brock (Security/ROI)
     | "vicki_active"    // Vicki (Empathy/Care)
     | "mark_active"     // Mark (Closer)
     | "jenny_closer_active" // Jenny (Consultative Closer)
     | "ben_analyst_active" // Ben (Macro-Analyst)
-    | "iris_active"     // Iris (AI Visibility)
+    | "iris_active"     // Isabel (AI Visibility)
     | "chase_active"    // Chase (Lead Hunter)
     | "jules_active"    // Jules (Technical Architect)
     | "alex_active"     // Alex (Support)
@@ -90,7 +90,7 @@ const VISUAL_STATES: Record<TeamPhase, VaultVisualState> = {
         borderColor: "#a78bfa",
         bgOpacity: 0.04,
         pulseActive: true,
-        activeAgentName: "Meghan",
+        activeAgentName: "Maya",
         activeAgentVoice: "Lyra",
         waveformMode: "soft",
     },
@@ -144,7 +144,7 @@ const VISUAL_STATES: Record<TeamPhase, VaultVisualState> = {
         borderColor: "#8b5cf6",
         bgOpacity: 0.05,
         pulseActive: true,
-        activeAgentName: "Iris",
+        activeAgentName: "Isabel",
         activeAgentVoice: "Leda",
         waveformMode: "soft",
     },

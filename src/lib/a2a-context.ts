@@ -23,7 +23,7 @@ export interface A2AContext {
     activeAgent: string | null;
     agentHistory: string[];        // Ordered list of agents that have spoken
 
-    // Prospect identity (captured by Jenny/Meghan)
+    // Prospect identity (captured by Jenny/Maya)
     prospectName: string | null;
     businessName: string | null;
     domain: string | null;
