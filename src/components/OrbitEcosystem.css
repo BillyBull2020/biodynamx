@@ -589,93 +589,48 @@
 
 /* ═══════════════════════════════════════════════════════
    MOBILE OVERRIDE ≤ 600px
-   Replace the cramped 3D orbit with a clean agent grid.
-   The 3D scene is hidden; nodes display as a 3-col grid.
+   Keep the 3D orbit but scale it down so it fits.
+   Move text outside the orb and shift scene left to center.
    ═══════════════════════════════════════════════════════ */
 @media (max-width: 600px) {
 
-    /* Give the viewport a natural block height, not 1:1 aspect */
+    /* Scale the 3D scene down to fit mobile screens, center it, and pull bottom content up */
     .orbit3d-viewport {
-        aspect-ratio: unset !important;
-        height: auto !important;
-        padding: 16px 8px 24px !important;
+        transform: scale(0.65) !important;
+        transform-origin: top center !important;
+        margin: 0 auto -150px auto !important;
+        width: 100% !important;
         max-width: 100% !important;
+        left: 0;
+        right: 0;
     }
 
-    /* Hide the 3D scene entirely — orb rings, tracks, stars */
-    .orbit3d-scene,
-    .orbit3d-ambient,
-    .orbit3d-star,
-    .orbit3d-track {
-        display: none !important;
-    }
-
-    /* Central core — show as a centered pill above the grid */
-    .orbit3d-core {
-        position: relative !important;
-        top: auto !important;
-        left: auto !important;
-        transform: none !important;
-        width: 90px !important;
-        height: 90px !important;
-        margin: 0 auto 20px !important;
-        z-index: 1 !important;
-    }
-
-    /* Turn the invisible absolute-positioned nodes into a flex grid */
-    .orbit3d-node {
-        position: relative !important;
-        top: auto !important;
-        left: auto !important;
-        transform: none !important;
-        opacity: 1 !important;
-        z-index: 1 !important;
-        margin: 0 !important;
-        width: 72px !important;
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        gap: 6px !important;
-    }
-
-    .node3d-icon {
-        width: 56px !important;
-        height: 56px !important;
-        font-size: 20px !important;
-        border-radius: 16px !important;
-    }
-
-    /* Show labels again (we hid them at 480px) */
+    /* Override the previously hidden labels so they show up safely on mobile */
     .node3d-label {
         display: block !important;
-        font-size: 8px !important;
-        text-align: center !important;
-        max-width: 68px !important;
+        position: absolute;
+        top: 100% !important;
+        /* Push text down to the bottom of the orb */
+        left: 50%;
+        transform: translateX(-50%) !important;
+        margin-top: 12px !important;
+        font-size: 14px !important;
+        /* Scale text up slightly since viewport is scaled down to 0.65 */
         white-space: normal !important;
-        line-height: 1.2 !important;
+        /* Allow text to wrap so it doesn't break page width */
+        text-align: center;
+        width: max-content;
+        max-width: 90px !important;
+        /* Prevent long strings from stretching off-screen */
+        text-shadow: 0 0 8px rgba(0, 0, 0, 0.8) !important;
     }
 
-    /* Replace the 3D scene with a CSS grid wrapper
-     We wrap the nodes using a pseudo-container approach.
-     Since nodes are absolute children of .orbit3d-scene,
-     we re-parent via the viewport using a flex layout trick. */
-    .orbit3d-viewport {
+    /* Ensure nodes retain their absolute positioning without the old grid override fighting it */
+    .orbit3d-node {
+        position: absolute !important;
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
-    }
-
-    /* The scene becomes a GRID container for the nodes */
-    .orbit3d-scene {
-        display: grid !important;
-        grid-template-columns: repeat(3, 1fr) !important;
-        gap: 16px 12px !important;
-        position: relative !important;
-        inset: auto !important;
-        transform: none !important;
-        width: 100% !important;
-        max-width: 280px !important;
-        margin: 0 auto !important;
-        justify-items: center !important;
+        justify-content: center !important;
     }
 }

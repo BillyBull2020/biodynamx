@@ -33,8 +33,8 @@ export interface VoiceProfile {
 export const JENNY_VOICE: VoiceProfile = {
     agentName: "Jenny",
     role: "Business Lead & Discovery",
-    voiceName: "Aoede",
-    fallbackVoice: "Leda",
+    voiceName: "Leda", // Brightest, youngest, most energetic female voice
+    fallbackVoice: "Aoede",
     color: "#6366f1",
     personality: "High-energy challenger. Opens hard, uncovers pain, closes on urgency.",
 };
@@ -43,7 +43,7 @@ export const JENNY_VOICE: VoiceProfile = {
 export const NOVA_VOICE: VoiceProfile = {
     agentName: "Nova",
     role: "AI Strategy & Conversion",
-    voiceName: "Leda",
+    voiceName: "Aoede",
     fallbackVoice: "Despina",
     color: "#ec4899",
     personality: "Bright, analytical, decisive. Turns hesitation into commitment.",
@@ -74,7 +74,7 @@ export const VICKI_VOICE: VoiceProfile = {
     agentName: "Vicki",
     role: "Empathy & Care",
     voiceName: "Kore",
-    fallbackVoice: "Sulafat",
+    fallbackVoice: "Aoede",
     color: "#34d399",
     personality: "Deep empathy, mirror neurons, oxytocin-driven trust.",
 };
@@ -83,7 +83,7 @@ export const VICKI_VOICE: VoiceProfile = {
 export const ALEX_VOICE: VoiceProfile = {
     agentName: "Alex",
     role: "Support & Retention",
-    voiceName: "Algieba",
+    voiceName: "Kore",
     fallbackVoice: "Leda",
     color: "#06b6d4",
     personality: "Clear, supportive, energetic. Turns clients into raving fans.",
@@ -113,8 +113,8 @@ export const AVA_VOICE: VoiceProfile = {
 export const TITAN_VOICE: VoiceProfile = {
     agentName: "Titan",
     role: "ROI Closer (Hard Close)",
-    voiceName: "Charon",
-    fallbackVoice: "Gacrux",
+    voiceName: "Orion", // Deepest, most authoritative male voice
+    fallbackVoice: "Charon",
     color: "#3b82f6",
     personality: "Cold numbers. Binary decisions. Zero tolerance for hesitation.",
 };
@@ -133,7 +133,7 @@ export const JULES_VOICE: VoiceProfile = {
 export const BEN_VOICE: VoiceProfile = {
     agentName: "Ben",
     role: "Macro-Analyst (Neocortex)",
-    voiceName: "Gacrux",
+    voiceName: "Puck",
     fallbackVoice: "Charon",
     color: "#fbbf24",
     personality: "Analytical authority. Makes the ROI math undeniable.",

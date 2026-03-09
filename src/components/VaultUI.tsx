@@ -7,6 +7,7 @@
 
 import { useRef, useState, useCallback, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import LeadCaptureModal from "./LeadCaptureModal";
 import {
     TeamOrchestrator,
@@ -22,7 +23,7 @@ import GlitchOverlay from "./GlitchOverlay";
 import HeroMorphGSAP from "./HeroMorphGSAP";
 
 import AgentCarousel from "./AgentCarousel";
-import AdvantageVault from "./AdvantageVault";
+import AdvantageSection from "./AdvantageSection";
 import AgentDock from "./AgentDock";
 import AutonomousPing from "./AutonomousPing";
 import SwarmCollaboration from "./SwarmCollaboration";
@@ -185,6 +186,46 @@ function VisualProjection({ activeVisual, fading }: { activeVisual: any, fading:
     );
 }
 
+// ★ Ambient Intelligence: Web 4.0 core feature (Sense & Respond autonomously without clicking)
+function useAmbientIntelligence(onTrigger: (reason: string) => void) {
+    useEffect(() => {
+        let idleTimer: any;
+        let triggered = false;
+
+        const resetIdle = () => {
+            clearTimeout(idleTimer);
+            if (!triggered) {
+                idleTimer = setTimeout(() => {
+                    triggered = true;
+                    onTrigger("idle");
+                }, 12000); // 12 seconds idle
+            }
+        };
+
+        const onMouseLeave = (e: MouseEvent) => {
+            if (e.clientY < 20 && !triggered) {
+                triggered = true;
+                onTrigger("exit");
+            }
+        };
+
+        window.addEventListener("mousemove", resetIdle);
+        window.addEventListener("keydown", resetIdle);
+        window.addEventListener("scroll", resetIdle);
+        document.addEventListener("mouseleave", onMouseLeave);
+
+        resetIdle();
+
+        return () => {
+            clearTimeout(idleTimer);
+            window.removeEventListener("mousemove", resetIdle);
+            window.removeEventListener("keydown", resetIdle);
+            window.removeEventListener("scroll", resetIdle);
+            document.removeEventListener("mouseleave", onMouseLeave);
+        };
+    }, [onTrigger]);
+}
+
 
 export default function VaultUI({ apiKey }: VaultProps) {
     const teamRef = useRef<TeamOrchestrator | null>(null);
@@ -203,6 +244,29 @@ export default function VaultUI({ apiKey }: VaultProps) {
         waveformMode: "idle",
     });
     const [errorText, setErrorText] = useState<string | null>(null);
+    const [ambientMessage, setAmbientMessage] = useState<{ title: string; body: string; } | null>(null);
+
+    useAmbientIntelligence(useCallback((reason: string) => {
+        // Only trigger if an agent isn't already active
+        if (teamRef.current) return;
+
+        // Ambient Intent Tracker
+
+        if (reason === "exit") {
+            setAmbientMessage({
+                title: "Wait, let's look at the math.",
+                body: "Before you leave, let Jenny map out exactly how much revenue you're losing every 90 days. Click 'Talk to Jenny' below."
+            });
+        } else {
+            setAmbientMessage({
+                title: "Jenny is reviewing your profile...",
+                body: "She noticed you hesitated. Would you like a live demonstration of how our agents close objections?"
+            });
+        }
+
+        // Auto-dismiss after 10s
+        setTimeout(() => setAmbientMessage(null), 10000);
+    }, []));
 
     // ─── Visual Jenny State ──────────────────────────────────────
     const visualJennyRef = useRef<VisualJenny | null>(null);
@@ -737,6 +801,47 @@ export default function VaultUI({ apiKey }: VaultProps) {
 
     return (
         <div className={`vault-container ${isActive ? 'active' : ''}`}>
+
+            {/* Ambient Intelligence Toast Protocol */}
+            {ambientMessage && phase === "standby" && (
+                <div style={{
+                    position: "fixed", top: 20, right: 20, zIndex: 9999,
+                    background: "rgba(10,10,14,0.9)", border: "1px solid rgba(0,255,65,0.5)",
+                    boxShadow: "0 10px 40px rgba(0,0,0,0.8), 0 0 20px rgba(0,255,65,0.2)",
+                    borderRadius: 16, padding: "20px", maxWidth: 320,
+                    backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)",
+                    transform: "translateY(0)", opacity: 1, transition: "all 0.4s ease-out",
+                    animation: "fadeUp 0.5s forwards"
+                }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
+                        <div style={{ width: 10, height: 10, borderRadius: "50%", background: "#00ff41", boxShadow: "0 0 10px #00ff41", animation: "pulse 1.5s infinite" }} />
+                        <div style={{ fontSize: 10, fontWeight: 900, color: "#00ff41", letterSpacing: "0.15em", textTransform: "uppercase" }}>Web 4.0 Ambient Agent</div>
+                    </div>
+                    <div style={{ fontSize: 16, fontWeight: 800, color: "#fff", marginBottom: 8 }}>{ambientMessage.title}</div>
+                    <div style={{ fontSize: 13, color: "rgba(255,255,255,0.7)", lineHeight: 1.5, marginBottom: 16 }}>{ambientMessage.body}</div>
+                    <button
+                        onClick={() => {
+                            setAmbientMessage(null);
+                            const t = createTeam();
+                            teamRef.current = t;
+                            t.initializeWithAgent("jenny_growth");
+                        }}
+                        style={{
+                            width: "100%", padding: "12px", background: "linear-gradient(90deg, #00ff41, #00b32c)",
+                            color: "#000", border: "none", borderRadius: 8, fontWeight: 800, fontSize: 14, cursor: "pointer",
+                            boxShadow: "0 4px 15px rgba(0,255,65,0.3)"
+                        }}>
+                        Yes, Talk to Jenny Now
+                    </button>
+                    <button
+                        onClick={() => setAmbientMessage(null)}
+                        style={{
+                            position: "absolute", top: 12, right: 12, background: "transparent", border: "none",
+                            color: "rgba(255,255,255,0.4)", fontSize: 18, cursor: "pointer"
+                        }}>×</button>
+                </div>
+            )}
+
             {/* ── Web 4.0: Persistent Agent Dock (follows user down page) */}
             <AgentDock />
 
@@ -1219,7 +1324,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
             </section>
 
             {/* ── BioDynamX Advantage Vault — 21-Card Horizontal Kinetic Stack ── */}
-            <AdvantageVault />
+            <AdvantageSection />
 
             {/* ── Elite 11 Live Agents — AgentCarousel ─────────────────────── */}
             <section data-dock-section="agents" className="section-container" style={{ paddingTop: 20, paddingBottom: 80 }}>
@@ -1891,7 +1996,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
                         <a href="/audit" className="footer-link">Free 20-Point Audit</a>
                         <a href="/portal" className="footer-link">Partner Login</a>
                         <a href="/glossary" className="footer-link">A–Z Glossary</a>
-                        <a href="/store" className="footer-link">Store</a>
+                        <Link href="/store" className="footer-link">Store</Link>
                     </div>
                     <div>
                         <h4 style={{ fontSize: 13, fontWeight: 900, color: "#fff", marginBottom: 20, letterSpacing: "0.15em" }}>TRUST & LEGAL</h4>

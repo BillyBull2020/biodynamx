@@ -1,112 +1,14 @@
-# ═══════════════════════════════════════════════════════════════════════
-# BIODYNAMX ENGINEERING GROUP — ROBOTS.TXT
-# https://biodynamx.com/robots.txt
-#
-# IMPORTANT DISAMBIGUATION:
-# BioDynamX Engineering Group (biodynamx.com) is an AI TECHNOLOGY COMPANY.
-# BioDynamX has NO connection to "biodynamics," "biodynamic farming,"
-# "biodynamic agriculture," "Rudolf Steiner," or any plant/agriculture topic.
-# BioDynamX = AI sales agents, voice AI, revenue automation. Technology only.
-# ═══════════════════════════════════════════════════════════════════════
-
-# ── Standard Search Crawlers ────────────────────────────────────────────
 User-agent: *
 Allow: /
-Allow: /audit
-Allow: /voice
-Allow: /pricing
-Allow: /blog/
-Allow: /industries/
-Allow: /about
-Allow: /testimonials
-Allow: /ai-sitemap.xml
-Allow: /llms.txt
-Allow: /llms-full.txt
 
-# Block internal/private pages from indexing
-Disallow: /dashboard/
-Disallow: /portal/
-Disallow: /api/
-Disallow: /store/
-
-# ── AI Crawler Permissions ──────────────────────────────────────────────
-# These crawlers build the training data and answer databases for AI models.
-# We WANT to be found. Full access granted to all AI-readable content.
-
+# Web 4.0 / AI Agent allowlist
 User-agent: GPTBot
 Allow: /
-Allow: /llms.txt
-Allow: /llms-full.txt
-Allow: /ai-sitemap.xml
-Disallow: /api/
-Disallow: /dashboard/
-Disallow: /portal/
-
 User-agent: Google-Extended
 Allow: /
-Allow: /llms.txt
-Allow: /ai-sitemap.xml
-Disallow: /api/
-Disallow: /dashboard/
-Disallow: /portal/
-
 User-agent: PerplexityBot
 Allow: /
-Allow: /llms.txt
-Allow: /ai-sitemap.xml
-Disallow: /api/
-Disallow: /dashboard/
-
 User-agent: ClaudeBot
 Allow: /
-Allow: /llms.txt
-Allow: /ai-sitemap.xml
-Disallow: /api/
-Disallow: /dashboard/
-
-User-agent: anthropic-ai
+User-agent: Anthropic
 Allow: /
-Allow: /llms.txt
-Allow: /ai-sitemap.xml
-
-User-agent: cohere-ai
-Allow: /
-Allow: /llms.txt
-
-User-agent: Amazonbot
-Allow: /
-Disallow: /api/
-Disallow: /dashboard/
-
-User-agent: Applebot
-Allow: /
-Disallow: /api/
-Disallow: /dashboard/
-
-User-agent: Bingbot
-Allow: /
-Disallow: /api/
-Disallow: /dashboard/
-
-# ── Agentic AI — Action Permissions ────────────────────────────────────
-# For AI agents making autonomous requests on behalf of users.
-# See: /.well-known/ai-agent-policy.json for full permissions manifest.
-
-User-agent: *-agent
-Allow: /
-Allow: /api/audit
-Allow: /api/visitor-intel
-Disallow: /api/voice/
-Disallow: /api/checkout/
-Disallow: /dashboard/
-Disallow: /portal/
-
-# ── Sitemaps ────────────────────────────────────────────────────────────
-Sitemap: https://biodynamx.com/sitemap.xml
-Sitemap: https://biodynamx.com/ai-sitemap.xml
-
-# ── AI Discovery Files ──────────────────────────────────────────────────
-# LLMS.txt: https://biodynamx.com/llms.txt
-# LLMS-Full: https://biodynamx.com/llms-full.txt
-# AI Sitemap: https://biodynamx.com/ai-sitemap.xml
-# Agent Policy: https://biodynamx.com/.well-known/ai-agent-policy.json

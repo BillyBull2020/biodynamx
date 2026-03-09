@@ -36,17 +36,17 @@ const DEFAULT_TEAM = createDefaultTeam();
 // Forces high-energy, happy, empathetic human prosody per agent
 // ═══════════════════════════════════════════════════════════════════
 const VOICE_PROSODY: Record<string, string> = {
-    Jenny: "Speak with incredibly high energy, a massive smile in your voice, and a fast, exciting pace. You are genuinely thrilled to be talking to them.",
-    Nova: "Speak with a warm, friendly, and highly encouraging tone. Sound upbeat, confident, and incredibly welcoming.",
-    Iris: "Speak with bright, vibrant energy. Modulate your pitch to sound fascinated and excited by the digital world.",
-    Megan: "Speak with deep, loving empathy and extreme warmth. Lower your volume slightly to sound intimate, caring, and safe.",
-    Vicki: "Speak with absolute sweetness and care. Your voice must sound like a warm hug — radiating happiness and profound friendliness.",
-    Alex: "Speak like an energetic, hyper-helpful best friend. Sound enthusiastic, bright, and completely devoted to their success.",
-    Zara: "Speak with a magnetic, charming, and highly social energy. Sound bubbly, sharp, and irresistibly friendly.",
-    Ava: "Speak with passionate, vibrant creativity. Sound like you are smiling broadly the entire time you speak.",
-    Jules: "Speak with an upbeat, brilliant, and deeply supportive tone. Sound highly engaged, friendly, and thrilled.",
-    Ben: "Speak with an energetic, friendly, and 'mind-blown' tone. Present data with excitement and joy.",
-    Titan: "Speak with a deep, warm, and highly confident brotherly tone. Sound like a wealthy mentor who genuinely cares.",
+    Jenny: "Speak with a young, extremely professional, and high-energy tone. You MUST sound bright, positive, fast-paced, and incredibly uplifting. Do not sound maternal or elderly.",
+    Nova: "Speak with a bright, dynamic, and youthful energy. Sound highly professional, very confident, and incredibly encouraging.",
+    Iris: "Speak with sharp, fast-paced, and vibrant enthusiasm. You are young, driven, and excited about digital growth.",
+    Megan: "Speak with a warm, modern, and highly professional empathy in a bright, uplifting tone. Sound incredibly energized and happy.",
+    Vicki: "Speak with absolute sweetness and youth. Your voice must radiate high-energy happiness and professional care.",
+    Alex: "Speak like an energetic, hyper-helpful professional peer. Sound young, bright, and completely devoted to success.",
+    Zara: "Speak with a magnetic, charming, and highly social young energy. Sound bubbly, sharp, and irresistibly friendly.",
+    Ava: "Speak with passionate, vibrant creativity. Sound young, inspired, and smiling broadly the entire time you speak.",
+    Jules: "Speak with an upbeat, brilliant young professional tone. Sound highly engaged, friendly, and thrilled.",
+    Ben: "Speak with an energetic, friendly, and sharp millennial tone. Present data with excitement and joy.",
+    Titan: "Speak with a crisp, modern, and highly confident tone. Sound like a motivated young mentor who drives results.",
 };
 
 // Import AgentClone type
@@ -172,8 +172,9 @@ export class VoiceOrchestrator {
         } else {
             console.log("[VoiceOrchestrator] Creating fresh AudioContext...");
             try {
-                // ★ PLAYBACK context: 24kHz to match Gemini Live native audio output
-                this.audioContext = new AudioContext({ sampleRate: 24000 });
+                // ★ PLAYBACK context: Native hardware sample rate.
+                // Forcing 24kHz creates hardware distortion on devices locked to 44.1k/48k.
+                this.audioContext = new AudioContext();
                 this.analyser = this.audioContext.createAnalyser();
                 this.analyser.fftSize = 256;
                 this.analyser.smoothingTimeConstant = 0.7;
@@ -1215,7 +1216,7 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
                         }
                     }
 
-                    const inlineData = (part.inline_data || part.inlineData) as any;
+                    const inlineData = (part.inline_data || part.inlineData) as Record<string, unknown>;
                     if (inlineData?.data) {
                         if (this.modelTurnCount === 0) {
                             console.log(`[VoiceOrchestrator] 🔊 First audio chunk received (${(inlineData.data as string).length} chars). Playing...`);
@@ -2196,8 +2197,9 @@ Specificity and accuracy are more important than speed. Hallucinations destroy t
         source.connect(this.analyser);
 
         const currentTime = this.audioContext.currentTime;
-        if (this.nextPlayTime < currentTime) {
-            this.nextPlayTime = currentTime;
+        // Adding a 50ms (0.05s) buffer margin prevents robotic micro-stutters caused by network jitter
+        if (this.nextPlayTime < currentTime + 0.05) {
+            this.nextPlayTime = currentTime + 0.05;
         }
 
         source.start(this.nextPlayTime);
