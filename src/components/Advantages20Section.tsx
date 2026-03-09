@@ -17,7 +17,7 @@ const ADVANTAGES = [
     { icon: "📲", title: "Textback / Callback", desc: "Meghan instantly recovers missed calls via automated SMS & Voice.", color: "#a78bfa" },
     { icon: "🧬", title: "Neuroscience-Engineered", desc: "Built on Triune Brain theory, Dual-Coding, and high-status NLP.", color: "#ef4444" },
     { icon: "🌌", title: "Web 4.0 Native", desc: "An immersive, real-time, agentic ecosystem — not just a widget.", color: "#06b6d4" },
-    { icon: "🔱", title: "IronClaw Core", desc: "Proprietary autonomous orchestration for zero-latency agent handoffs.", color: "#f97316" },
+    { icon: "🔱", title: "BDX Autonomous Core", desc: "Proprietary autonomous orchestration for zero-latency agent handoffs.", color: "#f97316" },
     { icon: "💰", title: "Real-Time ROI Modeling", desc: "Mark calculates revenue leaks live while talking to prospects.", color: "#22c55e" },
     { icon: "🎨", title: "Nana Banana 2 Generative", desc: "Images adapt instantly to the conversation brain state.", color: "#fbbf24" },
     { icon: "💡", title: "Subconscious Framing", desc: "Matching user language patterns to bypass conscious resistance.", color: "#818cf8" },

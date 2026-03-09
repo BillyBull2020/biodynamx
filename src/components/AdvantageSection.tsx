@@ -36,7 +36,7 @@ const CLUSTERS = [
         border: "rgba(59,130,246,0.3)",
         bg: "rgba(59,130,246,0.06)",
         points: [
-            { icon: "🔱", label: "Architecture", comp: "Single-Path Chatbots", us: "IronClaw Multi-Agent Core" },
+            { icon: "🔱", label: "Architecture", comp: "Single-Path Chatbots", us: "BDX Multi-Agent Core" },
             { icon: "🧬", label: "Intelligence", comp: "Basic LLM Wrappers", us: "Vertex AI Enterprise Logic" },
             { icon: "🎯", label: "Strategy", comp: "Reactive Support", us: "Quarterly Neuro-Audits" },
             { icon: "⚙️", label: "Integration", comp: "Manual Data Entry", us: "1,000+ API Direct Syncs" },

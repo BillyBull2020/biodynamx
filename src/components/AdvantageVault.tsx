@@ -19,7 +19,7 @@ import { hapticCollabPing } from "@/lib/haptic";
 // Each card is "owned" by the most relevant specialist.
 const CARDS = [
     { icon: "🎙️", title: "Interface", pain: "Antiquated Chatbots (Typing)", gain: "100% Live Voice AI (Speaking)", agent: "Jenny", agentTask: "activating voice neural interface" },
-    { icon: "🔱", title: "Architecture", pain: "Single-Path Chatbots", gain: "IronClaw Multi-Agent Core", agent: "Jules", agentTask: "deploying multi-agent architecture" },
+    { icon: "🔱", title: "Architecture", pain: "Single-Path Chatbots", gain: "BDX Multi-Agent Core", agent: "Jules", agentTask: "deploying multi-agent architecture" },
     { icon: "🧠", title: "Visuals", pain: "Static Stock Photos", gain: "Dual-Coding Visual Engine", agent: "Iris", agentTask: "running dual-coding visual sync" },
     { icon: "⚡", title: "Response", pain: "15–30 Second Latency", gain: "< 1 Second (Native Audio)", agent: "Brock", agentTask: "benchmarking sub-second latency" },
     { icon: "🛡️", title: "Branding", pain: "'Powered by Vendor' Logos", gain: "Absolute Brand Secrecy", agent: "Brock", agentTask: "verifying brand secrecy protocol" },

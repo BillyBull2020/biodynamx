@@ -169,7 +169,7 @@ export default function OneCallClose() {
                         display: "inline-block",
                         animation: "occ-blink 1.2s ease-in-out infinite",
                     }} />
-                    IRONCLAW · CONVERGENCE PROTOCOL
+                    BIODYNAMX · CONVERGENCE PROTOCOL
                 </div>
                 <h2 style={{
                     fontSize: "clamp(22px,4vw,36px)", fontWeight: 900,

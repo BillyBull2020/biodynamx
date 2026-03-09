@@ -505,7 +505,7 @@ function IronclawStatusBar({ task, agentName }: { task: string; agentName: strin
                 fontSize: 10, color: "#00ff41", letterSpacing: "0.08em",
                 whiteSpace: "nowrap",
             }}>
-                IRONCLAW &nbsp;·&nbsp; {agentName}: {task}
+                BDX&nbsp;·&nbsp; {agentName}: {task}
             </span>
         </div>
     );

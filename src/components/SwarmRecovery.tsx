@@ -219,7 +219,7 @@ export default function SwarmRecovery() {
             ref={overlayRef}
             role="dialog"
             aria-modal="true"
-            aria-label="Ironclaw Recovery — Your Workforce Has One More Move"
+            aria-label="BioDynamX Recovery — Your Workforce Has One More Move"
             style={{
                 position: "fixed", inset: 0, zIndex: 99999,
                 background: "rgba(0,0,0,0.88)",
@@ -282,7 +282,7 @@ export default function SwarmRecovery() {
                             boxShadow: "0 0 6px #FFD700",
                             animation: "sr-blink 1.2s ease-in-out infinite",
                         }} />
-                        IRONCLAW · RECOVERY PROTOCOL
+                        BIODYNAMX · RECOVERY PROTOCOL
                     </div>
                     <h2 style={{
                         fontSize: "clamp(18px,3.5vw,26px)", fontWeight: 900,

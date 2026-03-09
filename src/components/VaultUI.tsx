@@ -1883,15 +1883,15 @@ export default function VaultUI({ apiKey }: VaultProps) {
                         <a href="/about" className="footer-link">About Us</a>
                         <a href="/dashboard" className="footer-link">Revenue Dashboard</a>
                         <a href="/testimonials" className="footer-link">Success Stories</a>
-                        <a href="/press" className="footer-link">Press</a>
+                        <a href="/blog" className="footer-link">Blog</a>
                     </div>
                     <div>
                         <h4 style={{ fontSize: 13, fontWeight: 900, color: "#fff", marginBottom: 20, letterSpacing: "0.15em" }}>PLATFORM</h4>
                         <a href="/pricing" className="footer-link">Elite Pricing</a>
                         <a href="/audit" className="footer-link">Free 20-Point Audit</a>
-                        <a href="/llms.txt" className="footer-link">AI Directory (llms.txt)</a>
-                        <a href="/partners" className="footer-link">Partner Login</a>
+                        <a href="/portal" className="footer-link">Partner Login</a>
                         <a href="/glossary" className="footer-link">A–Z Glossary</a>
+                        <a href="/store" className="footer-link">Store</a>
                     </div>
                     <div>
                         <h4 style={{ fontSize: 13, fontWeight: 900, color: "#fff", marginBottom: 20, letterSpacing: "0.15em" }}>TRUST & LEGAL</h4>
