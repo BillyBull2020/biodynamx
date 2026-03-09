@@ -130,11 +130,13 @@ export default function OrbitEcosystem() {
     const [showPrompt, setShowPrompt] = useState(false); // "Tap to hear"
     const [orbFlashColor, setOrbFlashColor] = useState<string | null>(null);
     const orbFlashTimerRef = useRef<NodeJS.Timeout | null>(null);
+    const [isMobile, setIsMobile] = useState(false);
 
     // Responsive orbit radius
     useEffect(() => {
         const update = () => {
             const w = window.innerWidth;
+            setIsMobile(w <= 768);
             if (w <= 360) radiusRef.current = 105;
             else if (w <= 480) radiusRef.current = 130;
             else if (w <= 768) radiusRef.current = 165;
@@ -359,9 +361,11 @@ export default function OrbitEcosystem() {
                     <div className="core3d-face">
                         <span className="core3d-icon">⚡</span>
                         <span className="core3d-title">BioDynamX</span>
-                        <span className="core3d-subtitle">
-                            {activeSvc ? activeSvc.label.split(":")[0] : "AI Platform"}
-                        </span>
+                        {!isMobile && (
+                            <span className="core3d-subtitle">
+                                {activeSvc ? activeSvc.label.split(":")[0] : "AI Platform"}
+                            </span>
+                        )}
                     </div>
                 </div>
 
@@ -378,12 +382,14 @@ export default function OrbitEcosystem() {
                             <div className="node3d-icon" style={{ overflow: "hidden", position: "relative" }}>
                                 <Image src={svc.image} alt={svc.label} fill style={{ objectFit: "cover" }} />
                             </div>
-                            <span
-                                className={`node3d-label${isActive ? " node3d-label--active" : ""}`}
-                                style={isActive ? { color: svc.color, textShadow: `0 0 12px ${svc.color}` } : {}}
-                            >
-                                {svc.label}
-                            </span>
+                            {!isMobile && (
+                                <span
+                                    className={`node3d-label${isActive ? " node3d-label--active" : ""}`}
+                                    style={isActive ? { color: svc.color, textShadow: `0 0 12px ${svc.color}` } : {}}
+                                >
+                                    {svc.label}
+                                </span>
+                            )}
                         </div>
                     );
                 })}

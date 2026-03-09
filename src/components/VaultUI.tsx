@@ -42,6 +42,8 @@ import "./VaultUI.css";
 
 interface VaultProps {
     apiKey: string;
+    cartesiaKey?: string;
+    cartesiaVoiceId?: string;
 }
 
 // ─── Scroll-Reveal Hook (React 19 safe — no ref access during render) ───
@@ -227,7 +229,7 @@ function useAmbientIntelligence(onTrigger: (reason: string) => void) {
 }
 
 
-export default function VaultUI({ apiKey }: VaultProps) {
+export default function VaultUI({ apiKey, cartesiaKey, cartesiaVoiceId }: VaultProps) {
     const teamRef = useRef<TeamOrchestrator | null>(null);
 
     // ★ Predictive Haptics — proximity vibration on Advanta-Pods + Stripe triggers
@@ -246,6 +248,14 @@ export default function VaultUI({ apiKey }: VaultProps) {
     const [errorText, setErrorText] = useState<string | null>(null);
     const [ambientMessage, setAmbientMessage] = useState<{ title: string; body: string; } | null>(null);
     const [transcript, setTranscript] = useState<{ agent: string, text: string }[]>([]);
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+        checkMobile();
+        window.addEventListener("resize", checkMobile);
+        return () => window.removeEventListener("resize", checkMobile);
+    }, []);
 
     useAmbientIntelligence(useCallback((reason: string) => {
         // Only trigger if an agent isn't already active
@@ -780,7 +790,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
             },
             onError: (error) => { setErrorText(error); },
             onAnalyserReady: (node) => { setAnalyser(node); },
-        }, "es"); // ★ Hardcoded Spanish
+        }, "en", cartesiaKey, cartesiaVoiceId);
 
         teamRef.current = team;
         team.initialize();
@@ -795,9 +805,9 @@ export default function VaultUI({ apiKey }: VaultProps) {
     let buttonLabel = t.buttonTalkExperts;
     if (isHandoff) {
         buttonLabel = t.buttonHandoff;
-    } else if (phase === "glia_active" || phase === "jenny_closer_active") {
+    } else if (phase === "glia_active") {
         buttonLabel = t.buttonJennyActive;
-    } else if (phase === "mark_active") {
+    } else if (phase === "titan_active") {
         buttonLabel = t.buttonMarkActive;
     }
 
@@ -939,7 +949,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
             <div className="particle-overlay">
                 <CinematicCanvas
                     isActive={isActive}
-                    intensity={isActive ? (phase === "mark_active" ? 0.8 : 0.5) : 0.15}
+                    intensity={isActive ? (phase === "titan_active" ? 0.8 : 0.5) : 0.15}
                 />
             </div>
 
@@ -1082,34 +1092,46 @@ export default function VaultUI({ apiKey }: VaultProps) {
                 )}
                 {/* ACTIVE UI */}
                 {isActive && (
-                    <div style={{
-                        display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-                        flex: 1, padding: "40px 20px", position: "relative", width: "100%", maxWidth: 860, margin: "0 auto",
-                    }}>
-                        <div style={{ position: "fixed", top: 0, left: 0, right: 0, height: "70vh", zIndex: -1, pointerEvents: "none", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                            {/* Jenny gets the premium 3D Spline experience */}
-                            {agentName === "Jenny" ? (
-                                <JennySpline
-                                    amplitude={amplitude}
-                                    isActive={isActive}
-                                    agentName={agentName}
-                                    isSpeaking={isSpeaking}
-                                />
-                            ) : (
-                                <NeuralOrb
-                                    agentName={agentName}
-                                    amplitude={amplitude}
-                                    isActive={isActive}
-                                    isSpeaking={isSpeaking}
-                                />
-                            )}
-                        </div>
+                    <>
+                        <div style={{
+                            display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+                            flex: 1, padding: "40px 20px", position: "relative", width: "100%", maxWidth: 860, margin: "0 auto",
+                        }}>
+                            <div style={{ position: "fixed", top: 0, left: 0, right: 0, height: "70vh", zIndex: -1, pointerEvents: "none", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                {/* Jenny gets the premium 3D Spline experience */}
+                                {agentName === "Jenny" ? (
+                                    <JennySpline
+                                        amplitude={amplitude}
+                                        isActive={isActive}
+                                        agentName={agentName}
+                                        isSpeaking={isSpeaking}
+                                    />
+                                ) : (
+                                    <NeuralOrb
+                                        agentName={agentName}
+                                        amplitude={amplitude}
+                                        isActive={isActive}
+                                        isSpeaking={isSpeaking}
+                                    />
+                                )}
+                            </div>
 
-                        <div style={{ marginTop: 24, textAlign: "center" }}>
-                            <div style={{ fontSize: 12, fontWeight: 800, color: "#00ff41", letterSpacing: "0.2em", marginBottom: 8 }}>{visual.phase === "handoff" ? "HANDOFF IN PROGRESS" : "NEURAL LINK ACTIVE"}</div>
-                            <button onClick={handleStart} disabled={isHandoff} style={{
-                                background: "rgba(0,255,65,0.08)", border: "1px solid rgba(0,255,65,0.3)", color: "#00ff41", padding: "12px 32px", borderRadius: 100, fontSize: 13, fontWeight: 800, cursor: isHandoff ? "wait" : "pointer"
-                            }}>{buttonLabel}</button>
+                            {!isMobile && (
+                                <div style={{ marginTop: 24, textAlign: "center" }}>
+                                    <div style={{ fontSize: 12, fontWeight: 800, color: "#00ff41", letterSpacing: "0.2em", marginBottom: 8 }}>{visual.phase === "handoff" ? "HANDOFF IN PROGRESS" : "NEURAL LINK ACTIVE"}</div>
+                                    <button onClick={handleStart} disabled={isHandoff} style={{
+                                        background: "rgba(0,255,65,0.08)", border: "1px solid rgba(0,255,65,0.3)", color: "#00ff41", padding: "12px 32px", borderRadius: 100, fontSize: 13, fontWeight: 800, cursor: isHandoff ? "wait" : "pointer"
+                                    }}>{buttonLabel}</button>
+                                </div>
+                            )}
+
+                            {isMobile && (
+                                <div style={{ position: "fixed", bottom: 40, left: 0, right: 0, textAlign: "center", zIndex: 1000 }}>
+                                    <button onClick={handleStart} disabled={isHandoff} style={{
+                                        background: "#00ff41", color: "#000", padding: "14px 40px", borderRadius: 100, fontSize: 14, fontWeight: 900, boxShadow: "0 0 30px rgba(0,255,65,0.4)"
+                                    }}>{buttonLabel}</button>
+                                </div>
+                            )}
                             {errorText && (
                                 <div style={{
                                     marginTop: 16,
@@ -1156,8 +1178,8 @@ export default function VaultUI({ apiKey }: VaultProps) {
                         </div>
 
                         {/* ★ IRONCLAW VISUAL PANEL — The "second screen" that displays
-                             AI-generated images, stats, and navigation prompts
-                             autonomously as Jenny speaks. This was the missing UI. */}
+                         AI-generated images, stats, and navigation prompts
+                         autonomously as Jenny speaks. This was the missing UI. */}
                         <div style={{
                             width: "100%",
                             marginTop: 32,
@@ -1171,7 +1193,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
                         </div>
 
                         <VisualProjection activeVisual={activeVisual} fading={visualFading} />
-                    </div>
+                    </>
                 )}
             </section>
 

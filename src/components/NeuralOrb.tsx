@@ -19,6 +19,7 @@ interface NeuralOrbProps {
     amplitude: number;       // 0–1 real-time audio amplitude
     isActive: boolean;
     isSpeaking: boolean;      // agent is currently producing audio
+    agentImage?: string;      // Optional agent image URL to display inside the orb
 }
 
 // Per-agent color palette
@@ -34,7 +35,7 @@ const AGENT_PALETTES: Record<string, { core: string; mid: string; outer: string;
     default: { core: "#00ff41", mid: "#00cc33", outer: "#001a08", particle: "#00ff4166" },
 };
 
-export default function NeuralOrb({ agentName, amplitude, isActive, isSpeaking }: NeuralOrbProps) {
+export default function NeuralOrb({ agentName, agentImage, amplitude, isActive, isSpeaking }: NeuralOrbProps) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const animRef = useRef<number>(0);
     const stateRef = useRef({
@@ -87,7 +88,7 @@ export default function NeuralOrb({ agentName, amplitude, isActive, isSpeaking }
             return { r, g, b };
         }
 
-        function drawPlasmaCore(ctx: CanvasRenderingContext2D, cx: number, cy: number, radius: number, pal: ReturnType<typeof getPalette>, amp: number, _t: number) {
+        function drawPlasmaCore(ctx: CanvasRenderingContext2D, cx: number, cy: number, radius: number, pal: ReturnType<typeof getPalette>, amp: number) {
             // Base sphere with plasma gradient
             const grad = ctx.createRadialGradient(
                 cx - radius * 0.3, cy - radius * 0.3, radius * 0.05,
@@ -144,7 +145,7 @@ export default function NeuralOrb({ agentName, amplitude, isActive, isSpeaking }
 
         function drawHolographicRings(ctx: CanvasRenderingContext2D, cx: number, cy: number, pal: ReturnType<typeof getPalette>, amp: number, t: number) {
             const core = hexToRgb(pal.core);
-            state.rings.forEach((ring, i) => {
+            state.rings.forEach((ring) => {
                 ring.radius += ring.speed * 0.3;
                 if (ring.radius > 240) ring.radius = 120;
 
@@ -163,7 +164,7 @@ export default function NeuralOrb({ agentName, amplitude, isActive, isSpeaking }
             });
         }
 
-        function drawParticles(ctx: CanvasRenderingContext2D, cx: number, cy: number, pal: ReturnType<typeof getPalette>, amp: number, t: number) {
+        function drawParticles(ctx: CanvasRenderingContext2D, cx: number, cy: number, pal: ReturnType<typeof getPalette>, amp: number) {
             const core = hexToRgb(pal.core);
 
             state.particles.forEach(p => {
@@ -320,7 +321,7 @@ export default function NeuralOrb({ agentName, amplitude, isActive, isSpeaking }
             drawHolographicRings(ctx, cx, cy, pal, amp, t);
 
             // Orbiting particle field
-            drawParticles(ctx, cx, cy, pal, amp, t);
+            drawParticles(ctx, cx, cy, pal, amp);
 
             // Plasma displacement layers (outer → inner)
             for (let i = 4; i >= 0; i--) {
@@ -328,7 +329,7 @@ export default function NeuralOrb({ agentName, amplitude, isActive, isSpeaking }
             }
 
             // Core sphere
-            drawPlasmaCore(ctx, cx, cy, baseRadius, pal, amp, t);
+            drawPlasmaCore(ctx, cx, cy, baseRadius, pal, amp);
 
             // Neural arc lightning
             drawNeuralArcs(ctx, cx, cy, pal, amp);
@@ -349,7 +350,9 @@ export default function NeuralOrb({ agentName, amplitude, isActive, isSpeaking }
             ctx.restore();
 
             // Agent label
-            drawAgentLabel(ctx, cx, cy, agentName, pal, amp);
+            if (window.innerWidth > 768) {
+                drawAgentLabel(ctx, cx, cy, agentName, pal, amp);
+            }
 
             // Scanline overlay for speaking
             drawScanlines(ctx, W, H, amp);
@@ -399,8 +402,43 @@ export default function NeuralOrb({ agentName, amplitude, isActive, isSpeaking }
                     width: "100%",
                     height: "100%",
                     borderRadius: "50%",
+                    position: "relative",
+                    zIndex: 2,
                 }}
             />
+
+            {/* ★ AGENT AVATAR OVERLAY — "The Spirit in the Shell" */}
+            {agentImage && (
+                <div style={{
+                    position: "absolute",
+                    inset: "20%",
+                    borderRadius: "50%",
+                    overflow: "hidden",
+                    zIndex: 1,
+                    opacity: isActive ? (isSpeaking ? 0.35 : 0.2) : 0,
+                    transition: "opacity 0.8s ease, transform 0.8s ease",
+                    transform: `scale(${1 + amplitude * 0.1})`,
+                    filter: "grayscale(30%) contrast(110%) brightness(120%)",
+                }}>
+                    <div style={{
+                        position: "absolute",
+                        inset: 0,
+                        background: `radial-gradient(circle, transparent 40%, ${pal.core}22 100%)`,
+                        zIndex: 2,
+                    }} />
+                    <img
+                        src={agentImage}
+                        alt={agentName || "Agent"}
+                        style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                            maskImage: "radial-gradient(circle, black 50%, transparent 100%)",
+                            WebkitMaskImage: "radial-gradient(circle, black 50%, transparent 100%)",
+                        }}
+                    />
+                </div>
+            )}
         </div>
     );
 }

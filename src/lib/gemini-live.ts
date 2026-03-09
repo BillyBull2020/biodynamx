@@ -16,6 +16,7 @@ import {
     updateProspectInfo,
 } from "./conversation-transcript";
 import { VisualBridge } from "./visual-bridge";
+import Cartesia from "@cartesia/cartesia-js";
 
 
 export type ConnectionStatus = "idle" | "connecting" | "setup_sent" | "ready" | "error";
@@ -104,12 +105,17 @@ export class VoiceOrchestrator {
         industryStats?: string;
     }) => void;
 
+    private cartesia: any = null;
+    private cartesiaTts: any = null;
+
     constructor(
         private apiKey: string,
         private customAgents?: AgentClone[],
         private language: "en" | "es" = "en",
         public sharedAudioContext: AudioContext | null = null,
-        public sharedStream: MediaStream | null = null
+        public sharedStream: MediaStream | null = null,
+        private cartesiaKey?: string,
+        private cartesiaVoiceId?: string
     ) {
         // Generate unique session ID
         this.sessionId = `session-${Date.now().toString(36)}-${Math.random().toString(36).substring(2, 7)}`;
@@ -194,10 +200,11 @@ export class VoiceOrchestrator {
 
         this.setStatus("connecting", "Opening WebSocket to Gemini...");
 
-        // ★ STABILITY LOCK: v1beta — canonical endpoint for raw WebSocket BidiGenerateContent
-        // Note: enableAffectiveDialog is an SDK-only abstraction, NOT a raw WebSocket field.
-        // For emotional expressiveness, use system instructions + native-audio model.
-        const url = `wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContent?key=${this.apiKey}`;
+        // ★ AI STUDIO MIGRATION: Priority fix for "Not Talking Back"
+        // Standard API Keys (from AI Studio) MUST use the Generative Language endpoint.
+        // Vertex AI endpoints (aiplatform) require a different auth handshake (OAuth)
+        // which was causing the connection to fail silently or return 1007.
+        const url = `wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1alpha.GenerativeService.BidiGenerateContent?key=${this.apiKey}`;
 
         const activeAgents = this.customAgents || DEFAULT_TEAM;
         const activeSystemInstruction = generateSystemInstruction(activeAgents, this.language);
@@ -208,6 +215,25 @@ export class VoiceOrchestrator {
             this.ws.onopen = () => {
                 this.setStatus("connecting", "WebSocket open, sending setup...");
 
+                // ★ CARTESIA INITIALIZATION
+                if (this.cartesiaKey) {
+                    try {
+                        this.cartesia = new Cartesia({ apiKey: this.cartesiaKey });
+                        this.cartesiaTts = this.cartesia.tts.websocket({
+                            container: "raw",
+                            encoding: "pcm_f32le",
+                            sampleRate: 44100,
+                        });
+                        this.cartesiaTts.connect().then(() => {
+                            console.log("[VoiceOrchestrator] 🧊 Cartesia Vocal Cords Online.");
+                        }).catch((err: any) => {
+                            console.error("[VoiceOrchestrator] Cartesia connect fail:", err);
+                        });
+                    } catch (err) {
+                        console.error("[VoiceOrchestrator] Cartesia init error:", err);
+                    }
+                }
+
                 // ★ CRITICAL FIX: Setup message MUST use camelCase.
                 // The Gemini Live v1alpha/v1beta BidiGenerateContent endpoint
                 // requires camelCase for the setup envelope. Using snake_case
@@ -217,9 +243,9 @@ export class VoiceOrchestrator {
                 // MUST use snake_case — the opposite rule.
                 const setupMessage = {
                     setup: {
-                        model: "models/gemini-2.0-flash-exp",
+                        model: "models/gemini-2.0-flash",
                         generationConfig: {
-                            responseModalities: ["AUDIO"],
+                            responseModalities: ["AUDIO", "TEXT"],
                             speechConfig: {
                                 voiceConfig: {
                                     prebuiltVoiceConfig: {
@@ -228,6 +254,13 @@ export class VoiceOrchestrator {
                                 }
                             },
                             temperature: 0.8,
+                            safetySettings: [
+                                { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_NONE" },
+                                { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_NONE" },
+                                { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_NONE" },
+                                { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_NONE" },
+                                { category: "HARM_CATEGORY_CIVIC_INTEGRITY", threshold: "BLOCK_NONE" }
+                            ],
                         },
                         realtimeInputConfig: {
                             automaticActivityDetection: {
@@ -1327,13 +1360,29 @@ Specificity and accuracy are more important than speed.Hallucinations destroy tr
 
                     const inlineData = (part.inline_data || part.inlineData) as Record<string, unknown>;
                     if (inlineData?.data) {
+                        // ★ RESTORE NATIVE AUDIO: Switching back to Gemini's native multimodal audio
+                        // because the user reported Cartesia sounds 'robotic' compared to 2.0 Native.
                         if (this.modelTurnCount === 0) {
-                            console.log(`[VoiceOrchestrator] 🔊 First audio chunk received (${(inlineData.data as string).length} chars). Playing...`);
+                            console.log(`[VoiceOrchestrator] 🔊 Native Audio Chunk received (${(inlineData.data as string).length} chars). Playing...`);
                         }
                         this.playAudioChunk(inlineData.data as string);
                     }
                 }
             }
+
+            // ★ CARTESIA BYPASSED: Keeping logic for future fallback but disabled per user request
+            /*
+            if (this.cartesiaTts && this.cartesiaTts.isConnected) {
+                const modelTurn = (serverContent.model_turn || serverContent.modelTurn) as any;
+                if (modelTurn?.parts) {
+                    for (const part of modelTurn.parts) {
+                        if (part.text) {
+                            this.streamToCartesia(part.text);
+                        }
+                    }
+                }
+            }
+            */
 
             if (serverContent.interrupted) {
                 this.clearPlaybackQueue();
@@ -2338,6 +2387,69 @@ Specificity and accuracy are more important than speed.Hallucinations destroy tr
     }
 
     // --- Format Converters ---
+
+    private streamToCartesia(text: string) {
+        if (!this.cartesiaTts) return;
+
+        void (async () => {
+            try {
+                const response = await this.cartesiaTts.send({
+                    model_id: "sonic-english",
+                    voice: {
+                        mode: "id",
+                        id: this.cartesiaVoiceId || "78ab82d5-25be-4f7d-82b3-7ad64e5b85b2",
+                    },
+                    transcript: text,
+                    context_id: this.sessionId,
+                });
+
+                for await (const message of response) {
+                    if (message.type === "chunk") {
+                        this.playCartesiaChunk(message.data);
+                    }
+                }
+            } catch (err) {
+                console.error("[VoiceOrchestrator] Cartesia streaming fail:", err);
+            }
+        })();
+    }
+
+    private playCartesiaChunk(audioData: string | ArrayBuffer | Float32Array) {
+        if (!this.audioContext || !this.analyser) return;
+
+        if (this.audioContext.state === "suspended") {
+            this.audioContext.resume();
+        }
+
+        let float32Data: Float32Array;
+        if (audioData instanceof Float32Array) {
+            float32Data = audioData;
+        } else if (typeof audioData === "string") {
+            // Assume base64 if string
+            const binary = atob(audioData);
+            const bytes = new Uint8Array(binary.length);
+            for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+            float32Data = new Float32Array(bytes.buffer);
+        } else {
+            float32Data = new Float32Array(audioData as ArrayBuffer);
+        }
+
+        const buffer = this.audioContext.createBuffer(1, float32Data.length, 44100);
+        buffer.getChannelData(0).set(float32Data);
+
+        const source = this.audioContext.createBufferSource();
+        source.buffer = buffer;
+        source.connect(this.analyser);
+
+        const currentTime = this.audioContext.currentTime;
+        if (this.nextPlayTime < currentTime + 0.05) {
+            this.nextPlayTime = currentTime + 0.05;
+        }
+
+        source.start(this.nextPlayTime);
+        this.nextPlayTime += buffer.duration;
+        this.playbackQueue.push(source);
+    }
 
     disconnect(isHandoff = false) {
         this.clearPlaybackQueue();

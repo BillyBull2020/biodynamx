@@ -1,9 +1,15 @@
 "use client";
 
-import { Suspense, useRef, useMemo } from "react";
+import { Suspense, useRef, useMemo, useEffect } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useTexture } from "@react-three/drei";
 import * as THREE from "three";
+import gsap from "gsap";
+import ScrollTrigger from "gsap/dist/ScrollTrigger";
+
+if (typeof window !== "undefined") {
+    gsap.registerPlugin(ScrollTrigger);
+}
 
 // ── GLSL fragment shader ──────────────────────────────────────────────────
 const VERT = `
@@ -65,16 +71,14 @@ function MorphScene() {
     const { viewport } = useThree();
     const meshRef = useRef<THREE.Mesh>(null);
     const matRef = useRef<THREE.ShaderMaterial | null>(null);
-    const cycleRef = useRef(0);
+    const scrollTargetRef = useRef(0);
 
     const [texMan, texRobot] = useTexture([
         "/assets/hero_man.png",
         "/assets/hero_robot.png",
     ]);
 
-    // Fix color space after load
-    texMan.colorSpace = THREE.SRGBColorSpace;
-    texRobot.colorSpace = THREE.SRGBColorSpace;
+    // Color space relies on THREE's default SRGBColorSpace for textures
 
     const material = useMemo(() => new THREE.ShaderMaterial({
         uniforms: {
@@ -89,8 +93,10 @@ function MorphScene() {
         depthWrite: false,
     }), [texMan, texRobot]);
 
-    // Store ref
-    matRef.current = material;
+    // Store ref safely
+    useEffect(() => {
+        matRef.current = material;
+    }, [material]);
 
     const imageAspect = useMemo(() => {
         const img = texMan.image as HTMLImageElement | null;
@@ -107,18 +113,30 @@ function MorphScene() {
         return [w, h, 1];
     }, [viewport, imageAspect]);
 
+    useEffect(() => {
+        // Track the scroll to change morph state. Complete morph when user scrolls 400px down.
+        const handleScroll = () => {
+            let progress = window.scrollY / 400;
+            if (progress > 1) progress = 1;
+            scrollTargetRef.current = progress;
+        };
+        window.addEventListener("scroll", handleScroll);
+        handleScroll();
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+
     useFrame((state, delta) => {
         const mat = matRef.current;
         if (!mat) return;
 
-        cycleRef.current += delta * 0.075; // ~13s full cycle
-        const sin = Math.sin(cycleRef.current * Math.PI * 2);
-        mat.uniforms.uProgress.value = (sin + 1) * 0.5;
+        // Smoothly interpolate to scroll target
+        mat.uniforms.uProgress.value = THREE.MathUtils.lerp(mat.uniforms.uProgress.value, scrollTargetRef.current, 0.08);
         mat.uniforms.uTime.value += delta;
 
+        // Parallax / subtle 3D hovering
         if (meshRef.current) {
-            meshRef.current.rotation.y = THREE.MathUtils.lerp(meshRef.current.rotation.y, state.mouse.x * 0.04, 0.04);
-            meshRef.current.rotation.x = THREE.MathUtils.lerp(meshRef.current.rotation.x, state.mouse.y * -0.03, 0.04);
+            meshRef.current.rotation.y = THREE.MathUtils.lerp(meshRef.current.rotation.y, state.mouse.x * 0.05, 0.04);
+            meshRef.current.rotation.x = THREE.MathUtils.lerp(meshRef.current.rotation.x, state.mouse.y * -0.05, 0.04);
         }
     });
 
@@ -135,7 +153,7 @@ export default function HeroMorph() {
         <Canvas
             camera={{ position: [0, 0, 5], fov: 42 }}
             gl={{ antialias: true, alpha: true }}
-            style={{ width: "100%", height: "100%", display: "block" }}
+            style={{ width: "100%", height: "100%", display: "block", pointerEvents: "none" }}
             dpr={[1, 2]}
         >
             <Suspense fallback={null}>

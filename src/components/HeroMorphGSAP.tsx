@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
-import JennySpline from "./JennySpline";
+import HeroMorph from "./HeroMorph";
 
 interface HeroMorphGSAPProps {
     onStart: () => void;
@@ -213,12 +213,7 @@ export default function HeroMorphGSAP({
                         background: "radial-gradient(circle at 50% 50%, rgba(0,255,65,0.05), transparent 70%)",
                     }}>
                         <div style={{ position: "absolute", top: -80, left: -80, right: -80, bottom: -80 }}>
-                            <JennySpline
-                                amplitude={pulse}
-                                isActive={true}
-                                isSpeaking={pulse > 0}
-                                agentName="Nexus"
-                            />
+                            <HeroMorph />
                         </div>
 
                         {/* Edge ambient glow overlay */}

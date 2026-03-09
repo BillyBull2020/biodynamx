@@ -2642,26 +2642,13 @@ html {
 
 @media (max-width: 768px) {
 
-    /* ── 1. SPEECH BUBBLE / IronClaw — bottom glass shelf ── */
+    /* ── 1. SPEECH BUBBLE / IronClaw — Hide on mobile to free the Orb ── */
     .vault-container.active [class*="IronClaw"],
     .vault-container.active .ironclaw-visual-panel,
     .vault-container.active .visual-panel-wrap,
     .vault-container.active .speech-bubble-wrapper,
     .vault-container.active .active-agent-text {
-        position: fixed !important;
-        bottom: 110px !important;
-        left: 5% !important;
-        right: 5% !important;
-        width: 90% !important;
-        max-height: 22vh !important;
-        overflow-y: auto !important;
-        background: rgba(10, 10, 15, 0.45) !important;
-        backdrop-filter: blur(12px) !important;
-        -webkit-backdrop-filter: blur(12px) !important;
-        border: 1px solid rgba(255, 255, 255, 0.08) !important;
-        border-radius: 24px !important;
-        z-index: 50 !important;
-        padding: 12px 14px 16px !important;
+        display: none !important;
     }
 
     /* Text readability inside the speech shelf */

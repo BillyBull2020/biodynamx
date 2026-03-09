@@ -36,7 +36,7 @@ interface Agent {
     expertise: string; // Ironclaw task domain
 }
 
-const AGENTS: Agent[] = [
+export const AGENTS: Agent[] = [
     {
         id: "jenny_lead", name: "Jenny", role: "Business Lead & Discovery",
         chip1: "Lead Audit", chip2: "Frame Control · Aoede",
@@ -58,7 +58,7 @@ const AGENTS: Agent[] = [
         chip1: "Triple Crown SEO", chip2: "AI Search · Despina",
         desc: "The eye. Isabel controls what the world can SEE — making your business visible to ChatGPT, Gemini, Perplexity, and voice assistants through GEO, AEO, and strategic content.",
         result: "AI visibility + Generative search dominance.",
-        color: "#8b5cf6", image: "/agents/isabel.png",
+        color: "#8b5cf6", image: "/agents/iris.png",
         expertise: "GEO/AEO Indexing",
     },
     {
@@ -66,7 +66,7 @@ const AGENTS: Agent[] = [
         chip1: "Intimacy Anchor", chip2: "Trust Engine · Sulafat",
         desc: "The nurturer. Maya uses sensory-rich language and deep mirroring to build intense trust instantly — soothing the brain's threat-detection centers before any objection can form.",
         result: "Intense trust + Emotional defenses removed.",
-        color: "#a78bfa", image: "/agents/maya.png",
+        color: "#a78bfa", image: "/agents/meghan.png",
         expertise: "Trust Signal Encoding",
     },
     {
@@ -98,7 +98,7 @@ const AGENTS: Agent[] = [
         chip1: "Brand Authority", chip2: "Growth Engine · Albeaba",
         desc: "The amplifier. Abby builds brand authority that makes competitors irrelevant — crafting content that dominates AI search, social feeds, and email inboxes simultaneously.",
         result: "Brand dominance + Inbound pipeline activated.",
-        color: "#f59e0b", image: "/agents/abby.png",
+        color: "#f59e0b", image: "/agents/ava.png",
         expertise: "Brand Authority Build",
     },
     {

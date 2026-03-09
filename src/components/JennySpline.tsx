@@ -9,7 +9,7 @@ class SplineErrorBoundary extends Component<{ children: ReactNode, fallback: Rea
         this.state = { hasError: false };
     }
 
-    static getDerivedStateFromError(_: Error) {
+    static getDerivedStateFromError() {
         return { hasError: true };
     }
 
@@ -44,10 +44,37 @@ interface SplineApp {
     } | null;
 }
 
+const AGENTS = [
+    { name: "Jenny", image: "/agents/jenny.png", color: "#6366f1" },
+    { name: "Nova", image: "/agents/nova_v2.png", color: "#ec4899" },
+    { name: "Isabel", image: "/agents/iris.png", color: "#8b5cf6" },
+    { name: "Maya", image: "/agents/meghan.png", color: "#a78bfa" },
+    { name: "Vicki", image: "/agents/vicki.png", color: "#34d399" },
+    { name: "Alex", image: "/agents/alex.png", color: "#06b6d4" },
+    { name: "Zara", image: "/agents/zara.png", color: "#f97316" },
+    { name: "Abby", image: "/agents/ava.png", color: "#f59e0b" },
+    { name: "Titan", image: "/agents/titan.png", color: "#3b82f6" },
+    { name: "Jules", image: "/agents/jules.png", color: "#06b6d4" },
+    { name: "Ben", image: "/agents/ben.png", color: "#fbbf24" },
+];
+
 export default function JennySpline({ amplitude, isActive, isSpeaking, agentName }: JennySplineProps) {
     const splineRef = useRef<SplineApp | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [hasError, setHasError] = useState(false);
+
+    const [isMobile, setIsMobile] = useState(false);
+
+    const activeAgent = AGENTS.find(a => a.name === agentName);
+    const agentImg = activeAgent?.image;
+    const agentColor = activeAgent?.color || "#6366f1";
+
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+        checkMobile();
+        window.addEventListener("resize", checkMobile);
+        return () => window.removeEventListener("resize", checkMobile);
+    }, []);
 
     function onLoad(splineApp: any) {
         splineRef.current = splineApp as SplineApp;
@@ -115,26 +142,28 @@ export default function JennySpline({ amplitude, isActive, isSpeaking, agentName
                 ))}
 
                 {/* Agent Label */}
-                <div style={{
-                    position: "absolute", bottom: 32, left: "50%", transform: "translateX(-50%)",
-                    padding: "6px 16px", background: "rgba(0,0,0,0.4)",
-                    backdropFilter: "blur(12px)", borderRadius: 100,
-                    border: "1px solid rgba(255,255,255,0.1)",
-                    display: "flex", alignItems: "center", gap: 10,
-                }}>
+                {!isMobile && (
                     <div style={{
-                        width: 6, height: 6, borderRadius: "50%",
-                        background: isSpeaking ? "#00ff41" : "rgba(0,255,65,0.4)",
-                        boxShadow: isSpeaking ? "0 0 8px #00ff41" : "none",
-                        animation: isSpeaking ? "pulse 1s infinite" : "none",
-                    }} />
-                    <span style={{
-                        fontSize: 10, fontWeight: 900, letterSpacing: "0.2em",
-                        color: "rgba(255,255,255,0.6)", textTransform: "uppercase",
+                        position: "absolute", bottom: 32, left: "50%", transform: "translateX(-50%)",
+                        padding: "6px 16px", background: "rgba(0,0,0,0.4)",
+                        backdropFilter: "blur(12px)", borderRadius: 100,
+                        border: "1px solid rgba(255,255,255,0.1)",
+                        display: "flex", alignItems: "center", gap: 10,
                     }}>
-                        SYS: {agentName === "Jenny" ? "NEURAL_LINK_JENNY" : "NEURAL_CORE_ACTIVE"}
-                    </span>
-                </div>
+                        <div style={{
+                            width: 6, height: 6, borderRadius: "50%",
+                            background: isSpeaking ? "#00ff41" : "rgba(0,255,65,0.4)",
+                            boxShadow: isSpeaking ? "0 0 8px #00ff41" : "none",
+                            animation: isSpeaking ? "pulse 1s infinite" : "none",
+                        }} />
+                        <span style={{
+                            fontSize: 10, fontWeight: 900, letterSpacing: "0.2em",
+                            color: "rgba(255,255,255,0.6)", textTransform: "uppercase",
+                        }}>
+                            SYS: {agentName === "Jenny" ? "NEURAL_LINK_JENNY" : "NEURAL_CORE_ACTIVE"}
+                        </span>
+                    </div>
+                )}
 
                 <style>{`
                     @keyframes neuralCorePulse {
@@ -207,29 +236,67 @@ export default function JennySpline({ amplitude, isActive, isSpeaking, agentName
             )}
 
             {/* Agent Label Overlay */}
-            <div style={{
-                position: "absolute", bottom: 32, left: "50%", transform: "translateX(-50%)",
-                padding: "6px 16px", background: "rgba(0,0,0,0.4)",
-                backdropFilter: "blur(12px)", borderRadius: 100,
-                border: "1px solid rgba(255,255,255,0.1)",
-                display: "flex", alignItems: "center", gap: 10,
-            }}>
+            {!isMobile && (
                 <div style={{
-                    width: 6, height: 6, borderRadius: "50%",
-                    background: isSpeaking ? "#00ff41" : "rgba(0,255,65,0.4)",
-                    boxShadow: isSpeaking ? "0 0 8px #00ff41" : "none",
-                    animation: isSpeaking ? "pulse 1s infinite" : "none",
-                }} />
-                <span style={{
-                    fontSize: 10, fontWeight: 900, letterSpacing: "0.2em",
-                    color: "rgba(255,255,255,0.6)", textTransform: "uppercase",
+                    position: "absolute", bottom: 32, left: "50%", transform: "translateX(-50%)",
+                    padding: "6px 16px", background: "rgba(0,0,0,0.4)",
+                    backdropFilter: "blur(12px)", borderRadius: 100,
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    display: "flex", alignItems: "center", gap: 10,
                 }}>
-                    SYS: {agentName === "Jenny" ? "NEURAL_LINK_JENNY" : "STANDBY"}
-                </span>
-            </div>
+                    <div style={{
+                        width: 6, height: 6, borderRadius: "50%",
+                        background: isSpeaking ? "#00ff41" : "rgba(0,255,65,0.4)",
+                        boxShadow: isSpeaking ? "0 0 8px #00ff41" : "none",
+                        animation: isSpeaking ? "pulse 1s infinite" : "none",
+                    }} />
+                    <span style={{
+                        fontSize: 10, fontWeight: 900, letterSpacing: "0.2em",
+                        color: "rgba(255,255,255,0.6)", textTransform: "uppercase",
+                    }}>
+                        SYS: {agentName === "Jenny" ? "NEURAL_LINK_JENNY" : "STANDBY"}
+                    </span>
+                </div>
+            )}
+
+            {/* ★ AGENT AVATAR OVERLAY — "The Spirit in the Shell" */}
+            {agentImg && (
+                <div style={{
+                    position: "absolute",
+                    inset: isMobile ? "25%" : "30%",
+                    borderRadius: "50%",
+                    overflow: "hidden",
+                    zIndex: 2,
+                    opacity: isActive ? (isSpeaking ? 0.35 : 0.2) : 0,
+                    transition: "opacity 1s ease, transform 1s ease",
+                    transform: `scale(${1 + amplitude * 0.15})`,
+                    filter: "grayscale(20%) contrast(110%) brightness(130%)",
+                }}>
+                    <div style={{
+                        position: "absolute",
+                        inset: 0,
+                        background: `radial-gradient(circle, transparent 40%, ${agentColor}22 100%)`,
+                        zIndex: 3,
+                    }} />
+                    <img
+                        src={agentImg}
+                        alt={agentName || "Agent"}
+                        style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                            maskImage: "radial-gradient(circle, black 50%, transparent 100%)",
+                            WebkitMaskImage: "radial-gradient(circle, black 50%, transparent 100%)",
+                        }}
+                    />
+                </div>
+            )}
 
             <style>{`
                 @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+                @keyframes neuralCorePulse { 0%, 100% { opacity: 0.8; } 50% { opacity: 1; } }
+                @keyframes neuralCoreRotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+                @keyframes pulse { 0% { transform: scale(1); opacity: 0.5; } 50% { transform: scale(1.2); opacity: 0.3; } 100% { transform: scale(1); opacity: 0.5; } }
             `}</style>
         </div>
     );

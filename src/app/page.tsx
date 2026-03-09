@@ -15,6 +15,8 @@ import VaultUI from "@/components/VaultUI";
 
 export default function Home() {
   const [apiKey, setApiKey] = useState<string>("");
+  const [cartesiaKey, setCartesiaKey] = useState<string>("");
+  const [cartesiaVoiceId, setCartesiaVoiceId] = useState<string>("");
   const [keyError, setKeyError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -35,9 +37,11 @@ export default function Home() {
           return;
         }
 
-        const { token } = await res.json();
-        if (!cancelled && token) {
-          setApiKey(token);
+        const { token, cartesiaKey: cKey, cartesiaVoiceId: cVoice } = await res.json();
+        if (!cancelled) {
+          if (token) setApiKey(token);
+          if (cKey) setCartesiaKey(cKey);
+          if (cVoice) setCartesiaVoiceId(cVoice);
         }
       } catch {
         if (!cancelled) {
@@ -84,5 +88,9 @@ export default function Home() {
 
   // VaultUI receives the key once the session fetch resolves.
   // apiKey="" while loading — VaultUI gracefully blocks agent launch until key is ready.
-  return <VaultUI apiKey={apiKey} />;
+  return <VaultUI
+    apiKey={apiKey}
+    cartesiaKey={cartesiaKey}
+    cartesiaVoiceId={cartesiaVoiceId}
+  />;
 }

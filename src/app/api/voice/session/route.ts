@@ -76,6 +76,9 @@ export async function GET(req: NextRequest) {
 
     // ── Key lookup ─────────────────────────────────────────────────
     const key = process.env.GEMINI_API_KEY;
+    const cartesiaKey = process.env.CARTESIA_API_KEY;
+    const cartesiaVoiceId = process.env.CARTESIA_VOICE_ID;
+
     if (!key) {
         console.error("[voice/session] GEMINI_API_KEY is not set in environment.");
         return NextResponse.json(
@@ -86,7 +89,11 @@ export async function GET(req: NextRequest) {
 
     // ── Return ─────────────────────────────────────────────────────
     return NextResponse.json(
-        { token: key },
+        {
+            token: key,
+            cartesiaKey,
+            cartesiaVoiceId
+        },
         {
             status: 200,
             headers: {
