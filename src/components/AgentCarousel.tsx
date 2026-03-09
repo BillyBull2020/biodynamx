@@ -833,7 +833,7 @@ export default function AgentCarousel({ onTalkTo }: Props) {
                                         position: isMobile ? "relative" : "absolute",
                                         width: isMobile ? "min(300px, 85vw)" : "min(392px, 88vw)",
                                         margin: isMobile ? "0 auto" : undefined,
-                                        transform: `translateX(${translateX}px) rotateY(${rotateY}deg) scale(${scale})`,
+                                        transform: isMobile ? "none" : `translateX(${translateX}px) rotateY(${rotateY}deg) scale(${scale})`,
                                         transformOrigin: "center center",
                                         opacity: isInDash ? 0.5 : opacity,
                                         zIndex,
