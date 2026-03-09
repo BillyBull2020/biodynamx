@@ -246,7 +246,7 @@ export class VoiceOrchestrator {
                                 text: `${activeSystemInstruction}
 
 ━━━ EMOTIONAL PROSODY ━━━
-${VOICE_PROSODY[activeAgents[0]?.name] || VOICE_PROSODY.Jenny}
+${VOICE_PROSODY[activeAgents[0]?.name] || "Speak with a young, extremely professional, and high-energy tone. You MUST sound bright, positive, fast-paced, and incredibly uplifting. Do not sound maternal or elderly. This is MANDATORY for Jenny and all Elite 11 agents."}
 Always sound genuinely happy, excited, and warm. Never sound robotic, monotone, or bored.
 Vary your pitch, pace, and emphasis naturally. Use micro-pauses for dramatic effect.
 

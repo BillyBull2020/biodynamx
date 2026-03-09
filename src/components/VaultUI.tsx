@@ -245,6 +245,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
     });
     const [errorText, setErrorText] = useState<string | null>(null);
     const [ambientMessage, setAmbientMessage] = useState<{ title: string; body: string; } | null>(null);
+    const [transcript, setTranscript] = useState<{ agent: string, text: string }[]>([]);
 
     useAmbientIntelligence(useCallback((reason: string) => {
         // Only trigger if an agent isn't already active
@@ -647,6 +648,7 @@ export default function VaultUI({ apiKey }: VaultProps) {
                 }
             },
             onTranscript: (agent: string, text: string) => {
+                setTranscript(prev => [...prev.slice(-3), { agent, text }]);
                 // ★ JENNY VISUAL DUAL-CODING ENGINE — activated
                 // Every word the agent speaks is now processed in real-time:
                 //   1. KeywordEngine scans for scene triggers (revenue, SEO, checkout, etc.)
@@ -773,7 +775,9 @@ export default function VaultUI({ apiKey }: VaultProps) {
                     setShowLeadModal(true);
                 }
             },
-            onTranscript: () => { },
+            onTranscript: (agentName, text) => {
+                setTranscript(prev => [...prev.slice(-3), { agent: agentName || "System", text }]);
+            },
             onError: (error) => { setErrorText(error); },
             onAnalyserReady: (node) => { setAnalyser(node); },
         }, "es"); // ★ Hardcoded Spanish
@@ -847,6 +851,60 @@ export default function VaultUI({ apiKey }: VaultProps) {
 
             {/* ── Web 4.0: Autonomous background task pings (top-right toasts) */}
             <AutonomousPing />
+
+            {/* ── Fixed Bottom Glass Panel for Agent Cards & Transcript ── */}
+            {isActive && (
+                <div style={{
+                    position: "fixed", bottom: 0, left: 0, right: 0,
+                    height: 140, background: "rgba(5,5,10,0.85)", backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)",
+                    borderTop: "1px solid rgba(0,255,65,0.3)", boxShadow: "0 -10px 40px rgba(0,0,0,0.6)",
+                    zIndex: 9000, display: "flex", alignItems: "center", padding: "0 24px", gap: 32
+                }}>
+                    {/* Voice Agent Cards Mini View */}
+                    <div style={{ flexShrink: 0, width: 340, borderRight: "1px solid rgba(255,255,255,0.1)", paddingRight: 24, height: "100%", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+                        <div style={{ fontSize: 10, fontWeight: 900, color: "#00ff41", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 12 }}>
+                            ● ACTIVE NEURAL WORKFORCE
+                        </div>
+                        <div style={{ display: "flex", gap: 12, overflowX: "auto", paddingBottom: 8, scrollbarWidth: "none" }}>
+                            {[
+                                { name: "Jenny", img: "/agents/jenny.png", color: "#6366f1" },
+                                { name: "Mark", img: "/agents/jenny.png", color: "#3b82f6" }, /* Temporary fallback img */
+                                { name: "Nova", img: "/agents/nova_v2.png", color: "#ec4899" },
+                                { name: "Titan", img: "/agents/titan.png", color: "#3b82f6" },
+                                { name: "Iris", img: "/agents/iris.png", color: "#8b5cf6" },
+                            ].map(a => (
+                                <div key={a.name} style={{
+                                    width: 48, height: 48, borderRadius: "50%", border: `2px solid ${a.name === agentName || a.name === "Jenny" && agentName === "Glia" ? a.color : "rgba(255,255,255,0.1)"}`,
+                                    overflow: "hidden", position: "relative", flexShrink: 0, opacity: a.name === agentName || a.name === "Jenny" && agentName === "Glia" ? 1 : 0.4,
+                                    boxShadow: a.name === agentName || a.name === "Jenny" && agentName === "Glia" ? `0 0 16px ${a.color}88` : "none"
+                                }}>
+                                    <img src={a.img} alt={a.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Live Text Transcript */}
+                    <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "flex-end", height: "100%", padding: "16px 0", overflowY: "auto" }}>
+                        {transcript.length === 0 ? (
+                            <div style={{ fontSize: 14, color: "rgba(255,255,255,0.4)", fontStyle: "italic", fontFamily: "monospace" }}>
+                                [ Listening for your voice... ]
+                            </div>
+                        ) : (
+                            transcript.map((t, i) => (
+                                <div key={i} style={{ marginBottom: 6, display: "flex", gap: 12, alignItems: "flex-start", animation: "fadeUp 0.3s ease-out forwards" }}>
+                                    <div style={{ fontSize: 13, fontWeight: 800, color: t.agent === "Prospect" ? "#fff" : "#00ff41", letterSpacing: "0.05em", fontFamily: "monospace", textTransform: "uppercase" }}>
+                                        {t.agent}:
+                                    </div>
+                                    <div style={{ fontSize: 15, color: t.agent === "Prospect" ? "rgba(255,255,255,0.8)" : "#00ff41", lineHeight: 1.4, textShadow: t.agent === "Prospect" ? "none" : "0 0 10px rgba(0,255,65,0.4)" }}>
+                                        {t.text}
+                                    </div>
+                                </div>
+                            ))
+                        )}
+                    </div>
+                </div>
+            )}
 
             {/* ── Web 4.0: Swarm Collaboration feed (live session side-channel) */}
             <SwarmCollaboration />

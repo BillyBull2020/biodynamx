@@ -41,15 +41,7 @@ export default function JennySpline({ amplitude, isActive, isSpeaking, agentName
 
     // React to amplitude/speaking changes
     useEffect(() => {
-        if (!splineRef.current) return;
-        const obj = splineRef.current.findObjectByName('Core')
-            || splineRef.current.findObjectByName('Sphere')
-            || splineRef.current.findObjectByName('Neural');
-
-        if (obj) {
-            const scale = 1 + amplitude * 1.5;
-            obj.scale.set(scale, scale, scale);
-        }
+        // Spline background is locked in place per user request
     }, [amplitude, isSpeaking]);
 
     // ─── CSS Neural Core Fallback (immersive, no dependency) ────────
@@ -173,7 +165,7 @@ export default function JennySpline({ amplitude, isActive, isSpeaking, agentName
                     scene="https://prod.spline.design/6Wq1Q7YAnWfEL7uH/scene.splinecode"
                     onLoad={onLoad}
                     onError={onError}
-                    style={{ width: '100%', height: '100%' }}
+                    style={{ width: '100%', height: '100%', pointerEvents: 'none' }}
                 />
             </Suspense>
 
