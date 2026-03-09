@@ -2689,29 +2689,50 @@ html {
         -webkit-backdrop-filter: blur(12px) !important;
     }
 
-    /* ── 2. AGENT CAROUSEL — mobile card sizing ── */
+    /* ── 2. AGENT CAROUSEL — single card, centered, no 3D ── */
     .bdx-carousel-stage {
-        height: 460px !important;
-        perspective: 1000px !important;
+        height: auto !important;
+        min-height: 200px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        perspective: none !important;
+        overflow: visible !important;
+        padding: 12px 0 !important;
     }
 
-    /* Cards shrink for mobile thumb reach */
+    /* Force ALL cards inside stage: flat, centered, no transform */
     .bdx-carousel-stage>div {
-        width: min(320px, 80vw) !important;
+        position: relative !important;
+        transform: none !important;
+        width: min(320px, 85vw) !important;
+        margin: 0 auto !important;
+        opacity: 1 !important;
     }
 
-    /* Arrows: lock to edges, slightly smaller */
+    /* Neural dash: below card, not overlaid */
+    .bdx-neural-dash {
+        position: relative !important;
+        right: auto !important;
+        left: auto !important;
+        top: auto !important;
+        bottom: auto !important;
+        width: 92vw !important;
+        max-width: 360px !important;
+        max-height: 30vh !important;
+        overflow-y: auto !important;
+        margin: 12px auto 0 !important;
+        background: rgba(5, 5, 10, 0.85) !important;
+        backdrop-filter: blur(14px) !important;
+        -webkit-backdrop-filter: blur(14px) !important;
+        border-radius: 20px !important;
+        z-index: 10 !important;
+    }
+
+    /* Hide arrows on mobile — use swipe/dots */
     .bdx-arrow {
-        width: 42px !important;
-        height: 42px !important;
-    }
-
-    /* Agent showcase cards: full-width on mobile with snap */
-    .agent-showcase-card {
-        width: 85vw !important;
-        max-width: 350px !important;
-        flex: 0 0 85vw !important;
-        scroll-snap-align: center !important;
+        display: none !important;
     }
 }
 

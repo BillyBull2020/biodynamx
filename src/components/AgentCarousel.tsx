@@ -692,7 +692,22 @@ export default function AgentCarousel({ onTalkTo }: Props) {
             display: flex !important;
             flex-direction: column !important;
             align-items: center !important;
+            justify-content: flex-start !important;
             perspective: none !important;
+            padding: 12px 0 !important;
+          }
+          /* Force ALL card wrappers to relative + centered on mobile */
+          .bdx-carousel-stage > div {
+            position: relative !important;
+            transform: none !important;
+            width: min(320px, 85vw) !important;
+            margin: 0 auto !important;
+            opacity: 1 !important;
+          }
+          /* Stage outer wrapper: no overflow clipping on mobile */
+          .bdx-carousel-stage + div,
+          div:has(> .bdx-carousel-stage) {
+            overflow: visible !important;
           }
           .bdx-arrow { display: none !important; }
           /* Neural dash: stacked below card, not overlaid */
