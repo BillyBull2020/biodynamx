@@ -444,8 +444,8 @@ export default function OrbitEcosystem() {
                 </button>
             )}
 
-            {/* Live script display — outside the viewport div so it doesn't overlap the orb */}
-            {hasStarted && activeSvc && (
+            {/* Live script display — hidden on mobile so it doesn't mess up the orb view */}
+            {hasStarted && activeSvc && !isMobile && (
                 <div style={{
                     marginTop: 40,
                     maxWidth: 620,

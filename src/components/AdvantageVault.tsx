@@ -41,8 +41,8 @@ export default function AdvantageVault() {
     return (
         <section className="web4-spline-section">
             <div className="spline-background">
-                {/* 3D background temporarily disabled due to Spline Edge Network 403 errors */}
-                {/* <spline-viewer url="https://prod.spline.design/Q7YGyUkD9T7R/scene.splinecode" loading-anim-type="spinner-small-dark"></spline-viewer> */}
+                {/* @ts-expect-error - Custom Web Component not typed in JSX */}
+                <spline-viewer url="https://prod.spline.design/Q7YGyUkD9T7R/scene.splinecode" loading-anim-type="spinner-small-dark"></spline-viewer>
             </div>
 
             <div className="advantage-scroll-track">
