@@ -243,7 +243,7 @@ export class VoiceOrchestrator {
                 // MUST use snake_case — the opposite rule.
                 const setupMessage = {
                     setup: {
-                        model: "models/gemini-2.0-flash-exp",
+                        model: "models/gemini-2.0-flash",
                         generationConfig: {
                             responseModalities: ["AUDIO", "TEXT"],
                             speechConfig: {
@@ -253,7 +253,14 @@ export class VoiceOrchestrator {
                                     }
                                 }
                             },
-                            temperature: 0.8
+                            temperature: 0.8,
+                            safetySettings: [
+                                { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_NONE" },
+                                { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_NONE" },
+                                { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_NONE" },
+                                { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_NONE" },
+                                { category: "HARM_CATEGORY_CIVIC_INTEGRITY", threshold: "BLOCK_NONE" }
+                            ],
                         },
                         realtimeInputConfig: {
                             automaticActivityDetection: {
