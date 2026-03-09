@@ -560,28 +560,122 @@
         transform: scale(1) translateY(0);
     }
 }
+
 /* ── Node image & label — moved from inline styles ─── */
 .node3d-icon {
-  overflow: hidden;
-  position: relative;
+    overflow: hidden;
+    position: relative;
 }
 
 .orbit3d-node-img {
-  object-fit: cover;
+    object-fit: cover;
 }
 
 .orbit3d-node--active {
-  outline: 3px solid var(--node-color, #fff);
-  box-shadow: 0 0 28px var(--node-color, #fff), 0 0 56px var(--node-color, #fff);
-  border-radius: 50%;
-  transition: outline 0.4s, box-shadow 0.4s;
+    outline: 3px solid var(--node-color, #fff);
+    box-shadow: 0 0 28px var(--node-color, #fff), 0 0 56px var(--node-color, #fff);
+    border-radius: 50%;
+    transition: outline 0.4s, box-shadow 0.4s;
 }
 
 .orbit3d-node {
-  border-radius: 50%;
-  transition: outline 0.4s, box-shadow 0.4s;
+    border-radius: 50%;
+    transition: outline 0.4s, box-shadow 0.4s;
 }
 
 .node3d-label--active {
-  font-weight: 900;
+    font-weight: 900;
+}
+
+/* ═══════════════════════════════════════════════════════
+   MOBILE OVERRIDE ≤ 600px
+   Replace the cramped 3D orbit with a clean agent grid.
+   The 3D scene is hidden; nodes display as a 3-col grid.
+   ═══════════════════════════════════════════════════════ */
+@media (max-width: 600px) {
+
+    /* Give the viewport a natural block height, not 1:1 aspect */
+    .orbit3d-viewport {
+        aspect-ratio: unset !important;
+        height: auto !important;
+        padding: 16px 8px 24px !important;
+        max-width: 100% !important;
+    }
+
+    /* Hide the 3D scene entirely — orb rings, tracks, stars */
+    .orbit3d-scene,
+    .orbit3d-ambient,
+    .orbit3d-star,
+    .orbit3d-track {
+        display: none !important;
+    }
+
+    /* Central core — show as a centered pill above the grid */
+    .orbit3d-core {
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        transform: none !important;
+        width: 90px !important;
+        height: 90px !important;
+        margin: 0 auto 20px !important;
+        z-index: 1 !important;
+    }
+
+    /* Turn the invisible absolute-positioned nodes into a flex grid */
+    .orbit3d-node {
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        transform: none !important;
+        opacity: 1 !important;
+        z-index: 1 !important;
+        margin: 0 !important;
+        width: 72px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 6px !important;
+    }
+
+    .node3d-icon {
+        width: 56px !important;
+        height: 56px !important;
+        font-size: 20px !important;
+        border-radius: 16px !important;
+    }
+
+    /* Show labels again (we hid them at 480px) */
+    .node3d-label {
+        display: block !important;
+        font-size: 8px !important;
+        text-align: center !important;
+        max-width: 68px !important;
+        white-space: normal !important;
+        line-height: 1.2 !important;
+    }
+
+    /* Replace the 3D scene with a CSS grid wrapper
+     We wrap the nodes using a pseudo-container approach.
+     Since nodes are absolute children of .orbit3d-scene,
+     we re-parent via the viewport using a flex layout trick. */
+    .orbit3d-viewport {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+    }
+
+    /* The scene becomes a GRID container for the nodes */
+    .orbit3d-scene {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 16px 12px !important;
+        position: relative !important;
+        inset: auto !important;
+        transform: none !important;
+        width: 100% !important;
+        max-width: 280px !important;
+        margin: 0 auto !important;
+        justify-items: center !important;
+    }
 }
