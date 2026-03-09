@@ -521,6 +521,15 @@ export default function AgentCarousel({ onTalkTo }: Props) {
     const touchStartX = useRef(0);
     const activeInnerRef = useRef<HTMLDivElement>(null);
 
+    // Mobile detection — must be state to avoid SSR hydration mismatch
+    const [isMobile, setIsMobile] = useState(false);
+    useEffect(() => {
+        const check = () => setIsMobile(window.innerWidth <= 600);
+        check();
+        window.addEventListener("resize", check);
+        return () => window.removeEventListener("resize", check);
+    }, []);
+
     // Swarm state — per-agent task labels + glow
     const [swarmTasks, setSwarmTasks] = useState<Record<number, string>>({});
     const [swarmGlow, setSwarmGlow] = useState<Record<number, boolean>>({});
@@ -803,7 +812,6 @@ export default function AgentCarousel({ onTalkTo }: Props) {
 
                             const isActive = absOff === 0;
                             const isInDash = dashboardAgent?.id === a.id && dashboardVisible;
-                            const isMobile = typeof window !== "undefined" && window.innerWidth <= 600;
 
                             // MOBILE: only show active card, hide all others
                             if (isMobile && !isActive) return null;
