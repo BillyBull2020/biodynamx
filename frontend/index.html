@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EmpireOS - AI Business Command Center</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <span class="logo-icon">⚡</span>
+                <span class="logo-text">EmpireOS</span>
+            </div>
+            
+            <nav class="nav-menu">
+                <a href="#" class="nav-item active" data-page="dashboard">
+                    <span class="nav-icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-item" data-page="jarvis">
+                    <span class="nav-icon">🤖</span>
+                    <span>Jarvis</span>
+                </a>
+                <a href="#" class="nav-item" data-page="clients">
+                    <span class="nav-icon">👥</span>
+                    <span>Clients</span>
+                </a>
+                <a href="#" class="nav-item" data-page="leads">
+                    <span class="nav-icon">🎯</span>
+                    <span>Leads</span>
+                </a>
+                <a href="#" class="nav-item" data-page="tasks">
+                    <span class="nav-icon">📋</span>
+                    <span>Tasks</span>
+                </a>
+                <a href="#" class="nav-item" data-page="agents">
+                    <span class="nav-icon">🤖</span>
+                    <span>Agents</span>
+                </a>
+                <a href="#" class="nav-item" data-page="workflows">
+                    <span class="nav-icon">🔄</span>
+                    <span>Workflows</span>
+                </a>
+                <a href="#" class="nav-item" data-page="roofing">
+                    <span class="nav-icon">🏠</span>
+                    <span>Roofing</span>
+                </a>
+                <a href="#" class="nav-item" data-page="sales">
+                    <span class="nav-icon">💰</span>
+                    <span>AI Sales</span>
+                </a>
+                <a href="#" class="nav-item" data-page="settings">
+                    <span class="nav-icon">⚙️</span>
+                    <span>Settings</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="status-indicator">
+                    <span class="status-dot"></span>
+                    <span id="provider-status">Connecting...</span>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Page -->
+            <div class="page" id="page-dashboard">
+                <header class="page-header">
+                    <h1>Executive Dashboard</h1>
+                    <div class="header-actions">
+                        <button class="btn btn-primary" onclick="openJarvis()">Ask Jarvis</button>
+                    </div>
+                </header>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="stat-clients">0</div>
+                        <div class="stat-label">Active Clients</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="stat-leads">0</div>
+                        <div class="stat-label">Total Leads</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="stat-new-leads">0</div>
+                        <div class="stat-label">New Leads</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="stat-tasks">0</div>
+                        <div class="stat-label">Open Tasks</div>
+                    </div>
+                </div>
+                
+                <div class="dashboard-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Quick Jarvis Command</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="quick-jarvis">
+                                <input type="text" id="quick-command" placeholder="Ask Jarvis anything... (e.g., 'What should I work on today?')" class="input">
+                                <button class="btn btn-primary" onclick="runQuickJarvis()">Ask</button>
+                            </div>
+                            <div id="quick-response" class="quick-response hidden"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Recent Leads</h3>
+                            <a href="#" onclick="showPage('leads')" class="card-link">View All</a>
+                        </div>
+                        <div class="card-body">
+                            <div id="recent-leads" class="item-list"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Open Tasks</h3>
+                            <a href="#" onclick="showPage('tasks')" class="card-link">View All</a>
+                        </div>
+                        <div class="card-body">
+                            <div id="recent-tasks" class="item-list"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Campaign Cards</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="campaign-grid">
+                                <div class="campaign-card" onclick="showPage('roofing')">
+                                    <div class="campaign-icon">🏠</div>
+                                    <div class="campaign-name">Roofing Fast-Cash</div>
+                                </div>
+                                <div class="campaign-card" onclick="showPage('sales')">
+                                    <div class="campaign-icon">💰</div>
+                                    <div class="campaign-name">AI Sales</div>
+                                </div>
+                                <div class="campaign-card" onclick="showPage('leads')">
+                                    <div class="campaign-icon">🎯</div>
+                                    <div class="campaign-name">Lead Gen</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Jarvis Page -->
+            <div class="page hidden" id="page-jarvis">
+                <header class="page-header">
+                    <h1>🤖 Jarvis Executive Assistant</h1>
+                </header>
+                
+                <div class="card">
+                    <div class="card-body">
+                        <div id="jarvis-chat" class="chat-container"></div>
+                        
+                        <div class="chat-input-area">
+                            <textarea id="jarvis-input" class="input" placeholder="Ask Jarvis anything about your business, marketing, sales, or strategy..." rows="3"></textarea>
+                            <button class="btn btn-primary" onclick="sendToJarvis()">Send</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Clients Page -->
+            <div class="page hidden" id="page-clients">
+                <header class="page-header">
+                    <h1>👥 Clients</h1>
+                    <button class="btn btn-primary" onclick="showAddClient()">+ Add Client</button>
+                </header>
+                
+                <div class="card">
+                    <div class="card-body">
+                        <div id="clients-list" class="item-list"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Leads Page -->
+            <div class="page hidden" id="page-leads">
+                <header class="page-header">
+                    <h1>🎯 Lead Pipeline</h1>
+                    <button class="btn btn-primary" onclick="showAddLead()">+ Add Lead</button>
+                </header>
+                
+                <div class="pipeline-filters">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="new">New</button>
+                    <button class="filter-btn" data-filter="contacted">Contacted</button>
+                    <button class="filter-btn" data-filter="interested">Interested</button>
+                    <button class="filter-btn" data-filter="demo_scheduled">Demo</button>
+                    <button class="filter-btn" data-filter="proposal_sent">Proposal</button>
+                    <button class="filter-btn" data-filter="closed_won">Won</button>
+                    <button class="filter-btn" data-filter="closed_lost">Lost</button>
+                </div>
+                
+                <div class="card">
+                    <div class="card-body">
+                        <div id="leads-list" class="item-list"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tasks Page -->
+            <div class="page hidden" id="page-tasks">
+                <header class="page-header">
+                    <h1>📋 Task Manager</h1>
+                    <button class="btn btn-primary" onclick="showAddTask()">+ Add Task</button>
+                </header>
+                
+                <div class="card">
+                    <div class="card-body">
+                        <div id="tasks-list" class="item-list"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Agents Page -->
+            <div class="page hidden" id="page-agents">
+                <header class="page-header">
+                    <h1>🤖 Agent Team</h1>
+                </header>
+                
+                <div class="card">
+                    <div class="card-body">
+                        <div id="agents-list" class="agent-grid"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Workflows Page -->
+            <div class="page hidden" id="page-workflows">
+                <header class="page-header">
+                    <h1>🔄 Workflows</h1>
+                    <button class="btn btn-primary" onclick="showAddWorkflow()">+ Add Workflow</button>
+                </header>
+                
+                <div class="card">
+                    <div class="card-body">
+                        <div id="workflows-list" class="item-list"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Roofing Page -->
+            <div class="page hidden" id="page-roofing">
+                <header class="page-header">
+                    <h1>🏠 Denver Roofing Fast-Cash</h1>
+                </header>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Storm Campaign Tools</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="roofing-tools">
+                            <button class="tool-btn" onclick="runRoofingScript('door')">🚪 Door-Knock Script</button>
+                            <button class="tool-btn" onclick="runRoofingScript('sms')">📱 SMS Script</button>
+                            <button class="tool-btn" onclick="runRoofingScript('call')">📞 Cold Call Script</button>
+                            <button class="tool-btn" onclick="runRoofingScript('email')">📧 Email Sequence</button>
+                            <button class="tool-btn" onclick="runRoofingScript('checklist')">✅ Neighborhood Checklist</button>
+                            <button class="tool-btn" onclick="runRoofingCalculator()">🧮 ROI Calculator</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Roofing Leads</h3>
+                        <button class="btn btn-small" onclick="showAddLead()">+ Add Lead</button>
+                    </div>
+                    <div class="card-body">
+                        <div id="roofing-leads" class="item-list"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sales Page -->
+            <div class="page hidden" id="page-sales">
+                <header class="page-header">
+                    <h1>💰 AI Expert Solutions Sales</h1>
+                </header>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Sales Tools</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="sales-tools">
+                            <button class="tool-btn" onclick="runSalesTool('discovery')">🔍 Discovery Questions</button>
+                            <button class="tool-btn" onclick="runSalesTool('objections')">🛡️ Objection Handling</button>
+                            <button class="tool-btn" onclick="runSalesTool('proposal')">📄 Proposal Outline</button>
+                            <button class="tool-btn" onclick="runSalesTool('demo')">📹 Demo Script</button>
+                            <button class="tool-btn" onclick="runSalesTool('close')">🎯 Close Script</button>
+                            <button class="tool-btn" onclick="runSalesTool('pricing')">💵 Pricing Calculator</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Ask Jarvis for Sales Help</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="sales-chat">
+                            <textarea id="sales-prompt" class="input" placeholder="Ask Jarvis for help with a specific sales situation..." rows="3"></textarea>
+                            <button class="btn btn-primary" onclick="askSalesJarvis()">Ask</button>
+                            <div id="sales-response" class="response-box hidden"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Settings Page -->
+            <div class="page hidden" id="page-settings">
+                <header class="page-header">
+                    <h1>⚙️ API Settings</h1>
+                </header>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3>LLM Provider Configuration</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="settings-grid">
+                            <div class="setting-item">
+                                <label>Default Provider</label>
+                                <select id="default-provider" class="input">
+                                    <option value="ollama">Ollama (Local - FREE)</option>
+                                    <option value="openrouter">OpenRouter</option>
+                                    <option value="groq">Groq</option>
+                                    <option value="gemini">Gemini</option>
+                                    <option value="openai">OpenAI</option>
+                                </select>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <label>Default Model</label>
+                                <select id="default-model" class="input"></select>
+                            </div>
+                        </div>
+                        
+                        <div class="provider-status-grid">
+                            <div class="provider-card" id="status-ollama">
+                                <div class="provider-name">Ollama</div>
+                                <div class="provider-status">Checking...</div>
+                            </div>
+                            <div class="provider-card" id="status-openrouter">
+                                <div class="provider-name">OpenRouter</div>
+                                <div class="provider-status">Checking...</div>
+                            </div>
+                            <div class="provider-card" id="status-groq">
+                                <div class="provider-name">Groq</div>
+                                <div class="provider-status">Checking...</div>
+                            </div>
+                            <div class="provider-card" id="status-gemini">
+                                <div class="provider-name">Gemini</div>
+                                <div class="provider-status">Checking...</div>
+                            </div>
+                            <div class="provider-card" id="status-openai">
+                                <div class="provider-name">OpenAI</div>
+                                <div class="provider-status">Checking...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Environment Variables</h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="help-text">Edit the <code>.env</code> file in the project root to configure API keys:</p>
+                        <div class="env-example">
+                            <pre>OPENROUTER_API_KEY=your-key-here
+OLLAMA_BASE_URL=http://localhost:11434
+OLLAMA_MODEL=qwen2.5-coder:7b
+GROQ_API_KEY=your-key-here
+GEMINI_API_KEY=your-key-here
+OPENAI_API_KEY=your-key-here</pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Clone System</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="clone-form">
+                            <input type="text" id="clone-client-name" class="input" placeholder="New client name">
+                            <button class="btn btn-primary" onclick="cloneSystem()">Clone System</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="js/app.js"></script>
+</body>
+</html>
