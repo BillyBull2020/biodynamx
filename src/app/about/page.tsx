@@ -356,14 +356,17 @@ export default function AboutPage() {
                         </div>
 
                         <p style={{ fontSize: 14, color: "rgba(255,255,255,0.75)", lineHeight: 1.7, margin: "0 0 16px" }}>
-                            2x Amazon best-selling author, recognized expert in AI automation, and the architect behind BioDynamX&apos;s neuroscience framework. Billy leads a community of <strong style={{ color: "#fff" }}>4,000+ business owners</strong> leveraging AI for revenue recovery.
+                            2x Amazon #1 best-selling author, AI automation pioneer, and the architect behind BioDynamX&apos;s neuroscience framework. Billy leads a community of <strong style={{ color: "#fff" }}>4,000+ business owners</strong> leveraging AI for revenue recovery, with <strong style={{ color: "#fff" }}>23,500+ LinkedIn followers</strong>.
+                        </p>
+                        <p style={{ fontSize: 14, color: "rgba(255,255,255,0.75)", lineHeight: 1.7, margin: "0 0 16px" }}>
+                            A Colorado business leader with <strong style={{ color: "#00ff41" }}>35+ years of experience</strong>, Billy&apos;s career spans media, hospitality, and technology. He created and hosted <strong style={{ color: "#fff" }}>MMA Meltdown</strong> — the world&apos;s first radio show dedicated exclusively to combat sports — on AM/FM radio, which was <strong style={{ color: "#00ff41" }}>Colorado&apos;s #1 sports specialty show for 5 consecutive years</strong>. He served as a radio and TV producer at <strong style={{ color: "#fff" }}>Mile High Sports and ESPN</strong>, and became the <strong style={{ color: "#00ff41" }}>youngest marketing manager in Marriott history</strong>.
                         </p>
                         <p style={{ fontSize: 14, color: "rgba(255,255,255,0.75)", lineHeight: 1.7, margin: "0 0 20px" }}>
                             His books — <em>&ldquo;The AI Business Revolution&rdquo;</em> and <em>&ldquo;The Business Owner&apos;s Guide to AI Automation Excellence&rdquo;</em> — both reached <strong style={{ color: "#ffa726" }}>#1 on Amazon</strong>.
                         </p>
 
                         <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-                            {["2x Amazon Best-Seller", "4,000+ Partners", "$2.4M Recovered Q1", "Neurobiology of Choice Pioneer"].map((badge) => (
+                            {["2x Amazon #1 Best-Seller", "23,500+ LinkedIn Followers", "4,000+ Partners", "$2.4M Recovered Q1", "MMA Meltdown Creator", "Youngest Marriott Marketing Mgr", "35+ Years in Colorado Business", "Neurobiology of Choice Pioneer"].map((badge) => (
                                 <span key={badge} style={{
                                     padding: "5px 14px", borderRadius: 100, fontSize: 10, fontWeight: 700,
                                     background: "rgba(0,255,65,0.08)", border: "1px solid rgba(0,255,65,0.2)",

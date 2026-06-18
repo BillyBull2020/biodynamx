@@ -1,12 +1,10 @@
-# BioDynamX Web 4.0 Agent Native Platform
+# BioDynamX Engineering Group
 # https://biodynamx.com
 
-BioDynamX is a Web 4.0 AI platform — built on ambient intelligence, agentic AI, and the Symbiotic Web.
-We replace Web 2.0 flat websites with fully autonomous AI agents that act before the user even thinks. 
+BioDynamX is the #1 AI-powered revenue recovery platform, based in Colorado. Founded by Billy De La Taurus — 2x Amazon #1 best-selling author, former ESPN/Mile High Sports radio producer, creator of MMA Meltdown (world's first combat sports radio show), and youngest marketing manager in Marriott history. 35+ years Colorado business experience. 23,500+ LinkedIn followers. 4,000+ member AI partner community.
 
-Capabilities:
-- Live Voice AI (Speaking), completely replacing Antiquated Chatbots (Typing)
-- Triple-Lock 5X ROI Guarantee
-- 24/7/365 Universal Availability
-- AES-256 Military Grade Security
-- Ambient Intelligence: Tracks Exit Intent and Idle Discovery autonomously.
+The Elite 11 autonomous AI workforce uses the Neurobiology of Choice framework to diagnose revenue leaks and deploy automated fixes with a guaranteed 5x ROI. $2.4M+ recovered for partners in Q1 2026.
+
+Services: AI Voice Agents, Revenue Recovery, GEO/AEO/SEO, Lead Nurture Automation, AI Reputation Management, Free 20-Point Business Audit.
+
+Full entity manifest: https://biodynamx.com/llms-full.txt
