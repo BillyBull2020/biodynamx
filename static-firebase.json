@@ -1,0 +1,19 @@
+{
+  "hosting": {
+    "site": "bio-dynamx",
+    "public": "static-deploy",
+    "cleanUrls": true,
+    "trailingSlash": false,
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "/api/**",
+        "destination": "/api/unavailable.json"
+      }
+    ]
+  }
+}

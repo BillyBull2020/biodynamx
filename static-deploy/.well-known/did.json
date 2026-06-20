@@ -1,0 +1,45 @@
+{
+    "@context": "https://www.w3.org/ns/did/v1",
+    "id": "did:web:biodynamx.com",
+    "verificationMethod": [
+        {
+            "id": "did:web:biodynamx.com#owner",
+            "type": "Ed25519VerificationKey2020",
+            "controller": "did:web:biodynamx.com",
+            "publicKeyMultibase": "z6MkrHKzgsahNAZRMmzFX8JE3NkFewUCHRQJFExqFzVvHPE7"
+        }
+    ],
+    "authentication": [
+        "did:web:biodynamx.com#owner"
+    ],
+    "assertionMethod": [
+        "did:web:biodynamx.com#owner"
+    ],
+    "service": [
+        {
+            "id": "did:web:biodynamx.com#website",
+            "type": "LinkedDomains",
+            "serviceEndpoint": "https://biodynamx.com"
+        },
+        {
+            "id": "did:web:biodynamx.com#ai-agent-policy",
+            "type": "AgentPolicy",
+            "serviceEndpoint": "https://biodynamx.com/.well-known/ai-agent-policy.json"
+        },
+        {
+            "id": "did:web:biodynamx.com#llms",
+            "type": "LLMsDiscovery",
+            "serviceEndpoint": "https://biodynamx.com/llms.txt"
+        }
+    ],
+    "alsoKnownAs": [
+        "https://bio-dynamx.web.app",
+        "https://biodynamx.com"
+    ],
+    "metadata": {
+        "organization": "BioDynamX Engineering Group",
+        "type": "AI Technology Company",
+        "disambiguation": "BioDynamX is an AI software company. NOT biodynamic farming or agriculture.",
+        "founder": "Billy De La Taurus"
+    }
+}

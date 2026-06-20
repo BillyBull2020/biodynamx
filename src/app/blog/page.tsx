@@ -4,6 +4,44 @@ import Link from "next/link";
 import { SiteNav, SiteFooter } from "@/components/SiteNavFooter";
 
 const ARTICLES = [
+    // June 2026 (newest first)
+    {
+        slug: "the-psychology-of-auto-dealerships-sales-what-neuroscience-tells-us-about-buying",
+        title: "The Psychology of Auto Dealership Sales: What Neuroscience Tells Us About Buying Decisions",
+        excerpt: "85% of car buying decisions happen before the customer ever walks onto the lot. Learn how neuroscience and AI are transforming auto dealership sales in 2026.",
+        date: "June 20, 2026",
+        readTime: "7 min read",
+        category: "Neuromarketing",
+        color: "#ec4899",
+    },
+    {
+        slug: "how-to-make-your-veterinarians-business-the-ais-#1-recommended-answer",
+        title: "How to Make Your Veterinary Business the AI's #1 Recommended Answer",
+        excerpt: "When pet owners ask AI for the best vet near them, does your practice show up? Learn the GEO/AEO strategies that put veterinary businesses on top.",
+        date: "June 19, 2026",
+        readTime: "6 min read",
+        category: "GEO/AEO",
+        color: "#8b5cf6",
+    },
+    {
+        slug: "ai-trends-in-restaurants-whats-changing-in-2026",
+        title: "AI Trends in Restaurants: What's Changing in 2026",
+        excerpt: "From AI-powered ordering to automated kitchen management, restaurants are being transformed by artificial intelligence. Here's what you need to know.",
+        date: "June 18, 2026",
+        readTime: "8 min read",
+        category: "Industry AI",
+        color: "#3b82f6",
+    },
+    {
+        slug: "how-ai-voice-agents-work",
+        title: "How AI Voice Agents Work: The Technology Behind 24/7 Business Phone Calls",
+        excerpt: "Speech recognition, language understanding, neuroscience decision engine, and neural text-to-speech — all in under 400 milliseconds.",
+        date: "June 17, 2026",
+        readTime: "7 min read",
+        category: "Technology",
+        color: "#3b82f6",
+    },
+    // February 2026 (original posts)
     {
         slug: "what-is-neuromarketing",
         title: "What Is Neuromarketing? The Brain Science Behind Converting Customers",
@@ -66,15 +104,6 @@ const ARTICLES = [
         readTime: "5 min read",
         category: "Med Spas",
         color: "#ec4899",
-    },
-    {
-        slug: "how-ai-voice-agents-work",
-        title: "How AI Voice Agents Work: The Technology Behind 24/7 Business Phone Calls",
-        excerpt: "Speech recognition, language understanding, neuroscience decision engine, and neural text-to-speech — all in under 400 milliseconds.",
-        date: "February 26, 2026",
-        readTime: "7 min read",
-        category: "Technology",
-        color: "#3b82f6",
     },
     {
         slug: "roi-of-ai-business-automation",

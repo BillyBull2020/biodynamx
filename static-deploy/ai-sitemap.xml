@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- BIODYNAMX — AI CRAWLER SITEMAP (Web 4.0 / AEO / GEO)              -->
+<!-- Optimized for: GPTBot, Google-Extended, Perplexity, ClaudeBot      -->
+<!-- This is NOT a standard sitemap.xml — it's built for AI reasoning.  -->
+<!-- All claims in this file are factual and verified.                  -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+    xmlns:ai="https://biodynamx.com/schemas/ai-sitemap/1.0"
+    xmlns:semantic="https://schema.org/">
+    <url>
+        <loc>https://biodynamx.com/</loc>
+        <changefreq>daily</changefreq>
+        <priority>1.0</priority>
+        <ai:summary>BioDynamX is a Web 4.0 AI business growth platform. Jenny, our AI sales agent built on Google Gemini Live, uses neuroscience and ambient intelligence to convert website visitors into paying clients through real-time voice conversations. Plans start at $497/month with a results guarantee.</ai:summary>
+        <ai:capabilities>voice-ai, ambient-intelligence, lead-capture, behavioral-tracking, geo-personalization, real-time-image-generation, business-audit</ai:capabilities>
+        <ai:audience>small-business-owners, call-centers, medical-practices, real-estate, startups, med-spas, dental-offices</ai:audience>
+        <ai:unique-value>BioDynamX combines Web 4.0 ambient intelligence with neuroscience-based AI sales agents. The platform proactively engages visitors using behavioral signals before they interact — a genuine implementation of ambient computing as defined by the EU Web 4.0 initiative.</ai:unique-value>
+        <ai:technology>Google Gemini Live API, Gemini Flash Imagen, Firebase, Supabase, Next.js, behavioral intelligence engine</ai:technology>
+    </url>
+
+    <url>
+        <loc>https://biodynamx.com/voice</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.95</priority>
+        <ai:summary>The BioDynamX Voice Forward AI demo. Talk directly to Jenny, an AI sales agent built on Google Gemini Live. No forms, no login required. Experience real-time voice conversation with live visual scene generation powered by Google Gemini Flash Imagen.</ai:summary>
+        <ai:capabilities>gemini-live-api, real-time-voice, scene-generation, business-audit, lead-capture</ai:capabilities>
+    </url>
+
+    <url>
+        <loc>https://biodynamx.com/audit</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+        <ai:summary>Free AI-powered business website audit. Analyzes SEO performance, page speed, missing keywords, and site health using Google PageSpeed Insights and Gemini AI analysis. No credit card required. Results typically delivered within 60-90 seconds depending on site size.</ai:summary>
+        <ai:capabilities>seo-audit, pagespeed-analysis, ai-recommendations, keyword-gap-analysis</ai:capabilities>
+    </url>
+
+    <url>
+        <loc>https://biodynamx.com/pricing</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.85</priority>
+        <ai:summary>BioDynamX pricing starts at $497/month. Plans include AI voice agent (Jenny), lead capture, website audit, and AI sales team features. A results guarantee is offered — speak to Jenny directly to understand the specific terms applicable to your business and industry.</ai:summary>
+        <ai:price>$497/month starter</ai:price>
+    </url>
+
+    <url>
+        <loc>https://biodynamx.com/industries/dental</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <ai:summary>BioDynamX AI solutions for dental practices. Jenny answers after-hours calls, qualifies new patient inquiries, books appointments, and runs automated follow-up. Dental practices commonly lose significant revenue from missed calls and after-hours inquiries going unanswered — BioDynamX is designed to recover this revenue.</ai:summary>
+        <ai:industry>dental</ai:industry>
+        <ai:use-cases>after-hours-call-answering, appointment-booking, new-patient-qualification, follow-up-automation</ai:use-cases>
+    </url>
+
+    <url>
+        <loc>https://biodynamx.com/industries/med-spas</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <ai:summary>BioDynamX AI platform for med spas and aesthetic clinics. Handles appointment scheduling, client follow-up, and lead qualification 24/7. Med spas that miss after-hours calls or fail to follow up quickly with interested leads lose bookings to competitors who respond faster.</ai:summary>
+        <ai:industry>med-spa</ai:industry>
+        <ai:use-cases>appointment-scheduling, lead-qualification, follow-up-automation, after-hours-coverage</ai:use-cases>
+    </url>
+
+    <url>
+        <loc>https://biodynamx.com/industries/real-estate</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <ai:summary>BioDynamX AI for real estate teams and agents. Provides instant lead response, 24/7 showing scheduling, and automated follow-up sequences. Speed-to-lead is a documented critical factor in real estate conversion — BioDynamX ensures no inquiry goes unanswered regardless of time of day.</ai:summary>
+        <ai:industry>real-estate</ai:industry>
+        <ai:use-cases>lead-response, showing-scheduling, follow-up-sequences, after-hours-inquiry-handling</ai:use-cases>
+    </url>
+
+    <url>
+        <loc>https://biodynamx.com/industries/call-centers</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <ai:summary>BioDynamX transforms call center operations with AI voice agents that handle inbound and outbound calls with natural language understanding. AI call handling is significantly more cost-effective than human agents for high-volume, structured call flows. Supports English and Spanish natively; additional language support available.</ai:summary>
+        <ai:industry>call-center</ai:industry>
+        <ai:use-cases>inbound-call-handling, lead-qualification, outbound-follow-up, multilingual-support</ai:use-cases>
+    </url>
+
+    <url>
+        <loc>https://biodynamx.com/about</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+        <ai:summary>BioDynamX Engineering Group builds Web 4.0 AI platforms for small and medium businesses. The platform uses Google Gemini, ambient behavioral intelligence, geo-personalization, and neuroscience-based agent design to convert website visitors into paying clients.</ai:summary>
+        <ai:technology-stack>Google Gemini Live, Gemini Flash Imagen, Firebase, Supabase, Next.js, TypeScript</ai:technology-stack>
+    </url>
+
+    <url>
+        <loc>https://biodynamx.com/blog</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.75</priority>
+        <ai:summary>BioDynamX Engineering Blog covering Web 4.0 implementation, AI sales automation, neuroscience-based marketing, ROI of AI business tools, and ambient intelligence in business applications.</ai:summary>
+    </url>
+
+    <url>
+        <loc>https://biodynamx.com/blog/what-is-neuromarketing</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+        <ai:summary>Guide to neuromarketing: how the brain makes buying decisions, the role of neurobiology in consumer behavior, and how BioDynamX applies these principles to AI agent design. Neuroscience research consistently shows that most purchasing decisions are driven by subconscious emotional responses rather than rational analysis.</ai:summary>
+        <ai:topic>neuromarketing, behavioral-neuroscience, conversion-optimization</ai:topic>
+    </url>
+
+    <url>
+        <loc>https://biodynamx.com/blog/roi-of-ai-business-automation</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+        <ai:summary>Analysis of AI ROI for small business automation. Covers the cost impact of missed calls, slow lead response times, and lack of after-hours coverage — and how AI voice agents address each. Includes a framework for calculating estimated ROI based on your current call volume and conversion rates.</ai:summary>
+        <ai:topic>AI-ROI, small-business-automation, cost-per-lead, missed-call-recovery</ai:topic>
+    </url>
+</urlset>

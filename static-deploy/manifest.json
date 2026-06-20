@@ -1,0 +1,79 @@
+{
+    "name": "BioDynamX Engineering Group — AI Revenue Recovery Platform",
+    "short_name": "BioDynamX",
+    "description": "AI-powered revenue recovery using the Neurobiology of Choice and dual voice agents. Diagnose revenue leaks, deploy automated fixes, and guarantee 2x ROI. Founded by Billy De La Taurus.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#0a0a0a",
+    "theme_color": "#00ff41",
+    "orientation": "portrait-primary",
+    "scope": "/",
+    "id": "biodynamx-app",
+    "icons": [
+        {
+            "src": "/favicon.ico",
+            "sizes": "any",
+            "type": "image/x-icon"
+        },
+        {
+            "src": "/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ],
+    "screenshots": [
+        {
+            "src": "/og-image.png",
+            "sizes": "1200x630",
+            "type": "image/png",
+            "label": "BioDynamX AI Revenue Recovery Platform"
+        }
+    ],
+    "categories": [
+        "business",
+        "productivity",
+        "utilities",
+        "finance"
+    ],
+    "lang": "en-US",
+    "dir": "ltr",
+    "prefer_related_applications": false,
+    "shortcuts": [
+        {
+            "name": "Free Business Audit",
+            "short_name": "Audit",
+            "description": "Run a free 20-point AI business audit powered by Google Gemini",
+            "url": "/audit",
+            "icons": [
+                {
+                    "src": "/icon-192.png",
+                    "sizes": "192x192"
+                }
+            ]
+        },
+        {
+            "name": "Client Portal",
+            "short_name": "Portal",
+            "description": "Sign in to your BioDynamX revenue dashboard",
+            "url": "/portal/login",
+            "icons": [
+                {
+                    "src": "/icon-192.png",
+                    "sizes": "192x192"
+                }
+            ]
+        }
+    ],
+    "related_applications": [],
+    "iarc_rating_id": "",
+    "edge_side_panel": {
+        "preferred_width": 480
+    }
+}

@@ -2,8 +2,11 @@
 import Link from "next/link";
 
 const NAV_LINKS = [
+    { label: "ProStorm Patrol", href: "/storm", highlight: true },
+    { label: "Roofing", href: "/roofing" },
+    { label: "YouTube", href: "/youtube" },
     { label: "Pricing", href: "/pricing" },
-    { label: "Signal", href: "/signal", highlight: true },
+    { label: "Signal", href: "/signal" },
     { label: "Free Audit", href: "/audit" },
     { label: "Security", href: "/security" },
     { label: "Blog", href: "/blog" },

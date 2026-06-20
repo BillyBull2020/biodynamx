@@ -1,0 +1,5 @@
+{
+  "error": "Voice service unavailable",
+  "message": "API routes require Firebase Cloud Functions (Blaze plan).",
+  "status": "degraded"
+}
