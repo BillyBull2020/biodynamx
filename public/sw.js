@@ -2,7 +2,7 @@
 // Fixes: stale cache serving old _next chunk hashes after new deploy.
 // HTML & Next.js navigations = NETWORK-FIRST (always fresh HTML → fresh chunk hashes)
 // True static assets (images, fonts, icons) = cache-first for performance.
-const CACHE_NAME = 'biodynamx-aios-v4';
+const CACHE_NAME = 'biodynamx-aios-v5';
 const PRECACHE = [
     '/manifest.json',
     '/icon-192.png',

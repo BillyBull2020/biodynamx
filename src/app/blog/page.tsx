@@ -6,6 +6,42 @@ import { SiteNav, SiteFooter } from "@/components/SiteNavFooter";
 const ARTICLES = [
     // June 2026 (newest first)
     {
+        slug: "how-real-estate-businesses-dominate-ai-search-results",
+        title: "How Real Estate Businesses Dominate AI Search Results",
+        excerpt: "When potential clients ask AI for the best real estate agent near them, does your business show up? Learn the GEO/AEO strategies that put real estate businesses on top of AI search results.",
+        date: "June 24, 2026",
+        readTime: "6 min read",
+        category: "GEO/AEO",
+        color: "#8b5cf6",
+    },
+    {
+        slug: "ai-voice-agent-vs-answering-service-for-roofing-contractors-the-2026-comparison",
+        title: "AI Voice Agent vs Answering Service for Roofing Contractors: The 2026 Comparison",
+        excerpt: "Roofing contractors lose $14,000+ per year to missed calls. Compare AI voice agents vs traditional answering services on cost, speed, and conversion rates.",
+        date: "June 23, 2026",
+        readTime: "7 min read",
+        category: "Comparison",
+        color: "#ffa726",
+    },
+    {
+        slug: "how-financial-advisors-businesses-dominate-ai-search-results",
+        title: "How Financial Advisors Dominate AI Search Results in 2026",
+        excerpt: "When potential clients ask AI for the best financial advisor near them, does your firm show up? Learn the GEO/AEO strategies that put financial advisors on top.",
+        date: "June 23, 2026",
+        readTime: "6 min read",
+        category: "GEO/AEO",
+        color: "#8b5cf6",
+    },
+    {
+        slug: "the-neurobiology-of-choice-why-manufacturing-customers-buy-and-how-to-influence-",
+        title: "The Neurobiology of Choice: Why Manufacturing Customers Buy (And How to Influence Them)",
+        excerpt: "Manufacturing buyers are driven by the same neurochemical pathways as retail consumers. Learn how dopamine, cortisol, and oxytocin drive B2B purchasing decisions.",
+        date: "June 23, 2026",
+        readTime: "10 min read",
+        category: "Neuroscience",
+        color: "#8b5cf6",
+    },
+    {
         slug: "the-psychology-of-auto-dealerships-sales-what-neuroscience-tells-us-about-buying",
         title: "The Psychology of Auto Dealership Sales: What Neuroscience Tells Us About Buying Decisions",
         excerpt: "85% of car buying decisions happen before the customer ever walks onto the lot. Learn how neuroscience and AI are transforming auto dealership sales in 2026.",

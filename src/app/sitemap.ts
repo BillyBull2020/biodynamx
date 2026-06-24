@@ -1,8 +1,9 @@
+export const dynamic = 'force-static';
 import type { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
     const baseUrl = "https://biodynamx.com";
-    const now = new Date().toISOString();
+    const now = "2026-06-21T00:00:00Z";
 
     return [
         // ── Core pages (highest priority) ──

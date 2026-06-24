@@ -1,8 +1,7 @@
-"use client";
 import Link from "next/link";
 
 const NAV_LINKS = [
-    { label: "ProStorm Patrol", href: "/storm", highlight: true },
+    { label: "ProStorm Patrol", href: "/prostorm-patrol", highlight: true },
     { label: "Roofing", href: "/roofing" },
     { label: "YouTube", href: "/youtube" },
     { label: "Pricing", href: "/pricing" },

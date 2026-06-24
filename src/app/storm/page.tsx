@@ -8,6 +8,20 @@ export default function StormShieldPage() {
 
             <SiteNav />
 
+            {/* ═══ NEW PAGE BANNER ═══ */}
+            <div style={{
+                textAlign: "center", padding: "12px 24px",
+                background: "linear-gradient(90deg, rgba(118,185,0,0.1), rgba(233,69,96,0.1))",
+                borderBottom: "1px solid rgba(118,185,0,0.2)",
+            }}>
+                <Link href="/prostorm-patrol" style={{
+                    fontSize: 13, fontWeight: 700, color: "#76b900",
+                    textDecoration: "none",
+                }}>
+                    ⚡ NEW: ProStorm Patrol AI Pro with NVIDIA Earth-2 · Confirmed on A100 GPU → Learn More
+                </Link>
+            </div>
+
             {/* ═══ HERO ═══ */}
             <section style={{ textAlign: "center", padding: "80px 24px 40px" }}>
                 <div style={{
@@ -152,7 +166,7 @@ export default function StormShieldPage() {
                     The Secret Weapon: <span style={{ color: "#76b900" }}>NVIDIA Earth-2</span>
                 </h2>
                 <p style={{ color: "rgba(255,255,255,0.5)", maxWidth: 600, margin: "0 auto 30px", fontSize: 16, lineHeight: 1.65 }}>
-                    ProStorm Patrol AI Pro runs NVIDIA's Earth-2 Studio framework — the same AI weather technology NVIDIA develops for climate science research. No other roofing platform has this.
+                    ProStorm Patrol AI Pro runs NVIDIA's Earth-2 Studio framework — the same AI weather technology NVIDIA develops for climate science research. <strong style={{ color: "#76b900" }}>Confirmed working on Google Colab Pro A100 GPU</strong> running Earth2Studio v0.8.1 with GraphCast Operational at 0.25° resolution.
                 </p>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20, textAlign: "left" }}>
                     <div style={{ padding: 24, borderRadius: 16, background: "rgba(118,185,0,0.05)", border: "1px solid rgba(118,185,0,0.15)" }}>

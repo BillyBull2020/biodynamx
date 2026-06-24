@@ -8,6 +8,11 @@
  *      where any visitor can extract it with DevTools → Sources.
  *      This approach keeps the key server-only (process.env.GEMINI_API_KEY)
  *      and only transmits it over an authenticated, rate-limited route.
+ *
+ * IMPORTANT: On static hosting (no API routes), the session fetch will
+ * return 404. We must NOT block the entire page behind this — VaultUI
+ * should still render so visitors see the full landing page. The voice
+ * agent feature simply won't be available until deployed with functions.
  */
 
 import { useEffect, useState } from "react";
@@ -15,7 +20,6 @@ import VaultUI from "@/components/VaultUI";
 
 export default function Home() {
   const [apiKey, setApiKey] = useState<string>("");
-  const [keyError, setKeyError] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -29,9 +33,7 @@ export default function Home() {
         });
 
         if (!res.ok) {
-          const body = await res.json().catch(() => ({}));
-          const msg = body?.error || `Session error (${res.status})`;
-          if (!cancelled) setKeyError(msg);
+          // API not available (static hosting) — don't block the page
           return;
         }
 
@@ -40,9 +42,7 @@ export default function Home() {
           setApiKey(token);
         }
       } catch {
-        if (!cancelled) {
-          setKeyError("Voice service unavailable — please refresh.");
-        }
+        // Network error — don't block the page, just log silently
       }
     }
 
@@ -50,39 +50,7 @@ export default function Home() {
     return () => { cancelled = true; };
   }, []);
 
-  // Show minimal error state if the session endpoint fails
-  if (keyError) {
-    return (
-      <div style={{
-        minHeight: "100vh",
-        background: "#030308",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        flexDirection: "column",
-        gap: 16,
-        color: "#fff",
-        fontFamily: "system-ui, sans-serif",
-      }}>
-        <div style={{ fontSize: 40 }}>⚠️</div>
-        <div style={{ fontSize: 18, fontWeight: 700 }}>Voice service unavailable</div>
-        <div style={{ fontSize: 14, color: "rgba(255,255,255,0.4)" }}>{keyError}</div>
-        <button
-          onClick={() => window.location.reload()}
-          style={{
-            marginTop: 8, padding: "10px 24px",
-            background: "#00ff41", color: "#000",
-            border: "none", borderRadius: 8,
-            fontWeight: 700, cursor: "pointer", fontSize: 14,
-          }}
-        >
-          Retry
-        </button>
-      </div>
-    );
-  }
-
-  // VaultUI receives the key once the session fetch resolves.
-  // apiKey="" while loading — VaultUI gracefully blocks agent launch until key is ready.
+  // Always render VaultUI — apiKey="" means voice features are disabled
+  // but the full landing page (hero, agents, pricing, etc.) is visible.
   return <VaultUI apiKey={apiKey} />;
 }

@@ -173,7 +173,7 @@ export const metadata: Metadata = {
     "author": "Billy De La Taurus",
     "article:author": "Billy De La Taurus",
     "article:published_time": "2026-01-15T00:00:00Z",
-    "article:modified_time": new Date().toISOString(),
+    "article:modified_time": "2026-06-21T00:00:00Z",
     "publisher": "BioDynamX Engineering Group",
     "copyright": "© 2026 BioDynamX Engineering Group",
     // PWA / App Support
@@ -1160,8 +1160,8 @@ export default function RootLayout({
         <meta name="robots" content="max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
         {/* GEO: llms.txt — AI-specific directory for LLMs */}
         <link rel="help" href="/llms.txt" type="text/plain" title="LLMs.txt — AI Directory" />
-        {/* E-E-A-T: Last modified date for freshness signals */}
-        <meta name="revised" content={new Date().toISOString()} />
+        {/* E-E-A-T: Last modified date for freshness signals — static to avoid hydration mismatch */}
+        <meta name="revised" content="2026-06-21" />
         <meta name="date" content="2026-01-15" />
         {/* All structured data schemas injected at once */}
         {allSchemas.map((schema, i) => (
