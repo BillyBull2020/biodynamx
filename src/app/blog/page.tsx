@@ -6,6 +6,15 @@ import { SiteNav, SiteFooter } from "@/components/SiteNavFooter";
 const ARTICLES = [
     // June 2026 (newest first)
     {
+        slug: "the-real-estate-owners-guide-to-recovering-11000-month-with-ai-automation",
+        title: "The Real Estate Owner's Guide to Recovering $11,000+/Month with AI Automation",
+        excerpt: "The businesses buying the most AI tools are usually the ones getting the least value from them. Learn how BioDynamX's Neuromarketing Conversion System recovers lost revenue for real estate.",
+        date: "June 27, 2026",
+        readTime: "12 min read",
+        category: "Neuromarketing",
+        color: "#8b5cf6",
+    },
+    {
         slug: "how-real-estate-businesses-dominate-ai-search-results",
         title: "How Real Estate Businesses Dominate AI Search Results",
         excerpt: "When potential clients ask AI for the best real estate agent near them, does your business show up? Learn the GEO/AEO strategies that put real estate businesses on top of AI search results.",
