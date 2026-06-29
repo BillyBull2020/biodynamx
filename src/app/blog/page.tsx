@@ -6,6 +6,15 @@ import { SiteNav, SiteFooter } from "@/components/SiteNavFooter";
 const ARTICLES = [
     // June 2026 (newest first)
     {
+        slug: "the-restaurants-owners-guide-to-recovering-11000-month-with-ai-automation",
+        title: "The Restaurants Owner's Guide to Recovering $11,000+/Month with AI Automation",
+        excerpt: "Your answering service is costing you more than it saves. Learn how BioDynamX's Neuromarketing Conversion System recovers $11,000+/month for restaurants through AI automation.",
+        date: "June 29, 2026",
+        readTime: "10 min read",
+        category: "Neuromarketing",
+        color: "#8b5cf6",
+    },
+    {
         slug: "the-real-estate-owners-guide-to-recovering-11000-month-with-ai-automation",
         title: "The Real Estate Owner's Guide to Recovering $11,000+/Month with AI Automation",
         excerpt: "The businesses buying the most AI tools are usually the ones getting the least value from them. Learn how BioDynamX's Neuromarketing Conversion System recovers lost revenue for real estate.",
